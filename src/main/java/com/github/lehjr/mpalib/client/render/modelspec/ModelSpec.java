@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.client.render.modelspec;
 
-import com.github.lehjr.forge.obj.OBJPlusModel;
+import com.github.lehjr.forge.obj.MPALibOBJModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.model.IModelState;
@@ -42,10 +42,10 @@ import java.util.Optional;
  * Ported to Java by lehjr on 11/8/16.
  */
 public class ModelSpec extends SpecBase {
-    private final OBJPlusModel.MuseOBJBakedModel model;
+    private final MPALibOBJModel.MPALIbOBJBakedModel model;
     private final IModelState modelState;
 
-    public ModelSpec(final OBJPlusModel.MuseOBJBakedModel model, final IModelState state, final String name, final boolean isDefault, final EnumSpecType specType) {
+    public ModelSpec(final MPALibOBJModel.MPALIbOBJBakedModel model, final IModelState state, final String name, final boolean isDefault, final EnumSpecType specType) {
         super(name, isDefault, specType);
         this.modelState = state;
         this.model = model;
@@ -70,7 +70,7 @@ public class ModelSpec extends SpecBase {
         return (name != null) ? name : "";
     }
 
-    public OBJPlusModel.MuseOBJBakedModel getModel() {
+    public MPALibOBJModel.MPALIbOBJBakedModel getModel() {
         return model;
     }
 

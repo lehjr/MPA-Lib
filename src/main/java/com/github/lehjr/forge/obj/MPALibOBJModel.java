@@ -75,16 +75,16 @@ import java.util.stream.Collectors;
 /**
  * Modified from forge to allow easy fetching of quads for a given group
  */
-public class OBJPlusModel implements IUnbakedModel {
+public class MPALibOBJModel implements IUnbakedModel {
     private MaterialLibrary matLib;
     private final ResourceLocation modelLocation;
     private CustomData customData;
 
-    public OBJPlusModel(MaterialLibrary matLib, ResourceLocation modelLocation) {
+    public MPALibOBJModel(MaterialLibrary matLib, ResourceLocation modelLocation) {
         this(matLib, modelLocation, new CustomData());
     }
 
-    public OBJPlusModel(MaterialLibrary matLib, ResourceLocation modelLocation, CustomData customData) {
+    public MPALibOBJModel(MaterialLibrary matLib, ResourceLocation modelLocation, CustomData customData) {
         this.matLib = matLib;
         this.modelLocation = modelLocation;
         this.customData = customData;
@@ -123,7 +123,7 @@ public class OBJPlusModel implements IUnbakedModel {
             }
         }
         builder.put("missingno", missing);
-        return new MuseOBJBakedModel(this, sprite.getState(), format, builder.build());
+        return new MPALIbOBJBakedModel(this, sprite.getState(), format, builder.build());
     }
 
     public MaterialLibrary getMatLib() {
@@ -132,13 +132,13 @@ public class OBJPlusModel implements IUnbakedModel {
 
     @Override
     public IUnbakedModel process(ImmutableMap<String, String> customData) {
-        OBJPlusModel ret = new OBJPlusModel(this.matLib, this.modelLocation, new CustomData(this.customData, customData));
+        MPALibOBJModel ret = new MPALibOBJModel(this.matLib, this.modelLocation, new CustomData(this.customData, customData));
         return ret;
     }
 
     @Override
     public IUnbakedModel retexture(ImmutableMap<String, String> textures) {
-        OBJPlusModel ret = new OBJPlusModel(this.matLib.makeLibWithReplacements(textures), this.modelLocation, this.customData);
+        MPALibOBJModel ret = new MPALibOBJModel(this.matLib.makeLibWithReplacements(textures), this.modelLocation, this.customData);
         return ret;
     }
 
@@ -207,7 +207,7 @@ public class OBJPlusModel implements IUnbakedModel {
         }
 
         //Partial reading of the OBJ format. Documentation taken from http://paulbourke.net/dataformats/obj/
-        public OBJPlusModel parse() throws IOException {
+        public MPALibOBJModel parse() throws IOException {
             String currentLine = "";
             Material material = new Material();
             material.setName(Material.DEFAULT_NAME);
@@ -233,7 +233,7 @@ public class OBJPlusModel implements IUnbakedModel {
                         if (this.materialLibrary.materials.containsKey(data)) {
                             material = this.materialLibrary.materials.get(data);
                         } else {
-                            MPALibLogger.logger.error("MuseOBJModel.Parser: (Model: '{}', Line: {}) material '{}' referenced but was not found", objFrom, lineNum, data);
+                            MPALibLogger.logger.error("MPALibOBJModel.Parser: (Model: '{}', Line: {}) material '{}' referenced but was not found", objFrom, lineNum, data);
                         }
                         usemtlCounter++;
                     } else if (key.equalsIgnoreCase("v")) // Vertices: x y z [w] - w Defaults to 1.0
@@ -256,7 +256,7 @@ public class OBJPlusModel implements IUnbakedModel {
                     } else if (key.equalsIgnoreCase("f")) // Face Elements: f v1[/vt1][/vn1] ...
                     {
                         if (splitData.length > 4)
-                            MPALibLogger.logger.warn("MuseOBJModel.Parser: found a face ('f') with more than 4 vertices, only the first 4 of these vertices will be rendered!");
+                            MPALibLogger.logger.warn("MPALibOBJModel.Parser: found a face ('f') with more than 4 vertices, only the first 4 of these vertices will be rendered!");
 
                         List<Vertex> v = Lists.newArrayListWithCapacity(splitData.length);
 
@@ -318,15 +318,15 @@ public class OBJPlusModel implements IUnbakedModel {
                     } else {
                         if (!unknownObjectCommands.contains(key)) {
                             unknownObjectCommands.add(key);
-                            MPALibLogger.logger.info("MuseOBJLoader.Parser: command '{}' (model: '{}') is not currently supported, skipping. Line: {} '{}'", key, objFrom, lineNum, currentLine);
+                            MPALibLogger.logger.info("MPALibOBJLoader.Parser: command '{}' (model: '{}') is not currently supported, skipping. Line: {} '{}'", key, objFrom, lineNum, currentLine);
                         }
                     }
                 } catch (RuntimeException e) {
-                    throw new RuntimeException(String.format("MuseOBJLoader.Parser: Exception parsing line #%d: `%s`", lineNum, currentLine), e);
+                    throw new RuntimeException(String.format("MPALibOBJLoader.Parser: Exception parsing line #%d: `%s`", lineNum, currentLine), e);
                 }
             }
 
-            return new OBJPlusModel(this.materialLibrary, this.objFrom);
+            return new MPALibOBJModel(this.materialLibrary, this.objFrom);
         }
     }
 
@@ -447,7 +447,7 @@ public class OBJPlusModel implements IUnbakedModel {
                         hasSetColor = true;
                         material.setColor(color);
                     } else {
-                        MPALibLogger.logger.info("MuseOBJModel: A color has already been defined for material '{}' in '{}'. The color defined by key '{}' will not be applied!", material.getName(), new ResourceLocation(domain, path).toString(), key);
+                        MPALibLogger.logger.info("MPALibOBJModel: A color has already been defined for material '{}' in '{}'. The color defined by key '{}' will not be applied!", material.getName(), new ResourceLocation(domain, path).toString(), key);
                     }
                 } else if (key.equalsIgnoreCase("map_Ka") || key.equalsIgnoreCase("map_Kd") || key.equalsIgnoreCase("map_Ks")) {
                     if (key.equalsIgnoreCase("map_Kd") || !hasSetTexture) {
@@ -463,7 +463,7 @@ public class OBJPlusModel implements IUnbakedModel {
                             material.setTexture(texture);
                         }
                     } else {
-                        MPALibLogger.logger.info("MuseOBJModel: A texture has already been defined for material '{}' in '{}'. The texture defined by key '{}' will not be applied!", material.getName(), new ResourceLocation(domain, path).toString(), key);
+                        MPALibLogger.logger.info("MPALibOBJModel: A texture has already been defined for material '{}' in '{}'. The texture defined by key '{}' will not be applied!", material.getName(), new ResourceLocation(domain, path).toString(), key);
                     }
                 } else if (key.equalsIgnoreCase("d") || key.equalsIgnoreCase("Tr")) {
                     //d <-optional key here> float[0.0:1.0, 1.0]
@@ -474,7 +474,7 @@ public class OBJPlusModel implements IUnbakedModel {
                 } else {
                     if (!unknownMaterialCommands.contains(key)) {
                         unknownMaterialCommands.add(key);
-                        MPALibLogger.logger.info("MuseOBJLoader.MaterialLibrary: key '{}' (model: '{}') is not currently supported, skipping", key, new ResourceLocation(domain, path));
+                        MPALibLogger.logger.info("MPALibOBJLoader.MaterialLibrary: key '{}' (model: '{}') is not currently supported, skipping", key, new ResourceLocation(domain, path));
                     }
                 }
             }
@@ -482,8 +482,8 @@ public class OBJPlusModel implements IUnbakedModel {
     }
 
     public static class Material {
-        public static final String WHITE_NAME = "MuseOBJModel.White.Texture.Name";
-        public static final String DEFAULT_NAME = "MuseOBJModel.Default.Texture.Name";
+        public static final String WHITE_NAME = "MPALibOBJModel.White.Texture.Name";
+        public static final String DEFAULT_NAME = "MPALibOBJModel.Default.Texture.Name";
         private Vector4f color;
         private Texture texture = Texture.WHITE;
         private String name = DEFAULT_NAME;
@@ -819,9 +819,9 @@ public class OBJPlusModel implements IUnbakedModel {
 
     @Deprecated
     public static class Group implements IModelPart {
-        public static final String DEFAULT_NAME = "MuseOBJModel.Default.Element.Name";
-        public static final String ALL = "MuseOBJModel.Group.All.Key";
-        public static final String ALL_EXCEPT = "MuseOBJModel.Group.All.Except.Key";
+        public static final String DEFAULT_NAME = "MPALibOBJModel.Default.Element.Name";
+        public static final String ALL = "MPALibOBJModel.Group.All.Key";
+        public static final String ALL_EXCEPT = "MPALibOBJModel.Group.All.Except.Key";
         private String name = DEFAULT_NAME;
         private LinkedHashSet<Face> faces = new LinkedHashSet<Face>();
         public float[] minUVBounds = new float[]{0.0f, 0.0f};
@@ -983,9 +983,9 @@ public class OBJPlusModel implements IUnbakedModel {
         }
     }
 
-    public class MuseOBJBakedModel implements IDynamicBakedModel {
+    public class MPALIbOBJBakedModel implements IDynamicBakedModel {
         //        ModelTransformCalibration calibration;
-        private final OBJPlusModel model;
+        private final MPALibOBJModel model;
         private IModelState state;
         private final VertexFormat format;
         private ImmutableList<BakedQuad> quads;
@@ -993,7 +993,7 @@ public class OBJPlusModel implements IUnbakedModel {
         private ImmutableMap<String, TextureAtlasSprite> textures;
         private TextureAtlasSprite sprite = ModelLoader.White.INSTANCE;
 
-        public MuseOBJBakedModel(OBJPlusModel model, IModelState state, VertexFormat format, ImmutableMap<String, TextureAtlasSprite> textures) {
+        public MPALIbOBJBakedModel(MPALibOBJModel model, IModelState state, VertexFormat format, ImmutableMap<String, TextureAtlasSprite> textures) {
             this.model = model;
             this.state = state;
             if (this.state instanceof OBJState) this.updateStateVisibilityMap((OBJState) this.state);
@@ -1177,18 +1177,18 @@ public class OBJPlusModel implements IUnbakedModel {
             }
         }
 
-        private final LoadingCache<IModelState, MuseOBJBakedModel> cache = CacheBuilder.newBuilder().maximumSize(20).build(new CacheLoader<IModelState, MuseOBJBakedModel>() {
+        private final LoadingCache<IModelState, MPALIbOBJBakedModel> cache = CacheBuilder.newBuilder().maximumSize(20).build(new CacheLoader<IModelState, MPALIbOBJBakedModel>() {
             @Override
-            public MuseOBJBakedModel load(IModelState state) throws Exception {
-                return new MuseOBJBakedModel(model, state, format, textures);
+            public MPALIbOBJBakedModel load(IModelState state) throws Exception {
+                return new MPALIbOBJBakedModel(model, state, format, textures);
             }
         });
 
-        public MuseOBJBakedModel getCachedModel(IModelState state) {
+        public MPALIbOBJBakedModel getCachedModel(IModelState state) {
             return cache.getUnchecked(state);
         }
 
-        public OBJPlusModel getModel() {
+        public MPALibOBJModel getModel() {
             return this.model;
         }
 
@@ -1196,8 +1196,8 @@ public class OBJPlusModel implements IUnbakedModel {
             return this.state;
         }
 
-        public MuseOBJBakedModel getBakedModel() {
-            return new MuseOBJBakedModel(this.model, this.state, this.format, this.textures);
+        public MPALIbOBJBakedModel getBakedModel() {
+            return new MPALIbOBJBakedModel(this.model, this.state, this.format, this.textures);
         }
 
         @Override

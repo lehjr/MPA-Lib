@@ -50,18 +50,18 @@ import java.util.Set;
  *
  * Slightly modified version of Forge's loader because You cannot extend an Enum ^
  */
-public enum OBJPlusLoader implements ICustomModelLoader {
+public enum MPALibOBJLoader implements ICustomModelLoader {
     INSTANCE;
 
     private static final org.apache.logging.log4j.Logger LOGGER = MPALibLogger.logger;
     private IResourceManager manager;
     private final Set<String> enabledDomains = new HashSet<>();
-    private final Map<ResourceLocation, OBJPlusModel> cache = new HashMap<>();
+    private final Map<ResourceLocation, MPALibOBJModel> cache = new HashMap<>();
     private final Map<ResourceLocation, Exception> errors = new HashMap<>();
 
     public void addDomain(String domain) {
         enabledDomains.add(domain.toLowerCase());
-        LOGGER.info("MuseOBJLoader: Domain {} has been added.", domain.toLowerCase());
+        LOGGER.info("MPALibOBJLoader: Domain {} has been added.", domain.toLowerCase());
     }
 
     @Override
@@ -95,8 +95,8 @@ public enum OBJPlusLoader implements ICustomModelLoader {
                         resource = manager.getResource(new ResourceLocation(location.getNamespace(), "models/block/" + location.getPath().substring("models/item/".length())));
                     else throw e;
                 }
-                OBJPlusModel.Parser parser = new OBJPlusModel.Parser(resource, manager);
-                OBJPlusModel model = null;
+                MPALibOBJModel.Parser parser = new MPALibOBJModel.Parser(resource, manager);
+                MPALibOBJModel model = null;
                 try {
                     model = parser.parse();
                 } catch (Exception e) {
@@ -108,7 +108,7 @@ public enum OBJPlusLoader implements ICustomModelLoader {
                 IOUtils.closeQuietly(resource);
             }
         }
-        OBJPlusModel model = cache.get(location);
+        MPALibOBJModel model = cache.get(location);
         if (model == null)
             throw new ModelLoaderRegistry.LoaderException("Error loading model previously: " + location, errors.get(modelLocation));
         return model;

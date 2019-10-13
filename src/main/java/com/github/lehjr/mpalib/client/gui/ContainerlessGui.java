@@ -33,7 +33,7 @@ import net.minecraft.util.text.ITextComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MuseContainerlessGui extends Screen {
+public class ContainerlessGui extends Screen {
     protected long creationTime;
     /** The X size of the inventory window in pixels. */
     public int xSize = 176;
@@ -46,7 +46,7 @@ public class MuseContainerlessGui extends Screen {
 
     protected List<IGuiFrame> frames;
 
-    public MuseContainerlessGui(ITextComponent titleIn) {
+    public ContainerlessGui(ITextComponent titleIn) {
         super(titleIn);
         frames = new ArrayList();
     }

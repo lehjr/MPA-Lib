@@ -30,8 +30,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.UnmodifiableIterator;
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
-import com.github.lehjr.forge.obj.OBJPlusLoader;
-import com.github.lehjr.forge.obj.OBJPlusModel;
+import com.github.lehjr.forge.obj.MPALibOBJLoader;
+import com.github.lehjr.forge.obj.MPALibOBJModel;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.BakedQuad;
@@ -105,8 +105,8 @@ public class MuseModelHelper {
     public static IModel getModel(ResourceLocation resource) {
         IModel model = null;
         try {
-            model = OBJPlusLoader.INSTANCE.loadModel(resource);
-            model = ((OBJPlusModel) model).process(ImmutableMap.of("flip-v", "true"));
+            model = MPALibOBJLoader.INSTANCE.loadModel(resource);
+            model = ((MPALibOBJModel) model).process(ImmutableMap.of("flip-v", "true"));
         } catch (Exception e) {
             e.printStackTrace();
             MPALibLogger.logError("Model loading failed :( " + resource);
@@ -117,8 +117,8 @@ public class MuseModelHelper {
     public static IModel getIModel(ResourceLocation location, int attempt) {
         IModel model;
         try {
-            model = OBJPlusLoader.INSTANCE.loadModel(location);
-            model = ((OBJPlusModel) model).process(ImmutableMap.of("flip-v", "true"));
+            model = MPALibOBJLoader.INSTANCE.loadModel(location);
+            model = ((MPALibOBJModel) model).process(ImmutableMap.of("flip-v", "true"));
         } catch (Exception e) {
             if (attempt < 6) {
                 model = getIModel(location, attempt + 1);

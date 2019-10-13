@@ -38,12 +38,12 @@ import net.minecraft.util.text.ITextComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MuseContainerGui <T extends Container> extends MuseContainerScreen2<T> {
+public class ContainerGui<T extends Container> extends ContainerScreen2<T> {
     protected long creationTime;
     protected DrawableRect tooltipRect;
     protected List<IGuiFrame> frames;
 
-    public MuseContainerGui(T container, PlayerInventory playerInventory, ITextComponent title) {
+    public ContainerGui(T container, PlayerInventory playerInventory, ITextComponent title) {
         super(container, playerInventory, title);
         frames = new ArrayList();
         tooltipRect = new DrawableRect(

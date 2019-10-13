@@ -39,10 +39,6 @@ public class ElectricConversions {
      * Industrialcraft 2 --------------------------------------------------------------------------
      */
     public static final String IC2_TIER = "IC2 Tier";
-    // FIXME: implement again
-//    public static int getTier(final ItemStack stack) {
-//        return NuminaConfig.getTierForItem(stack);
-//    }
 
     public static double museEnergyToEU(final double museEnergy) {
         return museEnergy / MPALibConfig.IC2_EU_TO_RF_RATIO;
