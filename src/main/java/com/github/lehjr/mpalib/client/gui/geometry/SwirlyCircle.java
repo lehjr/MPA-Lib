@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,13 +33,13 @@ import org.lwjgl.opengl.GL11;
 import java.nio.DoubleBuffer;
 
 
-public class SwirlyMuseCircle {
+public class SwirlyCircle {
     public static final double detail = 2;
     protected DoubleBuffer points;
     protected DoubleBuffer colour;
     int numsegments;
 
-    public SwirlyMuseCircle(Colour c1, Colour c2) {
+    public SwirlyCircle(Colour c1, Colour c2) {
         if (points == null) {
             points = GradientAndArcCalculator.getArcPoints(0, Math.PI * 2 + 0.0001, detail, 0, 0, 0);
         }

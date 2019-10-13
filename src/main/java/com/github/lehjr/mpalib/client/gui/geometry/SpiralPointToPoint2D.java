@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,8 @@
 
 package com.github.lehjr.mpalib.client.gui.geometry;
 
-public class SpiralPointToPoint2D extends MusePoint2D {
-    protected final MusePoint2D center;
+public class SpiralPointToPoint2D extends Point2D {
+    protected final Point2D center;
     protected final long spawnTime;
     protected final double timeTo;
     protected final boolean outwards;
@@ -39,7 +39,7 @@ public class SpiralPointToPoint2D extends MusePoint2D {
                                 double x2, double y2,
                                 double timeTo, boolean outwards) {
         super(x2, y2);
-        center = new MusePoint2D(x, y);
+        center = new Point2D(x, y);
         this.radius = this.distanceTo(center);
         this.rotation = Math.atan2(y2 - y, x2 - x);
         spawnTime = System.currentTimeMillis();
@@ -53,19 +53,19 @@ public class SpiralPointToPoint2D extends MusePoint2D {
         this(x, y, x2, y2, timeTo, true);
     }
 
-    public SpiralPointToPoint2D(MusePoint2D center,
-                                MusePoint2D target,
+    public SpiralPointToPoint2D(Point2D center,
+                                Point2D target,
                                 double timeTo, boolean outwards) {
         this(center.getX(), center.getY(), target.getX(), target.getY(), timeTo, outwards);
     }
 
-    public SpiralPointToPoint2D(MusePoint2D center,
-                                MusePoint2D target,
+    public SpiralPointToPoint2D(Point2D center,
+                                Point2D target,
                                 double timeTo) {
         this(center, target, timeTo, true);
     }
 
-    public SpiralPointToPoint2D(MusePoint2D center,
+    public SpiralPointToPoint2D(Point2D center,
                                 double radius, double rotation,
                                 double timeTo, boolean outward) {
         this(center.getX(), center.getY(), radius * Math.cos(rotation), radius * Math.sin(rotation), timeTo, outward);
@@ -73,7 +73,7 @@ public class SpiralPointToPoint2D extends MusePoint2D {
         this.rotation = rotation;
     }
 
-    public SpiralPointToPoint2D(MusePoint2D center,
+    public SpiralPointToPoint2D(Point2D center,
                                 double radius, double rotation,
                                 double timeTo) {
         this(center, radius, rotation, timeTo, true);

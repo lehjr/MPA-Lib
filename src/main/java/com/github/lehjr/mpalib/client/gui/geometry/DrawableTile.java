@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,72 +31,72 @@ import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import org.lwjgl.opengl.GL11;
 
-public class DrawableMuseTile extends MuseRelativeRect {
+public class DrawableTile extends MuseRelativeRect {
     Colour backgroundColour;
     Colour borderColour;
 
-    public DrawableMuseTile(double left, double top, double right, double bottom, boolean growFromMiddle,
-                            Colour backgroundColour,
-                            Colour borderColour) {
+    public DrawableTile(double left, double top, double right, double bottom, boolean growFromMiddle,
+                        Colour backgroundColour,
+                        Colour borderColour) {
         super(left, top, right, bottom, growFromMiddle);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
-    public DrawableMuseTile(double left, double top, double right, double bottom,
-                            Colour backgroundColour,
-                            Colour borderColour) {
+    public DrawableTile(double left, double top, double right, double bottom,
+                        Colour backgroundColour,
+                        Colour borderColour) {
         super(left, top, right, bottom, false);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
-    public DrawableMuseTile(MusePoint2D ul, MusePoint2D br,
-                            Colour backgroundColour,
-                            Colour borderColour) {
+    public DrawableTile(Point2D ul, Point2D br,
+                        Colour backgroundColour,
+                        Colour borderColour) {
         super(ul, br);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
     @Override
-    public DrawableMuseTile copyOf() {
-        return new DrawableMuseTile(super.left(), super.top(), super.right(), super.bottom(),
+    public DrawableTile copyOf() {
+        return new DrawableTile(super.left(), super.top(), super.right(), super.bottom(),
                 (this.ul != this.ulFinal || this.wh != this.whFinal), backgroundColour, borderColour);
     }
 
     @Override
-    public DrawableMuseTile setLeft(double value) {
+    public DrawableTile setLeft(double value) {
         super.setLeft(value);
         return this;
     }
 
     @Override
-    public DrawableMuseTile setRight(double value) {
+    public DrawableTile setRight(double value) {
         super.setRight(value);
         return this;
     }
 
     @Override
-    public DrawableMuseTile setTop(double value) {
+    public DrawableTile setTop(double value) {
         super.setTop(value);
         return this;
     }
 
     @Override
-    public DrawableMuseTile setBottom(double value) {
+    public DrawableTile setBottom(double value) {
         super.setBottom(value);
         return this;
     }
 
     @Override
-    public DrawableMuseTile setWidth(double value) {
+    public DrawableTile setWidth(double value) {
         super.setWidth(value);
         return this;
     }
 
     @Override
-    public DrawableMuseTile setHeight(double value) {
+    public DrawableTile setHeight(double value) {
         super.setHeight(value);
         return this;
     }
@@ -145,12 +145,12 @@ public class DrawableMuseTile extends MuseRelativeRect {
             GL11.glDisable(GL11.GL_LINE_SMOOTH);
         GL11.glLineWidth(lineWidth);
     }
-    public DrawableMuseTile setBackgroundColour(Colour insideColour) {
+    public DrawableTile setBackgroundColour(Colour insideColour) {
         this.backgroundColour = insideColour;
         return this;
     }
 
-    public DrawableMuseTile setBorderColour(Colour outsideColour) {
+    public DrawableTile setBorderColour(Colour outsideColour) {
         this.borderColour = outsideColour;
         return this;
     }

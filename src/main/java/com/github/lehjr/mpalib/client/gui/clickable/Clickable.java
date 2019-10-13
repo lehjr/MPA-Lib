@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
@@ -37,24 +37,24 @@ import java.util.List;
  * @author MachineMuse
  */
 public abstract class Clickable implements IClickable {
-    protected MusePoint2D position;
+    protected Point2D position;
     IPressable onPressed;
     IReleasable onReleased;
 
     public Clickable() {
-        position = new MusePoint2D(0, 0);
+        position = new Point2D(0, 0);
     }
 
-    public Clickable(MusePoint2D point) {
+    public Clickable(Point2D point) {
         position = point;
     }
 
     @Override
-    public MusePoint2D getPosition() {
+    public Point2D getPosition() {
         return position;
     }
 
-    public void setPosition(MusePoint2D position) {
+    public void setPosition(Point2D position) {
         this.position = position;
     }
 

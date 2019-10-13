@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@ package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.client.gui.GuiIcons;
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.string.StringUtils;
@@ -62,7 +62,7 @@ public class ClickableModule extends Clickable {
     public static final int offsetx = 8;
     public static final int offsety = 8;
 
-    public ClickableModule(@Nonnull ItemStack module, MusePoint2D position, int inventorySlot, EnumModuleCategory category) {
+    public ClickableModule(@Nonnull ItemStack module, Point2D position, int inventorySlot, EnumModuleCategory category) {
         super(position);
         this.module = module;
         this.inventorySlot = inventorySlot;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,15 +26,15 @@
 
 package com.github.lehjr.mpalib.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.gui.geometry.DrawableMuseRect;
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
-import com.github.lehjr.mpalib.client.gui.geometry.MuseRect;
+import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Rect;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
 
-public class Button extends DrawableMuseRect implements IClickable {
+public class Button extends DrawableRect implements IClickable {
     protected IPressable onPressed;
     protected IReleasable onReleased;
 
@@ -71,7 +71,7 @@ public class Button extends DrawableMuseRect implements IClickable {
         this.borderColourDisabled = borderColourDisabled;
     }
 
-    public Button(MusePoint2D ul, MusePoint2D br,
+    public Button(Point2D ul, Point2D br,
                   Colour backgroundColourEnabled,
                   Colour backgroundColourDisabled,
                   Colour borderColourEnabled,
@@ -83,7 +83,7 @@ public class Button extends DrawableMuseRect implements IClickable {
         this.borderColourDisabled = borderColourDisabled;
     }
 
-    public Button(MuseRect ref,
+    public Button(Rect ref,
                   Colour backgroundColourEnabled,
                   Colour backgroundColourDisabled,
                   Colour borderColourEnabled,
@@ -134,8 +134,8 @@ public class Button extends DrawableMuseRect implements IClickable {
     }
 
     @Override
-    public MusePoint2D getPosition() {
-        return new MusePoint2D(centerx(), centery());
+    public Point2D getPosition() {
+        return new Point2D(centerx(), centery());
     }
 
     @Override

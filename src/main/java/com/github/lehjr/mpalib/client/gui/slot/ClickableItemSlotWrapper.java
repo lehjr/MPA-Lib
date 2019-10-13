@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 package com.github.lehjr.mpalib.client.gui.slot;
 
 import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.geometry.SpiralPointToPoint2D;
 import com.github.lehjr.mpalib.client.render.MPALibRenderer;
 import net.minecraft.client.Minecraft;
@@ -56,7 +56,7 @@ public class ClickableItemSlotWrapper implements IClickable {
     }
 
 
-    public ClickableItemSlotWrapper(Slot slot, MusePoint2D position) {
+    public ClickableItemSlotWrapper(Slot slot, Point2D position) {
         this.slot = slot;
         this.move(position);
     }
@@ -82,8 +82,8 @@ public class ClickableItemSlotWrapper implements IClickable {
     }
 
     @Override
-    public MusePoint2D getPosition() {
-        return new MusePoint2D(slot.xPos, slot.yPos);
+    public Point2D getPosition() {
+        return new Point2D(slot.xPos, slot.yPos);
     }
 
     @Override

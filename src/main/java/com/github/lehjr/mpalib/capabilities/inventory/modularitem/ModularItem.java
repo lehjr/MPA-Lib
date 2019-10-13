@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -58,7 +58,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
     public static final String TAG_MODULE_SETTINGS = "Module Settings";
 
     ItemStack modularItem;
-    Map<EnumModuleCategory, MuseRangedWrapper> rangedWrappers;
+    Map<EnumModuleCategory, MPALibRangedWrapper> rangedWrappers;
     EnumModuleTarget target;
 
     public ModularItem(@Nonnull ItemStack modularItem, int size) {
@@ -72,7 +72,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
     }
 
     @Override
-    public void setRangedWrapperMap(Map<EnumModuleCategory, MuseRangedWrapper> rangedWrappers) {
+    public void setRangedWrapperMap(Map<EnumModuleCategory, MPALibRangedWrapper> rangedWrappers) {
         this.rangedWrappers = rangedWrappers;
     }
 
@@ -96,7 +96,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
     @Override
     @Nullable
     public Pair getRangeForCategory(EnumModuleCategory category) {
-        MuseRangedWrapper rangedWrapper = rangedWrappers.get(category);
+        MPALibRangedWrapper rangedWrapper = rangedWrappers.get(category);
         if (rangedWrapper != null){
             return rangedWrapper.getRange();
         }
@@ -300,7 +300,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
                     .orElse(EnumModuleCategory.NONE);
 
             // Specfic module type for limited modules
-            MuseRangedWrapper wrapper = rangedWrappers.get(category);
+            MPALibRangedWrapper wrapper = rangedWrappers.get(category);
 
             // fallback on generic type if null
             if (wrapper == null) {

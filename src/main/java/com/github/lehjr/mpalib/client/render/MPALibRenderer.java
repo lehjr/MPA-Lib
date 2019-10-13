@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
 package com.github.lehjr.mpalib.client.render;
 
 import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
-import com.github.lehjr.mpalib.client.gui.geometry.SwirlyMuseCircle;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
+import com.github.lehjr.mpalib.client.gui.geometry.SwirlyCircle;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -57,7 +57,7 @@ public abstract class MPALibRenderer {
 
     protected static ItemRenderer renderItem;
 
-    protected static SwirlyMuseCircle selectionCircle;
+    protected static SwirlyCircle selectionCircle;
     static boolean messagedAboutSlick = false;
 
     /**
@@ -69,7 +69,7 @@ public abstract class MPALibRenderer {
      */
     public static void drawCircleAround(double xoffset, double yoffset, double radius) {
         if (selectionCircle == null)
-            selectionCircle = new SwirlyMuseCircle(new Colour(0.0f, 1.0f, 0.0f, 0.0f), new Colour(0.8f, 1.0f, 0.8f, 1.0f));
+            selectionCircle = new SwirlyCircle(new Colour(0.0f, 1.0f, 0.0f, 0.0f), new Colour(0.8f, 1.0f, 0.8f, 1.0f));
         selectionCircle.draw(radius, xoffset, yoffset);
     }
 
@@ -246,9 +246,9 @@ public abstract class MPALibRenderer {
         // period = 2
         // seconds
         double gradientRatio = 1.0 - ((varia + 1000) % 1000) / 1000.0;
-        MusePoint2D midpoint = (firstClickable.getPosition().minus(secondClickable.getPosition()).times(Math.abs(varia / 1000.0))
+        Point2D midpoint = (firstClickable.getPosition().minus(secondClickable.getPosition()).times(Math.abs(varia / 1000.0))
                 .plus(secondClickable.getPosition()));
-        MusePoint2D firstpoint, secondpoint;
+        Point2D firstpoint, secondpoint;
         if (varia < 0) {
             firstpoint = secondClickable.getPosition();
             secondpoint = firstClickable.getPosition();

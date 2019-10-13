@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@ package com.github.lehjr.mpalib.client.gui;
 
 import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.frame.IGuiFrame;
-import com.github.lehjr.mpalib.client.gui.geometry.DrawableMuseRect;
+import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.entity.player.PlayerInventory;
@@ -43,13 +43,13 @@ import java.util.List;
  */
 public class MuseGui <T extends Container> extends MuseContainerScreen<T> {
     protected long creationTime;
-    protected DrawableMuseRect tooltipRect;
+    protected DrawableRect tooltipRect;
     protected List<IGuiFrame> frames;
 
     public MuseGui(T container, PlayerInventory playerInventory, ITextComponent title) {
         super(container, playerInventory, title);
         frames = new ArrayList();
-        tooltipRect = new DrawableMuseRect(0, 0, 0, 0, false,
+        tooltipRect = new DrawableRect(0, 0, 0, 0, false,
                 new Colour(0.1F, 0.3F, 0.4F, 0.7F),
                 new Colour(0.2F, 0.6F, 0.9F, 0.7F));
     }

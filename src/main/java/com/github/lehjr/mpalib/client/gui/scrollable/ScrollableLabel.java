@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 package com.github.lehjr.mpalib.client.gui.scrollable;
 
 import com.github.lehjr.mpalib.client.gui.clickable.ClickableLabel;
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.geometry.MuseRelativeRect;
 
 public class ScrollableLabel extends ScrollableRectangle {
@@ -36,7 +36,7 @@ public class ScrollableLabel extends ScrollableRectangle {
 
     public ScrollableLabel(String text, MuseRelativeRect relativeRect) {
         super(relativeRect);
-        this.label = new ClickableLabel(text, new MusePoint2D(relativeRect.centerx(), relativeRect.centery()));
+        this.label = new ClickableLabel(text, new Point2D(relativeRect.centerx(), relativeRect.centery()));
     }
 
     public ScrollableLabel(ClickableLabel label, MuseRelativeRect relativeRect) {
@@ -54,7 +54,7 @@ public class ScrollableLabel extends ScrollableRectangle {
         this.label = label;
     }
 
-    public ScrollableLabel(ClickableLabel label, MusePoint2D ul, MusePoint2D br) {
+    public ScrollableLabel(ClickableLabel label, Point2D ul, Point2D br) {
         super(ul, br);
         this.label = label;
     }

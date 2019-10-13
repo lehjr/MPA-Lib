@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,22 +26,22 @@
 
 package com.github.lehjr.mpalib.client.gui.geometry;
 
-public class MuseRect {
+public class Rect {
     /** Note: separate "target values" are because window based sizes don't initialize properly in the constructor */
     /** target upper, left point */
-    MusePoint2D ulFinal;//
+    Point2D ulFinal;//
     /** target width and height */
-    MusePoint2D whFinal;
+    Point2D whFinal;
     /** top left origin */
-    MusePoint2D ul;
+    Point2D ul;
     /** width, height */
-    MusePoint2D wh;
+    Point2D wh;
 
     final boolean growFromMiddle;
 
-    public MuseRect(double left, double top, double right, double bottom, boolean growFromMiddle) {
-        ulFinal = new MusePoint2D(left, top);
-        whFinal = new MusePoint2D(right - left, bottom - top);
+    public Rect(double left, double top, double right, double bottom, boolean growFromMiddle) {
+        ulFinal = new Point2D(left, top);
+        whFinal = new Point2D(right - left, bottom - top);
         ul = ulFinal.copy();
         wh = whFinal.copy();
         this.growFromMiddle = growFromMiddle;
@@ -51,22 +51,22 @@ public class MuseRect {
      *  Alternative to spawning a completely new object. Especially handy for GUI's with large constructors
      */
     public void setTargetDimensions(double left, double top, double right, double bottom) {
-        ulFinal = new MusePoint2D(left, top);
-        whFinal = new MusePoint2D(right - left, bottom - top);
+        ulFinal = new Point2D(left, top);
+        whFinal = new Point2D(right - left, bottom - top);
         grow();
     }
 
-    public void setTargetDimensions(MusePoint2D ul, MusePoint2D wh) {
+    public void setTargetDimensions(Point2D ul, Point2D wh) {
         ulFinal = ul;
         whFinal = wh;
         grow();
     }
 
-    public MuseRect(double left, double top, double right, double bottom) {
+    public Rect(double left, double top, double right, double bottom) {
         this(left, top, right, bottom, false);
     }
 
-    public MuseRect(MusePoint2D ul, MusePoint2D br) {
+    public Rect(Point2D ul, Point2D br) {
         this.ulFinal = this.ul = ul;
         this.whFinal = this.wh = br.minus(ul);
         this.growFromMiddle = false;
@@ -77,21 +77,21 @@ public class MuseRect {
      */
     void grow() {
         if (growFromMiddle) {
-            MusePoint2D center = ulFinal.plus(whFinal.times(0.5));
+            Point2D center = ulFinal.plus(whFinal.times(0.5));
             this.ul = new FlyFromPointToPoint2D(center, ulFinal, 200);
-            this.wh = new FlyFromPointToPoint2D(new MusePoint2D(0, 0), whFinal, 200);
+            this.wh = new FlyFromPointToPoint2D(new Point2D(0, 0), whFinal, 200);
         } else {
             this.ul = this.ulFinal.copy();
             this.wh = this.whFinal.copy();
         }
     }
 
-    public MuseRect copyOf() {
-        return new MuseRect(this.left(), this.top(), this.right(), this.bottom(), (this.ul != this.ulFinal || this.wh != this.whFinal));
+    public Rect copyOf() {
+        return new Rect(this.left(), this.top(), this.right(), this.bottom(), (this.ul != this.ulFinal || this.wh != this.whFinal));
     }
 
-    public MusePoint2D center() {
-        return new MusePoint2D(centerx(), centery());
+    public Point2D center() {
+        return new Point2D(centerx(), centery());
     }
 
     public double left() {
@@ -142,43 +142,43 @@ public class MuseRect {
         return whFinal.getY();
     }
 
-    public MuseRect setLeft(double value) {
+    public Rect setLeft(double value) {
         ul.x = value;
         ulFinal.x =value;
         return this;
     }
 
-    public MuseRect setRight(double value) {
+    public Rect setRight(double value) {
         wh.x = value - ul.getX();
         whFinal.x = value - ulFinal.getX();
         return this;
     }
 
-    public MuseRect setTop(double value) {
+    public Rect setTop(double value) {
         ul.y = value;
         ulFinal.y = value;
         return this;
     }
 
-    public MuseRect setBottom(double value) {
+    public Rect setBottom(double value) {
         wh.y = value - ul.getY();
         whFinal.y = value - ulFinal.getY();
         return this;
     }
 
-    public MuseRect setWidth(double value) {
+    public Rect setWidth(double value) {
         wh.x = value;
         whFinal.x = value;
         return this;
     }
 
-    public MuseRect setHeight(double value) {
+    public Rect setHeight(double value) {
         wh.y = value;
         whFinal.y = value;
         return this;
     }
 
-    public void move(MusePoint2D moveAmount) {
+    public void move(Point2D moveAmount) {
         ulFinal = whFinal.plus(moveAmount);
         whFinal = whFinal.plus(moveAmount);
         grow();
@@ -188,7 +188,7 @@ public class MuseRect {
         return growFromMiddle;
     }
 
-    public boolean equals(MuseRect other) {
+    public boolean equals(Rect other) {
         return ul.equals(other.ul) && wh.equals(other.wh);
     }
 

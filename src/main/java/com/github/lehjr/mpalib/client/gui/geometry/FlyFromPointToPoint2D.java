@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,19 +26,19 @@
 
 package com.github.lehjr.mpalib.client.gui.geometry;
 
-public class FlyFromPointToPoint2D extends MusePoint2D {
-    protected final MusePoint2D prev;
+public class FlyFromPointToPoint2D extends Point2D {
+    protected final Point2D prev;
     protected final long spawnTime;
     protected final double timeTo;
 
     public FlyFromPointToPoint2D(double x, double y, double x2, double y2, double timeTo) {
         super(x2, y2);
-        prev = new MusePoint2D(x, y);
+        prev = new Point2D(x, y);
         spawnTime = System.currentTimeMillis();
         this.timeTo = timeTo;
     }
 
-    public FlyFromPointToPoint2D(MusePoint2D prev, MusePoint2D target, double timeTo) {
+    public FlyFromPointToPoint2D(Point2D prev, Point2D target, double timeTo) {
         this(prev.getX(), prev.getY(), target.getX(), target.getY(), timeTo);
     }
 

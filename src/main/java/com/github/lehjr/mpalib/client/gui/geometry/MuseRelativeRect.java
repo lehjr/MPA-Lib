@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,11 +26,11 @@
 
 package com.github.lehjr.mpalib.client.gui.geometry;
 
-public class MuseRelativeRect extends MuseRect {
-    protected MuseRect rectBelowMe;
-    protected MuseRect rectAboveMe;
-    protected MuseRect rectLeftOfMe;
-    protected MuseRect rectRightOfMe;
+public class MuseRelativeRect extends Rect {
+    protected Rect rectBelowMe;
+    protected Rect rectAboveMe;
+    protected Rect rectLeftOfMe;
+    protected Rect rectRightOfMe;
     protected double leftPadding = 0;
     protected double topPadding = 0;
     protected double rightPadding = 0;
@@ -44,7 +44,7 @@ public class MuseRelativeRect extends MuseRect {
         super(left, top, right, bottom, growFromMiddle);
     }
 
-    public MuseRelativeRect(MusePoint2D ul, MusePoint2D br) {
+    public MuseRelativeRect(Point2D ul, Point2D br) {
         super(ul, br);
     }
 
@@ -106,7 +106,7 @@ public class MuseRelativeRect extends MuseRect {
      * @param otherRightOfMe
      * @return this
      */
-    public MuseRelativeRect setMeLeftof(MuseRect otherRightOfMe) {
+    public MuseRelativeRect setMeLeftof(Rect otherRightOfMe) {
         this.rectRightOfMe = otherRightOfMe;
         return this;
     }
@@ -116,7 +116,7 @@ public class MuseRelativeRect extends MuseRect {
      * @param otherLeftOfMe
      * @return this
      */
-    public MuseRelativeRect setMeRightOf(MuseRect otherLeftOfMe) {
+    public MuseRelativeRect setMeRightOf(Rect otherLeftOfMe) {
         this.rectLeftOfMe = otherLeftOfMe;
         return this;
     }
@@ -126,7 +126,7 @@ public class MuseRelativeRect extends MuseRect {
      * @param otherBelowMe
      * @return this
      */
-    public MuseRelativeRect setMeAbove(MuseRect otherBelowMe) {
+    public MuseRelativeRect setMeAbove(Rect otherBelowMe) {
         this.rectBelowMe = otherBelowMe;
         return this;
     }
@@ -136,7 +136,7 @@ public class MuseRelativeRect extends MuseRect {
      * @param otherAboveMe
      * @return this
      */
-    public MuseRelativeRect setMeBelow(MuseRect otherAboveMe) {
+    public MuseRelativeRect setMeBelow(Rect otherAboveMe) {
         this.rectAboveMe = otherAboveMe;
         return this;
     }

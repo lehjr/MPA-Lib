@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.client.gui.frame;
 
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.scrollable.ScrollableFrame;
 import com.github.lehjr.mpalib.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.math.Colour;
@@ -48,7 +48,7 @@ public class StatsFrame extends ScrollableFrame {
     protected ItemStack stack;
     protected Set<String> propertiesToList;
 
-    public StatsFrame(MusePoint2D topleft, MusePoint2D bottomright,
+    public StatsFrame(Point2D topleft, Point2D bottomright,
                       Colour borderColour, Colour insideColour, ItemStack stack) {
         super(topleft, bottomright, borderColour, insideColour);
         this.stack = stack;

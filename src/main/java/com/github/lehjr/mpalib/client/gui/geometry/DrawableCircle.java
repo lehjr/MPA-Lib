@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.DoubleBuffer;
 
-public class DrawableMuseCircle {
+public class DrawableCircle {
     public static final double detail = 4;
     protected static DoubleBuffer points;
     protected final DoubleBuffer colour;
 
-    public DrawableMuseCircle(Colour c1, Colour c2) {
+    public DrawableCircle(Colour c1, Colour c2) {
         if (points == null) {
             DoubleBuffer arcPoints = GradientAndArcCalculator.getArcPoints(0, Math.PI * 2 + 0.0001, detail, 0, 0, 0);
             points = BufferUtils.createDoubleBuffer(arcPoints.limit() + 6);

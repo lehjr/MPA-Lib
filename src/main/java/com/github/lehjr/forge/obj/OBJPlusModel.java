@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2019 leon
+ * MPA-Lib (Formerly known as Numina)
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

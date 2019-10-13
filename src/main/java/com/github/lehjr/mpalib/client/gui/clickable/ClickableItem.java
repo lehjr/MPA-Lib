@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.Minecraft;
@@ -51,7 +51,7 @@ public class ClickableItem extends Clickable {
     public Integer containerIndex;
     PlayerInventory itemHandler;
 
-    public ClickableItem(MusePoint2D pos, int inventorySlot) {
+    public ClickableItem(Point2D pos, int inventorySlot) {
         super(pos);
         this.inventorySlot = inventorySlot;
         this.isEnabled = true;
@@ -70,7 +70,7 @@ public class ClickableItem extends Clickable {
     }
 
     @Override
-    public void move(MusePoint2D position) {
+    public void move(Point2D position) {
         this.position = position;
     }
 

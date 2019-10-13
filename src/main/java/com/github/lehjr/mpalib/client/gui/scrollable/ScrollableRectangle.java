@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,8 @@
 
 package com.github.lehjr.mpalib.client.gui.scrollable;
 
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
-import com.github.lehjr.mpalib.client.gui.geometry.MuseRect;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Rect;
 import com.github.lehjr.mpalib.client.gui.geometry.MuseRelativeRect;
 
 public class ScrollableRectangle extends MuseRelativeRect {
@@ -43,14 +43,14 @@ public class ScrollableRectangle extends MuseRelativeRect {
         super(left, top, right, bottom, growFromMiddle);
     }
 
-    public ScrollableRectangle(MusePoint2D ul, MusePoint2D br) {
+    public ScrollableRectangle(Point2D ul, Point2D br) {
         super(ul, br);
     }
 
     public void render(int mouseX, int mouseY, float partialTicks) {
     }
 
-    public MuseRect getBorder() {
+    public Rect getBorder() {
         return this;
     }
 }

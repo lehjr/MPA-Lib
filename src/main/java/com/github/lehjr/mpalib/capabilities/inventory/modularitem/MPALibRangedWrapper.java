@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,11 +30,11 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.RangedWrapper;
 import org.apache.commons.lang3.tuple.Pair;
 
-public class MuseRangedWrapper extends RangedWrapper {
+public class MPALibRangedWrapper extends RangedWrapper {
     private final int minSlot;
     private final int maxSlot;
 
-    public MuseRangedWrapper(IItemHandlerModifiable compose, int minSlot, int maxSlotExclusive) {
+    public MPALibRangedWrapper(IItemHandlerModifiable compose, int minSlot, int maxSlotExclusive) {
         super(compose, minSlot, maxSlotExclusive);
         this.minSlot = minSlot;
         this.maxSlot = maxSlotExclusive;

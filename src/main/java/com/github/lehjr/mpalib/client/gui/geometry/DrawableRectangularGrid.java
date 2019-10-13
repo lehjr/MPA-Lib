@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.github.lehjr.mpalib.math.Colour;
 import org.lwjgl.opengl.GL11;
 
-public class DrawableMuseRectangularGrid extends DrawableMuseRelativeRect {
+public class DrawableRectangularGrid extends DrawableRelativeRect {
     Colour gridColour;
     int gridHeight;
     int gridWidth;
@@ -38,12 +38,12 @@ public class DrawableMuseRectangularGrid extends DrawableMuseRelativeRect {
     Float verticleSegmentSize;
     final MuseRelativeRect[] boxes;
 
-    public DrawableMuseRectangularGrid(double left, double top, double right, double bottom, boolean growFromMiddle,
-                                       Colour insideColour,
-                                       Colour outsideColour,
-                                       Colour gridColour,
-                                       int gridHeight,
-                                       int gridWidth) {
+    public DrawableRectangularGrid(double left, double top, double right, double bottom, boolean growFromMiddle,
+                                   Colour insideColour,
+                                   Colour outsideColour,
+                                   Colour gridColour,
+                                   int gridHeight,
+                                   int gridWidth) {
         super(left, top, right, bottom, growFromMiddle, insideColour, outsideColour);
         this.gridColour = gridColour;
         this.gridHeight = gridHeight;
@@ -52,12 +52,12 @@ public class DrawableMuseRectangularGrid extends DrawableMuseRelativeRect {
         setBoxes();
     }
 
-    public DrawableMuseRectangularGrid(double left, double top, double right, double bottom,
-                                       Colour insideColour,
-                                       Colour outsideColour,
-                                       Colour gridColour,
-                                       int gridHeight,
-                                       int gridWidth) {
+    public DrawableRectangularGrid(double left, double top, double right, double bottom,
+                                   Colour insideColour,
+                                   Colour outsideColour,
+                                   Colour gridColour,
+                                   int gridHeight,
+                                   int gridWidth) {
         super(left, top, right, bottom, false, insideColour, outsideColour);
         this.gridColour = gridColour;
         this.gridHeight = gridHeight;
@@ -66,12 +66,12 @@ public class DrawableMuseRectangularGrid extends DrawableMuseRelativeRect {
         setBoxes();
     }
 
-    public DrawableMuseRectangularGrid(MusePoint2D ul, MusePoint2D br,
-                                       Colour insideColour,
-                                       Colour outsideColour,
-                                       Colour gridColour,
-                                       int gridHeight,
-                                       int gridWidth) {
+    public DrawableRectangularGrid(Point2D ul, Point2D br,
+                                   Colour insideColour,
+                                   Colour outsideColour,
+                                   Colour gridColour,
+                                   int gridHeight,
+                                   int gridWidth) {
         super(ul, br, insideColour, outsideColour);
         this.gridColour = gridColour;
         this.gridHeight = gridHeight;
@@ -80,12 +80,12 @@ public class DrawableMuseRectangularGrid extends DrawableMuseRelativeRect {
         setBoxes();
     }
 
-    public DrawableMuseRectangularGrid(MuseRelativeRect ref,
-                                       Colour insideColour,
-                                       Colour outsideColour,
-                                       Colour gridColour,
-                                       int gridHeight,
-                                       int gridWidth) {
+    public DrawableRectangularGrid(MuseRelativeRect ref,
+                                   Colour insideColour,
+                                   Colour outsideColour,
+                                   Colour gridColour,
+                                   int gridHeight,
+                                   int gridWidth) {
         super(ref.left(), ref.top(), ref.right(), ref.bottom(), ref.growFromMiddle(), insideColour, outsideColour);
         this.gridColour = gridColour;
         this.gridHeight = gridHeight;
@@ -110,18 +110,18 @@ public class DrawableMuseRectangularGrid extends DrawableMuseRelativeRect {
         verticleSegmentSize = (float) (height() / gridHeight);
 
         // uper left coner
-        MusePoint2D box_ul;
+        Point2D box_ul;
         // bottom right
-        MusePoint2D box_br;
+        Point2D box_br;
         // width and height of each box
 
-        MusePoint2D box_offset = new MusePoint2D(horizontalSegmentSize, verticleSegmentSize);
+        Point2D box_offset = new Point2D(horizontalSegmentSize, verticleSegmentSize);
         int i = 0;
 
         // These boxes provide centers for the slots
         for (int y = 0; y < gridHeight; y++) {
             for (int x = 0; x < gridWidth; x++) {
-                box_ul = new MusePoint2D(horizontalSegmentSize * x, verticleSegmentSize * y);
+                box_ul = new Point2D(horizontalSegmentSize * x, verticleSegmentSize * y);
                 boxes[i].setTargetDimensions(box_ul, box_offset);
 
                 if (i >0) {
@@ -176,7 +176,7 @@ public class DrawableMuseRectangularGrid extends DrawableMuseRelativeRect {
     }
 
     @Override
-    public DrawableMuseRelativeRect setLeft(double value) {
+    public DrawableRelativeRect setLeft(double value) {
         double diff = value - left();
         super.setLeft(value);
         for (MuseRelativeRect box : boxes) {

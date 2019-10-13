@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,83 +33,89 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.DoubleBuffer;
 
-public class DrawableMuseRelativeRect extends MuseRelativeRect {
+public class DrawableRect extends Rect {
     Colour backgroundColour;
     Colour borderColour;
     DoubleBuffer vertices;
-    DoubleBuffer coloursInside;
-    DoubleBuffer coloursOutside;
+    DoubleBuffer backgroundColours;
+    DoubleBuffer borderColours;
     double cornerradius = 3;
     double zLevel = 1;
 
-    public DrawableMuseRelativeRect(double left, double top, double right, double bottom, boolean growFromMiddle,
-                                    Colour backgroundColour,
-                                    Colour borderColour) {
+    public DrawableRect(double left, double top, double right, double bottom, boolean growFromMiddle,
+                        Colour backgroundColour,
+                        Colour borderColour) {
         super(left, top, right, bottom, growFromMiddle);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
-    public DrawableMuseRelativeRect(double left, double top, double right, double bottom,
-                                    Colour backgroundColour,
-                                    Colour borderColour) {
+    public DrawableRect(double left, double top, double right, double bottom,
+                        Colour backgroundColour,
+                        Colour borderColour) {
         super(left, top, right, bottom, false);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
-    public DrawableMuseRelativeRect(MusePoint2D ul, MusePoint2D br,
-                                    Colour backgroundColour,
-                                    Colour borderColour) {
+    public DrawableRect(Point2D ul, Point2D br,
+                        Colour backgroundColour,
+                        Colour borderColour) {
         super(ul, br);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
+    public DrawableRect(Rect ref, Colour backgroundColour, Colour borderColour) {
+        super(ref.left(), ref.top(), ref.right(), ref.bottom(), ref.growFromMiddle());
+        this.backgroundColour = backgroundColour;
+        this.borderColour = borderColour;
+    }
+
     @Override
-    public DrawableMuseRelativeRect copyOf() {
-        return new DrawableMuseRelativeRect(super.left(), super.top(), super.right(), super.bottom(),
+    public DrawableRect copyOf() {
+        return new DrawableRect(super.left(), super.top(), super.right(), super.bottom(),
                 (this.ul != this.ulFinal || this.wh != this.whFinal) , backgroundColour, borderColour);
     }
 
     @Override
-    public DrawableMuseRelativeRect setLeft(double value) {
+    public DrawableRect setLeft(double value) {
         super.setLeft(value);
         return this;
     }
 
     @Override
-    public DrawableMuseRelativeRect setRight(double value) {
+    public DrawableRect setRight(double value) {
         super.setRight(value);
         return this;
     }
 
     @Override
-    public DrawableMuseRelativeRect setTop(double value) {
+    public DrawableRect setTop(double value) {
         super.setTop(value);
         return this;
     }
 
     @Override
-    public DrawableMuseRelativeRect setBottom(double value) {
+    public DrawableRect setBottom(double value) {
         super.setBottom(value);
         return this;
     }
 
     @Override
-    public DrawableMuseRelativeRect setWidth(double value) {
+    public DrawableRect setWidth(double value) {
         super.setWidth(value);
         return this;
     }
 
     @Override
-    public DrawableMuseRelativeRect setHeight(double value) {
+    public DrawableRect setHeight(double value) {
         super.setHeight(value);
         return this;
     }
 
     public void preDraw() {
-        if (vertices == null || coloursInside == null || coloursOutside == null
+        if (vertices == null || backgroundColours == null || borderColours == null
                 || (this.ul != this.ulFinal || this.wh != this.whFinal)) {
 
             // top left corner
@@ -139,38 +145,33 @@ public class DrawableMuseRelativeRect extends MuseRelativeRect {
             vertices.put(corner);
             vertices.flip();
 
-            coloursOutside = GradientAndArcCalculator.getColourGradient(borderColour,
-                    borderColour, vertices.limit() * 4 / 3 + 8);
-            coloursInside  = GradientAndArcCalculator.getColourGradient(backgroundColour,
+            backgroundColours = GradientAndArcCalculator.getColourGradient(backgroundColour,
                     backgroundColour, vertices.limit() * 4 / 3 + 8);
+            borderColours = GradientAndArcCalculator.getColourGradient(borderColour,
+                    borderColour, vertices.limit() * 4 / 3 + 8);
         }
 
         RenderState.blendingOn();
         RenderState.on2D();
         RenderState.texturelessOn();
         RenderState.arraysOnColor();
-
-        // makes the lines and radii nicer
-        GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT,  GL11.GL_NICEST);
     }
 
     public void drawBackground() {
         // render inside
-        RenderState.glColorPointer(4, 0, coloursInside);
+        RenderState.glColorPointer(4, 0, backgroundColours);
         RenderState.glVertexPointer(3, 0, vertices);
         GL11.glDrawArrays(GL11.GL_TRIANGLE_FAN, 0, vertices.limit() / 3);
     }
 
     public void drawBorder() {
         // render border
-        RenderState.glColorPointer(4, 0, coloursOutside);
+        RenderState.glColorPointer(4, 0, borderColours);
         RenderState.glVertexPointer(3, 0, vertices);
         GL11.glDrawArrays(GL11.GL_LINE_LOOP, 0, vertices.limit() / 3);
     }
 
     public void postDraw() {
-        GL11.glDisable(GL11.GL_LINE_SMOOTH);
         RenderState.texturelessOff();
         RenderState.off2D();
         RenderState.blendingOff();
@@ -178,24 +179,19 @@ public class DrawableMuseRelativeRect extends MuseRelativeRect {
     }
 
     public void draw() {
-        float lineWidth = GL11.glGetFloat(GL11.GL_LINE_WIDTH);
-        boolean smooth  = GL11.glIsEnabled(GL11.GL_LINE_SMOOTH);
         preDraw();
         drawBackground();
         drawBorder();
         postDraw();
-        if (!smooth)
-            GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GL11.glLineWidth(lineWidth);
     }
 
-    public DrawableMuseRelativeRect setBackgroundColour(Colour insideColour) {
-        this.backgroundColour = insideColour;
+    public DrawableRect setBackgroundColour(Colour backgroundColour) {
+        this.backgroundColour = backgroundColour;
         return this;
     }
 
-    public DrawableMuseRelativeRect setBorderColour(Colour outsideColour) {
-        this.borderColour = outsideColour;
+    public DrawableRect setBorderColour(Colour borderColour) {
+        this.borderColour = borderColour;
         return this;
     }
 }

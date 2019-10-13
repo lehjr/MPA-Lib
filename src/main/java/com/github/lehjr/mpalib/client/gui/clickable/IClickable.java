@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.text.ITextComponent;
@@ -40,11 +40,11 @@ public interface IClickable {
 
     void move(double x, double y);
 
-    default void move(MusePoint2D position) {
+    default void move(Point2D position) {
         this.move(position.getX(), position.getY());
     }
 
-    MusePoint2D getPosition();
+    Point2D getPosition();
 
     boolean hitBox(double x, double y);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,39 +31,39 @@ import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import org.lwjgl.opengl.GL11;
 
-public class DrawableMuseArrow extends MuseRelativeRect {
+public class DrawableArrow extends MuseRelativeRect {
     Colour backgroundColour;
     Colour borderColour;
     boolean drawShaft = true;
     ArrowDirection facing = ArrowDirection.RIGHT;
 
-    public DrawableMuseArrow(double left, double top, double right, double bottom, boolean growFromMiddle,
-                             Colour backgroundColour,
-                             Colour borderColour) {
+    public DrawableArrow(double left, double top, double right, double bottom, boolean growFromMiddle,
+                         Colour backgroundColour,
+                         Colour borderColour) {
         super(left, top, right, bottom, growFromMiddle);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
-    public DrawableMuseArrow(double left, double top, double right, double bottom,
-                             Colour backgroundColour,
-                             Colour borderColour) {
+    public DrawableArrow(double left, double top, double right, double bottom,
+                         Colour backgroundColour,
+                         Colour borderColour) {
         super(left, top, right, bottom, false);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
-    public DrawableMuseArrow(MusePoint2D ul, MusePoint2D br,
-                             Colour backgroundColour,
-                             Colour borderColour) {
+    public DrawableArrow(Point2D ul, Point2D br,
+                         Colour backgroundColour,
+                         Colour borderColour) {
         super(ul, br);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
     }
 
-    public DrawableMuseArrow(MuseRelativeRect ref,
-                             Colour backgroundColour,
-                             Colour borderColour) {
+    public DrawableArrow(MuseRelativeRect ref,
+                         Colour backgroundColour,
+                         Colour borderColour) {
         super(ref.left(), ref.top(), ref.right(), ref.bottom(), ref.growFromMiddle());
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;

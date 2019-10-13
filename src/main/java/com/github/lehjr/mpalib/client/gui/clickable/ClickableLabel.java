@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.MPALibRenderer;
 import net.minecraft.util.text.ITextComponent;
 
@@ -39,20 +39,20 @@ public class ClickableLabel implements IClickable {
     protected IReleasable onReleased;
 
     protected String label;
-    protected MusePoint2D position;
+    protected Point2D position;
     protected int mode;
 
     boolean isEnabled = true;
     boolean isVisible = true;
 
 
-    public ClickableLabel(String label, MusePoint2D position) {
+    public ClickableLabel(String label, Point2D position) {
         this.label = label;
         this.position = position;
         this.mode = 1;
     }
 
-    public ClickableLabel(String label, MusePoint2D position, int mode) {
+    public ClickableLabel(String label, Point2D position, int mode) {
         this.label = label;
         this.position = position;
         this.mode = mode;
@@ -83,7 +83,7 @@ public class ClickableLabel implements IClickable {
         if (label == null || label.isEmpty())
             return false;
 
-        MusePoint2D radius = new MusePoint2D(MPALibRenderer.getStringWidth(label) / 2 + 2, 6);
+        Point2D radius = new Point2D(MPALibRenderer.getStringWidth(label) / 2 + 2, 6);
         boolean hitx = Math.abs(position.getX() - x) < radius.getX();
         boolean hity = Math.abs(position.getY() - y) < radius.getY();
         return hitx && hity;
@@ -145,7 +145,7 @@ public class ClickableLabel implements IClickable {
     }
 
     @Override
-    public MusePoint2D getPosition() {
+    public Point2D getPosition() {
         return position;
     }
 }

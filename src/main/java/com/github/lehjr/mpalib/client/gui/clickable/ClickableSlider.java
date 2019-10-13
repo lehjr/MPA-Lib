@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,8 @@
 
 package com.github.lehjr.mpalib.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.gui.geometry.DrawableMuseRect;
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.math.MathUtils;
@@ -45,23 +45,23 @@ import net.minecraft.client.resources.I18n;
 public class ClickableSlider extends Clickable {
     final int cornersize = 3;
     private double valueInternal = 0;
-    MusePoint2D pos;
+    Point2D pos;
     double width;
     private String id;
     private String label;
-    DrawableMuseRect insideRect;
-    DrawableMuseRect outsideRect;
+    DrawableRect insideRect;
+    DrawableRect outsideRect;
     boolean isEnabled = true;
     boolean isVisible = true;
 
 
-    public ClickableSlider(MusePoint2D pos, double width, String id, String label) {
+    public ClickableSlider(Point2D pos, double width, String id, String label) {
         this.pos = pos;
         this.width = width;
         this.id = id;
         this.position = pos;
-        this.insideRect = new DrawableMuseRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, 0, position.getY() + 16, Colour.ORANGE, Colour.LIGHTBLUE);
-        this.outsideRect = new DrawableMuseRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, position.getX() + width / 2.0 + cornersize, position.getY() + 16, Colour.DARKBLUE, Colour.LIGHTBLUE);
+        this.insideRect = new DrawableRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, 0, position.getY() + 16, Colour.ORANGE, Colour.LIGHTBLUE);
+        this.outsideRect = new DrawableRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, position.getX() + width / 2.0 + cornersize, position.getY() + 16, Colour.DARKBLUE, Colour.LIGHTBLUE);
         this.label = label;
     }
 

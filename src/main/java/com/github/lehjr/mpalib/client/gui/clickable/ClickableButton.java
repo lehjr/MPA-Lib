@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,8 @@
 
 package com.github.lehjr.mpalib.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.gui.geometry.DrawableMuseRect;
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.renderer.RenderHelper;
@@ -40,8 +40,8 @@ import java.util.List;
  */
 public class ClickableButton extends Clickable {
     protected ITextComponent label;
-    protected MusePoint2D radius;
-    protected DrawableMuseRect rect;
+    protected Point2D radius;
+    protected DrawableRect rect;
     protected boolean enabled;
     protected boolean visible = true;
     private final Colour enabledBorder  = new Colour(0.3F, 0.3F, 0.3F, 1);
@@ -49,7 +49,7 @@ public class ClickableButton extends Clickable {
     private final Colour disabledBorder = new Colour(0.8F, 0.6F, 0.6F, 1);
     private final Colour disabledBackground = new Colour(0.8F, 0.3F, 0.3F, 1);
 
-    public ClickableButton(ITextComponent label, MusePoint2D position, boolean enabled) {
+    public ClickableButton(ITextComponent label, Point2D position, boolean enabled) {
         this.label = label;
         this.position = position;
 
@@ -61,12 +61,12 @@ public class ClickableButton extends Clickable {
                 if (x[i].length() > x[longestIndex].length())
                     longestIndex = i;
             }
-            this.radius = new MusePoint2D(MPALibRenderer.getStringWidth(x[longestIndex]) / 2 + 2, 6 * x.length);
+            this.radius = new Point2D(MPALibRenderer.getStringWidth(x[longestIndex]) / 2 + 2, 6 * x.length);
         } else {
-            this.radius = new MusePoint2D(MPALibRenderer.getStringWidth(label.getFormattedText()) / 2 + 2, 6);
+            this.radius = new Point2D(MPALibRenderer.getStringWidth(label.getFormattedText()) / 2 + 2, 6);
         }
 
-        this.rect = new DrawableMuseRect(
+        this.rect = new DrawableRect(
                 position.getX() - radius.getX(),
                 position.getY() - radius.getY(),
                 position.getX() + radius.getX(),
@@ -101,7 +101,7 @@ public class ClickableButton extends Clickable {
         }
     }
 
-    public MusePoint2D getRadius () {
+    public Point2D getRadius () {
         return radius.copy();
     }
 

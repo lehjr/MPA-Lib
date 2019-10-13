@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
 package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.client.gui.GuiIcons;
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
-import com.github.lehjr.mpalib.client.gui.geometry.MuseRect;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Rect;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.util.ResourceLocation;
 
@@ -62,7 +62,7 @@ public class TexturedButton extends Button {
         this.textureLocation = textureLocation;;
     }
 
-    public TexturedButton(MusePoint2D ul, MusePoint2D br,
+    public TexturedButton(Point2D ul, Point2D br,
                           Colour backgroundColourEnabled,
                           Colour backgroundColourDisabled,
                           Colour borderColourEnabled,
@@ -74,7 +74,7 @@ public class TexturedButton extends Button {
         this.textureLocation = textureLocation;
     }
 
-    public TexturedButton(MuseRect ref,
+    public TexturedButton(Rect ref,
                           Colour backgroundColourEnabled,
                           Colour backgroundColourDisabled,
                           Colour borderColourEnabled,

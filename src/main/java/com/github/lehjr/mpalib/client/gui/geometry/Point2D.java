@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,16 +34,16 @@ package com.github.lehjr.mpalib.client.gui.geometry;
  *
  * @author MachineMuse
  */
-public class MusePoint2D {
+public class Point2D {
     protected double x;
     protected double y;
 
-    public MusePoint2D(double x, double y) {
+    public Point2D(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public MusePoint2D(MusePoint2D p) {
+    public Point2D(Point2D p) {
         this(p.x, p.y);
     }
 
@@ -63,27 +63,27 @@ public class MusePoint2D {
         this.y = y;
     }
 
-    public MusePoint2D plus(MusePoint2D b) {
-        return new MusePoint2D(getX() + b.getX(), getY() + b.getY());
+    public Point2D plus(Point2D b) {
+        return new Point2D(getX() + b.getX(), getY() + b.getY());
     }
 
-    public MusePoint2D plus(double x, double y) {
-        return new MusePoint2D(getX() + x, getY() + y);
+    public Point2D plus(double x, double y) {
+        return new Point2D(getX() + x, getY() + y);
     }
 
-    public MusePoint2D minus(MusePoint2D b) {
-        return new MusePoint2D(getX() - b.getX(), getY() - b.getY());
+    public Point2D minus(Point2D b) {
+        return new Point2D(getX() - b.getX(), getY() - b.getY());
     }
 
-    public MusePoint2D minus(double x, double y) {
-        return new MusePoint2D(getX() - x, getY() - y);
+    public Point2D minus(double x, double y) {
+        return new Point2D(getX() - x, getY() - y);
     }
 
-    public MusePoint2D times(double scalefactor) {
-        return new MusePoint2D(getX() * scalefactor, getY() * scalefactor);
+    public Point2D times(double scalefactor) {
+        return new Point2D(getX() * scalefactor, getY() * scalefactor);
     }
 
-    public boolean equals(MusePoint2D other) {
+    public boolean equals(Point2D other) {
         return this.getX() == other.getX() && this.getY() == other.getY();
     }
 
@@ -91,27 +91,27 @@ public class MusePoint2D {
         return Math.sqrt(getX() * getX() + getY() * getY());
     }
 
-    public double distanceTo(MusePoint2D position) {
+    public double distanceTo(Point2D position) {
         return Math.sqrt(distanceSq(position));
     }
 
-    public double distanceSq(MusePoint2D position) {
+    public double distanceSq(Point2D position) {
         double xdist = position.getX() - this.getX();
         double ydist = position.getY() - this.getY();
         return xdist * xdist + ydist * ydist;
     }
 
-    public MusePoint2D normalize() {
+    public Point2D normalize() {
         double distance = distance();
-        return new MusePoint2D(getX() / distance, getY() / distance);
+        return new Point2D(getX() / distance, getY() / distance);
     }
 
-    public MusePoint2D midpoint(MusePoint2D target) {
-        return new MusePoint2D((this.getX() + target.getX()) / 2, (this.getY() + target.getY()) / 2);
+    public Point2D midpoint(Point2D target) {
+        return new Point2D((this.getX() + target.getX()) / 2, (this.getY() + target.getY()) / 2);
     }
 
-    public MusePoint2D copy() {
-        return new MusePoint2D(this.getX(), this.getY());
+    public Point2D copy() {
+        return new Point2D(this.getX(), this.getY());
     }
 
     @Override

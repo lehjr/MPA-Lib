@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,15 +26,15 @@
 
 package com.github.lehjr.mpalib.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.gui.geometry.DrawableMuseArrow;
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.DrawableArrow;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.geometry.MuseRelativeRect;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
 
-public class ClickableMuseArrow extends DrawableMuseArrow implements IClickable {
+public class ClickableMuseArrow extends DrawableArrow implements IClickable {
     protected IPressable onPressed;
     protected IReleasable onReleased;
 
@@ -56,7 +56,7 @@ public class ClickableMuseArrow extends DrawableMuseArrow implements IClickable 
         this.backgroundColourHighlighted = backgroundColourHighlighted;
     }
 
-    public ClickableMuseArrow(MusePoint2D ul, MusePoint2D br, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
+    public ClickableMuseArrow(Point2D ul, Point2D br, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
         super(ul, br, backgroundColour, borderColour);
         this.backgroundColourNotHighlighted = backgroundColour;
         this.backgroundColourHighlighted = backgroundColourHighlighted;
@@ -83,8 +83,8 @@ public class ClickableMuseArrow extends DrawableMuseArrow implements IClickable 
     }
 
     @Override
-    public MusePoint2D getPosition() {
-        return new MusePoint2D(centerx(), centery());
+    public Point2D getPosition() {
+        return new Point2D(centerx(), centery());
     }
 
     @Override

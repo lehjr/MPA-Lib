@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 package com.github.lehjr.mpalib.client.gui.slot;
 
 import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.MPALibRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
@@ -67,12 +67,12 @@ public class ClickableItemSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public void move(MusePoint2D position) {
+    public void move(Point2D position) {
         this.position = position;
     }
 
     @Override
-    public MusePoint2D getPosition() {
+    public Point2D getPosition() {
         return position;
     }
 

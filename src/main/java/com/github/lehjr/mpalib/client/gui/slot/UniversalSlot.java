@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 package com.github.lehjr.mpalib.client.gui.slot;
 
 import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
@@ -55,15 +55,15 @@ public class UniversalSlot extends Slot implements IClickable{
     protected final int xPos=0, yPos=0;
     private final int index;
     protected final boolean isIItemHandler;
-    protected MusePoint2D position;
+    protected Point2D position;
     boolean isVisible;
     boolean isEnabled;
 
     public UniversalSlot(IInventory inventory, int index, int xPosition, int yPosition) {
-        this(inventory, index, new MusePoint2D(xPosition, yPosition));
+        this(inventory, index, new Point2D(xPosition, yPosition));
     }
 
-    public UniversalSlot(IInventory inventory, int index, MusePoint2D position) {
+    public UniversalSlot(IInventory inventory, int index, Point2D position) {
         super(inventory, index, (int)position.getX(), (int)position.getX());
         this.index = index;
         this.position = position;
@@ -72,10 +72,10 @@ public class UniversalSlot extends Slot implements IClickable{
     }
 
     public UniversalSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
-        this(itemHandler, index, new MusePoint2D(xPosition, yPosition));
+        this(itemHandler, index, new Point2D(xPosition, yPosition));
     }
 
-    public UniversalSlot(IItemHandler itemHandler, int index, MusePoint2D position) {
+    public UniversalSlot(IItemHandler itemHandler, int index, Point2D position) {
         super(emptyInventory, index, (int)position.getX(), (int)position.getX());
         this.position = position;
         this.itemHandler = itemHandler;
@@ -153,7 +153,7 @@ public class UniversalSlot extends Slot implements IClickable{
         return this.inventory;
     }
 
-    public void setPosition(MusePoint2D position) {
+    public void setPosition(Point2D position) {
         this.position = position;
     }
 
@@ -195,7 +195,7 @@ public class UniversalSlot extends Slot implements IClickable{
     }
 
     @Override
-    public MusePoint2D getPosition() {
+    public Point2D getPosition() {
         return position;
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -85,8 +85,8 @@ public class GradientAndArcCalculator {
      *
      * @return A list of num points
      */
-    public static List<MusePoint2D> pointsInLine(int num, MusePoint2D a, MusePoint2D b) {
-        List<MusePoint2D> points = new ArrayList<>();
+    public static List<Point2D> pointsInLine(int num, Point2D a, Point2D b) {
+        List<Point2D> points = new ArrayList<>();
         switch (num) {
             case -1:
                 break;
@@ -96,7 +96,7 @@ public class GradientAndArcCalculator {
                 points.add(b.minus(a).times(0.5F).plus(a));
                 break;
             default:
-                MusePoint2D step = b.minus(a).times(1.0F / (num + 1));
+                Point2D step = b.minus(a).times(1.0F / (num + 1));
                 for (int i = 0; i < num; i++) {
                     points.add(a.plus(step.times(i + 1)));
                 }
@@ -111,8 +111,8 @@ public class GradientAndArcCalculator {
      *
      * @return A list of num points
      */
-    public static List<MusePoint2D> pointsInLine(int num, MusePoint2D a, MusePoint2D b, double minSpacingX, double minSpacingY) {
-        List<MusePoint2D> points = new ArrayList<>();
+    public static List<Point2D> pointsInLine(int num, Point2D a, Point2D b, double minSpacingX, double minSpacingY) {
+        List<Point2D> points = new ArrayList<>();
         switch (num) {
             case -1:
                 break;
@@ -124,7 +124,7 @@ public class GradientAndArcCalculator {
                 break;
             default:
                 // distance / num spaces
-                MusePoint2D step = b.minus(a).times(1.0F / (num + 1));
+                Point2D step = b.minus(a).times(1.0F / (num + 1));
                 if (step.getX() < 0) {
                     step.setX(Math.min(-minSpacingX, step.x));
                 } else {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import net.minecraft.nbt.CompoundNBT;
 
 /**
@@ -35,7 +35,7 @@ import net.minecraft.nbt.CompoundNBT;
 public class ClickableTinkerSlider extends ClickableSlider {
     public CompoundNBT moduleTag;
 
-    public ClickableTinkerSlider(MusePoint2D topmiddle, double width, CompoundNBT moduleTag, String id, String label) {
+    public ClickableTinkerSlider(Point2D topmiddle, double width, CompoundNBT moduleTag, String id, String label) {
         super(topmiddle, width, id, label);
         this.moduleTag = moduleTag;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 package com.github.lehjr.mpalib.client.gui.scrollable;
 
 import com.github.lehjr.mpalib.client.gui.clickable.ClickableSlider;
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.geometry.MuseRelativeRect;
 
 public class ScrollableSlider extends ScrollableRectangle {
@@ -48,7 +48,7 @@ public class ScrollableSlider extends ScrollableRectangle {
         this.slider = slider;
     }
 
-    public ScrollableSlider(ClickableSlider slider, MusePoint2D ul, MusePoint2D br) {
+    public ScrollableSlider(ClickableSlider slider, Point2D ul, Point2D br) {
         super(ul, br);
         this.slider = slider;
     }

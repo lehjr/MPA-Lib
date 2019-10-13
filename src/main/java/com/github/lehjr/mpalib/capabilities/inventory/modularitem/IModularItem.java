@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,7 @@ import java.util.Map;
  *
  */
 public interface IModularItem extends IItemHandler, IItemHandlerModifiable, IItemStackUpdate, INBTSerializable<CompoundNBT> {
-    void setRangedWrapperMap(Map<EnumModuleCategory, MuseRangedWrapper> rangedWrappers);
+    void setRangedWrapperMap(Map<EnumModuleCategory, MPALibRangedWrapper> rangedWrappers);
 
     boolean isModuleValid(@Nonnull ItemStack module);
 

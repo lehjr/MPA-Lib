@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,8 @@
 
 package com.github.lehjr.mpalib.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
-import com.github.lehjr.mpalib.client.gui.geometry.MuseRect;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Rect;
 import com.github.lehjr.mpalib.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.math.Colour;
 
@@ -54,7 +54,7 @@ public class LabledButton extends Button {
         this.label = label;
     }
 
-    public LabledButton(MusePoint2D ul, MusePoint2D br,
+    public LabledButton(Point2D ul, Point2D br,
                         Colour insideColourEnabled,
                         Colour insideColourDisabled,
                         Colour outsideColourEnabled,
@@ -64,7 +64,7 @@ public class LabledButton extends Button {
         this.label = label;
     }
 
-    public LabledButton(MuseRect ref,
+    public LabledButton(Rect ref,
                         Colour insideColourEnabled,
                         Colour insideColourDisabled,
                         Colour outsideColourEnabled,

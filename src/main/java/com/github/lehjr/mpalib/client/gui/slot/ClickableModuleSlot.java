@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@ import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategor
 import com.github.lehjr.mpalib.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.mpalib.client.gui.GuiIcons;
 import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.string.StringUtils;
@@ -62,18 +62,18 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     boolean installed = false;
 
     public ClickableModuleSlot(IInventory inventory, int index, int xPosition, int yPosition) {
-        this(inventory, index, new MusePoint2D(xPosition, yPosition));
+        this(inventory, index, new Point2D(xPosition, yPosition));
     }
 
-    public ClickableModuleSlot(IInventory inventory, int index, MusePoint2D position) {
+    public ClickableModuleSlot(IInventory inventory, int index, Point2D position) {
         super(inventory, index, (int)position.getX(), (int)position.getY());
     }
 
     public ClickableModuleSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
-        this(itemHandler, index, new MusePoint2D(xPosition, yPosition));
+        this(itemHandler, index, new Point2D(xPosition, yPosition));
     }
 
-    public ClickableModuleSlot(IItemHandler itemHandler, int index, MusePoint2D position) {
+    public ClickableModuleSlot(IItemHandler itemHandler, int index, Point2D position) {
         super(itemHandler, index, (int)position.getX(), (int)position.getY());
     }
 
@@ -91,7 +91,7 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public void move(MusePoint2D position) {
+    public void move(Point2D position) {
         this.position = position;
     }
 
@@ -102,7 +102,7 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public MusePoint2D getPosition() {
+    public Point2D getPosition() {
         return this.position;
     }
 

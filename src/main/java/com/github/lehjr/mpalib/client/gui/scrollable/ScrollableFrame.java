@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 leon
+ * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,8 +28,8 @@ package com.github.lehjr.mpalib.client.gui.scrollable;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.github.lehjr.mpalib.client.gui.frame.IGuiFrame;
-import com.github.lehjr.mpalib.client.gui.geometry.DrawableMuseRect;
-import com.github.lehjr.mpalib.client.gui.geometry.MusePoint2D;
+import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.math.MathUtils;
@@ -46,10 +46,10 @@ public class ScrollableFrame implements IGuiFrame {
     protected boolean visibile = true;
     protected boolean enabled = true;
 
-    protected DrawableMuseRect border;
+    protected DrawableRect border;
 
-    public ScrollableFrame(MusePoint2D topleft, MusePoint2D bottomright, Colour backgroundColour, Colour borderColour) {
-        border = new DrawableMuseRect(topleft, bottomright, backgroundColour, borderColour);
+    public ScrollableFrame(Point2D topleft, Point2D bottomright, Colour backgroundColour, Colour borderColour) {
+        border = new DrawableRect(topleft, bottomright, backgroundColour, borderColour);
     }
 
     protected double getScrollAmount() {
@@ -60,16 +60,16 @@ public class ScrollableFrame implements IGuiFrame {
         this.border.setTargetDimensions(left, top, right, bottom);
     }
 
-    public void setTargetDimensions(MusePoint2D ul, MusePoint2D wh) {
+    public void setTargetDimensions(Point2D ul, Point2D wh) {
         this.border.setTargetDimensions(ul, wh);
     }
 
-    public void setTopLeft(MusePoint2D topLeft) {
+    public void setTopLeft(Point2D topLeft) {
         this.border.setTop(topLeft.getY());
         this.border.setLeft(topLeft.getX());
     }
 
-    public void setBottomRight(MusePoint2D bottomRight) {
+    public void setBottomRight(Point2D bottomRight) {
         this.border.setBottom(bottomRight.getY());
         this.border.setRight(bottomRight.getX());
     }
@@ -181,8 +181,8 @@ public class ScrollableFrame implements IGuiFrame {
         return false;
     }
 
-    public MusePoint2D getUpperLeft() {
-        return new MusePoint2D(border.finalLeft(), border.finalTop());
+    public Point2D getUpperLeft() {
+        return new Point2D(border.finalLeft(), border.finalTop());
     }
 
     @Override
