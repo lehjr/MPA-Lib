@@ -27,8 +27,8 @@
 package com.github.lehjr.mpalib.client.event;
 
 import com.github.lehjr.mpalib.capabilities.inventory.modechanging.IModeChangingItem;
-import com.github.lehjr.mpalib.client.render.MPALibRenderer;
-import com.github.lehjr.mpalib.client.render.MuseTextureUtils;
+import com.github.lehjr.mpalib.client.render.Renderer;
+import com.github.lehjr.mpalib.client.render.TextureUtils;
 import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.MainWindow;
@@ -73,7 +73,7 @@ public class RenderGameOverlayEventHandler {
                 ItemStack module = ((IModeChangingItem) handler).getActiveModule();
                 if (!module.isEmpty()) {
                     MainWindow screen = mc.mainWindow;
-                    MuseTextureUtils.pushTexture(MuseTextureUtils.TEXTURE_QUILT);
+                    TextureUtils.pushTexture(TextureUtils.TEXTURE_QUILT);
                     RenderState.blendingOn();
                     double currX;
                     double currY;
@@ -95,10 +95,10 @@ public class RenderGameOverlayEventHandler {
                     baroffset = screen.getScaledHeight() - baroffset;
                     currX = sw / 2.0 - 89.0 + 20.0 * i;
                     currY = baroffset - 18;
-                    MPALibRenderer.drawItemAt(currX, currY, module);
+                    Renderer.drawItemAt(currX, currY, module);
                     RenderState.scissorsOff();
                     RenderState.blendingOff();
-                    MuseTextureUtils.popTexture();
+                    TextureUtils.popTexture();
                     Colour.WHITE.doGL();
                 }
             }

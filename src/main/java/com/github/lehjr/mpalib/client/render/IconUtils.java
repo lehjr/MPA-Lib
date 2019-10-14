@@ -44,7 +44,7 @@ import org.lwjgl.opengl.GL11;
  * Ported to Java by lehjr on 10/25/16.
  */
 @OnlyIn(Dist.CLIENT)
-public class MPALibIconUtils {
+public class IconUtils {
     static final TextureAtlasSprite missingIcon = MissingTextureSprite.func_217790_a();
 
     /**

@@ -24,44 +24,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.mpalib.client.render;
+package com.github.lehjr.mpalib.client.render.entity;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.util.ResourceLocation;
-
-import java.util.Stack;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.entity.Entity;
 
 /**
  * Author: MachineMuse (Claire Semple)
- * Created: 2:38 PM, 9/6/13
- * <p>
- * Ported to Java by lehjr on 10/25/16.
+ * Created: 4:31 PM, 8/3/13
  */
-public final class MuseTextureUtils {
-    private static final Stack<ResourceLocation> texturestack = new Stack<>();
-    private static ResourceLocation TEXTURE_MAP = AtlasTexture.LOCATION_BLOCKS_TEXTURE;
-    public static final ResourceLocation TEXTURE_QUILT = AtlasTexture.LOCATION_BLOCKS_TEXTURE;
-
-    static {
-        new MuseTextureUtils();
-    }
-
-    private MuseTextureUtils() {
-    }
-
-    public static void pushTexture(final ResourceLocation locationIn) {
-        texturestack.push(TEXTURE_MAP);
-        TEXTURE_MAP = locationIn;
-        bindTexture(TEXTURE_MAP);
-    }
-
-    public static void popTexture() {
-        TEXTURE_MAP = texturestack.pop();
-        bindTexture(TEXTURE_MAP);
-    }
-
-    public static void bindTexture(ResourceLocation locationIn) {
-        Minecraft.getInstance().getTextureManager().bindTexture(locationIn);
+public abstract class MPALibEntityRenderer<T extends Entity> extends EntityRenderer<T> {
+    protected MPALibEntityRenderer(EntityRendererManager renderManager) {
+        super(renderManager);
     }
 }

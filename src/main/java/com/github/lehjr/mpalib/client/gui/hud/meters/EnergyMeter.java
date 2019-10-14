@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.client.gui.hud.meters;
 
-import com.github.lehjr.mpalib.client.render.MPALibRenderer;
+import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import org.lwjgl.opengl.GL11;
@@ -47,7 +47,7 @@ public class EnergyMeter extends HeatMeter {
             Colour.RED.doGL();
         } else if (Math.random() / value < 1) {
             RenderState.texturelessOn();
-            MPALibRenderer.drawMPDLightning(xpos + xsize * value, ypos + ysize * (Math.random() / 2 + 0.25), 1,
+            Renderer.drawMPDLightning(xpos + xsize * value, ypos + ysize * (Math.random() / 2 + 0.25), 1,
                     xpos, ypos + ysize * (Math.random() / 2 + 0.25), 1, Colour.WHITE, 4, 1);
             RenderState.texturelessOff();
         }

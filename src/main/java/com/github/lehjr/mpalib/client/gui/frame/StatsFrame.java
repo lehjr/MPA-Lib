@@ -28,7 +28,7 @@ package com.github.lehjr.mpalib.client.gui.frame;
 
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.scrollable.ScrollableFrame;
-import com.github.lehjr.mpalib.client.render.MPALibRenderer;
+import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.nbt.MuseNBTUtils;
 import com.github.lehjr.mpalib.nbt.NBTTagAccessor;
@@ -66,9 +66,9 @@ public class StatsFrame extends ScrollableFrame {
         for (String propName : propertiesToList) {
             double propValue = MuseNBTUtils.getDoubleOrZero(properties, propName);
             String propValueString = String.format("%.2f", propValue);
-            double strlen = MPALibRenderer.getStringWidth(propValueString);
-            MPALibRenderer.drawString(propName, border.left() + xoffset, border.top() + yoffset + i * 10);
-            MPALibRenderer.drawString(propValueString, border.bottom() - xoffset - strlen - 40, border.top() + yoffset + i * 10);
+            double strlen = Renderer.getStringWidth(propValueString);
+            Renderer.drawString(propName, border.left() + xoffset, border.top() + yoffset + i * 10);
+            Renderer.drawString(propValueString, border.bottom() - xoffset - strlen - 40, border.top() + yoffset + i * 10);
             i++;
         }
         GL11.glPopMatrix();

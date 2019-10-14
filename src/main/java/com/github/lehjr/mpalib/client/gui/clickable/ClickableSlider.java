@@ -28,7 +28,7 @@ package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
-import com.github.lehjr.mpalib.client.render.MPALibRenderer;
+import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.math.MathUtils;
 import net.minecraft.client.resources.I18n;
@@ -75,7 +75,7 @@ public class ClickableSlider extends Clickable {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        MPALibRenderer.drawCenteredString(I18n.format(label), position.getX(), position.getY());
+        Renderer.drawCenteredString(I18n.format(label), position.getX(), position.getY());
         this.insideRect.setRight(position.getX() + width * (getValue() - 0.5) + cornersize);
         this.outsideRect.draw();
         this.insideRect.draw();

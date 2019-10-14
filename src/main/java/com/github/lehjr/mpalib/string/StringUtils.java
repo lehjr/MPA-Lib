@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.string;
 
-import com.github.lehjr.mpalib.client.render.MPALibRenderer;
+import com.github.lehjr.mpalib.client.render.Renderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -361,7 +361,7 @@ public class StringUtils {
         String currLine = words[0];
         for (int i = 1; i < words.length; i++) {
             String approxLine = currLine + " " + words[i];
-            if (MPALibRenderer.getStringWidth(approxLine) > length) {
+            if (Renderer.getStringWidth(approxLine) > length) {
                 strlist.add(currLine);
                 currLine = " " + words[i];
             } else {

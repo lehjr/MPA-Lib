@@ -27,8 +27,8 @@
 package com.github.lehjr.mpalib.client.gui.hud.meters;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
-import com.github.lehjr.mpalib.client.render.MPALibIconUtils;
-import com.github.lehjr.mpalib.client.render.MuseTextureUtils;
+import com.github.lehjr.mpalib.client.render.IconUtils;
+import com.github.lehjr.mpalib.client.render.TextureUtils;
 import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.Minecraft;
@@ -53,14 +53,14 @@ public class HeatMeter {
     }
 
     public void draw(double xpos, double ypos, double value) {
-        MuseTextureUtils.pushTexture(MuseTextureUtils.TEXTURE_QUILT);
+        TextureUtils.pushTexture(TextureUtils.TEXTURE_QUILT);
         RenderState.blendingOn();
         RenderState.on2D();
         drawFluid(xpos, ypos, value, getTexture());
         drawGlass(xpos, ypos);
         RenderState.off2D();
         RenderState.blendingOff();
-        MuseTextureUtils.popTexture();
+        TextureUtils.popTexture();
     }
 
     public void drawFluid(double xpos, double ypos, double value, TextureAtlasSprite icon) {
@@ -72,15 +72,15 @@ public class HeatMeter {
         meterLevel = (xpos + xsize * value);
 
         while (meterStart + 8 < meterLevel) {
-            MPALibIconUtils.drawIconAt(meterStart * 2, ypos * 2, icon, getColour().withAlpha(getAlpha()));
+            IconUtils.drawIconAt(meterStart * 2, ypos * 2, icon, getColour().withAlpha(getAlpha()));
             meterStart += 8;
         }
-        MPALibIconUtils.drawIconPartial(meterStart * 2, ypos * 2, icon, getColour().withAlpha(getAlpha()), 0, 0, (meterLevel - meterStart) * 2, 16);
+        IconUtils.drawIconPartial(meterStart * 2, ypos * 2, icon, getColour().withAlpha(getAlpha()), 0, 0, (meterLevel - meterStart) * 2, 16);
         GL11.glPopMatrix();
     }
 
     public void drawGlass(double xpos, double ypos) {
-        MuseTextureUtils.pushTexture(MPALIbConstants.GLASS_TEXTURE);
+        TextureUtils.pushTexture(MPALIbConstants.GLASS_TEXTURE);
         Colour.WHITE.doGL();
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glTexCoord2d(0, 0);
@@ -92,6 +92,6 @@ public class HeatMeter {
         GL11.glTexCoord2d(1, 0);
         GL11.glVertex2d(xpos, ypos + ysize);
         GL11.glEnd();
-        MuseTextureUtils.popTexture();
+        TextureUtils.popTexture();
     }
 }

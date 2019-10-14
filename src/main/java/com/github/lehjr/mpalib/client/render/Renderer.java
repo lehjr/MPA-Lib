@@ -53,7 +53,7 @@ import static com.github.lehjr.mpalib.basemod.MPALIbConstants.LIGHTNING_TEXTURE;
  *
  * @author MachineMuse
  */
-public abstract class MPALibRenderer {
+public abstract class Renderer {
 
     protected static ItemRenderer renderItem;
 
@@ -141,7 +141,7 @@ public abstract class MPALibRenderer {
 
         double currentwidth = 0;
         for (String word : words) {
-            MPALibRenderer.drawString(word, x1 + currentwidth, y);
+            Renderer.drawString(word, x1 + currentwidth, y);
             currentwidth += getStringWidth(word) + spacing;
         }
     }
@@ -306,7 +306,7 @@ public abstract class MPALibRenderer {
         double jagfactor = 0.3;
         RenderState.on2D();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
-        MuseTextureUtils.pushTexture(LIGHTNING_TEXTURE);
+        TextureUtils.pushTexture(LIGHTNING_TEXTURE);
         RenderState.blendingOn();
         colour.doGL();
         GL11.glBegin(GL11.GL_QUADS);
@@ -331,7 +331,7 @@ public abstract class MPALibRenderer {
     }
 
     public static void drawLightningBetweenPoints(double x1, double y1, double z1, double x2, double y2, double z2, int index) {
-        MuseTextureUtils.pushTexture(LIGHTNING_TEXTURE);
+        TextureUtils.pushTexture(LIGHTNING_TEXTURE);
         double u1 = index / 50.0;
         double u2 = u1 + 0.02;
         double px = (y1 - y2) * 0.125;
@@ -344,7 +344,7 @@ public abstract class MPALibRenderer {
         GL11.glVertex3d(x2 - px, y2 - py, z2);
         GL11.glTexCoord2d(u2, 1);
         GL11.glVertex3d(x2 + px, y2 + py, z2);
-        MuseTextureUtils.popTexture();
+        TextureUtils.popTexture();
     }
 
     public static void drawLightningBetweenPointsFast(double x1, double y1, double z1, double x2, double y2, double z2, int index) {

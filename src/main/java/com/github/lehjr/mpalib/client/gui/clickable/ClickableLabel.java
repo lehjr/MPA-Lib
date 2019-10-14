@@ -27,7 +27,7 @@
 package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
-import com.github.lehjr.mpalib.client.render.MPALibRenderer;
+import com.github.lehjr.mpalib.client.render.Renderer;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
@@ -71,11 +71,11 @@ public class ClickableLabel implements IClickable {
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         if (mode == 0)
-            MPALibRenderer.drawLeftAlignedStringString(this.label, position.getX(), position.getY() - 4);
+            Renderer.drawLeftAlignedStringString(this.label, position.getX(), position.getY() - 4);
         if (mode == 1)
-            MPALibRenderer.drawCenteredString(this.label, position.getX(), position.getY() - 4);
+            Renderer.drawCenteredString(this.label, position.getX(), position.getY() - 4);
         if (mode == 2)
-            MPALibRenderer.drawRightAlignedString(this.label, position.getX(), position.getY() - 4);
+            Renderer.drawRightAlignedString(this.label, position.getX(), position.getY() - 4);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ClickableLabel implements IClickable {
         if (label == null || label.isEmpty())
             return false;
 
-        Point2D radius = new Point2D(MPALibRenderer.getStringWidth(label) / 2 + 2, 6);
+        Point2D radius = new Point2D(Renderer.getStringWidth(label) / 2 + 2, 6);
         boolean hitx = Math.abs(position.getX() - x) < radius.getX();
         boolean hity = Math.abs(position.getY() - y) < radius.getY();
         return hitx && hity;

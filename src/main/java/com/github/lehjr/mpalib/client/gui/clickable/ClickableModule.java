@@ -29,7 +29,7 @@ package com.github.lehjr.mpalib.client.gui.clickable;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.client.gui.GuiIcons;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
-import com.github.lehjr.mpalib.client.render.MPALibRenderer;
+import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.string.StringUtils;
 import net.minecraft.item.ItemStack;
@@ -116,10 +116,10 @@ public class ClickableModule extends Clickable {
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         if (!getModule().isEmpty()) {
-            MPALibRenderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getModule());
+            Renderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getModule());
             if (!allowed) {
                 String string = StringUtils.wrapFormatTags("x", StringUtils.FormatCodes.DarkRed);
-                MPALibRenderer.drawString(string, getPosition().getX() + 3, getPosition().getY() + 1);
+                Renderer.drawString(string, getPosition().getX() + 3, getPosition().getY() + 1);
             } else if (installed) {
                 new GuiIcons.Checkmark(getPosition().getX() - offsetx + 1, getPosition().getY() - offsety + 1, checkmarkcolour, null, null, null, null);
             }

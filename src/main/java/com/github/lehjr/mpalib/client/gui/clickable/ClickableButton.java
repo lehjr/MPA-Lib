@@ -28,7 +28,7 @@ package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
-import com.github.lehjr.mpalib.client.render.MPALibRenderer;
+import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -61,9 +61,9 @@ public class ClickableButton extends Clickable {
                 if (x[i].length() > x[longestIndex].length())
                     longestIndex = i;
             }
-            this.radius = new Point2D(MPALibRenderer.getStringWidth(x[longestIndex]) / 2 + 2, 6 * x.length);
+            this.radius = new Point2D(Renderer.getStringWidth(x[longestIndex]) / 2 + 2, 6 * x.length);
         } else {
-            this.radius = new Point2D(MPALibRenderer.getStringWidth(label.getFormattedText()) / 2 + 2, 6);
+            this.radius = new Point2D(Renderer.getStringWidth(label.getFormattedText()) / 2 + 2, 6);
         }
 
         this.rect = new DrawableRect(
@@ -92,10 +92,10 @@ public class ClickableButton extends Clickable {
             if (label.getFormattedText().contains("\n")) {
                 String[] s = label.getFormattedText().split("\n");
                 for (int i = 0; i < s.length; i++) {
-                    MPALibRenderer.drawCenteredString(s[i], position.getX(), position.getY() - (4 * s.length) + (i * 8));
+                    Renderer.drawCenteredString(s[i], position.getX(), position.getY() - (4 * s.length) + (i * 8));
                 }
             } else {
-                MPALibRenderer.drawCenteredString(this.label.getFormattedText(), position.getX(), position.getY() - 4);
+                Renderer.drawCenteredString(this.label.getFormattedText(), position.getX(), position.getY() - 4);
             }
             RenderHelper.enableGUIStandardItemLighting();
         }

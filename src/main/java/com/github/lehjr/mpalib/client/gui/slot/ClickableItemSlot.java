@@ -28,7 +28,7 @@ package com.github.lehjr.mpalib.client.gui.slot;
 
 import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
-import com.github.lehjr.mpalib.client.render.MPALibRenderer;
+import com.github.lehjr.mpalib.client.render.Renderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.inventory.IInventory;
@@ -55,7 +55,7 @@ public class ClickableItemSlot extends UniversalSlot implements IClickable {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        MPALibRenderer.drawItemAt(
+        Renderer.drawItemAt(
                 getPosition().getX() - offsetx,
                 getPosition().getY() - offsety, getStack());
     }

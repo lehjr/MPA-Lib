@@ -27,7 +27,7 @@
 package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
-import com.github.lehjr.mpalib.client.render.MPALibRenderer;
+import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
@@ -61,11 +61,11 @@ public class ClickableItem extends Clickable {
 
     @Override
     public void render(int i, int i1, float v) {
-        MPALibRenderer.drawItemAt(
+        Renderer.drawItemAt(
                 getPosition().getX() - offsetx,
                 getPosition().getY() - offsety, getStack());
         if (inventorySlot > 35 || itemHandler.getCurrentItem() == getStack()) {
-            MPALibRenderer.drawString("e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARKGREEN);
+            Renderer.drawString("e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARKGREEN);
         }
     }
 

@@ -31,7 +31,7 @@ import com.github.lehjr.mpalib.capabilities.module.powermodule.PowerModuleCapabi
 import com.github.lehjr.mpalib.client.gui.GuiIcons;
 import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
-import com.github.lehjr.mpalib.client.render.MPALibRenderer;
+import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.string.StringUtils;
 import net.minecraft.inventory.IInventory;
@@ -80,10 +80,10 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         if (!getStack().isEmpty()) {
-            MPALibRenderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getStack());
+            Renderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getStack());
             if (!allowed) {
                 String string = StringUtils.wrapFormatTags("x", StringUtils.FormatCodes.DarkRed);
-                MPALibRenderer.drawString(string, getPosition().getX() + 3, getPosition().getY() + 1);
+                Renderer.drawString(string, getPosition().getX() + 3, getPosition().getY() + 1);
             } else if (installed) {
                 new GuiIcons.Checkmark(getPosition().getX() - offsetx + 1, getPosition().getY() - offsety + 1, checkmarkcolour, null, null, null, null);
             }

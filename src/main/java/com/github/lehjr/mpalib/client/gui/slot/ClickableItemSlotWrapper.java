@@ -29,7 +29,7 @@ package com.github.lehjr.mpalib.client.gui.slot;
 import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.geometry.SpiralPointToPoint2D;
-import com.github.lehjr.mpalib.client.render.MPALibRenderer;
+import com.github.lehjr.mpalib.client.render.Renderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.inventory.container.Slot;
@@ -70,7 +70,7 @@ public class ClickableItemSlotWrapper implements IClickable {
         if(spiralPosition != null)
             move(spiralPosition);
 
-        MPALibRenderer.drawItemAt(
+        Renderer.drawItemAt(
                 getPosition().getX() - offsetx,
                 getPosition().getY() - offsety, slot.getStack());
     }
