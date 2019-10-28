@@ -25,67 +25,48 @@
  */
 package com.github.lehjr.mpalib.basemod;
 
-import com.github.lehjr.mpalib.capabilities.heat.HeatCapability;
-import com.github.lehjr.mpalib.capabilities.module.powermodule.PowerModuleCapability;
-import com.github.lehjr.mpalib.capabilities.player.CapabilityPlayerKeyStates;
-import com.github.lehjr.mpalib.capabilities.render.ModelSpecNBTCapability;
-import com.github.lehjr.mpalib.client.event.FOVUpdateEventHandler;
-import com.github.lehjr.mpalib.client.event.RenderGameOverlayEventHandler;
-import com.github.lehjr.forge.obj.MPALibOBJLoader;
-import com.github.lehjr.mpalib.network.MPALibPackets;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
+import com.github.lehjr.mpalib.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 
-@Mod(MPALIbConstants.MODID)
-public class MPALib {
-    public MPALib() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MPALibConfig.COMMON_SPEC, MPALibConfig.setupConfigFile("mpalib-common.toml").getAbsolutePath());
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MPALibConfig.CLIENT_SPEC, MPALibConfig.setupConfigFile("mpalib-client-only.toml").getAbsolutePath());
+import javax.annotation.Nonnull;
+import java.io.File;
 
-        // Register the setup method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        // Register the setupClient method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
+@Mod(modid = MPALIbConstants.MODID, version = MPALIbConstants.VERSION, name = MPALIbConstants .NAME)
+public enum MPALib {
+    INSTANCE;
 
-        // Register ourselves for server, registry and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
+    public static File configDir = null;
+
+    @SidedProxy(clientSide = "com.github.lehjr.mpalib.proxy.ClientProxy", serverSide = "com.github.lehjr.mpalib.proxy.CommonProxy")
+    static CommonProxy proxy;
+
+    @Nonnull
+    @Mod.InstanceFactory
+    public static MPALib getInstance() {
+        return INSTANCE;
     }
 
-    private void setup(final FMLCommonSetupEvent event) {
-        MPALibPackets.registerMPALibPackets();
-
-        HeatCapability.register();
-
-        // Modules
-        PowerModuleCapability.register();
-        ModelSpecNBTCapability.register();
-
-        // Player
-        CapabilityPlayerKeyStates.register();
+    @Mod.EventHandler
+    private void preInit(FMLPreInitializationEvent event) {
+        proxy.preInit(event);
     }
 
-    private void setupClient(final FMLClientSetupEvent event) {
-        ModelLoaderRegistry.registerLoader(MPALibOBJLoader.INSTANCE); // crashes if called in mod constructor
-        MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
-        MinecraftForge.EVENT_BUS.register(new RenderGameOverlayEventHandler());
-//        MinecraftForge.EVENT_BUS.register(MouseScrollEventHandler.INSTANCE);
+    @Mod.EventHandler
+    private void init(FMLInitializationEvent event) {
+        proxy.init(event);
     }
 
-    @SubscribeEvent
-    public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
-        if (!(event.getObject() instanceof PlayerEntity))
-            return;
-        event.addCapability(new ResourceLocation(MPALIbConstants.MODID, "player_keystates"), new CapabilityPlayerKeyStates());
+    @Mod.EventHandler
+    private void postInit(FMLPostInitializationEvent event) {
+        proxy.postInit(event);
+    }
+
+    @Mod.EventHandler
+    private void serverstart(FMLServerStartedEvent event) {
     }
 }

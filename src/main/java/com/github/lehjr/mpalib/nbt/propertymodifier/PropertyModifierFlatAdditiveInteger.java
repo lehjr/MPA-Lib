@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.nbt.propertymodifier;//package net.machinemuse.numina.api.nbt;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class PropertyModifierFlatAdditiveInteger implements IPropertyModifierInteger {
     protected int valueAdded;
@@ -48,7 +48,7 @@ public class PropertyModifierFlatAdditiveInteger implements IPropertyModifierInt
      * @return getValue + this.valueAdded
      */
     @Override
-    public Integer applyModifier(CompoundNBT moduleTag, double value) {
+    public Integer applyModifier(NBTTagCompound moduleTag, double value) {
         long rounded = roundWithOffset(value, roundTo, offset);
         return this.valueAdded + (int) Math.round(Double.valueOf(rounded));
     }

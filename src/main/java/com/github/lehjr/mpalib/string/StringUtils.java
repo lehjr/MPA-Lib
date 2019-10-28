@@ -29,7 +29,7 @@ package com.github.lehjr.mpalib.string;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponentString;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -236,7 +236,7 @@ public class StringUtils {
 
         List<ITextComponent> retList = new ArrayList<>();
         for (String s : stringArray)
-            retList.add(new StringTextComponent(s));
+            retList.add(new TextComponentString(s));
         return retList;
     }
 
@@ -256,7 +256,7 @@ public class StringUtils {
 
     // TODO: return List of strings
     // org.apache.commons.text.WordUtils
-    static String[] wordUtilsWrap(final String str, int wrapLength) {
+    public static String[] wordUtilsWrap(final String str, int wrapLength) {
         if (str == null) {
             return null;
         }
@@ -329,7 +329,7 @@ public class StringUtils {
 
     public static List<ITextComponent> wrapITextComponentToLength(ITextComponent component, int length) {
         if (component == null)
-            component = new StringTextComponent("");
+            component = new TextComponentString("");
         return wrapStringToLength(component.getUnformattedComponentText(), length);
     }
 

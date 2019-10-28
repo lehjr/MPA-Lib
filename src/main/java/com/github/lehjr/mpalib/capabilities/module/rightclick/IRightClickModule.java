@@ -27,31 +27,58 @@
 package com.github.lehjr.mpalib.capabilities.module.rightclick;
 
 import com.github.lehjr.mpalib.capabilities.module.powermodule.IPowerModule;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
 public interface IRightClickModule extends IPowerModule {
-    default ActionResult<ItemStack> onItemRightClick(@Nonnull ItemStack itemStackIn, World worldIn, PlayerEntity playerIn, Hand hand) {
-        return new ActionResult<>(ActionResultType.PASS, itemStackIn);
+    default ActionResult<ItemStack> onItemRightClick(
+            @Nonnull ItemStack itemStackIn,
+            World worldIn,
+            EntityPlayer playerIn,
+            EnumHand hand) {
+        return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
     }
 
-    default ActionResultType onItemUse(ItemUseContext context) {
-        return ActionResultType.PASS;
+    default EnumActionResult onItemUse(
+            ItemStack stack,
+            EntityPlayer playerIn,
+            World worldIn,
+            BlockPos pos,
+            EnumHand hand,
+            EnumFacing facing,
+            float hitX,
+            float hitY,
+            float hitZ) {
+        return EnumActionResult.PASS;
     }
 
-    default ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
-        return ActionResultType.PASS;
+    default EnumActionResult onItemUseFirst(
+            ItemStack stack,
+            EntityPlayer player,
+            World world,
+            BlockPos pos,
+            EnumFacing side,
+            float hitX,
+            float hitY,
+            float hitZ,
+            EnumHand hand) {
+        return EnumActionResult.PASS;
     }
 
-    default void onPlayerStoppedUsing(@Nonnull  ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+    default void onPlayerStoppedUsing(
+            ItemStack stack,
+            World worldIn,
+            EntityLivingBase entityLiving,
+            int timeLeft) {
     }
 
     default int getEnergyUsage() {

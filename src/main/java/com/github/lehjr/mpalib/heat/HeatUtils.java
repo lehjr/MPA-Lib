@@ -29,13 +29,15 @@ package com.github.lehjr.mpalib.heat;
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.capabilities.heat.HeatCapability;
 import com.github.lehjr.mpalib.item.ItemUtils;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 /**
  * Handler for heating and cooling.
@@ -44,9 +46,9 @@ import javax.annotation.Nonnull;
 public class HeatUtils {
     public static final DamageSource overheatDamage = new OverheatDamage();
 
-    public static double getPlayerHeat(PlayerEntity player) {
+    public static double getPlayerHeat(EntityPlayer player) {
         double heat = 0;
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             heat += getItemHeat(player.getItemStackFromSlot(slot));
         }
         return heat;
@@ -55,7 +57,7 @@ public class HeatUtils {
     /**
      * Should only be called server side
      */
-    public static double getPlayerMaxHeat(PlayerEntity player) {
+    public static double getPlayerMaxHeat(EntityPlayer player) {
         double maxHeat = 0;
         for (ItemStack stack : ItemUtils.getModularItemsEquipped(player)) {
             maxHeat += getItemMaxHeat(stack);
@@ -63,7 +65,7 @@ public class HeatUtils {
         return maxHeat;
     }
 
-    public static double coolPlayer(PlayerEntity player, double coolJoules) {
+    public static double coolPlayer(EntityPlayer player, double coolJoules) {
         if (player.world.isRemote /*|| player.abilities.isCreativeMode */) {
             return 0;
         }
@@ -86,13 +88,13 @@ public class HeatUtils {
     /**
      * Should only be called server side
      */
-    public static double heatPlayer(PlayerEntity player, double heatJoules) {
+    public static double heatPlayer(EntityPlayer player, double heatJoules) {
         if (player.world.isRemote /*|| player.abilities.isCreativeMode */) {
             return 0;
         }
 
         NonNullList<ItemStack> items = NonNullList.create();
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             items.add(player.getItemStackFromSlot(slot));
         }
 
@@ -122,19 +124,19 @@ public class HeatUtils {
     }
 
     public static double getItemMaxHeat(@Nonnull ItemStack stack) {
-        return stack.getCapability(HeatCapability.HEAT).map(h->h.getMaxHeatStored()).orElse(0D);
+        return Optional.of(stack.getCapability(HeatCapability.HEAT, null)).map(h->h.getMaxHeatStored()).orElse(0D);
     }
 
     public static double getItemHeat(@Nonnull ItemStack stack) {
-        return stack.getCapability(HeatCapability.HEAT).map(h->h.getHeatStored()).orElse(0D);
+        return Optional.of(stack.getCapability(HeatCapability.HEAT, null)).map(h->h.getHeatStored()).orElse(0D);
     }
 
     public static double heatItem(@Nonnull ItemStack stack, double value) {
-        return stack.getCapability(HeatCapability.HEAT, null).map(h->h.receiveHeat(value, false)).orElse(0D);
+        return Optional.of(stack.getCapability(HeatCapability.HEAT, null)).map(h->h.receiveHeat(value, false)).orElse(0D);
     }
 
     public static double coolItem(@Nonnull ItemStack stack, double value) {
-        return stack.getCapability(HeatCapability.HEAT, null).map(h->h.extractHeat(value, false)).orElse(0D);
+        return Optional.of(stack.getCapability(HeatCapability.HEAT, null)).map(h->h.extractHeat(value, false)).orElse(0D);
     }
 
     protected static final class OverheatDamage extends DamageSource {

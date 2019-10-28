@@ -26,7 +26,8 @@
 
 package com.github.lehjr.mpalib.energy;
 
-import com.github.lehjr.mpalib.basemod.MPALibConfig;
+import com.github.lehjr.mpalib.config.MPALibConfig;
+import net.minecraft.item.ItemStack;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -39,34 +40,39 @@ public class ElectricConversions {
      * Industrialcraft 2 --------------------------------------------------------------------------
      */
     public static final String IC2_TIER = "IC2 Tier";
+    static MPALibConfig config = MPALibConfig.INSTANCE;
+
+    public static int getTier(final ItemStack stack) {
+        return MPALibConfig.INSTANCE.getTierForItem(stack);
+    }
 
     public static double museEnergyToEU(final double museEnergy) {
-        return museEnergy / MPALibConfig.IC2_EU_TO_RF_RATIO;
+        return museEnergy / config.getIC2Ratio();
     }
 
     public static int museEnergyFromEU(final double eu) {
-        return (int) Math.round(eu * MPALibConfig.IC2_EU_TO_RF_RATIO);
+        return (int) Math.round(eu * config.getIC2Ratio());
     }
 
     /**
      * Mekanism ------------------------------------------------------------------------------------
      */
     public static double museEnergyToMek(final double museEnergy) { // no current conversion rate
-        return Math.ceil(museEnergy / MPALibConfig.MEK_J_TO_RF_RATIO);
+        return Math.ceil(museEnergy / config.getMekRatio());
     }
 
     public static int museEnergyFromMek(final double mj) { // no current conversion rate
-        return (int) Math.round(mj * MPALibConfig.MEK_J_TO_RF_RATIO);
+        return (int) Math.round(mj * config.getMekRatio());
     }
 
     /**
      * Applied Energistics 2 ----------------------------------------------------------------------
      */
     public static double museEnergyFromAE(final double ae) {
-        return ae * MPALibConfig.AE_TO_RF_RATIO;
+        return ae * config.getAE2Ratio();
     }
 
     public static double museEnergyToAE(final double museEnergy) {
-        return museEnergy / MPALibConfig.AE_TO_RF_RATIO;
+        return museEnergy / config.getAE2Ratio();
     }
 }

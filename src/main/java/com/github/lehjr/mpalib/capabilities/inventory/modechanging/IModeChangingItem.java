@@ -27,12 +27,12 @@
 package com.github.lehjr.mpalib.capabilities.inventory.modechanging;
 
 import com.github.lehjr.mpalib.capabilities.inventory.modularitem.IModularItem;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -44,7 +44,7 @@ import java.util.List;
  * Ported to Java by lehjr on 11/1/16.
  */
 public interface IModeChangingItem extends IModularItem {
-    @OnlyIn(Dist.CLIENT)
+    @SideOnly(Side.CLIENT)
     @Nullable
     IBakedModel getInventoryModel();
 
@@ -62,7 +62,7 @@ public interface IModeChangingItem extends IModularItem {
 
     boolean hasActiveModule(ResourceLocation regName);
 
-    void cycleMode(PlayerEntity player, int dMode);
+    void cycleMode(EntityPlayer player, int dMode);
 
     int nextMode();
 

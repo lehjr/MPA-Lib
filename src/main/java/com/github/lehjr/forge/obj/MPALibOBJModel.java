@@ -27,7 +27,6 @@
 
 package com.github.lehjr.forge.obj;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -36,28 +35,33 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.github.lehjr.mpalib.basemod.MPALibLogger;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.model.*;
-import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.renderer.texture.ISprite;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BakedQuadRetextured;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.resources.IResource;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.Direction;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelStateComposition;
 import net.minecraftforge.client.model.PerspectiveMapWrapper;
-import net.minecraftforge.client.model.data.IDynamicBakedModel;
-import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.common.model.IModelPart;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.Models;
 import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -71,13 +75,16 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-
 /**
- * Modified from forge to allow easy fetching of quads for a given group
+ * This is a tweaked version of the OBJModel class from Forge.
+ * This provides a simpler means of getting quads for a specific group without "re-baking"
+ * <p>
+ * Modular Powersuits treats "Groups" (IModelPart) as flexible parts that can be toggled, recolored, and lighting toggled.
  */
-public class MPALibOBJModel implements IUnbakedModel {
-    private MaterialLibrary matLib;
+@SideOnly(Side.CLIENT)
+public class MPALibOBJModel implements IModel {
     private final ResourceLocation modelLocation;
+    private MaterialLibrary matLib;
     private CustomData customData;
 
     public MPALibOBJModel(MaterialLibrary matLib, ResourceLocation modelLocation) {
@@ -91,7 +98,7 @@ public class MPALibOBJModel implements IUnbakedModel {
     }
 
     @Override
-    public Collection<ResourceLocation> getTextures(Function<ResourceLocation, IUnbakedModel> modelGetter, Set<String> missingTextureErrors) {
+    public Collection<ResourceLocation> getTextures() {
         Iterator<Material> materialIterator = this.matLib.materials.values().iterator();
         List<ResourceLocation> textures = Lists.newArrayList();
         while (materialIterator.hasNext()) {
@@ -104,42 +111,61 @@ public class MPALibOBJModel implements IUnbakedModel {
     }
 
     @Override
-    public Collection<ResourceLocation> getDependencies() {
-        return Collections.emptyList();
-    }
-
-    @Nullable
-    @Override
-    public IBakedModel bake(ModelBakery bakery, Function<ResourceLocation, TextureAtlasSprite> spriteGetter, ISprite sprite, VertexFormat format) {
+    public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         ImmutableMap.Builder<String, TextureAtlasSprite> builder = ImmutableMap.builder();
         builder.put(ModelLoader.White.LOCATION.toString(), ModelLoader.White.INSTANCE);
-        TextureAtlasSprite missing = spriteGetter.apply(new ResourceLocation("missingno"));
+        TextureAtlasSprite missing = bakedTextureGetter.apply(new ResourceLocation("missingno"));
         for (Map.Entry<String, Material> e : matLib.materials.entrySet()) {
             if (e.getValue().getTexture().getTextureLocation().getPath().startsWith("#")) {
-                MPALibLogger.logger.fatal("OBJLoader: Unresolved texture '{}' for obj model '{}'", e.getValue().getTexture().getTextureLocation().getPath(), modelLocation);
+                FMLLog.log.fatal("MuseOBJLoader: Unresolved texture '{}' for obj model '{}'", e.getValue().getTexture().getTextureLocation().getPath(), modelLocation);
                 builder.put(e.getKey(), missing);
             } else {
-                builder.put(e.getKey(), spriteGetter.apply(e.getValue().getTexture().getTextureLocation()));
+                builder.put(e.getKey(), bakedTextureGetter.apply(e.getValue().getTexture().getTextureLocation()));
             }
         }
         builder.put("missingno", missing);
-        return new MPALIbOBJBakedModel(this, sprite.getState(), format, builder.build());
+        return new MPALibOBJBakedModel(this, state, format, builder.build());
     }
 
-    public MaterialLibrary getMatLib() {
+    public MPALibOBJModel.MaterialLibrary getMatLib() {
         return this.matLib;
     }
 
     @Override
-    public IUnbakedModel process(ImmutableMap<String, String> customData) {
+    public IModel process(ImmutableMap<String, String> customData) {
         MPALibOBJModel ret = new MPALibOBJModel(this.matLib, this.modelLocation, new CustomData(this.customData, customData));
         return ret;
     }
 
     @Override
-    public IUnbakedModel retexture(ImmutableMap<String, String> textures) {
+    public IModel retexture(ImmutableMap<String, String> textures) {
         MPALibOBJModel ret = new MPALibOBJModel(this.matLib.makeLibWithReplacements(textures), this.modelLocation, this.customData);
         return ret;
+    }
+
+    @Deprecated
+    public enum OBJProperty implements IUnlistedProperty<OBJState> {
+        INSTANCE;
+
+        @Override
+        public String getName() {
+            return "OBJProperty";
+        }
+
+        @Override
+        public boolean isValid(OBJState value) {
+            return value instanceof OBJState;
+        }
+
+        @Override
+        public Class<OBJState> getType() {
+            return OBJState.class;
+        }
+
+        @Override
+        public String valueToString(OBJState value) {
+            return value.toString();
+        }
     }
 
     static class CustomData {
@@ -161,14 +187,26 @@ public class MPALibOBJModel implements IUnbakedModel {
 
         public void process(ImmutableMap<String, String> customData) {
             for (Map.Entry<String, String> e : customData.entrySet()) {
-                if (e.getKey().equals("ambient"))
-                    this.ambientOcclusion = Boolean.valueOf(e.getValue());
-                else if (e.getKey().equals("gui3d"))
-                    this.gui3d = Boolean.valueOf(e.getValue());
-                /*else if (e.getKey().equals("modifyUVs"))
-                    this.modifyUVs = Boolean.valueOf(e.getValue());*/
-                else if (e.getKey().equals("flip-v"))
-                    this.flipV = Boolean.valueOf(e.getValue());
+                switch (e.getKey().toLowerCase()) {
+                    case "ambient":
+                        this.ambientOcclusion = Boolean.valueOf(e.getValue());
+                        break;
+                    case "gui3d":
+                        this.gui3d = Boolean.valueOf(e.getValue());
+                        break;
+                    case "flip-v":
+                        this.flipV = Boolean.valueOf(e.getValue());
+                        break;
+                }
+
+//                if (e.getKey().equals("ambient"))
+//                    this.ambientOcclusion = Boolean.valueOf(e.getValue());
+//                else if (e.getKey().equals("gui3d"))
+//                    this.gui3d = Boolean.valueOf(e.getValue());
+//                /*else if (e.getKey().equals("modifyUVs"))
+//                    this.modifyUVs = Boolean.valueOf(e.getValue());*/
+//                else if (e.getKey().equals("flip-v"))
+//                    this.flipV = Boolean.valueOf(e.getValue());
             }
         }
     }
@@ -189,7 +227,7 @@ public class MPALibOBJModel implements IUnbakedModel {
 
         public Parser(IResource from, IResourceManager manager) throws IOException {
             this.manager = manager;
-            this.objFrom = from.getLocation();
+            this.objFrom = from.getResourceLocation();
             this.objStream = new InputStreamReader(from.getInputStream(), StandardCharsets.UTF_8);
             this.objReader = new BufferedReader(objStream);
         }
@@ -233,7 +271,7 @@ public class MPALibOBJModel implements IUnbakedModel {
                         if (this.materialLibrary.materials.containsKey(data)) {
                             material = this.materialLibrary.materials.get(data);
                         } else {
-                            MPALibLogger.logger.error("MPALibOBJModel.Parser: (Model: '{}', Line: {}) material '{}' referenced but was not found", objFrom, lineNum, data);
+                            FMLLog.log.error("MPALibOBJModel.Parser: (Model: '{}', Line: {}) material '{}' referenced but was not found", objFrom, lineNum, data);
                         }
                         usemtlCounter++;
                     } else if (key.equalsIgnoreCase("v")) // Vertices: x y z [w] - w Defaults to 1.0
@@ -256,7 +294,7 @@ public class MPALibOBJModel implements IUnbakedModel {
                     } else if (key.equalsIgnoreCase("f")) // Face Elements: f v1[/vt1][/vn1] ...
                     {
                         if (splitData.length > 4)
-                            MPALibLogger.logger.warn("MPALibOBJModel.Parser: found a face ('f') with more than 4 vertices, only the first 4 of these vertices will be rendered!");
+                            FMLLog.log.warn("MPALibOBJModel.Parser: found a face ('f') with more than 4 vertices, only the first 4 of these vertices will be rendered!");
 
                         List<Vertex> v = Lists.newArrayListWithCapacity(splitData.length);
 
@@ -318,11 +356,11 @@ public class MPALibOBJModel implements IUnbakedModel {
                     } else {
                         if (!unknownObjectCommands.contains(key)) {
                             unknownObjectCommands.add(key);
-                            MPALibLogger.logger.info("MPALibOBJLoader.Parser: command '{}' (model: '{}') is not currently supported, skipping. Line: {} '{}'", key, objFrom, lineNum, currentLine);
+                            FMLLog.log.info("MuseOBJLoader.Parser: command '{}' (model: '{}') is not currently supported, skipping. Line: {} '{}'", key, objFrom, lineNum, currentLine);
                         }
                     }
                 } catch (RuntimeException e) {
-                    throw new RuntimeException(String.format("MPALibOBJLoader.Parser: Exception parsing line #%d: `%s`", lineNum, currentLine), e);
+                    throw new RuntimeException(String.format("MuseOBJLoader.Parser: Exception parsing line #%d: `%s`", lineNum, currentLine), e);
                 }
             }
 
@@ -333,10 +371,13 @@ public class MPALibOBJModel implements IUnbakedModel {
     public static class MaterialLibrary {
         private static final Pattern WHITE_SPACE = Pattern.compile("\\s+");
         private Set<String> unknownMaterialCommands = new HashSet<String>();
-        private Map<String, Material> materials = new HashMap<String, Material>();
-        private Map<String, Group> groups = new HashMap<String, Group>();
+        private Map<String, Material> materials = new HashMap<>();
+        private Map<String,Group> groups = new HashMap<>();
         private InputStreamReader mtlStream;
         private BufferedReader mtlReader;
+
+//        private float[] minUVBounds = new float[] {0.0f, 0.0f};
+//        private float[] maxUVBounds = new float[] {1.0f, 1.0f};
 
         public MaterialLibrary() {
             this.groups.put(Group.DEFAULT_NAME, new Group(Group.DEFAULT_NAME, null));
@@ -346,12 +387,12 @@ public class MPALibOBJModel implements IUnbakedModel {
         }
 
         public MaterialLibrary makeLibWithReplacements(ImmutableMap<String, String> replacements) {
-            Map<String, Material> mats = new HashMap<String, Material>();
+            Map<String, Material> mats = new HashMap<>();
             for (Map.Entry<String, Material> e : this.materials.entrySet()) {
-                // key for the material name, with # added if missing
+                // key for the material id, with # added if missing
                 String keyMat = e.getKey();
                 if (!keyMat.startsWith("#")) keyMat = "#" + keyMat;
-                // key for the texture name, with ".png" stripped and # added if missing
+                // key for the texture id, with ".png" stripped and # added if missing
                 String keyTex = e.getValue().getTexture().getPath();
                 if (keyTex.endsWith(".png")) keyTex = keyTex.substring(0, keyTex.length() - ".png".length());
                 if (!keyTex.startsWith("#")) keyTex = "#" + keyTex;
@@ -375,10 +416,30 @@ public class MPALibOBJModel implements IUnbakedModel {
             ret.groups = this.groups;
             ret.mtlStream = this.mtlStream;
             ret.mtlReader = this.mtlReader;
+//            ret.minUVBounds = this.minUVBounds;
+//            ret.maxUVBounds = this.maxUVBounds;
             return ret;
         }
 
-        public Map<String, Group> getGroups() {
+//        public float[] getMinUVBounds()
+//        {
+//            return this.minUVBounds;
+//        }
+
+//        public float[] getMaxUVBounds()
+//        {
+//            return this.maxUVBounds;
+//        }
+
+//        public void setUVBounds(float minU, float maxU, float minV, float maxV)
+//        {
+//            this.minUVBounds[0] = minU;
+//            this.maxUVBounds[0] = maxU;
+//            this.minUVBounds[1] = minV;
+//            this.maxUVBounds[1] = maxV;
+//        }
+
+        public Map<String, MPALibOBJModel.Group> getGroups() {
             return this.groups;
         }
 
@@ -418,7 +479,7 @@ public class MPALibOBJModel implements IUnbakedModel {
             mtlReader = new BufferedReader(mtlStream);
 
             String currentLine = "";
-            Material material = new Material();
+           Material material = new Material();
             material.setName(Material.WHITE_NAME);
             material.setTexture(Texture.WHITE);
             this.materials.put(Material.WHITE_NAME, material);
@@ -447,7 +508,7 @@ public class MPALibOBJModel implements IUnbakedModel {
                         hasSetColor = true;
                         material.setColor(color);
                     } else {
-                        MPALibLogger.logger.info("MPALibOBJModel: A color has already been defined for material '{}' in '{}'. The color defined by key '{}' will not be applied!", material.getName(), new ResourceLocation(domain, path).toString(), key);
+                        FMLLog.log.info("MPALibOBJModel: A color has already been defined for material '{}' in '{}'. The color defined by key '{}' will not be applied!", material.getName(), new ResourceLocation(domain, path).toString(), key);
                     }
                 } else if (key.equalsIgnoreCase("map_Ka") || key.equalsIgnoreCase("map_Kd") || key.equalsIgnoreCase("map_Ks")) {
                     if (key.equalsIgnoreCase("map_Kd") || !hasSetTexture) {
@@ -463,7 +524,7 @@ public class MPALibOBJModel implements IUnbakedModel {
                             material.setTexture(texture);
                         }
                     } else {
-                        MPALibLogger.logger.info("MPALibOBJModel: A texture has already been defined for material '{}' in '{}'. The texture defined by key '{}' will not be applied!", material.getName(), new ResourceLocation(domain, path).toString(), key);
+                        FMLLog.log.info("MPALibOBJModel: A texture has already been defined for material '{}' in '{}'. The texture defined by key '{}' will not be applied!", material.getName(), new ResourceLocation(domain, path).toString(), key);
                     }
                 } else if (key.equalsIgnoreCase("d") || key.equalsIgnoreCase("Tr")) {
                     //d <-optional key here> float[0.0:1.0, 1.0]
@@ -474,7 +535,7 @@ public class MPALibOBJModel implements IUnbakedModel {
                 } else {
                     if (!unknownMaterialCommands.contains(key)) {
                         unknownMaterialCommands.add(key);
-                        MPALibLogger.logger.info("MPALibOBJLoader.MaterialLibrary: key '{}' (model: '{}') is not currently supported, skipping", key, new ResourceLocation(domain, path));
+                        FMLLog.log.info("MuseOBJLoader.MaterialLibrary: key '{}' (model: '{}') is not currently supported, skipping", key, new ResourceLocation(domain, path));
                     }
                 }
             }
@@ -506,28 +567,28 @@ public class MPALibOBJModel implements IUnbakedModel {
             this.name = name != null ? name : DEFAULT_NAME;
         }
 
-        public void setName(String name) {
-            this.name = name != null ? name : DEFAULT_NAME;
-        }
-
         public String getName() {
             return this.name;
         }
 
-        public void setColor(Vector4f color) {
-            this.color = color;
+        public void setName(String name) {
+            this.name = name != null ? name : DEFAULT_NAME;
         }
 
         public Vector4f getColor() {
             return this.color;
         }
 
-        public void setTexture(Texture texture) {
-            this.texture = texture;
+        public void setColor(Vector4f color) {
+            this.color = color;
         }
 
         public Texture getTexture() {
             return this.texture;
+        }
+
+        public void setTexture(Texture texture) {
+            this.texture = texture;
         }
 
         public boolean isWhite() {
@@ -567,43 +628,41 @@ public class MPALibOBJModel implements IUnbakedModel {
             return loc;
         }
 
-        public void setPath(String path) {
-            this.path = path;
-        }
-
         public String getPath() {
             return this.path;
         }
 
-        public void setPosition(Vector2f position) {
-            this.position = position;
+        public void setPath(String path) {
+            this.path = path;
         }
 
         public Vector2f getPosition() {
             return this.position;
         }
 
-        public void setScale(Vector2f scale) {
-            this.scale = scale;
+        public void setPosition(Vector2f position) {
+            this.position = position;
         }
 
         public Vector2f getScale() {
             return this.scale;
         }
 
-        public void setRotation(float rotation) {
-            this.rotation = rotation;
+        public void setScale(Vector2f scale) {
+            this.scale = scale;
         }
 
         public float getRotation() {
             return this.rotation;
         }
+
+        public void setRotation(float rotation) {
+            this.rotation = rotation;
+        }
     }
 
     public static class Face {
         private Vertex[] verts = new Vertex[4];
-        //        private Normal[] norms = new Normal[4];
-//        private TextureCoordinate[] texCoords = new TextureCoordinate[4];
         private String materialName = Material.DEFAULT_NAME;
         private boolean isTri = false;
 
@@ -624,12 +683,12 @@ public class MPALibOBJModel implements IUnbakedModel {
             }
         }
 
-        public void setMaterialName(String materialName) {
-            this.materialName = materialName != null && !materialName.isEmpty() ? materialName : this.materialName;
-        }
-
         public String getMaterialName() {
             return this.materialName;
+        }
+
+        public void setMaterialName(String materialName) {
+            this.materialName = materialName != null && !materialName.isEmpty() ? materialName : this.materialName;
         }
 
         public boolean isTriangles() {
@@ -647,8 +706,9 @@ public class MPALibOBJModel implements IUnbakedModel {
             return this.verts;
         }
 
+
         public Face bake(TRSRTransformation transform) {
-            Matrix4f m = transform.getMatrixVec();
+            Matrix4f m = transform.getMatrix();
             Matrix3f mn = null;
             Vertex[] vertices = new Vertex[verts.length];
 
@@ -672,10 +732,8 @@ public class MPALibOBJModel implements IUnbakedModel {
                     vertices[i].setNormal(new Normal(newNormal));
                 }
 
-                if (v.hasTextureCoordinate())
-                    vertices[i].setTextureCoordinate(v.getTextureCoordinate());
-                else
-                    v.setTextureCoordinate(TextureCoordinate.getDefaultUVs()[i]);
+                if (v.hasTextureCoordinate()) vertices[i].setTextureCoordinate(v.getTextureCoordinate());
+                else v.setTextureCoordinate(TextureCoordinate.getDefaultUVs()[i]);
             }
             return new Face(vertices, this.materialName);
         }
@@ -702,12 +760,12 @@ public class MPALibOBJModel implements IUnbakedModel {
             this.material = material;
         }
 
-        public void setPos(Vector4f position) {
-            this.position = position;
-        }
-
         public Vector4f getPos() {
             return this.position;
+        }
+
+        public void setPos(Vector4f position) {
+            this.position = position;
         }
 
         public Vector3f getPos3() {
@@ -718,32 +776,37 @@ public class MPALibOBJModel implements IUnbakedModel {
             return this.normal != null;
         }
 
-        public void setNormal(Normal normal) {
-            this.normal = normal;
-        }
-
         public Normal getNormal() {
             return this.normal;
+        }
+
+        public void setNormal(Normal normal) {
+            this.normal = normal;
         }
 
         public boolean hasTextureCoordinate() {
             return this.texCoord != null;
         }
 
-        public void setTextureCoordinate(TextureCoordinate texCoord) {
-            this.texCoord = texCoord;
-        }
-
         public TextureCoordinate getTextureCoordinate() {
             return this.texCoord;
         }
 
-        public void setMaterial(Material material) {
-            this.material = material;
+        public void setTextureCoordinate(TextureCoordinate texCoord) {
+            this.texCoord = texCoord;
         }
+
+//        public boolean hasNormalizedUVs()
+//        {
+//            return this.texCoord.u >= 0.0f && this.texCoord.u <= 1.0f && this.texCoord.v >= 0.0f && this.texCoord.v <= 1.0f;
+//        }
 
         public Material getMaterial() {
             return this.material;
+        }
+
+        public void setMaterial(Material material) {
+            this.material = material;
         }
 
         @Override
@@ -803,10 +866,6 @@ public class MPALibOBJModel implements IUnbakedModel {
             this.w = w;
         }
 
-        public Vector3f getData() {
-            return new Vector3f(this.u, this.v, this.w);
-        }
-
         public static TextureCoordinate[] getDefaultUVs() {
             TextureCoordinate[] texCoords = new TextureCoordinate[4];
             texCoords[0] = new TextureCoordinate(0.0f, 0.0f, 1.0f);
@@ -815,6 +874,10 @@ public class MPALibOBJModel implements IUnbakedModel {
             texCoords[3] = new TextureCoordinate(0.0f, 1.0f, 1.0f);
             return texCoords;
         }
+
+        public Vector3f getData() {
+            return new Vector3f(this.u, this.v, this.w);
+        }
     }
 
     @Deprecated
@@ -822,10 +885,10 @@ public class MPALibOBJModel implements IUnbakedModel {
         public static final String DEFAULT_NAME = "MPALibOBJModel.Default.Element.Name";
         public static final String ALL = "MPALibOBJModel.Group.All.Key";
         public static final String ALL_EXCEPT = "MPALibOBJModel.Group.All.Except.Key";
-        private String name = DEFAULT_NAME;
-        private LinkedHashSet<Face> faces = new LinkedHashSet<Face>();
         public float[] minUVBounds = new float[]{0.0f, 0.0f};
         public float[] maxUVBounds = new float[]{1.0f, 1.0f};
+        private String name = DEFAULT_NAME;
+        private LinkedHashSet<Face> faces = new LinkedHashSet<Face>();
 
 //        public float[] minUVBounds = new float[] {0.0f, 0.0f};
 //        public float[] maxUVBounds = new float[] {1.0f, 1.0f};
@@ -867,12 +930,17 @@ public class MPALibOBJModel implements IUnbakedModel {
 
     @Deprecated
     public static class OBJState implements IModelState {
-        protected Map<String, Boolean> visibilityMap = Maps.newHashMap();
         public IModelState parent;
+        protected Map<String, Boolean> visibilityMap = Maps.newHashMap();
         protected Operation operation = Operation.SET_TRUE;
 
         public OBJState(List<String> visibleGroups, boolean visibility) {
             this(visibleGroups, visibility, TRSRTransformation.identity());
+        }
+
+        public OBJState(Map<String, Boolean> visibleGroups, IModelState parent) {
+            this.parent = parent;
+            this.visibilityMap.putAll(visibleGroups);
         }
 
         public OBJState(List<String> visibleGroups, boolean visibility, IModelState parent) {
@@ -937,28 +1005,24 @@ public class MPALibOBJModel implements IUnbakedModel {
             builder.append(String.format("%n    parent: %s%n", this.parent.toString()));
             builder.append(String.format("    visibility map: %n"));
             for (Map.Entry<String, Boolean> e : this.visibilityMap.entrySet()) {
-                builder.append(String.format("        name: %s visible: %b%n", e.getKey(), e.getValue()));
+                builder.append(String.format("        id: %s visible: %b%n", e.getKey(), e.getValue()));
             }
             return builder.toString();
         }
 
         @Override
-        public int hashCode() {
-            return Objects.hashCode(visibilityMap, parent, operation);
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            OBJState objState = (OBJState) o;
+            return Objects.equals(parent, objState.parent) &&
+                    Objects.equals(getVisibilityMap(), objState.getVisibilityMap()) &&
+                    operation == objState.operation;
         }
 
         @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            OBJState other = (OBJState) obj;
-            return Objects.equal(visibilityMap, other.visibilityMap) &&
-                    Objects.equal(parent, other.parent) &&
-                    operation == other.operation;
+        public int hashCode() {
+            return Objects.hash(parent, getVisibilityMap(), operation);
         }
 
         public enum Operation {
@@ -983,24 +1047,41 @@ public class MPALibOBJModel implements IUnbakedModel {
         }
     }
 
-    public class MPALIbOBJBakedModel implements IDynamicBakedModel {
-        //        ModelTransformCalibration calibration;
+    @SuppressWarnings("serial")
+    public static class UVsOutOfBoundsException extends RuntimeException {
+        public ResourceLocation modelLocation;
+
+        public UVsOutOfBoundsException(ResourceLocation modelLocation) {
+            super(String.format("Model '%s' has UVs ('vt') out of bounds 0-1! The missing model will be used instead. Support for UV processing will be added to the OBJ loader in the future.", modelLocation));
+            this.modelLocation = modelLocation;
+        }
+    }
+
+    public class MPALibOBJBakedModel implements IBakedModel {
         private final MPALibOBJModel model;
-        private IModelState state;
         private final VertexFormat format;
+        //        ModelTransformCalibration calibration;
+        private IModelState state;
         private ImmutableList<BakedQuad> quads;
         private Map<String, List<BakedQuad>> partQuadMap;
         private ImmutableMap<String, TextureAtlasSprite> textures;
+        private final LoadingCache<IModelState, MPALibOBJBakedModel> cache = CacheBuilder.newBuilder().maximumSize(20).build(new CacheLoader<IModelState, MPALibOBJBakedModel>() {
+            @Override
+            public MPALibOBJBakedModel load(IModelState state) throws Exception {
+                return new MPALibOBJBakedModel(model, state, format, textures);
+            }
+        });
+        private IBlockState cachedBlockstate;
         private TextureAtlasSprite sprite = ModelLoader.White.INSTANCE;
 
-        public MPALIbOBJBakedModel(MPALibOBJModel model, IModelState state, VertexFormat format, ImmutableMap<String, TextureAtlasSprite> textures) {
+        public MPALibOBJBakedModel(MPALibOBJModel model, IModelState state, VertexFormat format, ImmutableMap<String, TextureAtlasSprite> textures) {
             this.model = model;
             this.state = state;
             if (this.state instanceof OBJState) this.updateStateVisibilityMap((OBJState) this.state);
             this.format = format;
             this.textures = textures;
             this.partQuadMap = new HashMap<>();
-            //            if (MPSSettings.modelconfig.modelSetup) // FIXME!!
+//            if (MPSSettings.modelconfig.modelSetup) // FIXME!!
 //                calibration = new ModelTransformCalibration();
         }
 
@@ -1013,29 +1094,50 @@ public class MPALibOBJModel implements IUnbakedModel {
             return partQuadMap.get(partName);
         }
 
+        public List<BakedQuad> getRetexturedQuadsforPart(String partName, TextureAtlasSprite texture) {
+            ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
+            for (BakedQuad quad : getQuadsforPart(partName))
+                builder.add(new BakedQuadRetextured(quad, texture));
+            return builder.build();
+        }
+
         @Override
-        public List<BakedQuad> getQuads(BlockState blockState, Direction side, Random rand, IModelData modelData) {
+        public List<BakedQuad> getQuads(IBlockState blockState, EnumFacing side, long rand) {
             if (side != null) return ImmutableList.of();
-            if (quads == null || partQuadMap.isEmpty()) {
+            if (partQuadMap.isEmpty())
                 quads = buildQuads(this.state);
-            }
-            IModelState newState = modelData.getData(Properties.AnimationProperty);
-            if (newState != null) {
-                newState = new ModelStateComposition(this.state, newState);
-                return buildQuads(newState);
+
+            if (blockState == null || blockState == cachedBlockstate)
+                return quads;
+
+            cachedBlockstate = blockState;
+
+            /*
+             * Does OBJState pass this check?
+             */
+            if (blockState instanceof IExtendedBlockState) {
+                IExtendedBlockState exState = (IExtendedBlockState) blockState;
+                if (exState.getUnlistedNames().contains(Properties.AnimationProperty)) {
+                    IModelState newState = exState.getValue(Properties.AnimationProperty);
+                    if (newState != null) {
+                        newState = new ModelStateComposition(this.state, newState);
+                        return buildQuads(newState);
+                    }
+                }
             }
             return ImmutableList.copyOf(partQuadMap.values().stream().flatMap(x -> x.stream()).collect(Collectors.toList()));
         }
 
-        /**
-         * Populates the partQuadMap used for easy fetching of quads for a given group
-         */
         private ImmutableList<BakedQuad> buildQuads(IModelState modelState) {
+            List<BakedQuad> quads = Lists.newArrayList();
             Collections.synchronizedSet(new LinkedHashSet<BakedQuad>());
             Map<String, Set<Face>> facesMap = Collections.synchronizedMap(new LinkedHashMap<>());
+
             Optional<TRSRTransformation> transform = Optional.empty();
+
             List<String> visibleParts;
             OBJState state = (modelState instanceof OBJState) ? (OBJState) modelState : null;
+
 
             //Fixed: moved all the visibility code out of the group loop
             if (state != null) {
@@ -1056,36 +1158,8 @@ public class MPALibOBJModel implements IUnbakedModel {
                 facesMap.put(g.name, g.applyTransform(transform));
             }
 
-            for (String group : facesMap.keySet()) {
-                if (!visibleParts.contains(group))
-                    continue;
-
-                List<BakedQuad> quads1 = new ArrayList<>();
-                for (Face f : facesMap.get(group)) {
-                    if (this.model.getMatLib().materials.get(f.getMaterialName()).isWhite()) {
-                        for (Vertex v : f.getVertices()) {//update material in each vertex
-                            if (!v.getMaterial().equals(this.model.getMatLib().getMaterial(v.getMaterial().getName()))) {
-                                v.setMaterial(this.model.getMatLib().getMaterial(v.getMaterial().getName()));
-                            }
-                        }
-                        sprite = ModelLoader.White.INSTANCE;
-                    } else
-                        sprite = this.textures.get(f.getMaterialName());
-
-                    UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
-                    builder.setContractUVs(true);
-                    builder.setQuadOrientation(Direction.getFacingFromVector(f.getNormal().x, f.getNormal().y, f.getNormal().z));
-                    builder.setTexture(sprite);
-
-                    Normal faceNormal = f.getNormal();
-                    putVertexData(builder, f.verts[0], faceNormal, TextureCoordinate.getDefaultUVs()[0], sprite);
-                    putVertexData(builder, f.verts[1], faceNormal, TextureCoordinate.getDefaultUVs()[1], sprite);
-                    putVertexData(builder, f.verts[2], faceNormal, TextureCoordinate.getDefaultUVs()[2], sprite);
-                    putVertexData(builder, f.verts[3], faceNormal, TextureCoordinate.getDefaultUVs()[3], sprite);
-                    quads1.add(builder.build());
-                }
-                partQuadMap.put(group, quads1);
-            }
+            for (String group : facesMap.keySet())
+                partQuadMap.put(group, getQuadsFromFaces(facesMap.get(group)));
 
             return ImmutableList.copyOf(partQuadMap.entrySet()
                     .stream()
@@ -1095,7 +1169,37 @@ public class MPALibOBJModel implements IUnbakedModel {
                     .flatMap(x -> x.stream()).collect(Collectors.toList()));
         }
 
-        private final void putVertexData(UnpackedBakedQuad.Builder builder, Vertex v, Normal faceNormal, TextureCoordinate defUV, TextureAtlasSprite sprite) {
+        private ImmutableList<BakedQuad> getQuadsFromFaces(Set<Face> faces) {
+            List<BakedQuad> quads = new ArrayList<>();
+            for (Face f : faces) {
+                if (this.model.getMatLib().materials.get(f.getMaterialName()).isWhite()) {
+                    for (Vertex v : f.getVertices()) {//update material in each vertex
+                        if (!v.getMaterial().equals(this.model.getMatLib().getMaterial(v.getMaterial().getName()))) {
+                            v.setMaterial(this.model.getMatLib().getMaterial(v.getMaterial().getName()));
+                        }
+                    }
+                    sprite = ModelLoader.White.INSTANCE;
+                } else sprite = this.textures.get(f.getMaterialName());
+                quads.add(getQuadForFace(f));
+            }
+            return ImmutableList.copyOf(quads);
+        }
+
+        private BakedQuad getQuadForFace(Face f) {
+            UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
+            builder.setContractUVs(true);
+            builder.setQuadOrientation(EnumFacing.getFacingFromVector(f.getNormal().x, f.getNormal().y, f.getNormal().z));
+            builder.setTexture(sprite);
+
+            Normal faceNormal = f.getNormal();
+            putVertexData(builder, f.verts[0], faceNormal, TextureCoordinate.getDefaultUVs()[0], sprite);
+            putVertexData(builder, f.verts[1], faceNormal, TextureCoordinate.getDefaultUVs()[1], sprite);
+            putVertexData(builder, f.verts[2], faceNormal, TextureCoordinate.getDefaultUVs()[2], sprite);
+            putVertexData(builder, f.verts[3], faceNormal, TextureCoordinate.getDefaultUVs()[3], sprite);
+            return builder.build();
+        }
+
+        private final void putVertexData(UnpackedBakedQuad.Builder builder, MPALibOBJModel.Vertex v, Normal faceNormal, TextureCoordinate defUV, TextureAtlasSprite sprite) {
             for (int e = 0; e < format.getElementCount(); e++) {
                 switch (format.getElement(e).getUsage()) {
                     case POSITION:
@@ -1177,14 +1281,7 @@ public class MPALibOBJModel implements IUnbakedModel {
             }
         }
 
-        private final LoadingCache<IModelState, MPALIbOBJBakedModel> cache = CacheBuilder.newBuilder().maximumSize(20).build(new CacheLoader<IModelState, MPALIbOBJBakedModel>() {
-            @Override
-            public MPALIbOBJBakedModel load(IModelState state) throws Exception {
-                return new MPALIbOBJBakedModel(model, state, format, textures);
-            }
-        });
-
-        public MPALIbOBJBakedModel getCachedModel(IModelState state) {
+        public MPALibOBJBakedModel getCachedModel(IModelState state) {
             return cache.getUnchecked(state);
         }
 
@@ -1196,18 +1293,19 @@ public class MPALibOBJModel implements IUnbakedModel {
             return this.state;
         }
 
-        public MPALIbOBJBakedModel getBakedModel() {
-            return new MPALIbOBJBakedModel(this.model, this.state, this.format, this.textures);
+        public MPALibOBJBakedModel getBakedModel() {
+            return new MPALibOBJBakedModel(this.model, this.state, this.format, this.textures);
         }
 
         @Override
         public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
-            //            TRSRTransformation tr = state.apply(Optional.of(cameraTransformType)).orElse(calibration != null ? calibration.getTransform() : TRSRTransformation.identity());
+//            TRSRTransformation tr = state.apply(Optional.of(cameraTransformType)).orElse(calibration != null ? calibration.getTransform() : TRSRTransformation.identity());
 //            if(tr != TRSRTransformation.identity())
 //            {
 //                return Pair.of(this, TRSRTransformation.blockCornerToCenter(tr).getMatrix());
 //            }
-//            return Pair.of(this, null);            
+//            return Pair.of(this, null);
+
             return PerspectiveMapWrapper.handlePerspective(this, state, cameraTransformType);
         }
 
@@ -1218,17 +1316,7 @@ public class MPALibOBJModel implements IUnbakedModel {
 
         @Override
         public ItemOverrideList getOverrides() {
-            return ItemOverrideList.EMPTY;
-        }
-    }
-
-    @SuppressWarnings("serial")
-    public static class UVsOutOfBoundsException extends RuntimeException {
-        public ResourceLocation modelLocation;
-
-        public UVsOutOfBoundsException(ResourceLocation modelLocation) {
-            super(String.format("Model '%s' has UVs ('vt') out of bounds 0-1! The missing model will be used instead. Support for UV processing will be added to the OBJ loader in the future.", modelLocation));
-            this.modelLocation = modelLocation;
+            return ItemOverrideList.NONE;
         }
     }
 }

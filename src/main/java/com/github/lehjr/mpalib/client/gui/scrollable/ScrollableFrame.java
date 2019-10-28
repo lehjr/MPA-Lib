@@ -26,14 +26,14 @@
 
 package com.github.lehjr.mpalib.client.gui.scrollable;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.github.lehjr.mpalib.client.gui.frame.IGuiFrame;
+import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
-import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.math.MathUtils;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class ScrollableFrame implements IGuiFrame {
     protected final int buttonsize = 5;
     protected int totalsize;
     protected int currentscrollpixels;
-    protected double lastdWheel = 0; //fixme
+    protected int lastdWheel = Mouse.getDWheel();
     protected boolean visibile = true;
     protected boolean enabled = true;
 
@@ -75,30 +75,31 @@ public class ScrollableFrame implements IGuiFrame {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
-        if (border.containsPoint(mouseX, mouseY)) {
-            // prevent negative total scroll values
-            currentscrollpixels  = (int) MathUtils.clampDouble(currentscrollpixels-= dWheel * getScrollAmount(), 0, getMaxScrollPixels());
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public void init(double left, double top, double right, double bottom) {
         this.border.setTargetDimensions(left, top, right, bottom);
     }
 
     @Override
     public void update(double x, double y) {
-
+        if (border.containsPoint(x, y)) {
+            int dscroll = (lastdWheel - Mouse.getDWheel()) / 15;
+            lastdWheel = Mouse.getDWheel();
+            if (Mouse.isButtonDown(0)) {
+                if ((y - border.top()) < buttonsize && currentscrollpixels > 0) {
+                    dscroll -= getScrollAmount();
+                } else if ((border.bottom() - y) < buttonsize) {
+                    dscroll += getScrollAmount();
+                }
+            }
+            currentscrollpixels = (int) MathUtils.clampDouble(currentscrollpixels + dscroll, 0, getMaxScrollPixels());
+        }
     }
 
     public void preRender(int mouseX, int mouseY, float partialTicks)  {
         border.draw();
         RenderState.glowOn();
         RenderState.texturelessOn();
-        GlStateManager.begin(GL11.GL_TRIANGLES);
+        GlStateManager.glBegin(GL11.GL_TRIANGLES);
         Colour.LIGHTBLUE.doGL();
         // Can scroll down
         if (currentscrollpixels + border.height() < totalsize) {
@@ -113,7 +114,7 @@ public class ScrollableFrame implements IGuiFrame {
             GL11.glVertex3d(border.left() + border.width() / 2 + 2, border.top() + 4, 1);
         }
         Colour.WHITE.doGL();
-        GlStateManager.end();
+        GlStateManager.glEnd();
         RenderState.texturelessOff();
 //        RenderState.scissorsOn(border.left() + 4, border.top() + 4, border.width() - 8, border.height() - 8);
         RenderState.scissorsOn(border.left(), border.top() + 4, border.width(), border.height() - 8); // get rid of margins
@@ -165,29 +166,15 @@ public class ScrollableFrame implements IGuiFrame {
     }
 
     @Override
-    public boolean mouseClicked(double x, double y, int button) {
-        if (this.border.containsPoint(x, y) && button == 0) {
-            int dscroll = 0;
-            if (y - this.border.top() < buttonsize && this.currentscrollpixels > 0) {
-                dscroll = (int)((double)dscroll - this.getScrollAmount());
-            } else if (this.border.bottom() - y < buttonsize) {
-                dscroll = (int)((double)dscroll + this.getScrollAmount());
-            }
-            if (dscroll != 0) {
-                this.currentscrollpixels = (int) MathUtils.clampDouble(this.currentscrollpixels + dscroll, 0.0D, this.getMaxScrollPixels());
-                return true;
-            }
-        }
-        return false;
+    public void onMouseDown(double x, double y, int button) {
+    }
+
+    @Override
+    public void onMouseUp(double x, double y, int button) {
     }
 
     public Point2D getUpperLeft() {
         return new Point2D(border.finalLeft(), border.finalTop());
-    }
-
-    @Override
-    public boolean mouseReleased(double x, double y, int button) {
-        return false;
     }
 
     public int getMaxScrollPixels() {
@@ -195,7 +182,7 @@ public class ScrollableFrame implements IGuiFrame {
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<String> getToolTip(int x, int y) {
         return null;
     }
 }

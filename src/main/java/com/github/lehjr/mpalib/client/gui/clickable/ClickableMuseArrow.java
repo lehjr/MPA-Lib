@@ -30,7 +30,6 @@ import com.github.lehjr.mpalib.client.gui.geometry.DrawableArrow;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.geometry.MuseRelativeRect;
 import com.github.lehjr.mpalib.math.Colour;
-import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
 
@@ -95,7 +94,7 @@ public class ClickableMuseArrow extends DrawableArrow implements IClickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
+    public List<String> getToolTip() {
         return null;
     }
 

@@ -28,7 +28,6 @@ package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.Renderer;
-import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
 
@@ -90,7 +89,7 @@ public class ClickableLabel implements IClickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
+    public List<String> getToolTip() {
         return null;
     }
 

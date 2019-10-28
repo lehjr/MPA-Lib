@@ -68,8 +68,8 @@ public class DrawableCircle {
         RenderState.arraysOnColor();
         RenderState.texturelessOn();
         RenderState.blendingOn();
-        RenderState.glColorPointer(4, 0, colour);
-        RenderState.glVertexPointer(3, 0, points);
+        GL11.glColorPointer(4, 0, colour);
+        GL11.glVertexPointer(3, 0, points);
         GL11.glDrawArrays(GL11.GL_TRIANGLE_FAN, 0, points.limit() / 3);
         RenderState.blendingOff();
         RenderState.texturelessOff();

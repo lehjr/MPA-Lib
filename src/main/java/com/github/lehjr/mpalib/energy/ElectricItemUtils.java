@@ -28,19 +28,20 @@ package com.github.lehjr.mpalib.energy;
 
 import com.github.lehjr.mpalib.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.mpalib.energy.adapter.IElectricAdapter;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
+import net.minecraft.item.ItemTool;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class ElectricItemUtils {
     /**
      * applies a given charge to the emulated tool. Used for simulating a used charge from the tool as it would normally be used
      */
-    public static int chargeEmulatedToolFromPlayerEnergy(PlayerEntity player, @Nonnull ItemStack emulatedTool) {
+    public static int chargeEmulatedToolFromPlayerEnergy(EntityPlayer player, @Nonnull ItemStack emulatedTool) {
         if (player.world.isRemote) {
             return 0;
         }
@@ -74,10 +75,10 @@ public class ElectricItemUtils {
      *
      * Note here we filter out foreign items so the player available/ usableenergy isn't wrong
      */
-    public static int getPlayerEnergy(PlayerEntity player) {
+    public static int getPlayerEnergy(EntityPlayer player) {
         int avail = 0;
 
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(player.getItemStackFromSlot(slot), true);
             if (adapter == null) {
                 continue;
@@ -92,9 +93,9 @@ public class ElectricItemUtils {
      *
      * Note here we filter out foreign items so the player available/ usableenergy isn't wrong
      */
-    public static int getMaxPlayerEnergy(PlayerEntity player) {
+    public static int getMaxPlayerEnergy(EntityPlayer player) {
         int avail = 0;
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(player.getItemStackFromSlot(slot), true);
             if (adapter == null) {
                 continue;
@@ -109,25 +110,25 @@ public class ElectricItemUtils {
      *
      * Note that charging held items while in use causes issues so they are skipped
      */
-    public static int drainPlayerEnergy(PlayerEntity player, int drainAmount) {
-        if (player.world.isRemote || player.abilities.isCreativeMode) {
+    public static int drainPlayerEnergy(EntityPlayer player, int drainAmount) {
+        if (player.world.isRemote || player.capabilities.isCreativeMode) {
             return 0;
         }
         int drainleft = drainAmount;
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
 
             // FIXME: do we still have to filter out items in use with the ~canContinueUsing method being set to true?
-//            if (slot.getSlotType() == EquipmentSlotType.Group.HAND) {
-//                if (slot == EquipmentSlotType.MAINHAND && player.getActiveHand() == Hand.MAIN_HAND) {
+//            if (slot.getSlotType() == EntityEquipmentSlot.Group.HAND) {
+//                if (slot == EntityEquipmentSlot.MAINHAND && player.getActiveHand() == Hand.MAIN_HAND) {
 //                    continue;
-//                } else if  (slot == EquipmentSlotType.OFFHAND && player.getActiveHand() == Hand.OFF_HAND) {
+//                } else if  (slot == EntityEquipmentSlot.OFFHAND && player.getActiveHand() == Hand.OFF_HAND) {
 //                    continue;
 //                }
 //            }
             ItemStack stack = player.getItemStackFromSlot(slot);
             // check if the tool is a modular item. If not, skip it.
-            if (!stack.isEmpty() && stack.getItem() instanceof ToolItem) {
-                if (stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler ->
+            if (!stack.isEmpty() && stack.getItem() instanceof ItemTool) {
+                if (Optional.of(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).map(iItemHandler ->
                         !(iItemHandler instanceof IModularItem)).orElse(true)){
                     continue;
                 }
@@ -152,13 +153,13 @@ public class ElectricItemUtils {
      *
      * Note that charging held items while in use causes issues so they are skipped
      */
-    public static int givePlayerEnergy(PlayerEntity player, int rfToGive) {
+    public static int givePlayerEnergy(EntityPlayer player, int rfToGive) {
         int rfLeft = rfToGive;
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-//            if (slot.getSlotType() == EquipmentSlotType.Group.HAND) {
-//                if (slot == EquipmentSlotType.MAINHAND && player.getActiveHand() == Hand.MAIN_HAND) {
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+//            if (slot.getSlotType() == EntityEquipmentSlot.Group.HAND) {
+//                if (slot == EntityEquipmentSlot.MAINHAND && player.getActiveHand() == Hand.MAIN_HAND) {
 //                    continue;
-//                } else if  (slot == EquipmentSlotType.OFFHAND && player.getActiveHand() == Hand.OFF_HAND) {
+//                } else if  (slot == EntityEquipmentSlot.OFFHAND && player.getActiveHand() == Hand.OFF_HAND) {
 //                    continue;
 //                }
 //            }

@@ -1,6 +1,6 @@
 {
-    "pack": {
-        "description": "MPA-Lib resources",
-        "pack_format": 4
-    }
+  "pack": {
+    "pack_format": 3,
+    "description": "Resources used for Modular Powersuits"
+  }
 }

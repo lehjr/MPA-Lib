@@ -29,18 +29,18 @@ package com.github.lehjr.mpalib.client.gui.slot;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.mpalib.client.gui.GuiIcons;
-import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.string.StringUtils;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.IItemHandler;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A wrapper for container slots with Item modules in them.
@@ -78,7 +78,7 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
+    public void draw() {
         if (!getStack().isEmpty()) {
             Renderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getStack());
             if (!allowed) {
@@ -114,10 +114,10 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
-        List<ITextComponent> toolTipText = new ArrayList<>();
+    public List<String> getToolTip() {
+        List<String> toolTipText = new ArrayList<>();
         toolTipText.add(getLocalizedName());
-        toolTipText.addAll(StringUtils.wrapITextComponentToLength(getLocalizedDescription(), 30));
+        toolTipText.addAll(Arrays.asList(StringUtils.wordUtilsWrap(getLocalizedDescription(), 30)));
         return toolTipText;
     }
 
@@ -155,20 +155,20 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
         }
     }
 
-    public ITextComponent getLocalizedName() {
+    public String getLocalizedName() {
         if (this.getStack().isEmpty())
             return null;
         return this.getStack().getDisplayName();
     }
 
-    public ITextComponent getLocalizedDescription() {
+    public String getLocalizedDescription() {
         if (this.getStack().isEmpty())
             return null;
-        return new TranslationTextComponent(this.getStack().getTranslationKey().concat(".desc"));
+        return new TextComponentTranslation(this.getStack().getTranslationKey().concat(".desc")).getFormattedText();
     }
 
     public EnumModuleCategory getCategory() {
-        return getStack().getCapability(PowerModuleCapability.POWER_MODULE).map(m->m.getCategory()).orElse(EnumModuleCategory.NONE);
+        return Optional.of(getStack().getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m->m.getCategory()).orElse(EnumModuleCategory.NONE);
     }
 
     public boolean equals(ClickableModuleSlot other) {

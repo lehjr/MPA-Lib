@@ -26,10 +26,11 @@
 
 package com.github.lehjr.mpalib.capabilities.energy;
 
-import com.github.lehjr.mpalib.nbt.MuseNBTUtils;
+import com.github.lehjr.mpalib.nbt.NBTUtils;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.IntNBT;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.EnergyStorage;
 
@@ -38,7 +39,7 @@ import javax.annotation.Nonnull;
 /**
  * Used for energy storage devices
  */
-public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWrapper, INBTSerializable<IntNBT> {
+public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWrapper, INBTSerializable<NBTTagInt> {
     private static final String TAG_ENERGY = "energy";
     protected ItemStack container;
 
@@ -53,9 +54,9 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
 //        energy = Math.min(capacity, MuseNBTUtils.getModuleIntOrZero(container, TAG_ENERGY));
 //    }
     public void updateFromNBT() {
-        final CompoundNBT nbt = MuseNBTUtils.getMuseModuleTag(container);
-        if (nbt != null && nbt.contains(TAG_ENERGY, net.minecraftforge.common.util.Constants.NBT.TAG_INT)) {
-            deserializeNBT((IntNBT) nbt.get(TAG_ENERGY));
+        final NBTTagCompound nbt = NBTUtils.getMuseModuleTag(container);
+        if (nbt != null && nbt.hasKey(TAG_ENERGY, Constants.NBT.TAG_INT)) {
+            deserializeNBT((NBTTagInt) nbt.getTag(TAG_ENERGY));
         }
     }
 
@@ -64,7 +65,7 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
     public int receiveEnergy(final int maxReceive, final boolean simulate) {
         final int energyReceived = super.receiveEnergy(maxReceive, simulate);
         if (!simulate && energyReceived != 0) {
-            MuseNBTUtils.setModuleIntOrRemove(container, TAG_ENERGY, energy);
+            NBTUtils.setModuleIntOrRemove(container, TAG_ENERGY, energy);
         }
 
         return energyReceived;
@@ -74,20 +75,20 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
     public int extractEnergy(final int maxExtract, final boolean simulate) {
         final int energyExtracted = super.extractEnergy(maxExtract, simulate);
         if (!simulate && energyExtracted != 0) {
-            MuseNBTUtils.setModuleIntOrRemove(container, TAG_ENERGY, energy);
+            NBTUtils.setModuleIntOrRemove(container, TAG_ENERGY, energy);
         }
 
         return energyExtracted;
     }
 
-    /** INBTSerializable -------------------------------------------------------------------------- */
+    /** NBTBaseSerializable -------------------------------------------------------------------------- */
     @Override
-    public IntNBT serializeNBT() {
-        return new IntNBT(energy);
+    public NBTTagInt serializeNBT() {
+        return new NBTTagInt(energy);
     }
 
     @Override
-    public void deserializeNBT(final IntNBT nbt) {
+    public void deserializeNBT(final NBTTagInt nbt) {
         energy = nbt.getInt();
     }
 }

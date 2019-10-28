@@ -26,9 +26,9 @@
 
 package com.github.lehjr.mpalib.nbt.propertymodifier;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTagCompound;
 
 public interface IPropertyModifierDouble extends IPropertyModifier<Double> {
     @Override
-    Double applyModifier(CompoundNBT moduleTag, double value);
+    Double applyModifier(NBTTagCompound moduleTag, double value);
 }

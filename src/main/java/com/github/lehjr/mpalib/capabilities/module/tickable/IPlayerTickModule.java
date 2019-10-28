@@ -27,13 +27,13 @@
 package com.github.lehjr.mpalib.capabilities.module.tickable;
 
 import com.github.lehjr.mpalib.capabilities.module.toggleable.IToggleableModule;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
 public interface IPlayerTickModule extends IToggleableModule {
-    void onPlayerTickActive(PlayerEntity player, @Nonnull ItemStack item);
+    void onPlayerTickActive(EntityPlayer player, @Nonnull ItemStack item);
 
-    void onPlayerTickInactive(PlayerEntity player, @Nonnull ItemStack item);
+    void onPlayerTickInactive(EntityPlayer player, @Nonnull ItemStack item);
 }

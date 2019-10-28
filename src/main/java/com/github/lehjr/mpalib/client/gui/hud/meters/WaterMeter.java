@@ -29,7 +29,7 @@ package com.github.lehjr.mpalib.client.gui.hud.meters;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.fluid.Fluids;
+import net.minecraftforge.fluids.FluidRegistry;
 
 
 /**
@@ -46,6 +46,6 @@ public class WaterMeter extends HeatMeter {
     }
 
     public TextureAtlasSprite getTexture() {
-        return Minecraft.getInstance().getTextureMap().getAtlasSprite(Fluids.WATER.getStillFluid().toString());
+        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(FluidRegistry.WATER.getStill().toString());
     }
 }

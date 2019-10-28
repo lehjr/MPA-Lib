@@ -28,7 +28,7 @@ package com.github.lehjr.mpalib.client.gui.hud.meters;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.fluid.Fluid;
+import net.minecraftforge.fluids.Fluid;
 
 public class FluidMeter extends HeatMeter {
     Fluid fluid;
@@ -39,6 +39,6 @@ public class FluidMeter extends HeatMeter {
 
     @Override
     public TextureAtlasSprite getTexture() {
-        return Minecraft.getInstance().getTextureMap().getAtlasSprite(fluid.getAttributes().getStillTexture().toString());
+        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getStill().toString());
     }
 }

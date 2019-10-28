@@ -27,7 +27,7 @@
 package com.github.lehjr.mpalib.capabilities.module.miningenhancement;
 
 import com.github.lehjr.mpalib.capabilities.module.rightclick.IRightClickModule;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 
@@ -36,7 +36,7 @@ import net.minecraft.util.math.BlockPos;
  * No right click functionality is actually being used.
  */
 public interface IMiningEnhancementModule extends IRightClickModule {
-    boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player);
+    boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player);
 
     int getEnergyUsage();
 }

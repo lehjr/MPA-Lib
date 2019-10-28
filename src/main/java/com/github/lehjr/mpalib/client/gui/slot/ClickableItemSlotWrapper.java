@@ -26,14 +26,12 @@
 
 package com.github.lehjr.mpalib.client.gui.slot;
 
-import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.geometry.SpiralPointToPoint2D;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.inventory.Slot;
 
 import java.util.List;
 
@@ -66,7 +64,7 @@ public class ClickableItemSlotWrapper implements IClickable {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
+    public void draw() {
         if(spiralPosition != null)
             move(spiralPosition);
 
@@ -94,8 +92,8 @@ public class ClickableItemSlotWrapper implements IClickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
-        return !slot.getStack().isEmpty() ? slot.getStack().getTooltip(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL) : null;
+    public List<String> getToolTip() {
+        return !slot.getStack().isEmpty() ? slot.getStack().getTooltip(Minecraft.getMinecraft().player, ITooltipFlag.TooltipFlags.NORMAL) : null;
     }
 
     @Override

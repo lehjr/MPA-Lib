@@ -27,9 +27,9 @@
 package com.github.lehjr.mpalib.control;
 
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.client.settings.KeyBindingMap;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 /**
  * Created by leon on 7/4/16.
@@ -44,7 +44,10 @@ public class KeyBindingHelper {
     static KeyBindingMap getKeyBindingMap() {
         try {
             if (hash == null) {
-                hash = ObfuscationReflectionHelper.getPrivateValue(KeyBinding.class, null,  "field_74514_b");
+                if ((Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment"))
+                    hash = ReflectionHelper.getPrivateValue(KeyBinding.class, null, "HASH", "b", "HASH");
+                else
+                    hash = ReflectionHelper.getPrivateValue(KeyBinding.class, null, "HASH", "b", "field_74514_b");
             }
         } catch (Exception e) {
             return null;
@@ -52,31 +55,19 @@ public class KeyBindingHelper {
         return hash;
     }
 
-    public static InputMappings.Input getInputByCode(int keyCode) {
-        return InputMappings.Type.KEYSYM.getOrMakeInput(keyCode);
-    }
-
-    public boolean keyBindingHasKey(int keyCode) {
-        return keyBindingHasKey(getInputByCode(keyCode));
-    }
-
-    public boolean keyBindingHasKey(InputMappings.Input keyCode) {
+    public boolean keyBindingHasKey(int key) {
         try {
-            return (getKeyBindingMap() != null) ? (getKeyBindingMap().lookupActive(keyCode) != null) : false;
+            return (getKeyBindingMap() != null) ? (getKeyBindingMap().lookupActive(key) != null) : false;
         } catch (Exception ignored) {
 
         }
         return false;
     }
 
-    public void removeKey(int keyCode) {
-        removeKey(getInputByCode(keyCode));
-    }
-
-    public void removeKey(InputMappings.Input keyCode) {
+    public void removeKey(int key) {
         try {
             if (getKeyBindingMap() != null)
-                hash.removeKey(hash.lookupActive(keyCode));
+                hash.removeKey(hash.lookupActive(key));
         } catch (Exception ignored) {
 
         }

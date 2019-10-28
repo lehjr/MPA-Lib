@@ -33,7 +33,7 @@ import com.github.lehjr.mpalib.client.render.modelspec.ModelRegistry;
 import com.github.lehjr.mpalib.client.render.modelspec.TexturePartSpec;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTagCompound;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -44,11 +44,11 @@ public interface IModelSpecNBT {
 
     EnumSpecType getSpecType();
 
-    CompoundNBT getMuseRenderTag();
+    NBTTagCompound getMuseRenderTag();
 
-    CompoundNBT setMuseRenderTag(CompoundNBT renderDataIn, String tagName);
+    NBTTagCompound setMuseRenderTag(NBTTagCompound renderDataIn, String tagName);
 
-    CompoundNBT getDefaultRenderTag();
+    NBTTagCompound getDefaultRenderTag();
 
     List<Integer> addNewColourstoList(List<Integer> colours, List<Integer> coloursToAdd);
 
@@ -56,14 +56,14 @@ public interface IModelSpecNBT {
 
     int getNewColourIndex(List<Integer> colours, List<Integer> oldColours, Integer index);
 
-    CompoundNBT setColorArray(int[] colors);
+    NBTTagCompound setColorArray(int[] colors);
 
     default Colour getColorFromItemStack() {
         try {
-            CompoundNBT renderTag = getMuseRenderTag();
+            NBTTagCompound renderTag = getMuseRenderTag();
             if (renderTag.contains(MPALIbConstants.NBT_TEXTURESPEC_TAG)) {
                 TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(MPALIbConstants.NBT_TEXTURESPEC_TAG));
-                CompoundNBT specTag = renderTag.getCompound(MPALIbConstants.NBT_TEXTURESPEC_TAG);
+                NBTTagCompound specTag = renderTag.getCompound(MPALIbConstants.NBT_TEXTURESPEC_TAG);
                 int index = partSpec.getColourIndex(specTag);
                 int[] colours = getColorArray();
                 if (colours.length > index)

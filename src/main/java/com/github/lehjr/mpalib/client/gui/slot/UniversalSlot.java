@@ -26,14 +26,12 @@
 
 package com.github.lehjr.mpalib.client.gui.slot;
 
-import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.container.Slot;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
@@ -131,7 +129,7 @@ public class UniversalSlot extends Slot implements IClickable{
     }
 
     @Override
-    public boolean canTakeStack(PlayerEntity playerIn) {
+    public boolean canTakeStack(EntityPlayer playerIn) {
         if (!isIItemHandler)
             return true;
         return !this.getItemHandler().extractItem(index, 1, true).isEmpty();
@@ -184,13 +182,9 @@ public class UniversalSlot extends Slot implements IClickable{
     /** IClickable -------------------------------------------------------------------------------- */
     /**
      * Not implemented here due to being handled elsewhere
-     *
-     * @param mouseX
-     * @param mouseY
-     * @param partialTicks
      */
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
+    public void draw() {
 
     }
 
@@ -213,7 +207,7 @@ public class UniversalSlot extends Slot implements IClickable{
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
+    public List<String> getToolTip() {
         return null;
     }
 

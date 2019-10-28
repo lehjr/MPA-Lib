@@ -1,0 +1,16 @@
+[
+    {
+        "modid": "mpalib",
+        "name": "MPA-Lib",
+        "description": "A common library of useful functions and utilities for dealing with Minecraft's source code. Formerly known as Numina",
+        "version": "${version}",
+        "mcversion": "${mcversion}",
+        "url": "https://github.com/lehjr/MPA-Lib",
+        "updateUrl": "",
+        "authorList": ["MachineMuse, lehjr"],
+        "credits": "Written by MachineMuse, Lehjr",
+        "logoFile": "",
+        "screenshots": [],
+        "dependencies": []
+    }
+]

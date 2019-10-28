@@ -1,45 +1,15 @@
-/*
- * Copyright (c) 2019 MachineMuse, Lehjr
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *  * Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- *
- *  * Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.github.lehjr.mpalib.client.sound;
 
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.TickableSound;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.audio.MovingSound;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * Ported to Java by lehjr on 10/22/16.
  */
-@OnlyIn(Dist.CLIENT)
-public class MovingSoundPlayer extends TickableSound {
-    private static PlayerEntity player;
+public class MovingSoundPlayer extends MovingSound {
+    private static EntityPlayer player;
 
     /*
      * Important porting note:
@@ -47,7 +17,7 @@ public class MovingSoundPlayer extends TickableSound {
      */
     public MovingSoundPlayer(SoundEvent soundIn,
                              SoundCategory categoryIn,
-                             PlayerEntity playerIn,
+                             EntityPlayer playerIn,
                              float newvolume,
                              float pitchIn,
                              boolean repeatIn) {
@@ -59,19 +29,7 @@ public class MovingSoundPlayer extends TickableSound {
         this.repeat = repeatIn;
     }
 
-    @Override
-    public void tick() {
-        this.x = (float) this.player().posX;
-        this.y = (float) this.player().posY;
-        this.z = (float) this.player().posZ;
-    }
-
-    @Override
-    public boolean canBeSilent() {
-        return false;
-    }
-
-    public PlayerEntity player() {
+    public EntityPlayer player() {
         return this.player;
     }
 
@@ -91,11 +49,18 @@ public class MovingSoundPlayer extends TickableSound {
     }
 
     @Override
-    public ISound.AttenuationType getAttenuationType() {
-        return ISound.AttenuationType.LINEAR;
+    public AttenuationType getAttenuationType() {
+        return AttenuationType.LINEAR;
     }
 
     public void stopPlaying() {
         super.donePlaying = true;
+    }
+
+    @Override
+    public void update() {
+        this.xPosF = (float) this.player().posX;
+        this.yPosF = (float) this.player().posY;
+        this.zPosF = (float) this.player().posZ;
     }
 }

@@ -28,8 +28,8 @@ package com.github.lehjr.mpalib.client.gui.hud.meters;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.client.render.IconUtils;
-import com.github.lehjr.mpalib.client.render.TextureUtils;
 import com.github.lehjr.mpalib.client.render.RenderState;
+import com.github.lehjr.mpalib.client.render.TextureUtils;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -49,7 +49,7 @@ public class HeatMeter {
     }
 
     public TextureAtlasSprite getTexture() {
-        return Minecraft.getInstance().getTextureMap().getAtlasSprite("minecraft:block/snow");
+        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/snow");
     }
 
     public void draw(double xpos, double ypos, double value) {
@@ -80,7 +80,7 @@ public class HeatMeter {
     }
 
     public void drawGlass(double xpos, double ypos) {
-        TextureUtils.pushTexture(MPALIbConstants.GLASS_TEXTURE);
+        TextureUtils.pushTexture(MPALIbConstants.GLASS_TEXTURE.toString());
         Colour.WHITE.doGL();
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glTexCoord2d(0, 0);

@@ -27,8 +27,8 @@
 package com.github.lehjr.mpalib.nbt;
 
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Method;
@@ -38,18 +38,18 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Workaround class to access static CompoundNBT.getTagMap()
+ * Workaround class to access static NBTTagCompound.getTagMap()
  *
  * @author MachineMuse
  */
-public class NBTTagAccessor extends CompoundNBT {
+public class NBTTagAccessor extends NBTTagCompound {
     public static Method mTagAccessor;
 
     /**
      * Accesses the package-visible
      * <p/>
      * <pre>
-     * Map CompoundNBT.getTagMap(CompoundNBT tag)
+     * Map NBTTagCompound.getTagMap(NBTTagCompound tag)
      * </pre>
      * <p/>
      * Will likely need to be updated every time the obfuscation changes.
@@ -61,11 +61,11 @@ public class NBTTagAccessor extends CompoundNBT {
     public static Method getTagAccessor() throws NoSuchMethodException, SecurityException {
         if (mTagAccessor == null) {
             try {
-                mTagAccessor = CompoundNBT.class.getDeclaredMethod("getTagMap", CompoundNBT.class);
+                mTagAccessor = NBTTagCompound.class.getDeclaredMethod("getTagMap", NBTTagCompound.class);
                 mTagAccessor.setAccessible(true);
                 return mTagAccessor;
             } catch (NoSuchMethodException e) {
-                mTagAccessor = CompoundNBT.class.getDeclaredMethod("a", CompoundNBT.class);
+                mTagAccessor = NBTTagCompound.class.getDeclaredMethod("a", NBTTagCompound.class);
                 mTagAccessor.setAccessible(true);
                 return mTagAccessor;
             }
@@ -75,7 +75,7 @@ public class NBTTagAccessor extends CompoundNBT {
     }
 
     @Nullable
-    public static Map getMap(CompoundNBT nbt) {
+    public static Map getMap(NBTTagCompound nbt) {
         try {
             return (Map) getTagAccessor().invoke(nbt, nbt);
         } catch (Exception e) {
@@ -85,13 +85,13 @@ public class NBTTagAccessor extends CompoundNBT {
         return null;
     }
 
-    public static List<CompoundNBT> getValues(CompoundNBT nbt) {
-        Set<String> keyset = (Set<String>) nbt.keySet();
-        ArrayList<CompoundNBT> a = new ArrayList<>(keyset.size());
+    public static List<NBTTagCompound> getValues(NBTTagCompound nbt) {
+        Set<String> keyset = (Set<String>) nbt.getKeySet();
+        ArrayList<NBTTagCompound> a = new ArrayList<>(keyset.size());
         for (String key : keyset) {
-            INBT c = nbt.get(key);
-            if (c instanceof CompoundNBT) {
-                a.add((CompoundNBT) c);
+            NBTBase c = nbt.getTag(key);
+            if (c instanceof NBTTagCompound) {
+                a.add((NBTTagCompound) c);
             }
         }
         return a;

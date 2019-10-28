@@ -28,7 +28,7 @@ package com.github.lehjr.mpalib.client.render.modelspec;
 
 import com.google.common.base.Objects;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 
 /**
  * This just provides a way to tie the armor skin for vanilla armor
@@ -47,7 +47,7 @@ public class TexturePartSpec extends PartSpecBase {
 
     @Override
     public ITextComponent getDisaplayName() {
-        return new TranslationTextComponent(new StringBuilder("textureSpec.")
+        return new TextComponentTranslation(new StringBuilder("textureSpec.")
                 .append(this.binding.getSlot().getName())
                 .append(".partName")
                 .toString());

@@ -78,7 +78,7 @@ public class ClickableButton extends Clickable {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
+    public void draw() {
         if (visible) {
             this.rect.setLeft(position.getX() - radius.getX());
             this.rect.setTop(position.getY() - radius.getY());
@@ -113,7 +113,7 @@ public class ClickableButton extends Clickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
+    public List<String> getToolTip() {
         return null;
     }
 

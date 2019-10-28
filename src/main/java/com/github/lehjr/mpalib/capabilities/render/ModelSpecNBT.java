@@ -26,12 +26,13 @@
 
 package com.github.lehjr.mpalib.capabilities.render;
 
-import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.github.lehjr.mpalib.client.render.modelspec.EnumSpecType;
-import com.github.lehjr.mpalib.nbt.MuseNBTUtils;
+import com.github.lehjr.mpalib.nbt.NBTUtils;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import javax.annotation.Nonnull;
@@ -39,7 +40,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT> {
+public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<NBTTagCompound> {
     ItemStack itemStack;
     static final String TAG_RENDER = "render";
 
@@ -54,27 +55,27 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
     }
 
     @Override
-    public CompoundNBT setMuseRenderTag(CompoundNBT renderDataIn, String tagName) {
-        CompoundNBT itemTag = MuseNBTUtils.getMuseItemTag(itemStack);
+    public NBTTagCompound setMuseRenderTag(NBTTagCompound renderDataIn, String tagName) {
+        NBTTagCompound itemTag = NBTUtils.getMuseItemTag(itemStack);
         if (tagName != null) {
             if (Objects.equals(tagName, MPALIbConstants.TAG_RENDER)) {
-                itemTag.remove(MPALIbConstants.TAG_RENDER);
+                itemTag.removeTag(MPALIbConstants.TAG_RENDER);
                 if (!renderDataIn.isEmpty())
-                    itemTag.put(MPALIbConstants.TAG_RENDER, renderDataIn);
+                    itemTag.setTag(MPALIbConstants.TAG_RENDER, renderDataIn);
             } else {
-                CompoundNBT renderTag;
-                if (!itemTag.contains(MPALIbConstants.TAG_RENDER)) {
-                    renderTag = new CompoundNBT();
-                    itemTag.put(MPALIbConstants.TAG_RENDER, renderTag);
+                NBTTagCompound renderTag;
+                if (!itemTag.hasKey(MPALIbConstants.TAG_RENDER)) {
+                    renderTag = new NBTTagCompound();
+                    itemTag.setTag(MPALIbConstants.TAG_RENDER, renderTag);
                 } else {
-                    renderTag = itemTag.getCompound(MPALIbConstants.TAG_RENDER);
+                    renderTag = itemTag.getCompoundTag(MPALIbConstants.TAG_RENDER);
                 }
                 if (renderDataIn.isEmpty()) {
                     MPALibLogger.logger.debug("Removing tag " + tagName);
-                    renderTag.remove(tagName);
+                    renderTag.removeTag(tagName);
                 } else {
                     MPALibLogger.logger.debug("Adding tag " + tagName + " : " + renderDataIn);
-                    renderTag.put(tagName, renderDataIn);
+                    renderTag.setTag(tagName, renderDataIn);
                 }
             }
         }
@@ -83,7 +84,7 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
 
     @Override
     public EnumSpecType getSpecType() {
-        if (itemStack.getEquipmentSlot() == null) {
+        if (itemStack.getItem().getEquipmentSlot(itemStack) == null) {
             return EnumSpecType.HANDHELD;
         }
         return EnumSpecType.NONE;
@@ -91,14 +92,14 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
 
     @Override
     @Nullable
-    public CompoundNBT getMuseRenderTag() {
-        CompoundNBT itemTag = MuseNBTUtils.getMuseItemTag(itemStack);
-        return itemTag.getCompound(TAG_RENDER);
+    public NBTTagCompound getMuseRenderTag() {
+        NBTTagCompound itemTag = NBTUtils.getMuseItemTag(itemStack);
+        return itemTag.getCompoundTag(TAG_RENDER);
     }
 
     @Override
-    public CompoundNBT getDefaultRenderTag() {
-        return new CompoundNBT();
+    public NBTTagCompound getDefaultRenderTag() {
+        return new NBTTagCompound();
     }
 
     /**
@@ -128,19 +129,19 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
     }
 
     @Override
-    public CompoundNBT setColorArray(int[] colors) {
-        getMuseRenderTag().putIntArray(MPALIbConstants.TAG_COLOURS, colors);
+    public NBTTagCompound setColorArray(int[] colors) {
+        getMuseRenderTag().setIntArray(MPALIbConstants.TAG_COLOURS, colors);
         return getMuseRenderTag();
     }
 
-    // INBTSerializable<CompoundNBT> ----------------------------------------------------------------------------------
+    // NBTBaseSerializable<NBTTagCompound> ----------------------------------------------------------------------------------
     @Override
-    public CompoundNBT serializeNBT() {
+    public NBTTagCompound serializeNBT() {
         return getMuseRenderTag();
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
+    public void deserializeNBT(NBTTagCompound nbt) {
         setMuseRenderTag(nbt, MPALIbConstants.TAG_RENDER);
     }
 }

@@ -1,52 +1,23 @@
-/*
- * Copyright (c) 2019 MachineMuse, Lehjr
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *  * Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- *
- *  * Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.github.lehjr.mpalib.client.render;
 
-import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
+import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.geometry.SwirlyCircle;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.model.PositionTextureVertex;
+import net.minecraft.client.model.TexturedQuad;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.model.ModelManager;
-import net.minecraft.client.renderer.model.PositionTextureVertex;
-import net.minecraft.client.renderer.model.TexturedQuad;
+import net.minecraft.client.renderer.block.model.ModelManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nonnull;
 import java.util.List;
-
-import static com.github.lehjr.mpalib.basemod.MPALIbConstants.LIGHTNING_TEXTURE;
 
 /**
  * Contains a bunch of random OpenGL-related functions, accessed statically.
@@ -55,7 +26,7 @@ import static com.github.lehjr.mpalib.basemod.MPALIbConstants.LIGHTNING_TEXTURE;
  */
 public abstract class Renderer {
 
-    protected static ItemRenderer renderItem;
+    protected static RenderItem renderItem;
 
     protected static SwirlyCircle selectionCircle;
     static boolean messagedAboutSlick = false;
@@ -73,24 +44,14 @@ public abstract class Renderer {
         selectionCircle.draw(radius, xoffset, yoffset);
     }
 
-
-    // FIXME: need lighting/shading for this module model
-
-
-    public static void drawModuleAt(double x, double y, @Nonnull ItemStack itemStack, boolean active) {
-        drawItemAt(x, y, itemStack);
-    }
-
     /**
-     * Makes the appropriate openGL calls and draws an itemStack and overlay using the default icon
+     * Makes the appropriate openGL calls and draws an item and overlay using the default icon
      */
-    public static void drawItemAt(double x, double y, @Nonnull ItemStack itemStack) {
-        if (!itemStack.isEmpty()) {
-            RenderState.on2D();
-            Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(itemStack, (int) x, (int) y);
-            Minecraft.getInstance().getItemRenderer().renderItemOverlayIntoGUI(getFontRenderer(), itemStack, (int) x, (int) y, (String) null);
-            RenderState.off2D();
-        }
+    public static void drawItemAt(double x, double y, ItemStack item) {
+        RenderState.on2D();
+        Minecraft.getMinecraft().getRenderItem().renderItemAndEffectIntoGUI(item, (int) x, (int) y);
+        Minecraft.getMinecraft().getRenderItem().renderItemOverlayIntoGUI(getFontRenderer(), item, (int) x, (int) y, (String) null);
+        RenderState.off2D();
     }
 
     public static void drawString(String s, double x, double y) {
@@ -124,11 +85,11 @@ public abstract class Renderer {
 
 
     public static double getStringWidth(String s) {
-        double stringWidth;
+        double val;
         GL11.glPushAttrib(GL11.GL_TEXTURE_BIT);
-        stringWidth = getFontRenderer().getStringWidth(s);
+        val = getFontRenderer().getStringWidth(s);
         GL11.glPopAttrib();
-        return stringWidth;
+        return val;
     }
 
     public static void drawStringsJustified(List<String> words, double x1, double x2, double y) {
@@ -149,7 +110,8 @@ public abstract class Renderer {
     /**
      * Draws a rectangular prism (cube or otherwise orthogonal)
      */
-    public static void drawRectPrism(double x, double d, double e, double f, double z, double g, float texturex, float texturey, float texturex2, float texturey2) {
+    public static void drawRectPrism(double x, double d, double e, double f, double z, double g, float texturex, float texturey, float texturex2,
+                                     float texturey2) {
         RenderState.arraysOnTexture();
         RenderState.texturelessOff();
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
@@ -217,14 +179,14 @@ public abstract class Renderer {
      * Singleton pattern for FontRenderer
      */
     public static FontRenderer getFontRenderer() {
-        return Minecraft.getInstance().fontRenderer;
+        return Minecraft.getMinecraft().fontRenderer;
     }
 
     /**
      * Singleton pattern for RenderEngine
      */
     public static TextureManager getRenderEngine() {
-        return Minecraft.getInstance().textureManager;
+        return Minecraft.getMinecraft().renderEngine;
     }
 
     /**
@@ -232,9 +194,9 @@ public abstract class Renderer {
      *
      * @return the static renderItem instance
      */
-    public static ItemRenderer getRenderItem(TextureManager textureManager, ModelManager modelManager) {
+    public static RenderItem getRenderItem(TextureManager textureManager, ModelManager modelManager) {
         if (renderItem == null) {
-            renderItem = new ItemRenderer(textureManager, modelManager, null); // FIXME!!!! this shoudl be an itemStack color but might be good enough to get running
+            renderItem = new RenderItem(textureManager, modelManager, null); // FIXME!!!! this shoudl be an item color but might be good enough to get running
         }
         return renderItem;
     }
@@ -306,7 +268,7 @@ public abstract class Renderer {
         double jagfactor = 0.3;
         RenderState.on2D();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
-        TextureUtils.pushTexture(LIGHTNING_TEXTURE);
+        TextureUtils.pushTexture(MPALIbConstants.LIGHTNING_TEXTURE.toString());
         RenderState.blendingOn();
         colour.doGL();
         GL11.glBegin(GL11.GL_QUADS);
@@ -331,7 +293,7 @@ public abstract class Renderer {
     }
 
     public static void drawLightningBetweenPoints(double x1, double y1, double z1, double x2, double y2, double z2, int index) {
-        TextureUtils.pushTexture(LIGHTNING_TEXTURE);
+        TextureUtils.pushTexture(MPALIbConstants.LIGHTNING_TEXTURE.toString());
         double u1 = index / 50.0;
         double u2 = u1 + 0.02;
         double px = (y1 - y2) * 0.125;
@@ -390,6 +352,7 @@ public abstract class Renderer {
         RenderState.off2D();
         RenderState.blendingOff();
         RenderState.texturelessOff();
+
     }
 
     public static void unRotate() {

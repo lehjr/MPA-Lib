@@ -27,58 +27,59 @@
 package com.github.lehjr.mpalib.network.packets;
 
 import com.github.lehjr.mpalib.capabilities.inventory.modularitem.IModularItem;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import com.github.lehjr.mpalib.network.MuseByteBufferUtils;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import java.util.function.Supplier;
+import java.util.Optional;
 
-public class ToggleRequestPacket {
-    ResourceLocation registryName;
+public class ToggleRequestPacket implements IMessage {
+    String registryName;
     boolean toggleval;
 
     public ToggleRequestPacket(ResourceLocation registryName, boolean active) {
-        this.registryName = registryName;
+        this.registryName = registryName.toString();
         this.toggleval = active;
     }
 
-    public static void encode(ToggleRequestPacket msg, PacketBuffer packetBuffer) {
-        packetBuffer.writeString(msg.registryName.toString());
-        packetBuffer.writeBoolean(msg.toggleval);
+    @Override
+    public void fromBytes(ByteBuf buf) {
+        this.registryName = MuseByteBufferUtils.readUTF8String(buf);
+        this.toggleval = buf.readBoolean();
     }
 
-    public static ToggleRequestPacket decode(PacketBuffer packetBuffer) {
-        return new ToggleRequestPacket(
-                new ResourceLocation(packetBuffer.readString(500)),
-                packetBuffer.readBoolean()
-        );
+    @Override
+    public void toBytes(ByteBuf buf) {
+        MuseByteBufferUtils.writeUTF8String(buf, registryName);
+        buf.writeBoolean(toggleval);
     }
 
-    public static void handle(ToggleRequestPacket message, Supplier<NetworkEvent.Context> ctx) {
-        final ServerPlayerEntity player = ctx.get().getSender();
+    public static class Handler implements IMessageHandler<ToggleRequestPacket, IMessage> {
+        @Override
+        public IMessage onMessage(ToggleRequestPacket message, MessageContext ctx) {
+            if (ctx.side == Side.SERVER) {
+                String registryName = message.registryName;
+                boolean toggleval = message.toggleval;
 
-        if (player == null || player.getServer() == null)
-            return;
-
-        ctx.get().enqueueWork(()-> {
-            ResourceLocation registryName = message.registryName;
-            boolean toggleval = message.toggleval;
-
-            if (player == null)
-                return;
-
-            for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler ->{
-                    if (handler instanceof IModularItem) {
-                        ((IModularItem) handler).toggleModule(registryName, toggleval);
+                final EntityPlayerMP player = ctx.getServerHandler().player;
+                player.getServerWorld().addScheduledTask(() -> {
+                    for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+                        Optional.of(player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler -> {
+                            if (handler instanceof IModularItem) {
+                                ((IModularItem) handler).toggleModule(new ResourceLocation(registryName), toggleval);
+                            }
+                        });
                     }
+                    player.inventory.markDirty();
                 });
             }
-            player.inventory.markDirty();
-
-        });
-        ctx.get().setPacketHandled(true);
+            return null;
+        }
     }
 }

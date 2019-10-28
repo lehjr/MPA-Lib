@@ -27,15 +27,13 @@
 package com.github.lehjr.forge.obj;
 
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.IUnbakedModel;
-import net.minecraft.resources.IResource;
-import net.minecraft.resources.IResourceManager;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.resource.IResourceType;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.compress.utils.IOUtils;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -44,24 +42,23 @@ import java.util.Map;
 import java.util.Set;
 
 /*
- * Loader for modified OBJ models.
- * If you don't need an easy way to get the quads for a given part, then use the Forge version instead.
+ * Loader for OBJ models.
  * To enable your mod call instance.addDomain(modid).
+ * If you need more control over accepted resources - extend the class, and register a new instance with ModelLoaderRegistry.
  *
  * Slightly modified version of Forge's loader because You cannot extend an Enum ^
  */
 public enum MPALibOBJLoader implements ICustomModelLoader {
     INSTANCE;
 
-    private static final org.apache.logging.log4j.Logger LOGGER = MPALibLogger.logger;
-    private IResourceManager manager;
     private final Set<String> enabledDomains = new HashSet<>();
     private final Map<ResourceLocation, MPALibOBJModel> cache = new HashMap<>();
     private final Map<ResourceLocation, Exception> errors = new HashMap<>();
+    private IResourceManager manager;
 
     public void addDomain(String domain) {
         enabledDomains.add(domain.toLowerCase());
-        LOGGER.info("MPALibOBJLoader: Domain {} has been added.", domain.toLowerCase());
+        MPALibLogger.logger.info("MPALibOBJLoader: Domain {} has been added.", domain.toLowerCase());
     }
 
     @Override
@@ -77,22 +74,19 @@ public enum MPALibOBJLoader implements ICustomModelLoader {
     }
 
     @Override
-    public IUnbakedModel loadModel(ResourceLocation modelLocation) throws Exception {
-        ResourceLocation location = new ResourceLocation(modelLocation.getNamespace(), modelLocation.getPath());
-        if (!cache.containsKey(location)) {
+    public IModel loadModel(ResourceLocation modelLocation) throws Exception {
+        ResourceLocation file = new ResourceLocation(modelLocation.getNamespace(), modelLocation.getPath().replaceFirst("^models/models", "models"));
+        if (!cache.containsKey(file)) {
             IResource resource = null;
             try {
                 try {
-                    // the resource manager may not be set due to changes in event registering
-                    if (manager == null) {
-                        manager = Minecraft.getInstance().getResourceManager();
-                    }
-                    resource = manager.getResource(location);
+                    resource = manager.getResource(file);
                 } catch (FileNotFoundException e) {
+                    MPALibLogger.logException("failed to load model: ", e);
                     if (modelLocation.getPath().startsWith("models/block/"))
-                        resource = manager.getResource(new ResourceLocation(location.getNamespace(), "models/item/" + location.getPath().substring("models/block/".length())));
+                        resource = manager.getResource(new ResourceLocation(file.getNamespace(), "models/item/" + file.getPath().substring("models/block/".length())));
                     else if (modelLocation.getPath().startsWith("models/item/"))
-                        resource = manager.getResource(new ResourceLocation(location.getNamespace(), "models/block/" + location.getPath().substring("models/item/".length())));
+                        resource = manager.getResource(new ResourceLocation(file.getNamespace(), "models/block/" + file.getPath().substring("models/item/".length())));
                     else throw e;
                 }
                 MPALibOBJModel.Parser parser = new MPALibOBJModel.Parser(resource, manager);
@@ -108,14 +102,9 @@ public enum MPALibOBJLoader implements ICustomModelLoader {
                 IOUtils.closeQuietly(resource);
             }
         }
-        MPALibOBJModel model = cache.get(location);
+        MPALibOBJModel model = cache.get(file);
         if (model == null)
-            throw new ModelLoaderRegistry.LoaderException("Error loading model previously: " + location, errors.get(modelLocation));
+            throw new ModelLoaderRegistry.LoaderException("Error loading model previously: " + file, errors.get(modelLocation));
         return model;
-    }
-
-    @Override
-    public IResourceType getResourceType() {
-        return null;
     }
 }

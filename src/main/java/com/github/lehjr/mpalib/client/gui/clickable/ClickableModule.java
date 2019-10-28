@@ -34,7 +34,7 @@ import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.string.StringUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ public class ClickableModule extends Clickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
+    public List<String> getToolTip() {
         List<ITextComponent> toolTipText = new ArrayList<>();
         toolTipText.add(getLocalizedName());
         toolTipText.addAll(StringUtils.wrapITextComponentToLength(getLocalizedDescription(), 30));
@@ -110,7 +110,7 @@ public class ClickableModule extends Clickable {
     public ITextComponent getLocalizedDescription() {
         if (this.getModule().isEmpty())
             return null;
-        return new TranslationTextComponent(this.getModule().getTranslationKey().concat(".desc"));
+        return new TextComponentTranslation(this.getModule().getTranslationKey().concat(".desc"));
     }
 
     @Override

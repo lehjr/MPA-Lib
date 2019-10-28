@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.nbt.propertymodifier;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * Used for Base properties such as MAXIMUM_ENERGY.
@@ -44,7 +44,7 @@ public class PropertyModifierFlatAdditiveDouble implements IPropertyModifierDoub
      * @return getValue + this.valueAdded
      */
     @Override
-    public Double applyModifier(CompoundNBT moduleTag, double value) {
+    public Double applyModifier(NBTTagCompound moduleTag, double value) {
         return value + this.valueAdded;
     }
 }

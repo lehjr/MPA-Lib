@@ -157,15 +157,15 @@ public class DrawableRelativeRect extends MuseRelativeRect {
 
     public void drawBackground() {
         // render inside
-        RenderState.glColorPointer(4, 0, coloursInside);
-        RenderState.glVertexPointer(3, 0, vertices);
+        GL11.glColorPointer(4, 0, coloursInside);
+        GL11.glVertexPointer(3, 0, vertices);
         GL11.glDrawArrays(GL11.GL_TRIANGLE_FAN, 0, vertices.limit() / 3);
     }
 
     public void drawBorder() {
         // render border
-        RenderState.glColorPointer(4, 0, coloursOutside);
-        RenderState.glVertexPointer(3, 0, vertices);
+        GL11.glColorPointer(4, 0, coloursOutside);
+        GL11.glVertexPointer(3, 0, vertices);
         GL11.glDrawArrays(GL11.GL_LINE_LOOP, 0, vertices.limit() / 3);
     }
 

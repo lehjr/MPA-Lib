@@ -26,9 +26,9 @@
 
 package com.github.lehjr.mpalib.client.gui.geometry;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 public class DrawableTile extends MuseRelativeRect {
@@ -102,10 +102,10 @@ public class DrawableTile extends MuseRelativeRect {
     }
 
     void vertices() {
-        GlStateManager.vertex3f((float)left(), (float)top(), 1);
-        GlStateManager.vertex3f((float)right(), (float)top(), 1);
-        GlStateManager.vertex3f((float)right(), (float)bottom(), 1);
-        GlStateManager.vertex3f((float)left(), (float)bottom(), 1);
+        GlStateManager.glVertex3f((float)left(), (float)top(), 1);
+        GlStateManager.glVertex3f((float)right(), (float)top(), 1);
+        GlStateManager.glVertex3f((float)right(), (float)bottom(), 1);
+        GlStateManager.glVertex3f((float)left(), (float)bottom(), 1);
     }
 
     public void preDraw() {
@@ -129,16 +129,16 @@ public class DrawableTile extends MuseRelativeRect {
 
         preDraw();
 
-        GlStateManager.begin(GL11.GL_POLYGON);
+        GlStateManager.glBegin(GL11.GL_POLYGON);
         backgroundColour.doGL();
         vertices();
-        GlStateManager.end();
+        GlStateManager.glEnd();;
 
-        GlStateManager.begin(GL11.GL_LINE_LOOP);
+        GlStateManager.glBegin(GL11.GL_LINE_LOOP);
 //        GlStateManager.lineWidth(4f);
         borderColour.doGL();
         vertices();
-        GlStateManager.end();
+        GlStateManager.glEnd();
         postDraw();
 
         if (!smooth)

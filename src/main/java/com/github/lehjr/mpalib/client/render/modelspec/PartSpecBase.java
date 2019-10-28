@@ -27,7 +27,7 @@
 package com.github.lehjr.mpalib.client.render.modelspec;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.Objects;
@@ -64,29 +64,29 @@ public abstract class PartSpecBase {
 
     public abstract ITextComponent getDisaplayName();
 
-    public int getColourIndex(CompoundNBT nbt) {
-        return nbt.contains(MPALIbConstants.TAG_COLOUR_INDEX) ? nbt.getInt(MPALIbConstants.TAG_COLOUR_INDEX) : this.defaultcolourindex;
+    public int getColourIndex(NBTTagCompound nbt) {
+        return nbt.hasKey(MPALIbConstants.TAG_COLOUR_INDEX) ? nbt.getInteger(MPALIbConstants.TAG_COLOUR_INDEX) : this.defaultcolourindex;
     }
 
-    public void setColourIndex(CompoundNBT nbt, int c) {
-        if (c == this.defaultcolourindex) nbt.remove(MPALIbConstants.TAG_COLOUR_INDEX);
-        else nbt.putInt(MPALIbConstants.TAG_COLOUR_INDEX, c);
+    public void setColourIndex(NBTTagCompound nbt, int c) {
+        if (c == this.defaultcolourindex) nbt.removeTag(MPALIbConstants.TAG_COLOUR_INDEX);
+        else nbt.setInteger(MPALIbConstants.TAG_COLOUR_INDEX, c);
     }
 
-    public void setModel(CompoundNBT nbt, SpecBase model) {
+    public void setModel(NBTTagCompound nbt, SpecBase model) {
         String modelString = ModelRegistry.getInstance().getName(model);
         setModel(nbt, ((modelString != null) ? modelString : ""));
     }
 
-    public void setModel(CompoundNBT nbt, String modelname) {
-        nbt.putString(MPALIbConstants.TAG_MODEL, modelname);
+    public void setModel(NBTTagCompound nbt, String modelname) {
+        nbt.setString(MPALIbConstants.TAG_MODEL, modelname);
     }
 
-    public void setPart(CompoundNBT nbt) {
-        nbt.putString(MPALIbConstants.TAG_PART, this.partName);
+    public void setPart(NBTTagCompound nbt) {
+        nbt.setString(MPALIbConstants.TAG_PART, this.partName);
     }
 
-    public CompoundNBT multiSet(CompoundNBT nbt, Integer colourIndex) {
+    public NBTTagCompound multiSet(NBTTagCompound nbt, Integer colourIndex) {
         this.setPart(nbt);
         this.setModel(nbt, this.spec);
         this.setColourIndex(nbt, (colourIndex != null) ? colourIndex : defaultcolourindex);

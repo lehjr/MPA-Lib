@@ -27,20 +27,20 @@
 package com.github.lehjr.mpalib.energy.adapter;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class ForgeEnergyAdapter implements IElectricAdapter {
     private ItemStack itemStack;
-    private LazyOptional<IEnergyStorage> energyStorage;
+    private Optional<IEnergyStorage> energyStorage;
 
     public ForgeEnergyAdapter(@Nonnull ItemStack itemStack) {
         this.itemStack = itemStack;
-        energyStorage = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
+        energyStorage = Optional.of(itemStack.getCapability(CapabilityEnergy.ENERGY, null));
     }
 
     @Nullable

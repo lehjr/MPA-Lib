@@ -28,10 +28,11 @@ package com.github.lehjr.mpalib.control;
 
 import com.github.lehjr.mpalib.capabilities.player.CapabilityPlayerKeyStates;
 import com.github.lehjr.mpalib.capabilities.player.IPlayerKeyStates;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraftforge.common.util.LazyOptional;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.player.EntityPlayer;
+
+import java.util.Optional;
 
 public class PlayerMovementInputWrapper {
     public static class PlayerMovementInput {
@@ -55,24 +56,24 @@ public class PlayerMovementInputWrapper {
         }
     }
 
-    public static PlayerMovementInput get(PlayerEntity player) {
+    public static PlayerMovementInput get(EntityPlayer player) {
         if (player.world.isRemote) {
-            if (player instanceof RemoteClientPlayerEntity) // multiplayer not dedicated server
+            if (player instanceof EntityOtherPlayerMP) // multiplayer not dedicated server
                 return fromServer(player);
             return fromClient(player);
         }
         return fromServer(player);
     }
 
-    static LazyOptional<IPlayerKeyStates> getCapability(PlayerEntity player) {
-        return player.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES, null);
+    static Optional<IPlayerKeyStates> getCapability(EntityPlayer player) {
+        return Optional.of(player.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES, null));
     }
 
-    static PlayerMovementInput fromServer(PlayerEntity player) {
+    static PlayerMovementInput fromServer(EntityPlayer player) {
         boolean jumpKey = false;
         boolean downKey = false;
 
-        LazyOptional<IPlayerKeyStates> playerCap = getCapability(player);
+        Optional<IPlayerKeyStates> playerCap = getCapability(player);
         if (playerCap.isPresent()) {
             jumpKey = playerCap.map(m -> m.getJumpKeyState()).orElse(false);
             downKey = playerCap.map(m -> m.getDownKeyState()).orElse(false);
@@ -86,13 +87,13 @@ public class PlayerMovementInputWrapper {
                 player.isSneaking());
     }
 
-    static PlayerMovementInput fromClient(PlayerEntity player) {
+    static PlayerMovementInput fromClient(EntityPlayer player) {
         boolean jumpKey = false;
         boolean downKey = false;
 
-        ClientPlayerEntity clientPlayer = (ClientPlayerEntity) player;
+        EntityPlayerSP clientPlayer = (EntityPlayerSP) player;
 
-        LazyOptional<IPlayerKeyStates> playerCap = getCapability(player);
+        Optional<IPlayerKeyStates> playerCap = getCapability(player);
         if (playerCap.isPresent()) {
             jumpKey = playerCap.map(m -> m.getJumpKeyState()).orElse(false);
             downKey = playerCap.map(m -> m.getDownKeyState()).orElse(false);

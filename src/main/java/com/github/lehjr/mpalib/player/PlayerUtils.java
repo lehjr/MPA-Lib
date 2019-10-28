@@ -26,13 +26,12 @@
 
 package com.github.lehjr.mpalib.player;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.DesertBiome;
+import net.minecraft.world.biome.BiomeDesert;
 import net.minecraft.world.chunk.Chunk;
 
 import javax.annotation.Nonnull;
@@ -43,25 +42,26 @@ import javax.annotation.Nonnull;
  * Ported to Java by lehjr on 10/24/16.
  */
 public final class PlayerUtils {
-    public static void resetFloatKickTicks(PlayerEntity player) {
-        if (player instanceof ServerPlayerEntity) {
-            ((ServerPlayerEntity) player).connection.floatingTickCount = 0;
+    public static void resetFloatKickTicks(EntityPlayer player) {
+        if (player instanceof EntityPlayerMP) {
+            EntityPlayerMP entityPlayerMP = (EntityPlayerMP) player;
+            entityPlayerMP.connection.floatingTickCount = 0;
         }
     }
 
-    public static void teleportEntity(PlayerEntity PlayerEntity, RayTraceResult rayTraceResult) {
-        if (rayTraceResult != null && PlayerEntity instanceof ServerPlayerEntity) {
-            ServerPlayerEntity player = (ServerPlayerEntity) PlayerEntity;
+    public static void teleportEntity(EntityPlayer EntityPlayer, RayTraceResult rayTraceResult) {
+        if (rayTraceResult != null && EntityPlayer instanceof EntityPlayerMP) {
+            EntityPlayerMP player = (EntityPlayerMP) EntityPlayer;
             if (player.connection.netManager.isChannelOpen()) {
-                switch (rayTraceResult.getType()) {
+                switch (rayTraceResult.typeOfHit) {
                     case ENTITY:
-                        player.setPositionAndUpdate(rayTraceResult.getHitVec().x, rayTraceResult.getHitVec().y, rayTraceResult.getHitVec().z);
+                        player.setPositionAndUpdate(rayTraceResult.hitVec.x, rayTraceResult.hitVec.y, rayTraceResult.hitVec.z);
                         break;
                     case BLOCK:
-                        double hitx = rayTraceResult.getHitVec().x;
-                        double hity = rayTraceResult.getHitVec().y;
-                        double hitz = rayTraceResult.getHitVec().z;
-                        switch (((BlockRayTraceResult)rayTraceResult).getFace()) {
+                        double hitx = rayTraceResult.hitVec.x;
+                        double hity = rayTraceResult.hitVec.y;
+                        double hitz = rayTraceResult.hitVec.z;
+                        switch (rayTraceResult.sideHit) {
                             case DOWN: // Bottom
                                 hity -= 2;
                                 break;
@@ -92,7 +92,7 @@ public final class PlayerUtils {
         }
     }
 
-    public static double getPlayerCoolingBasedOnMaterial(@Nonnull PlayerEntity player) {
+    public static double getPlayerCoolingBasedOnMaterial(@Nonnull EntityPlayer player) {
         // cheaper method of checking if player is in lava. Described as "non-chunkloading copy of Entity.isInLava()"
 //        if (ModCompatibility.isEnderCoreLoaded()) {
 //            if (EnderCoreMethods.isInLavaSafe(player))
@@ -112,13 +112,13 @@ public final class PlayerUtils {
             cool += 0.5;
 
         // If nighttime and in the desert, increase cooling
-        if (!player.world.isDaytime() && getBiome(player) instanceof DesertBiome) {
+        if (!player.world.isDaytime() && getBiome(player) instanceof BiomeDesert) {
             cool += 0.8;
         }
 
         // check for rain and if player is in the rain
         // check if rain can happen in the biome the player is in
-        if (player.world.getBiome(player.getPosition()).getPrecipitation() != Biome.RainType.NONE
+        if (player.world.getBiome(player.getPosition()).getRainfall() > 0
                 // check if raining in the world
                 && player.world.isRaining()
                 // check if the player can see the sky
@@ -129,8 +129,8 @@ public final class PlayerUtils {
         return cool;
     }
 
-    public static Biome getBiome(PlayerEntity player) {
+    public static Biome getBiome(EntityPlayer player) {
         Chunk chunk = (Chunk) player.world.getChunk(player.getPosition());
-        return chunk.getBiome(player.getPosition());
+        return chunk.getBiome(player.getPosition(), player.world.getBiomeProvider());
     }
 }

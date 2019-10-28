@@ -26,13 +26,11 @@
 
 package com.github.lehjr.mpalib.client.gui.slot;
 
-import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
 
@@ -54,7 +52,7 @@ public class ClickableItemSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
+    public void draw() {
         Renderer.drawItemAt(
                 getPosition().getX() - offsetx,
                 getPosition().getY() - offsety, getStack());
@@ -84,8 +82,8 @@ public class ClickableItemSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
-        return !getStack().isEmpty() ? getStack().getTooltip(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL) : null;
+    public List<String> getToolTip() {
+        return !getStack().isEmpty() ? getStack().getTooltip(Minecraft.getMinecraft().player, ITooltipFlag.TooltipFlags.NORMAL) : null;
     }
 
     @Override

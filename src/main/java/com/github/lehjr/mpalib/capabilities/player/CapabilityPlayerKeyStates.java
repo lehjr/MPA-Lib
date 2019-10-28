@@ -26,19 +26,18 @@
 
 package com.github.lehjr.mpalib.capabilities.player;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class CapabilityPlayerKeyStates implements ICapabilitySerializable<CompoundNBT> {
+public class CapabilityPlayerKeyStates implements ICapabilitySerializable<NBTTagCompound> {
     @CapabilityInject(IPlayerKeyStates.class)
     public static Capability<IPlayerKeyStates> PLAYER_KEYSTATES = null;
     private IPlayerKeyStates instance = PLAYER_KEYSTATES.getDefaultInstance();
@@ -46,18 +45,18 @@ public class CapabilityPlayerKeyStates implements ICapabilitySerializable<Compou
     public static void register() {
         CapabilityManager.INSTANCE.register(IPlayerKeyStates.class, new Capability.IStorage<IPlayerKeyStates>() {
                     @Override
-                    public INBT writeNBT(Capability<IPlayerKeyStates> capability, IPlayerKeyStates instance, Direction side) {
-                        CompoundNBT nbt = new CompoundNBT();
-                        nbt.putBoolean("jumpKey", instance.getJumpKeyState());
-                        nbt.putBoolean("downKey", instance.getDownKeyState());
+                    public NBTBase writeNBT(Capability<IPlayerKeyStates> capability, IPlayerKeyStates instance, EnumFacing side) {
+                        NBTTagCompound nbt = new NBTTagCompound();
+                        nbt.setBoolean("jumpKey", instance.getJumpKeyState());
+                        nbt.setBoolean("downKey", instance.getDownKeyState());
                         return nbt;
                     }
 
                     @Override
-                    public void readNBT(Capability<IPlayerKeyStates> capability, IPlayerKeyStates instance, Direction side, INBT nbt) {
-                        if (nbt instanceof CompoundNBT) {
-                            instance.setJumpKeyState(((CompoundNBT) nbt).getBoolean("jumpKey"));
-                            instance.setJumpKeyState(((CompoundNBT) nbt).getBoolean("downKey"));
+                    public void readNBT(Capability<IPlayerKeyStates> capability, IPlayerKeyStates instance, EnumFacing side, NBTBase nbt) {
+                        if (nbt instanceof NBTTagCompound) {
+                            instance.setJumpKeyState(((NBTTagCompound) nbt).getBoolean("jumpKey"));
+                            instance.setJumpKeyState(((NBTTagCompound) nbt).getBoolean("downKey"));
                         }
                     }
                 },
@@ -65,18 +64,23 @@ public class CapabilityPlayerKeyStates implements ICapabilitySerializable<Compou
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        return (CompoundNBT) PLAYER_KEYSTATES.getStorage().writeNBT(PLAYER_KEYSTATES, this.instance, null);
+    public NBTTagCompound serializeNBT() {
+        return (NBTTagCompound) PLAYER_KEYSTATES.getStorage().writeNBT(PLAYER_KEYSTATES, this.instance, null);
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
+    public void deserializeNBT(NBTTagCompound nbt) {
         PLAYER_KEYSTATES.getStorage().readNBT(PLAYER_KEYSTATES, this.instance, null, nbt);
     }
 
-    @Nonnull
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        return PLAYER_KEYSTATES.orEmpty(cap, LazyOptional.of(()-> new PlayerKeyStateStorage()));
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+        return capability == PLAYER_KEYSTATES;
+    }
+
+    @Nullable
+    @Override
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+        return capability == PLAYER_KEYSTATES ? (T) new PlayerKeyStateStorage() : null;
     }
 }

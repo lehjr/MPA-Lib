@@ -30,7 +30,7 @@ import com.github.lehjr.mpalib.client.gui.slot.ClickableItemSlot;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.InventoryPlayer;
 
 /**
  * The IModularItem/IModeChangingItem capable ItemStack in the player's inventory
@@ -39,14 +39,13 @@ public class ClickableModularItem extends ClickableItemSlot {
     public static final int offsetx = 8;
     public static final int offsety = 8;
 
-    public ClickableModularItem(PlayerInventory itemHandler, int index, int xPosition, int yPosition) {
+    public ClickableModularItem(InventoryPlayer itemHandler, int index, int xPosition, int yPosition) {
         super(itemHandler, index, xPosition, yPosition);
     }
 
-    @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        super.render(mouseX, mouseY, partialTicks);
-        if (this.slotNumber > 35 || this.slotNumber == Minecraft.getInstance().player.inventory.currentItem) {
+        super.draw(mouseX, mouseY, partialTicks);
+        if (this.slotNumber > 35 || this.slotNumber == Minecraft.getMinecraft().player.inventory.currentItem) {
             Renderer.drawString("e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARKGREEN);
         }
     }

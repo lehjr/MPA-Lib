@@ -27,9 +27,6 @@
 package com.github.lehjr.mpalib.client.gui;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
-import com.github.lehjr.mpalib.client.render.IconUtils;
-import com.github.lehjr.mpalib.client.render.TextureUtils;
-import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;

@@ -27,28 +27,28 @@
 package com.github.lehjr.mpalib.capabilities.module.powermodule;
 
 
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.EntityEquipmentSlot;
 
 /**
  * Used for determining where a module can be installed.
  */
 public enum EnumModuleTarget {
     NONE(null),
-    ARMORONLY(EquipmentSlotType.Group.ARMOR),
+    ARMORONLY(EntityEquipmentSlot.Type.ARMOR),
     ALLITEMS(null),
-    HEADONLY(EquipmentSlotType.Group.ARMOR),
-    TORSOONLY(EquipmentSlotType.Group.ARMOR),
-    LEGSONLY(EquipmentSlotType.Group.ARMOR),
-    FEETONLY(EquipmentSlotType.Group.ARMOR),
-    TOOLONLY(EquipmentSlotType.Group.HAND);
+    HEADONLY(EntityEquipmentSlot.Type.ARMOR),
+    TORSOONLY(EntityEquipmentSlot.Type.ARMOR),
+    LEGSONLY(EntityEquipmentSlot.Type.ARMOR),
+    FEETONLY(EntityEquipmentSlot.Type.ARMOR),
+    TOOLONLY(EntityEquipmentSlot.Type.HAND);
 
-    private final EquipmentSlotType.Group type;
+    private final EntityEquipmentSlot.Type type;
 
-    EnumModuleTarget(EquipmentSlotType.Group type) {
+    EnumModuleTarget(EntityEquipmentSlot.Type type) {
         this.type = type;
     }
 
-    public EquipmentSlotType.Group getType() {
+    public EntityEquipmentSlot.Type getType() {
         return type;
     }
 }

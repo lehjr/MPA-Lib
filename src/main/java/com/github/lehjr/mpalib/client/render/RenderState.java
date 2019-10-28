@@ -1,39 +1,10 @@
-/*
- * Copyright (c) 2019 MachineMuse, Lehjr
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *  * Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- *
- *  * Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.github.lehjr.mpalib.client.render;
 
-import com.mojang.blaze3d.platform.GLX;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import org.lwjgl.opengl.GL11;
-
-import java.nio.DoubleBuffer;
-
-import static org.lwjgl.system.MemoryUtil.memAddress;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -115,25 +86,17 @@ public final class RenderState {
         GL11.glPopAttrib();
     }
 
-    public static void glColorPointer(int size, int stride, DoubleBuffer pointer) {
-        GL11.nglColorPointer(size, GL11.GL_DOUBLE, stride, memAddress(pointer));
-    }
-
-    public static void glVertexPointer(int size, int stride, DoubleBuffer pointer) {
-        GL11.nglVertexPointer(size, GL11.GL_DOUBLE, stride, memAddress(pointer));
-    }
-
     public static void scissorsOn(double x, double y, double w, double h) {
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_SCISSOR_BIT);
         GL11.glPushMatrix();
-        Minecraft mc = Minecraft.getInstance();
-//        int dw = mc.mainWindow.getWidth();
-        int dh = mc.mainWindow.getHeight();
-        double scaleFactor = mc.mainWindow.getGuiScaleFactor();
-        double newx = x * scaleFactor;
-        double newy = dh - h * scaleFactor - y * scaleFactor;
-        double neww = w * scaleFactor;
-        double newh = h * scaleFactor;
+        Minecraft mc = Minecraft.getMinecraft();
+        int dw = mc.displayWidth;
+        int dh = mc.displayHeight;
+        ScaledResolution res = new ScaledResolution(mc);
+        double newx = x * res.getScaleFactor();
+        double newy = dh - h * res.getScaleFactor() - y * res.getScaleFactor();
+        double neww = w * res.getScaleFactor();
+        double newh = h * res.getScaleFactor();
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         GL11.glScissor((int) newx, (int) newy, (int) neww, (int) newh);
     }
@@ -145,14 +108,14 @@ public final class RenderState {
 
     public static void glowOn() {
         GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
-        lightmapLastX = GLX.lastBrightnessX;
-        lightmapLastY = GLX.lastBrightnessY;
+        lightmapLastX = OpenGlHelper.lastBrightnessX;
+        lightmapLastY = OpenGlHelper.lastBrightnessY;
         RenderHelper.disableStandardItemLighting();
-        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
     }
 
     public static void glowOff() {
-        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, lightmapLastX, lightmapLastY);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightmapLastX, lightmapLastY);
         RenderHelper.enableStandardItemLighting();
         GL11.glPopAttrib();
     }

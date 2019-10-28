@@ -27,12 +27,12 @@
 package com.github.lehjr.mpalib.client.render.modelspec;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,7 +40,7 @@ import java.util.Objects;
 /**
  * Ported to Java by lehjr on 11/8/16.
  */
-@OnlyIn(Dist.CLIENT)
+@SideOnly(Side.CLIENT)
 public class ModelPartSpec extends PartSpecBase {
     private final boolean defaultglow;
 
@@ -55,7 +55,7 @@ public class ModelPartSpec extends PartSpecBase {
 
     @Override
     public ITextComponent getDisaplayName() {
-        return new TranslationTextComponent(new StringBuilder("model.")
+        return new TextComponentTranslation(new StringBuilder("model.")
                 .append(this.spec.getOwnName())
                 .append(".")
                 .append(this.partName)
@@ -67,20 +67,20 @@ public class ModelPartSpec extends PartSpecBase {
         return this.defaultglow;
     }
 
-    public boolean getGlow(CompoundNBT nbt) {
-        return nbt.contains(MPALIbConstants.TAG_GLOW) ? nbt.getBoolean(MPALIbConstants.TAG_GLOW) : this.defaultglow;
+    public boolean getGlow(NBTTagCompound nbt) {
+        return nbt.hasKey(MPALIbConstants.TAG_GLOW) ? nbt.getBoolean(MPALIbConstants.TAG_GLOW) : this.defaultglow;
     }
 
-    public void setGlow(CompoundNBT nbt, boolean g) {
-        if (g == this.defaultglow) nbt.remove(MPALIbConstants.TAG_GLOW);
-        else nbt.putBoolean(MPALIbConstants.TAG_GLOW, g);
+    public void setGlow(NBTTagCompound nbt, boolean g) {
+        if (g == this.defaultglow) nbt.removeTag(MPALIbConstants.TAG_GLOW);
+        else nbt.setBoolean(MPALIbConstants.TAG_GLOW, g);
     }
 
     public List<BakedQuad> getQuads() {
         return ((ModelSpec) (this.spec)).getModel().getQuadsforPart(this.partName);
     }
 
-    public CompoundNBT multiSet(CompoundNBT nbt, Integer colourIndex, Boolean glow) {
+    public NBTTagCompound multiSet(NBTTagCompound nbt, Integer colourIndex, Boolean glow) {
         super.multiSet(nbt, colourIndex);
         this.setGlow(nbt, (glow != null) ? glow : false);
         return nbt;

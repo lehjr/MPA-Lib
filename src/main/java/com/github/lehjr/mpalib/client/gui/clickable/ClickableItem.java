@@ -31,9 +31,8 @@ import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -49,18 +48,18 @@ public class ClickableItem extends Clickable {
     protected boolean isEnabled;
     protected boolean isVisible;
     public Integer containerIndex;
-    PlayerInventory itemHandler;
+    InventoryPlayer itemHandler;
 
     public ClickableItem(Point2D pos, int inventorySlot) {
         super(pos);
         this.inventorySlot = inventorySlot;
         this.isEnabled = true;
         this.isVisible = true;
-        this.itemHandler = Minecraft.getInstance().player.inventory;
+        this.itemHandler = Minecraft.getMinecraft().player.inventory;
     }
 
     @Override
-    public void render(int i, int i1, float v) {
+    public void draw() {
         Renderer.drawItemAt(
                 getPosition().getX() - offsetx,
                 getPosition().getY() - offsety, getStack());
@@ -111,7 +110,7 @@ public class ClickableItem extends Clickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
-        return getStack().getTooltip(Minecraft.getInstance().player, ITooltipFlag.TooltipFlags.NORMAL);
+    public List<String> getToolTip() {
+        return getStack().getTooltip(Minecraft.getMinecraft().player, ITooltipFlag.TooltipFlags.NORMAL);
     }
 }

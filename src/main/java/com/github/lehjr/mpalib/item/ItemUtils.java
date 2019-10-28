@@ -28,9 +28,9 @@ package com.github.lehjr.mpalib.item;
 
 import com.github.lehjr.mpalib.capabilities.inventory.modechanging.IModeChangingItem;
 import com.github.lehjr.mpalib.capabilities.inventory.modularitem.IModularItem;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -38,6 +38,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ItemUtils {
     /**
@@ -47,12 +48,12 @@ public class ItemUtils {
      * @return A List of ItemStacks in the equipment slots which implement
      * IModularItem
      */
-    public static NonNullList<ItemStack> getModularItemsEquipped(PlayerEntity player) {
+    public static NonNullList<ItemStack> getModularItemsEquipped(EntityPlayer player) {
         NonNullList<ItemStack> modulars = NonNullList.create();
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             ItemStack itemStack = player.getItemStackFromSlot(slot);
 
-            itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler-> {
+            Optional.of(itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler-> {
                 switch(slot.getSlotType()) {
                     case HAND:
                         if (handler instanceof IModeChangingItem)
@@ -74,7 +75,7 @@ public class ItemUtils {
      * @return A List of ItemStacks in the playuer's inventory which implement
      * IModularItem
      */
-    public static NonNullList<ItemStack> getModularItemsInInventory(PlayerEntity player) {
+    public static NonNullList<ItemStack> getModularItemsInInventory(EntityPlayer player) {
         return getModularItemsInInventory(player.inventory);
     }
 
@@ -90,7 +91,7 @@ public class ItemUtils {
 
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack itemStack = inv.getStackInSlot(i);
-            itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
+            Optional.of(itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler -> {
                 if (handler instanceof IModularItem)
                     stacks.add(itemStack);
             });
@@ -104,7 +105,7 @@ public class ItemUtils {
      * @param player's whose inventory to scan.
      * @return A List of inventory slots containing an IModularItem
      */
-    public static List<Integer> getModularItemSlotsEquiped(PlayerEntity player) {
+    public static List<Integer> getModularItemSlotsEquiped(EntityPlayer player) {
         // mainhand ... a hotbar number
         // offhand .... 40
         // head ....... 39
@@ -113,13 +114,13 @@ public class ItemUtils {
         // feet ....... 36
 
         ArrayList<Integer> slots = new ArrayList<>();
-        player.getHeldItemMainhand().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler ->{
+        Optional.of(player.getHeldItemMainhand().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler ->{
             if (handler instanceof IModeChangingItem)
                 slots.add(player.inventory.currentItem);
         });
 
         for (int i = 36; i < player.inventory.getSizeInventory(); i++) {
-            player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler ->{
+            Optional.of(player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler ->{
                 if (handler instanceof IModularItem)
                     slots.add(player.inventory.currentItem);
             });
@@ -133,11 +134,11 @@ public class ItemUtils {
      * @param player's whose inventory to scan.
      * @return A List of inventory slots containing an IModularItem
      */
-    public static List<Integer> getModularItemSlotsInInventory(PlayerEntity player) {
+    public static List<Integer> getModularItemSlotsInInventory(EntityPlayer player) {
         ArrayList<Integer> slots = new ArrayList<>();
         for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
             int finalI = i;
-            player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            Optional.of(player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
                     .ifPresent(handler -> {
                         if (handler instanceof IModularItem)
                             slots.add(finalI);
@@ -155,7 +156,7 @@ public class ItemUtils {
      * @return
      */
     @Deprecated // Install costs should be abandoned as modules are now items
-    public static boolean hasInInventory(List<ItemStack> workingUpgradeCost, PlayerInventory inventory) {
+    public static boolean hasInInventory(List<ItemStack> workingUpgradeCost, InventoryPlayer inventory) {
         for (ItemStack stackInCost : workingUpgradeCost) {
             int found = 0;
             for (int i = 0; i < inventory.getSizeInventory(); i++) {

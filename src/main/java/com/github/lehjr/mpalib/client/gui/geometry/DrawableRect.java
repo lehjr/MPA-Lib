@@ -159,15 +159,15 @@ public class DrawableRect extends Rect {
 
     public void drawBackground() {
         // render inside
-        RenderState.glColorPointer(4, 0, backgroundColours);
-        RenderState.glVertexPointer(3, 0, vertices);
+        GL11.glColorPointer(4, 0, backgroundColours);
+        GL11.glVertexPointer(3, 0, vertices);
         GL11.glDrawArrays(GL11.GL_TRIANGLE_FAN, 0, vertices.limit() / 3);
     }
 
     public void drawBorder() {
         // render border
-        RenderState.glColorPointer(4, 0, borderColours);
-        RenderState.glVertexPointer(3, 0, vertices);
+        GL11.glColorPointer(4, 0, borderColours);
+        GL11.glVertexPointer(3, 0, vertices);
         GL11.glDrawArrays(GL11.GL_LINE_LOOP, 0, vertices.limit() / 3);
     }
 

@@ -37,6 +37,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -65,8 +66,8 @@ public enum ElectricAdapterManager {
             when excluding foreign items, only modular items and modules can be charged/discharged. This SHOULD be enough to filter out foreign tools
         */
         if ((excludeForeignItems &&
-                ( itemStack.getCapability(PowerModuleCapability.POWER_MODULE).isPresent() ||
-                        itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iH-> iH instanceof IModularItem).orElse(false))) ||
+                (Optional.of(itemStack.getCapability(PowerModuleCapability.POWER_MODULE, null)).isPresent() ||
+                        Optional.of(itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).map(iH-> iH instanceof IModularItem).orElse(false))) ||
                 !excludeForeignItems) {
             for (Function<ItemStack, IElectricAdapter> adapter : adapters) {
 

@@ -26,9 +26,9 @@
 
 package com.github.lehjr.mpalib.client.gui.geometry;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 public class DrawableArrow extends MuseRelativeRect {
@@ -84,22 +84,22 @@ public class DrawableArrow extends MuseRelativeRect {
     void drawArrowShaftpt1() {
         switch (this.facing) {
             case RIGHT:
-                GlStateManager.vertex3f((float)left(), (float) (centery() - (height()* 0.15)), 1);
-                GlStateManager.vertex3f((float) (centerx() + (width() * 0.15)), (float) (centery() - (height()* 0.15)), 1);
+                GlStateManager.glVertex3f((float)left(), (float) (centery() - (height()* 0.15)), 1);
+                GlStateManager.glVertex3f((float) (centerx() + (width() * 0.15)), (float) (centery() - (height()* 0.15)), 1);
                 break;
             case DOWN:
-                GlStateManager.vertex3f((float) (centerx() + width()* 0.15), (float) top(), 1);
-                GlStateManager.vertex3f((float) (centerx() + (width() * 0.15)), (float) (centery() + (height()* 0.15)), 1);
+                GlStateManager.glVertex3f((float) (centerx() + width()* 0.15), (float) top(), 1);
+                GlStateManager.glVertex3f((float) (centerx() + (width() * 0.15)), (float) (centery() + (height()* 0.15)), 1);
                 break;
 
             case LEFT:
-                GlStateManager.vertex3f((float) right(), (float) (centery() + (height()* 0.15)), 1);
-                GlStateManager.vertex3f((float) (centerx() - (width() * 0.15)), (float) (centery() + (height()* 0.15)), 1);
+                GlStateManager.glVertex3f((float) right(), (float) (centery() + (height()* 0.15)), 1);
+                GlStateManager.glVertex3f((float) (centerx() - (width() * 0.15)), (float) (centery() + (height()* 0.15)), 1);
                 break;
 
             case UP:
-                GlStateManager.vertex3f((float) (centerx() - width()* 0.15), (float) bottom(), 1);
-                GlStateManager.vertex3f((float) (centerx() - (width() * 0.15)), (float) (centery() - (height()* 0.15)), 1);
+                GlStateManager.glVertex3f((float) (centerx() - width()* 0.15), (float) bottom(), 1);
+                GlStateManager.glVertex3f((float) (centerx() - (width() * 0.15)), (float) (centery() - (height()* 0.15)), 1);
                 break;
         }
     }
@@ -107,30 +107,30 @@ public class DrawableArrow extends MuseRelativeRect {
     void drawArrowHead() {
         switch (this.facing) {
             case RIGHT:
-                GlStateManager.vertex3f(drawShaft ? (float) (centerx() + (width() * 0.15)) : (float)left(), (float) (centery() - (height() * 0.4F)), 1);
-                GlStateManager.vertex3f((float)right(), (float)centery(), 1);
-                GlStateManager.vertex3f(drawShaft ? (float) (centerx() + (width() * 0.15)) : (float)left(), (float) (centery() + (height() * 0.4F)), 1);
+                GlStateManager.glVertex3f(drawShaft ? (float) (centerx() + (width() * 0.15)) : (float)left(), (float) (centery() - (height() * 0.4F)), 1);
+                GlStateManager.glVertex3f((float)right(), (float)centery(), 1);
+                GlStateManager.glVertex3f(drawShaft ? (float) (centerx() + (width() * 0.15)) : (float)left(), (float) (centery() + (height() * 0.4F)), 1);
                 break;
             case DOWN:
-                GlStateManager.vertex3f((float) (centerx() + (width() * 0.4F)),
+                GlStateManager.glVertex3f((float) (centerx() + (width() * 0.4F)),
                         drawShaft ? (float)top() : (float) (centery() + (height() * 0.15)),
                         1);
-                GlStateManager.vertex3f((float)centerx(), (float)bottom(), 1);
-                GlStateManager.vertex3f((float) (centerx() - (width() * 0.4F)),
+                GlStateManager.glVertex3f((float)centerx(), (float)bottom(), 1);
+                GlStateManager.glVertex3f((float) (centerx() - (width() * 0.4F)),
                         drawShaft ? (float)top() : (float) (centery() + (height() * 0.15)),
                         1);
                 break;
             case LEFT:
-                GlStateManager.vertex3f(drawShaft ? (float) (centerx() - (width() * 0.15)) : (float) right(), (float) (centery() + (height() * 0.4F)), 1);
-                GlStateManager.vertex3f((float)left(), (float)centery(), 1);
-                GlStateManager.vertex3f(drawShaft ? (float) (centerx() - (width() * 0.15)) : (float) right(), (float) (centery() - (height() * 0.4F)), 1);
+                GlStateManager.glVertex3f(drawShaft ? (float) (centerx() - (width() * 0.15)) : (float) right(), (float) (centery() + (height() * 0.4F)), 1);
+                GlStateManager.glVertex3f((float)left(), (float)centery(), 1);
+                GlStateManager.glVertex3f(drawShaft ? (float) (centerx() - (width() * 0.15)) : (float) right(), (float) (centery() - (height() * 0.4F)), 1);
                 break;
             case UP:
-                GlStateManager.vertex3f((float) (centerx() - (width() * 0.4F)),
+                GlStateManager.glVertex3f((float) (centerx() - (width() * 0.4F)),
                         drawShaft ? (float)bottom() : (float) (centery() - (height() * 0.15)),
                         1);
-                GlStateManager.vertex3f((float)centerx(), (float)top(), 1);
-                GlStateManager.vertex3f((float) (centerx() + (width() * 0.4F)),
+                GlStateManager.glVertex3f((float)centerx(), (float)top(), 1);
+                GlStateManager.glVertex3f((float) (centerx() + (width() * 0.4F)),
                         drawShaft ? (float)bottom() : (float) (centery() - (height() * 0.15)),
                         1);
 
@@ -141,20 +141,20 @@ public class DrawableArrow extends MuseRelativeRect {
     void drawArrowShaftpt2() {
         switch (this.facing) {
             case RIGHT:
-                GlStateManager.vertex3f((float) (centerx() + (width() * 0.15)), (float) (centery() + (height() * 0.15)), 1);
-                GlStateManager.vertex3f((float)left(), (float) (centery() + (height()* 0.15)), 1);
+                GlStateManager.glVertex3f((float) (centerx() + (width() * 0.15)), (float) (centery() + (height() * 0.15)), 1);
+                GlStateManager.glVertex3f((float)left(), (float) (centery() + (height()* 0.15)), 1);
                 break;
             case DOWN:
-                GlStateManager.vertex3f((float) (centerx() - width()* 0.15), (float) (centery() - (height()* 0.15)), 1);
-                GlStateManager.vertex3f((float) (centerx() - width()* 0.15), (float) top(), 1);
+                GlStateManager.glVertex3f((float) (centerx() - width()* 0.15), (float) (centery() - (height()* 0.15)), 1);
+                GlStateManager.glVertex3f((float) (centerx() - width()* 0.15), (float) top(), 1);
                 break;
             case LEFT:
-                GlStateManager.vertex3f((float) (centerx() - (width() * 0.15)), (float) (centery() - (height()* 0.15)), 1);
-                GlStateManager.vertex3f((float) right(), (float) (centery() - (height()* 0.15)), 1);
+                GlStateManager.glVertex3f((float) (centerx() - (width() * 0.15)), (float) (centery() - (height()* 0.15)), 1);
+                GlStateManager.glVertex3f((float) right(), (float) (centery() - (height()* 0.15)), 1);
                 break;
             case UP:
-                GlStateManager.vertex3f((float) (centerx() + width()* 0.15), (float) (centery() - (height()* 0.15)), 1);
-                GlStateManager.vertex3f((float) (centerx() + (width() * 0.15)), (float) bottom(), 1);
+                GlStateManager.glVertex3f((float) (centerx() + width()* 0.15), (float) (centery() - (height()* 0.15)), 1);
+                GlStateManager.glVertex3f((float) (centerx() + (width() * 0.15)), (float) bottom(), 1);
                 break;
         }
     }
@@ -182,29 +182,29 @@ public class DrawableArrow extends MuseRelativeRect {
         preDraw();
 
 //        // draw arrow head
-        GlStateManager.begin(GL11.GL_POLYGON);
+        GlStateManager.glBegin(GL11.GL_POLYGON);
         backgroundColour.doGL();
         drawArrowHead();
-        GlStateManager.end();
+        GlStateManager.glEnd();
 
         if (drawShaft) {
             // draw arrow shaft
-            GlStateManager.begin(GL11.GL_POLYGON);
+            GlStateManager.glBegin(GL11.GL_POLYGON);
             backgroundColour.doGL();
             drawArrowShaftpt1();
             drawArrowShaftpt2();
-            GlStateManager.end();
+            GlStateManager.glEnd();
         }
 
         // draw arrow border
-        GlStateManager.begin(GL11.GL_LINE_LOOP);
+        GlStateManager.glBegin(GL11.GL_LINE_LOOP);
         borderColour.doGL();
         if (drawShaft)
             drawArrowShaftpt1();
         drawArrowHead();
         if (drawShaft)
             drawArrowShaftpt2();
-        GlStateManager.end();
+        GlStateManager.glEnd();
         postDraw();
     }
 

@@ -26,9 +26,9 @@
 
 package com.github.lehjr.mpalib.capabilities.heat;
 
-import net.minecraft.nbt.DoubleNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -45,15 +45,15 @@ public class HeatCapability {
     public static void register() {
         CapabilityManager.INSTANCE.register(IHeatStorage.class, new Capability.IStorage<IHeatStorage>() {
                     @Override
-                    public INBT writeNBT(Capability<IHeatStorage> capability, IHeatStorage instance, Direction side) {
-                        return new DoubleNBT(instance.getHeatStored());
+                    public NBTBase writeNBT(Capability<IHeatStorage> capability, IHeatStorage instance, EnumFacing side) {
+                        return new NBTTagDouble(instance.getHeatStored());
                     }
 
                     @Override
-                    public void readNBT(Capability<IHeatStorage> capability, IHeatStorage instance, Direction side, INBT nbt) {
+                    public void readNBT(Capability<IHeatStorage> capability, IHeatStorage instance, EnumFacing side, NBTBase nbt) {
                         if (!(instance instanceof HeatStorage))
                             throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
-                        ((HeatStorage) instance).heat = ((DoubleNBT) nbt).getDouble();
+                        ((HeatStorage) instance).heat = ((NBTTagDouble) nbt).getDouble();
                     }
                 },
                 () -> new HeatStorage(1000));

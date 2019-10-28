@@ -30,9 +30,9 @@ import com.github.lehjr.mpalib.capabilities.IItemStackUpdate;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.IPowerModule;
 import com.github.lehjr.mpalib.string.StringUtils;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -49,7 +49,7 @@ import java.util.Map;
  *
  *
  */
-public interface IModularItem extends IItemHandler, IItemHandlerModifiable, IItemStackUpdate, INBTSerializable<CompoundNBT> {
+public interface IModularItem extends IItemHandler, IItemHandlerModifiable, IItemStackUpdate, INBTSerializable<NBTTagCompound> {
     void setRangedWrapperMap(Map<EnumModuleCategory, MPALibRangedWrapper> rangedWrappers);
 
     boolean isModuleValid(@Nonnull ItemStack module);
@@ -75,7 +75,7 @@ public interface IModularItem extends IItemHandler, IItemHandlerModifiable, IIte
     @Nonnull
     ItemStack getModularItemStack();
 
-    void tick(PlayerEntity player);
+    void tick(EntityPlayer player);
 
     default String formatInfo(String string, double value) {
         return string + '\t' + StringUtils.formatNumberShort(value);

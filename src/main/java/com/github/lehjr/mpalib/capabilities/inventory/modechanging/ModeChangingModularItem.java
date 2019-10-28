@@ -30,21 +30,23 @@ import com.github.lehjr.mpalib.capabilities.inventory.modularitem.ModularItem;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.mpalib.capabilities.module.rightclick.IRightClickModule;
 import com.github.lehjr.mpalib.network.MPALibPackets;
+import com.github.lehjr.mpalib.network.legacypackets.LegacyModeChangeRequestPacket;
 import com.github.lehjr.mpalib.network.packets.ModeChangeRequestPacket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -62,11 +64,11 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         super(modularItem, stacks);
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @SideOnly(Side.CLIENT)
     @Nullable
     @Override
     public IBakedModel getInventoryModel() {
-        return Minecraft.getInstance().getItemRenderer().getItemModelMesher().getItemModel(getActiveModule());
+        return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(getActiveModule());
     }
 
     @Override
@@ -85,7 +87,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     }
 
     boolean isValidMode(@Nonnull ItemStack module) {
-        return module.getCapability(PowerModuleCapability.POWER_MODULE)
+        return Optional.of(module.getCapability(PowerModuleCapability.POWER_MODULE, null))
                 .map( m-> m.isAllowed() && m instanceof IRightClickModule).orElse(false);
     }
 
@@ -103,7 +105,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     public ItemStack getActiveModule() {
         int activeModeIndex = getActiveMode();
         ItemStack module = activeModeIndex != -1 ? getStackInSlot(activeModeIndex) : ItemStack.EMPTY;
-        return module.getCapability(PowerModuleCapability.POWER_MODULE).map(m->m.isAllowed() && m instanceof IRightClickModule).orElse(false)
+        return Optional.of(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m->m.isAllowed() && m instanceof IRightClickModule).orElse(false)
                 ? module : ItemStack.EMPTY;
     }
 
@@ -131,7 +133,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         for(int i=1; i < getSlots();  i++) {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)
-                    && module.getCapability(PowerModuleCapability.POWER_MODULE).map(m-> m instanceof IRightClickModule).orElse(false)) {
+                    && Optional.of(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m-> m instanceof IRightClickModule).orElse(false)) {
                 setActiveMode(i);
                 return;
             }
@@ -145,13 +147,13 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     }
 
     @Override
-    public void cycleMode(PlayerEntity player, int dMode) {
+    public void cycleMode(EntityPlayer player, int dMode) {
         List<Integer> modes = this.getValidModes();
         if (modes.size() > 0) {
             int newindex = clampMode(modes.indexOf(this.getActiveMode()) + dMode, modes.size());
             int newmode = modes.get(newindex);
             this.setActiveMode(newmode);
-            MPALibPackets.CHANNEL_INSTANCE.sendToServer(new ModeChangeRequestPacket(newmode, player.inventory.currentItem));
+            MPALibPackets.INSTANCE.sendToServer(new ModeChangeRequestPacket(newmode, player.inventory.currentItem));
         }
     }
 
@@ -180,16 +182,16 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT nbt = super.serializeNBT();
-        nbt.putInt(TAG_MODE, this.activeMode);
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound nbt = super.serializeNBT();
+        nbt.setInteger(TAG_MODE, this.activeMode);
         return nbt;
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
-        if (nbt.contains(TAG_MODE))
-            this.activeMode = nbt.getInt(TAG_MODE);
+    public void deserializeNBT(NBTTagCompound nbt) {
+        if (nbt.hasKey(TAG_MODE))
+            this.activeMode = nbt.getInteger(TAG_MODE);
         else
             this.activeMode = -1;
         super.deserializeNBT(nbt);

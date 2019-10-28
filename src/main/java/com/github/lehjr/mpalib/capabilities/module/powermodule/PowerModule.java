@@ -28,13 +28,13 @@ package com.github.lehjr.mpalib.capabilities.module.powermodule;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.capabilities.IConfig;
-import com.github.lehjr.mpalib.nbt.MuseNBTUtils;
+import com.github.lehjr.mpalib.nbt.NBTUtils;
 import com.github.lehjr.mpalib.nbt.propertymodifier.*;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -78,7 +78,7 @@ public class PowerModule implements IPowerModule {
 
 
     // TODO: move to somewhere else??
-    @OnlyIn(Dist.CLIENT)
+    @SideOnly(Side.CLIENT)
     @Override
     public String getUnit(String propertyName) {
         String unit = units.get(propertyName);
@@ -155,11 +155,11 @@ public class PowerModule implements IPowerModule {
 
     @Override
     public double applyPropertyModifiers(String propertyName) {
-        return applyPropertyModifiers(propertyName, MuseNBTUtils.getMuseModuleTag(module));
+        return applyPropertyModifiers(propertyName, NBTUtils.getMuseModuleTag(module));
     }
 
     @Override
-    public double applyPropertyModifiers(String propertyName, CompoundNBT moduleTag) {
+    public double applyPropertyModifiers(String propertyName, NBTTagCompound moduleTag) {
         double propertyValue = 0;
         if (propertyModifiers.containsKey(propertyName)) {
             Iterable<IPropertyModifierDouble> propertyModifiersIterable = propertyModifiers.get(propertyName);
@@ -217,7 +217,7 @@ public class PowerModule implements IPowerModule {
     public int applyPropertyModifierBaseInt(String propertyName) {
         int propertyValue = 0;
         Iterable<IPropertyModifierInteger> propertyModifiersIterable = propertyBaseIntegers.get(propertyName);
-        CompoundNBT moduleTag = MuseNBTUtils.getMuseModuleTag(getModuleStack());
+        NBTTagCompound moduleTag = NBTUtils.getMuseModuleTag(getModuleStack());
         for (IPropertyModifier modifier : propertyModifiersIterable) {
             propertyValue = ((IPropertyModifierInteger) modifier).applyModifier(moduleTag, propertyValue);
         }

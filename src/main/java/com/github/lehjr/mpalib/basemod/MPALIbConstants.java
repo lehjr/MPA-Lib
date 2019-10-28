@@ -31,6 +31,8 @@ import net.minecraft.util.ResourceLocation;
 public class MPALIbConstants {
     // Mod
     public static final String MODID = "mpalib";
+    public static final String NAME = "MPA-Lib";
+    public static final String VERSION = "@MPALIB_VERSION@";
 
     // Misc
     public static final String RESOURCE_PREFIX = MODID + ":";
@@ -39,13 +41,21 @@ public class MPALIbConstants {
     public static final ResourceLocation GLASS_TEXTURE = new ResourceLocation(TEXTURE_PREFIX + "gui/glass.png");
     public static final String BLANK_ARMOR_MODEL_PATH = TEXTURE_PREFIX + "item/armor/blankarmor.png";
 
-    // NuminaConfig
+    // Config
+    public static final String CONFIG_FOLDER = "/lehjr/";
+    public static final String CONFIG_FILE = CONFIG_FOLDER + MODID;
     public static final String CONFIG_PREFIX = "config." + MODID + ".";
+
     public static final String CONFIG_USE_FOV_FIX = CONFIG_PREFIX + "useFOVFix";
     public static final String CONFIG_USE_FOV_NORMALIZE = CONFIG_PREFIX + "normalizeFOV";
     public static final String CONFIG_FOV_FIX_DEAULT_STATE = CONFIG_PREFIX + "FOVFixDefaultState";
     public static final String CONFIG_USE_SOUNDS = CONFIG_PREFIX + "useSounds";
     public static final String CONFIG_DEBUGGING_INFO = CONFIG_PREFIX + "useDebuggingInfo";
+
+    public static final String CONFIG_MEK_J_TO_RF_RATIO = CONFIG_PREFIX + "mekanismJToRFRatio";
+    public static final String CONFIG_IC2_EU_TO_RF_RATIO = CONFIG_PREFIX + "industrialCraft2ToRFRatio";
+    public static final String CONFIG_RS_TO_RF_RATIO = CONFIG_PREFIX + "refinedStorageToRFRatio";
+    public static final String CONFIG_AE_TO_RF_RATIO = CONFIG_PREFIX + "appledEnergisticsToRFRatio";
 
     public static final String CONFIG_TIER_1_ENERGY_LVL = CONFIG_PREFIX + "tier1EnergyLevel";
     public static final String CONFIG_TIER_2_ENERGY_LVL = CONFIG_PREFIX + "tier2EnergyLevel";
@@ -68,4 +78,22 @@ public class MPALIbConstants {
 
     public static final String MODULE_TRADEOFF_PREFIX = "module.tradeoff.";
 
+    // main mod NBT tag
+    public static final String TAG_ITEM_PREFIX = "MMModItem";// Machine Muse Mod
+    public static final String TAG_MODULE_PREFIX = "MMModModule";// Machine Muse Mod
+
+    public static final String TAG_ONLINE = "Active";
+    public static final String TAG_VALUES = "commonValues"; // commonly used values that would normally be recalculated several times a minute.
+    public static final String FLUID_NBT_KEY = "fluid";
+    public static final String TAG_MODE = "mode";
+    // ModularItemHandler tag
+    public static final String TAG_MODULES = "modules";
+
+    // energy
+    public static final String MAXIMUM_ENERGY = "maxEnergy";
+    public static final String CURRENT_ENERGY = "currEnergy";
+
+    // heat
+    public static final String CURRENT_HEAT = "curHeat";
+    public static final String MAXIMUM_HEAT = "maxHeat";
 }

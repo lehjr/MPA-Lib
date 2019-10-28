@@ -26,77 +26,80 @@
 
 package com.github.lehjr.mpalib.tileentity;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/**
+ * Author: MachineMuse (Claire Semple)
+ * Created: 2:46 AM, 11/13/13
+ * <p>
+ * Ported to Java lehjr on 10/10/16.
+ */
 public class MPALibTileEntity extends TileEntity {
-    public MPALibTileEntity(TileEntityType<?> type) {
-        super(type);
-    }
-
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        read(pkt.getNbtCompound());
-        BlockState state = getWorld().getBlockState(getPos());
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+        readFromNBT(pkt.getNbtCompound());
+        IBlockState state = getWorld().getBlockState(getPos());
         getWorld().notifyBlockUpdate(getPos(), state, state, 3);
     }
 
     @Nullable
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.getPos(), 0, getUpdateTag()); // FIXME:  type parameter is a number??
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(getPos(), getBlockMetadata(), getUpdateTag());
     }
 
     @Override
-    public CompoundNBT getUpdateTag() {
-        return write(new CompoundNBT());
+    public NBTTagCompound getUpdateTag() {
+        return writeToNBT(new NBTTagCompound());
     }
 
-    public Integer getInteger(CompoundNBT nbt, String name) {
-        if (nbt.contains(name))
-            return nbt.getInt(name);
+    public Integer getInteger(NBTTagCompound nbt, String name) {
+        if (nbt.hasKey(name))
+            return nbt.getInteger(name);
         else
             return null;
     }
 
-    public Double getDouble(CompoundNBT nbt, String name) {
-        if (nbt.contains(name))
+    public Double getDouble(NBTTagCompound nbt, String name) {
+        if (nbt.hasKey(name))
             return nbt.getDouble(name);
         else
             return null;
     }
 
-    public Boolean getBoolean(CompoundNBT nbt, String name) {
-        if (nbt.contains(name))
+    public Boolean getBoolean(NBTTagCompound nbt, String name) {
+        if (nbt.hasKey(name))
             return nbt.getBoolean(name);
         else
             return null;
     }
 
     @Nonnull
-    public ItemStack getItemStack(CompoundNBT nbt, String name) {
-        if (nbt.contains(name))
-            return ItemStack.read(nbt.getCompound(name));
+    public ItemStack getItemStack(NBTTagCompound nbt, String name) {
+        if (nbt.hasKey(name))
+            return new ItemStack(nbt.getCompoundTag(name));
         else
             return ItemStack.EMPTY;
     }
 
-    public void writeItemStack(CompoundNBT nbt, String name, @Nonnull ItemStack stack) {
-        CompoundNBT itemnbt = new CompoundNBT();
-        stack.write(itemnbt);
-        nbt.put(name, itemnbt);
+    public void writeItemStack(NBTTagCompound nbt, String name, @Nonnull ItemStack stack) {
+        NBTTagCompound itemnbt = new NBTTagCompound();
+        stack.writeToNBT(itemnbt);
+        nbt.setTag(name, itemnbt);
     }
 
-//    @Override
-//    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-//        return oldState.getBlock() != newSate.getBlock();
-//    }
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+        return oldState.getBlock() != newSate.getBlock();
+    }
 }

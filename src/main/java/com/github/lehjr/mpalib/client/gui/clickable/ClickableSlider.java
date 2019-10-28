@@ -74,7 +74,7 @@ public class ClickableSlider extends Clickable {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
+    public void draw() {
         Renderer.drawCenteredString(I18n.format(label), position.getX(), position.getY());
         this.insideRect.setRight(position.getX() + width * (getValue() - 0.5) + cornersize);
         this.outsideRect.draw();

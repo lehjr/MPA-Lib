@@ -29,9 +29,9 @@ package com.github.lehjr.mpalib.capabilities.module.powermodule;
 import com.github.lehjr.mpalib.nbt.propertymodifier.IPropertyModifierDouble;
 import com.github.lehjr.mpalib.nbt.propertymodifier.IPropertyModifierInteger;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Map;
@@ -48,7 +48,7 @@ public interface IPowerModule {
 
     EnumModuleCategory getCategory();
 
-    @OnlyIn(Dist.CLIENT)
+    @SideOnly(Side.CLIENT)
     String getUnit(String propertyName);
 
     void addTradeoffPropertyDouble(String tradeoffName, String propertyName, double multiplier);
@@ -63,7 +63,7 @@ public interface IPowerModule {
 
     double applyPropertyModifiers(String propertyName);
 
-    double applyPropertyModifiers(String propertyName, CompoundNBT moduleTag);
+    double applyPropertyModifiers(String propertyName, NBTTagCompound moduleTag);
 
     Map<String, List<IPropertyModifierDouble>> getPropertyModifiers();
 

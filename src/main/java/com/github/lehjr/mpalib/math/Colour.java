@@ -26,8 +26,8 @@
 
 package com.github.lehjr.mpalib.math;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector4f;
@@ -85,7 +85,7 @@ public class Colour {
     }
 
     public void doColor4f() {
-        GlStateManager.color4f((float) r, (float) g, (float) b, (float) a);
+        GlStateManager.color((float) r, (float) g, (float) b, (float) a);
     }
 //    /**
 //     * Secondary constructor. Sets RGB accordingly and sets alpha to 1.0F (full

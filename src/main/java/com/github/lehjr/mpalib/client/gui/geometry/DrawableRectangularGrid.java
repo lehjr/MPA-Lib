@@ -26,8 +26,8 @@
 
 package com.github.lehjr.mpalib.client.gui.geometry;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.github.lehjr.mpalib.math.Colour;
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 public class DrawableRectangularGrid extends DrawableRelativeRect {
@@ -154,25 +154,25 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
             setupGrid();
         }
 
-        GlStateManager.lineWidth(1f);
+        GlStateManager.glLineWidth(1f);
         gridColour.doGL();
-        GlStateManager.begin(GL11.GL_LINES);
+        GlStateManager.glBegin(GL11.GL_LINES);
 
         // Horizontal lines
         if (gridHeight >1)
             for (float y = (float) (verticleSegmentSize + top()); y < bottom(); y+= verticleSegmentSize) {
-                GlStateManager.vertex3f((float)left(), y, 1);
-                GlStateManager.vertex3f((float)right(), y, 1);
+                GlStateManager.glVertex3f((float)left(), y, 1);
+                GlStateManager.glVertex3f((float)right(), y, 1);
             }
 
         // Vertical lines
         if(gridWidth > 1)
             for (float x = (float) (horizontalSegmentSize + left()); x < right(); x += horizontalSegmentSize ) {
-                GlStateManager.vertex3f(x, (float)top(), 1);
-                GlStateManager.vertex3f(x, (float)bottom(), 1);
+                GlStateManager.glVertex3f(x, (float)top(), 1);
+                GlStateManager.glVertex3f(x, (float)bottom(), 1);
             }
         Colour.WHITE.doGL();
-        GlStateManager.end();
+        GlStateManager.glEnd();
     }
 
     @Override
@@ -188,7 +188,7 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
 
     @Override
     public void preDraw() {
-        GlStateManager.lineWidth(1f);
+        GlStateManager.glLineWidth(1f);
         super.preDraw();
     }
 

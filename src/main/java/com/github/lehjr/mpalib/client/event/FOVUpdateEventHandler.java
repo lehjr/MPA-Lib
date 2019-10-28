@@ -26,20 +26,21 @@
 
 package com.github.lehjr.mpalib.client.event;
 
-import com.github.lehjr.mpalib.basemod.MPALibConfig;
+import com.github.lehjr.mpalib.config.MPALibConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import org.lwjgl.glfw.GLFW;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -47,32 +48,34 @@ import org.lwjgl.glfw.GLFW;
  * <p>
  * Ported to Java by lehjr on 10/10/16.
  */
-
-@OnlyIn(Dist.CLIENT)
+@SideOnly(Side.CLIENT)
 public class FOVUpdateEventHandler {
+    public static KeyBinding fovToggleKey = new KeyBinding(I18n.format("keybind.fovfixtoggle"), Keyboard.KEY_NONE, "Numina");
+    public boolean fovIsActive = MPALibConfig.fovFixDefaultState();
+
     public FOVUpdateEventHandler() {
         ClientRegistry.registerKeyBinding(fovToggleKey);
     }
-    public static KeyBinding fovToggleKey = new KeyBinding("keybind.fovfixtoggle", GLFW.GLFW_KEY_UNKNOWN, "Numina");
-
-    public boolean fovIsActive = MPALibConfig.FOV_FIX_DEAULT_STATE.get();
 
     @SubscribeEvent
     public void onFOVUpdate(FOVUpdateEvent e) {
-        if (MPALibConfig.USE_FOV_FIX.get()) {
-            ClientPlayerEntity player = Minecraft.getInstance().player;
+        if (MPALibConfig.useFOVFix() && fovIsActive) {
+            IAttributeInstance attributeinstance = e.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+            e.setNewfov((float) (e.getNewfov() / ((attributeinstance.getAttributeValue() / e.getEntity().capabilities.getWalkSpeed() + 1.0) / 2.0)));
+        }
+    }
+
+    @SubscribeEvent
+    public void onKeyInput(InputEvent.KeyInputEvent event) {
+        if (MPALibConfig.useFOVFix()) {
+            EntityPlayerSP player = Minecraft.getMinecraft().player;
             if (fovToggleKey.isPressed()) {
                 fovIsActive = !fovIsActive;
                 if (fovIsActive)
-                    player.sendMessage(new StringTextComponent(I18n.format("fovfixtoggle.enabled")));
+                    player.sendMessage(new TextComponentString(I18n.format("fovfixtoggle.enabled")));
                 else
-                    player.sendMessage(new StringTextComponent(I18n.format("fovfixtoggle.disabled")));
+                    player.sendMessage(new TextComponentString(I18n.format("fovfixtoggle.disabled")));
             }
-        }
-
-        if (MPALibConfig.USE_FOV_FIX.get() && fovIsActive) {
-            IAttributeInstance attributeinstance = e.getEntity().getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-            e.setNewfov((float) (e.getNewfov() / ((attributeinstance.getValue() / e.getEntity().abilities.getWalkSpeed() + 1.0) / 2.0)));
         }
     }
 }

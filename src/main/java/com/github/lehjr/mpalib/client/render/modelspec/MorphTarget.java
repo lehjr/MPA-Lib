@@ -26,9 +26,9 @@
 
 package com.github.lehjr.mpalib.client.render.modelspec;
 
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 
 import java.util.Arrays;
 
@@ -39,26 +39,26 @@ import java.util.Arrays;
  * Ported to Java by lehjr on 11/8/16.
  */
 public enum MorphTarget {
-    Head("HEAD", EquipmentSlotType.HEAD),
-    Body("BODY", EquipmentSlotType.CHEST),
-    RightArm("RIGHTARM", EquipmentSlotType.CHEST),
-    LeftArm("LEFTARM", EquipmentSlotType.CHEST),
-    RightLeg("RIGHTLEG", EquipmentSlotType.LEGS),
-    LeftLeg("LEFTLEG", EquipmentSlotType.LEGS),
-    RightFoot("RIGHTFOOT", EquipmentSlotType.FEET),
-    LeftFoot("LEFTFOOT", EquipmentSlotType.FEET),
+    Head("HEAD", EntityEquipmentSlot.HEAD),
+    Body("BODY", EntityEquipmentSlot.CHEST),
+    RightArm("RIGHTARM", EntityEquipmentSlot.CHEST),
+    LeftArm("LEFTARM", EntityEquipmentSlot.CHEST),
+    RightLeg("RIGHTLEG", EntityEquipmentSlot.LEGS),
+    LeftLeg("LEFTLEG", EntityEquipmentSlot.LEGS),
+    RightFoot("RIGHTFOOT", EntityEquipmentSlot.FEET),
+    LeftFoot("LEFTFOOT", EntityEquipmentSlot.FEET),
 
     /**
      * Note that these may be reversed and special checks are needed for rendering
      * hand-dependant models.
      */
-    RightHand("RIGHTHAND", EquipmentSlotType.MAINHAND),
-    Lefthand("LEFTHAND", EquipmentSlotType.OFFHAND);
+    RightHand("RIGHTHAND", EntityEquipmentSlot.MAINHAND),
+    Lefthand("LEFTHAND", EntityEquipmentSlot.OFFHAND);
 
     String name;
-    EquipmentSlotType slot;
+    EntityEquipmentSlot slot;
 
-    MorphTarget(String name, EquipmentSlotType slot) {
+    MorphTarget(String name, EntityEquipmentSlot slot) {
         this.name = name;
         this.slot = slot;
     }
@@ -67,7 +67,7 @@ public enum MorphTarget {
         return Arrays.stream(values()).filter(morph -> name.toUpperCase().equals(morph.name)).findAny().orElseGet(null);
     }
 
-    public RendererModel apply(BipedModel m) {
+    public ModelRenderer apply(ModelBiped m) {
         switch (this) {
             case Head:
                 return m.bipedHead;

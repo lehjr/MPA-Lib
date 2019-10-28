@@ -26,16 +26,22 @@
 
 package com.github.lehjr.mpalib.client.render.entity;
 
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * Author: MachineMuse (Claire Semple)
  * Created: 4:31 PM, 8/3/13
  */
-public abstract class MPALibEntityRenderer<T extends Entity> extends EntityRenderer<T> {
-    protected MPALibEntityRenderer(EntityRendererManager renderManager) {
+public abstract class MPALibEntityRenderer<T extends Entity> extends Render<T> {
+    protected MPALibEntityRenderer(RenderManager renderManager) {
         super(renderManager);
+    }
+
+    @Override
+    protected ResourceLocation getEntityTexture(T entity) {
+        return null;
     }
 }

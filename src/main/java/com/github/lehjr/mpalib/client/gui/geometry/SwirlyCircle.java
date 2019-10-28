@@ -61,8 +61,8 @@ public class SwirlyCircle {
         RenderState.arraysOnColor();
         RenderState.texturelessOn();
         RenderState.blendingOn();
-        RenderState.glColorPointer(4, 0, colour);
-        RenderState.glVertexPointer(3, 0, points);
+        GL11.glColorPointer(4, 0, colour);
+        GL11.glVertexPointer(3, 0, points);
         GL11.glDrawArrays(GL11.GL_LINE_LOOP, 0, length / 3);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_CULL_FACE);

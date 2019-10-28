@@ -26,21 +26,20 @@
 
 package com.github.lehjr.mpalib.capabilities.heat;
 
-import com.github.lehjr.mpalib.nbt.MuseNBTUtils;
+import com.github.lehjr.mpalib.nbt.NBTUtils;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.DoubleNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class MuseHeatItemWrapper extends HeatStorage implements ICapabilityProvider, IHeatWrapper, INBTSerializable<DoubleNBT> {
+public class MuseHeatItemWrapper extends HeatStorage implements ICapabilityProvider, IHeatWrapper, INBTSerializable<NBTTagDouble> {
     ItemStack container;
-    private final LazyOptional<IHeatStorage> holder = LazyOptional.of(() -> this);
+    private final IHeatStorage holder = this;
 
     public MuseHeatItemWrapper(@Nonnull ItemStack container, double capacity) {
         this(container, capacity, capacity, capacity);
@@ -58,13 +57,13 @@ public class MuseHeatItemWrapper extends HeatStorage implements ICapabilityProvi
     /** IItemStackContainerUpdate ----------------------------------------------------------------- */
     @Override
     public void updateFromNBT() {
-        heat = Math.min(capacity, MuseNBTUtils.getModularItemDoubleOrZero(container, HeatCapability.CURRENT_HEAT));
+        heat = Math.min(capacity, NBTUtils.getModularItemDoubleOrZero(container, HeatCapability.CURRENT_HEAT));
     }
     @Override
     public double receiveHeat(double heatProvided, boolean simulate) {
         final double heatReceived = super.receiveHeat(heatProvided, simulate);
         if (!simulate && heatReceived != 0) {
-            MuseNBTUtils.setModularItemDoubleOrRemove(container, HeatCapability.CURRENT_HEAT, heat);
+            NBTUtils.setModularItemDoubleOrRemove(container, HeatCapability.CURRENT_HEAT, heat);
         }
         return heatReceived;
     }
@@ -73,26 +72,31 @@ public class MuseHeatItemWrapper extends HeatStorage implements ICapabilityProvi
     public double extractHeat(double heatRequested, boolean simulate) {
         final double heatExtracted = super.extractHeat(heatRequested, simulate);
         if (!simulate && heatExtracted > 0) {
-            MuseNBTUtils.setModularItemDoubleOrRemove(container, HeatCapability.CURRENT_HEAT, heat);
+            NBTUtils.setModularItemDoubleOrRemove(container, HeatCapability.CURRENT_HEAT, heat);
         }
         return heatExtracted;
     }
 
-    /** INBTSerializable -------------------------------------------------------------------------- */
+    /** NBTBaseSerializable -------------------------------------------------------------------------- */
     @Override
-    public DoubleNBT serializeNBT() {
-        return new DoubleNBT(heat);
+    public NBTTagDouble serializeNBT() {
+        return new NBTTagDouble(heat);
     }
 
     @Override
-    public void deserializeNBT(final DoubleNBT nbt) {
+    public void deserializeNBT(final NBTTagDouble nbt) {
         heat = nbt.getDouble();
     }
 
-    /** INBTSerializable<NBTTagDouble> ------------------------------------------------------------ */
-    @Nonnull
+    /** NBTBaseSerializable<NBTTagDouble> ------------------------------------------------------------ */
+     @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+        return capability == HeatCapability.HEAT;
+    }
+
+    @Nullable
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        return HeatCapability.HEAT.orEmpty(cap, holder);
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+        return capability == HeatCapability.HEAT ? (T) holder : null;
     }
 }

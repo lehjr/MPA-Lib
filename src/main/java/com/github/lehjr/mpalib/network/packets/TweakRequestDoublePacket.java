@@ -27,16 +27,21 @@
 package com.github.lehjr.mpalib.network.packets;
 
 import com.github.lehjr.mpalib.capabilities.inventory.modularitem.IModularItem;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import com.github.lehjr.mpalib.network.MuseByteBufferUtils;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import java.util.function.Supplier;
+import java.util.Optional;
 
-public class TweakRequestDoublePacket {
+public class TweakRequestDoublePacket implements IMessage {
     protected int itemSlot;
     protected ResourceLocation moduleName;
     protected String tweakName;
@@ -53,39 +58,44 @@ public class TweakRequestDoublePacket {
         this.tweakValue = tweakValue;
     }
 
-    public static void encode(TweakRequestDoublePacket msg, PacketBuffer packetBuffer) {
-        packetBuffer.writeInt(msg.itemSlot);
-        packetBuffer.writeResourceLocation(msg.moduleName);
-        packetBuffer.writeString(msg.tweakName);
-        packetBuffer.writeDouble(msg.tweakValue);
+    @Override
+    public void fromBytes(ByteBuf buf) {
+        this.itemSlot = buf.readInt();
+        this.moduleName = new ResourceLocation(MuseByteBufferUtils.readUTF8String(buf));
+        this.tweakName = MuseByteBufferUtils.readUTF8String(buf);
+        this.tweakValue = buf.readDouble();
     }
 
-    public static TweakRequestDoublePacket decode(PacketBuffer packetBuffer) {
-        return new TweakRequestDoublePacket(
-                packetBuffer.readInt(),
-                packetBuffer.readResourceLocation(),
-                packetBuffer.readString(500),
-                packetBuffer.readDouble());
+    @Override
+    public void toBytes(ByteBuf buf) {
+        buf.writeInt(itemSlot);
+        MuseByteBufferUtils.writeUTF8String(buf, moduleName.toString());
+        MuseByteBufferUtils.writeUTF8String(buf, tweakName);
+        buf.writeDouble(tweakValue);
     }
 
-    public static void handle(TweakRequestDoublePacket message, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            final ServerPlayerEntity player = ctx.get().getSender();
+    public static class Handler implements IMessageHandler<TweakRequestDoublePacket, IMessage> {
+        @Override
+        public IMessage onMessage(TweakRequestDoublePacket message, MessageContext ctx) {
+            if (ctx.side == Side.SERVER) {
+                final EntityPlayerMP player = ctx.getServerHandler().player;
+                player.getServerWorld().addScheduledTask(() -> {
+                    int itemSlot = message.itemSlot;
+                    ResourceLocation moduleName = message.moduleName;
+                    String tweakName = message.tweakName;
+                    double tweakValue = message.tweakValue;
 
-            int itemSlot = message.itemSlot;
-            ResourceLocation moduleName = message.moduleName;
-            String tweakName = message.tweakName;
-            double tweakValue = message.tweakValue;
-
-            if (moduleName != null && tweakName != null) {
-                ItemStack stack = player.inventory.getStackInSlot(itemSlot);
-                stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-                    if (iItemHandler instanceof IModularItem) {
-                        ((IModularItem) iItemHandler).setModuleTweakDouble(moduleName, tweakName, tweakValue);
+                    if (moduleName != null && tweakName != null) {
+                        ItemStack stack = player.inventory.getStackInSlot(itemSlot);
+                        Optional.of(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(iItemHandler -> {
+                            if (iItemHandler instanceof IModularItem) {
+                                ((IModularItem) iItemHandler).setModuleTweakDouble(moduleName, tweakName, tweakValue);
+                            }
+                        });
                     }
                 });
             }
-        });
-        ctx.get().setPacketHandled(true);
+            return null;
+        }
     }
 }

@@ -30,7 +30,6 @@ import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.geometry.Rect;
 import com.github.lehjr.mpalib.math.Colour;
-import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
 
@@ -146,7 +145,7 @@ public class Button extends DrawableRect implements IClickable {
     }
 
     @Override
-    public List<ITextComponent> getToolTip() {
+    public List<String> getToolTip() {
         return null;
     }
 

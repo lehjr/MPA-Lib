@@ -26,135 +26,139 @@
 
 package com.github.lehjr.mpalib.misc;
 
-import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModAPIManager;
+import net.minecraftforge.fml.common.ModContainer;
+
+import java.util.List;
 
 public class ModCompatibility {
     public static boolean isRFAPILoaded() {
-        return ModList.get().isLoaded("redstoneflux");
-    }
-
-    public static boolean isTeslaLoaded() {
-        return ModList.get().isLoaded("tesla");
+        return ModAPIManager.INSTANCE.hasAPI("redstoneflux");
     }
 
     public static boolean isCOFHCoreLoaded() {
 //        return ModAPIManager.INSTANCE.hasAPI("cofhcore");
-        return ModList.get().isLoaded("cofhcore");
+        return Loader.isModLoaded("cofhcore");
     }
 
     public static boolean isCOFHLibLoaded() {
-        return ModList.get().isLoaded("cofhlib");
+        return ModAPIManager.INSTANCE.hasAPI("cofhlib");
     }
 
     public static boolean isThermalExpansionLoaded() {
-        return ModList.get().isLoaded("thermalexpansion") && ModList.get().isLoaded("thermalfoundation");
+        return Loader.isModLoaded("thermalexpansion") && Loader.isModLoaded("thermalfoundation");
     }
 
     public static boolean isEnderCoreLoaded() {
-        return ModList.get().isLoaded("endercore");
+        return Loader.isModLoaded("endercore");
     }
 
     public static boolean isEnderIOLoaded() {
-        return ModList.get().isLoaded("enderio");
+        return Loader.isModLoaded("enderio");
+    }
+
+    public static boolean isTeslaLoaded() {
+        return Loader.isModLoaded("tesla");
     }
 
     public static boolean isTechRebornLoaded() {
-        return ModList.get().isLoaded("techreborn");
+        return Loader.isModLoaded("techreborn");
     }
 
     public static boolean isGregTechLoaded() {
-        return ModList.get().isLoaded("gregtech");
+        return Loader.isModLoaded("gregtech");
     }
 
     // Industrialcraft common
     public static boolean isIndustrialCraftLoaded() {
-        return ModList.get().isLoaded("ic2");
+        return Loader.isModLoaded("ic2");
     }
 
     public static final boolean isIndustrialCraftExpLoaded() {
-//        if (!isIndustrialCraftLoaded())
-//            return false;
-//
-//        List<ModInfo> list = ModList.get().getMods();
-//        for (ModContainer container : list) {
-//            if (container.getModId().toLowerCase().equals("ic2")) {
-//                if (container.getModId().equals("IndustrialCraft 2"))
-//                    return true;
-//                return false;
-//            }
-//        }
+        if (!isIndustrialCraftLoaded())
+            return false;
+
+        List<ModContainer> list = Loader.instance().getModList();
+        for (ModContainer container : list) {
+            if (container.getModId().toLowerCase().equals("ic2")) {
+                if (container.getName().equals("IndustrialCraft 2"))
+                    return true;
+                return false;
+            }
+        }
         return false;
     }
 
     // Industrialcraft 2 classic (note redundant code is intentional for "just in case")
     public static final boolean isIndustrialCraftClassicLoaded() {
-//        if (!isIndustrialCraftLoaded())
-//            return false;
-//
-//        List<ModContainer> list = Loader.instance().getModList();
-//        for (ModContainer container : list) {
-//            if (container.getModId().toLowerCase().equals("ic2")) {
-//                if (container.getgetName().equals("Industrial Craft Classic"))
-//                    return true;
-//                return false;
-//            }
-//        }
+        if (!isIndustrialCraftLoaded())
+            return false;
+
+        List<ModContainer> list = Loader.instance().getModList();
+        for (ModContainer container : list) {
+            if (container.getModId().toLowerCase().equals("ic2")) {
+                if (container.getName().equals("Industrial Craft Classic"))
+                    return true;
+                return false;
+            }
+        }
         return false;
     }
 
     public static boolean isThaumCraftLoaded() {
-        return ModList.get().isLoaded("thaumcraft");
+        return Loader.isModLoaded("thaumcraft");
     }
 
     public static boolean isGalacticraftLoaded() {
-        return ModList.get().isLoaded("galacticraftcore");
+        return Loader.isModLoaded("galacticraftcore");
     }
 
     public static boolean isForestryLoaded() {
-        return ModList.get().isLoaded("forestry");
+        return Loader.isModLoaded("forestry");
     }
 
     public static boolean isChiselLoaded() {
-        return ModList.get().isLoaded("chisel");
+        return Loader.isModLoaded("chisel");
     }
 
     public static boolean isAppengLoaded() {
-        return ModList.get().isLoaded("appliedenergistics2");
+        return Loader.isModLoaded("appliedenergistics2");
     }
 
     public static boolean isExtraCellsLoaded() {
-        return ModList.get().isLoaded("extracells");
+        return Loader.isModLoaded("extracells");
     }
 
     public static boolean isMFRLoaded() {
-        return ModList.get().isLoaded("mineFactoryreloaded");
+        return Loader.isModLoaded("mineFactoryreloaded");
     }
 
     public static boolean isRailcraftLoaded() {
-        return ModList.get().isLoaded("railcraft");
+        return Loader.isModLoaded("railcraft");
     }
 
     public static boolean isCompactMachinesLoaded() {
-        return ModList.get().isLoaded("cm2");
+        return Loader.isModLoaded("cm2");
     }
 
     public static boolean isRenderPlayerAPILoaded() {
-        return ModList.get().isLoaded("RenderPlayerAPI".toLowerCase());
+        return Loader.isModLoaded("RenderPlayerAPI");
     }
 
     public static boolean isRefinedStorageLoaded() {
-        return ModList.get().isLoaded("refinedstorage");
+        return Loader.isModLoaded("refinedstorage");
     }
 
     public static boolean isScannableLoaded() {
-        return ModList.get().isLoaded("scannable");
+        return Loader.isModLoaded("scannable");
     }
 
     public static boolean isWirelessCraftingGridLoaded() {
-        return ModList.get().isLoaded("wcg");
+        return Loader.isModLoaded("wcg");
     }
 
     public static boolean isMekanismLoaded() {
-        return ModList.get().isLoaded("mekanism");
+        return Loader.isModLoaded("mekanism");
     }
 }

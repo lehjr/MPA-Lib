@@ -27,8 +27,8 @@
 package com.github.lehjr.mpalib.capabilities.render;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -40,12 +40,12 @@ public class ModelSpecNBTCapability {
     public static void register() {
         CapabilityManager.INSTANCE.register(IModelSpecNBT.class, new Capability.IStorage<IModelSpecNBT>() {
                     @Override
-                    public INBT writeNBT(Capability<IModelSpecNBT> capability, IModelSpecNBT instance, Direction side) {
+                    public NBTBase writeNBT(Capability<IModelSpecNBT> capability, IModelSpecNBT instance, EnumFacing side) {
                         return null;
                     }
 
                     @Override
-                    public void readNBT(Capability<IModelSpecNBT> capability, IModelSpecNBT instance, Direction side, INBT nbt) {
+                    public void readNBT(Capability<IModelSpecNBT> capability, IModelSpecNBT instance, EnumFacing side, NBTBase nbt) {
                         if (!(instance instanceof ModelSpecNBT))
                             throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
                     }

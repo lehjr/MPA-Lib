@@ -27,8 +27,8 @@
 package com.github.lehjr.mpalib.capabilities.module.powermodule;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -40,12 +40,12 @@ public class PowerModuleCapability {
     public static void register() {
         CapabilityManager.INSTANCE.register(IPowerModule.class, new Capability.IStorage<IPowerModule>() {
                     @Override
-                    public INBT writeNBT(Capability<IPowerModule> capability, IPowerModule instance, Direction side) {
+                    public NBTBase writeNBT(Capability<IPowerModule> capability, IPowerModule instance, EnumFacing side) {
                         return null;
                     }
 
                     @Override
-                    public void readNBT(Capability<IPowerModule> capability, IPowerModule instance, Direction side, INBT nbt) {
+                    public void readNBT(Capability<IPowerModule> capability, IPowerModule instance, EnumFacing side, NBTBase nbt) {
                         if (!(instance instanceof PowerModule))
                             throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
 

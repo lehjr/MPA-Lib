@@ -26,8 +26,8 @@
 
 package com.github.lehjr.mpalib.client.gui.hud.meters;
 
-import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.client.render.RenderState;
+import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import org.lwjgl.opengl.GL11;
 

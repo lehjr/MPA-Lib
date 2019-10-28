@@ -27,44 +27,46 @@
 package com.github.lehjr.mpalib.network.packets;
 
 import com.github.lehjr.mpalib.capabilities.player.CapabilityPlayerKeyStates;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import java.util.function.Supplier;
+import java.util.Optional;
 
-public class PlayerUpdatePacket {
-    int playerID;
+public class PlayerUpdatePacket implements IMessage {
     boolean downKeyState;
     boolean jumpKeyState;
 
     public PlayerUpdatePacket(boolean downKeyState, boolean jumpkeyState) {
-         this.downKeyState = downKeyState;
+        this.downKeyState = downKeyState;
         this.jumpKeyState = jumpkeyState;
     }
 
-
-    public static void encode(PlayerUpdatePacket msg, PacketBuffer packetBuffer) {
-        packetBuffer.writeInt(msg.playerID);
-        packetBuffer.writeBoolean(msg.downKeyState);
-        packetBuffer.writeBoolean(msg.jumpKeyState);
+    @Override
+    public void fromBytes(ByteBuf buf) {
+        this.downKeyState = buf.readBoolean();
+        this.jumpKeyState = buf.readBoolean();
     }
 
-    public static PlayerUpdatePacket decode(PacketBuffer packetBuffer) {
-        return new PlayerUpdatePacket(
-                packetBuffer.readBoolean(),
-                packetBuffer.readBoolean()
-        );
+    @Override
+    public void toBytes(ByteBuf buf) {
+        buf.writeBoolean(this.downKeyState);
+        buf.writeBoolean(this.jumpKeyState);
     }
 
-    public static void handle(PlayerUpdatePacket message, Supplier<NetworkEvent.Context> ctx) {
-        final ServerPlayerEntity player = ctx.get().getSender();
-        ctx.get().enqueueWork(() -> {
-            player.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES).ifPresent(playerCap ->{
-                playerCap.setDownKeyState(message.downKeyState);
-                playerCap.setJumpKeyState(message.jumpKeyState);
+    public static class Handler implements IMessageHandler<PlayerUpdatePacket, IMessage> {
+        @Override
+        public IMessage onMessage(PlayerUpdatePacket message, MessageContext ctx) {
+            EntityPlayerMP player = ctx.getServerHandler().player;
+            player.getServerWorld().addScheduledTask(() -> {
+                Optional.of(player.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES, null)).ifPresent(playerCap -> {
+                    playerCap.setDownKeyState(message.downKeyState);
+                    playerCap.setJumpKeyState(message.jumpKeyState);
+                });
             });
-        });
-        ctx.get().setPacketHandled(true);
+            return null;
+        }
     }
 }

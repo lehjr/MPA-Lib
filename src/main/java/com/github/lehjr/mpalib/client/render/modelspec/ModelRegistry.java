@@ -30,7 +30,7 @@ import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.forge.obj.MPALibOBJModel;
 import com.github.lehjr.mpalib.map.MPALibRegistry;
 import com.github.lehjr.mpalib.string.StringUtils;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -61,7 +61,7 @@ public class ModelRegistry extends MPALibRegistry<SpecBase> {
     /**
      * TextureSpec does not have an IModelState so this is relatively safe
      */
-    public MPALibOBJModel.MPALIbOBJBakedModel loadBakedModel(ResourceLocation resource) {
+    public MPALibOBJModel.MPALibOBJBakedModel loadBakedModel(ResourceLocation resource) {
         String name = StringUtils.extractName(resource);
         SpecBase spec = get(name);
         return ((ModelSpec) (spec)).getModel();
@@ -78,21 +78,21 @@ public class ModelRegistry extends MPALibRegistry<SpecBase> {
     /**
      * FIXME: texture spec needs a model tag for this to work. Model tag does not have to be a real model, just a unique string for the spec k-v pair
      */
-    public SpecBase getModel(CompoundNBT nbt) {
+    public SpecBase getModel(NBTTagCompound nbt) {
         return get(nbt.getString(MPALIbConstants.TAG_MODEL));
     }
 
-    public PartSpecBase getPart(CompoundNBT nbt, SpecBase model) {
+    public PartSpecBase getPart(NBTTagCompound nbt, SpecBase model) {
         return model.get(nbt.getString(MPALIbConstants.TAG_PART));
     }
 
-    public PartSpecBase getPart(CompoundNBT nbt) {
+    public PartSpecBase getPart(NBTTagCompound nbt) {
         return getPart(nbt, getModel(nbt));
     }
 
-    public CompoundNBT getSpecTag(CompoundNBT museRenderTag, PartSpecBase spec) {
+    public NBTTagCompound getSpecTag(NBTTagCompound museRenderTag, PartSpecBase spec) {
         String name = makeName(spec);
-        return (museRenderTag.contains(name)) ? (museRenderTag.getCompound(name)) : null;
+        return (museRenderTag.hasKey(name)) ? (museRenderTag.getCompoundTag(name)) : null;
     }
 
     public String makeName(PartSpecBase spec) {

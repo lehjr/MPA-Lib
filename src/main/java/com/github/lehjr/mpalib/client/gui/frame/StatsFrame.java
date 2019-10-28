@@ -30,10 +30,10 @@ import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.scrollable.ScrollableFrame;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
-import com.github.lehjr.mpalib.nbt.MuseNBTUtils;
+import com.github.lehjr.mpalib.nbt.NBTUtils;
 import com.github.lehjr.mpalib.nbt.NBTTagAccessor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.opengl.GL11;
 
@@ -44,7 +44,7 @@ import java.util.Set;
  * Currently Unused. Left for reference
  */
 public class StatsFrame extends ScrollableFrame {
-    protected CompoundNBT properties;
+    protected NBTTagCompound properties;
     protected ItemStack stack;
     protected Set<String> propertiesToList;
 
@@ -52,7 +52,7 @@ public class StatsFrame extends ScrollableFrame {
                       Colour borderColour, Colour insideColour, ItemStack stack) {
         super(topleft, bottomright, borderColour, insideColour);
         this.stack = stack;
-        this.properties = MuseNBTUtils.getMuseItemTag(stack);
+        this.properties = NBTUtils.getMuseItemTag(stack);
         this.propertiesToList = NBTTagAccessor.getMap(properties).keySet();
     }
 
@@ -64,7 +64,7 @@ public class StatsFrame extends ScrollableFrame {
         int yoffset = 8;
         int i = 0;
         for (String propName : propertiesToList) {
-            double propValue = MuseNBTUtils.getDoubleOrZero(properties, propName);
+            double propValue = NBTUtils.getDoubleOrZero(properties, propName);
             String propValueString = String.format("%.2f", propValue);
             double strlen = Renderer.getStringWidth(propValueString);
             Renderer.drawString(propName, border.left() + xoffset, border.top() + yoffset + i * 10);
