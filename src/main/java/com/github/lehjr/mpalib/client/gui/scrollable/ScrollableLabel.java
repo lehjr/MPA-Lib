@@ -28,18 +28,18 @@ package com.github.lehjr.mpalib.client.gui.scrollable;
 
 import com.github.lehjr.mpalib.client.gui.clickable.ClickableLabel;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
-import com.github.lehjr.mpalib.client.gui.geometry.MuseRelativeRect;
+import com.github.lehjr.mpalib.client.gui.geometry.RelativeRect;
 
 public class ScrollableLabel extends ScrollableRectangle {
     ClickableLabel label;
     boolean enabled = true;
 
-    public ScrollableLabel(String text, MuseRelativeRect relativeRect) {
+    public ScrollableLabel(String text, RelativeRect relativeRect) {
         super(relativeRect);
         this.label = new ClickableLabel(text, new Point2D(relativeRect.centerx(), relativeRect.centery()));
     }
 
-    public ScrollableLabel(ClickableLabel label, MuseRelativeRect relativeRect) {
+    public ScrollableLabel(ClickableLabel label, RelativeRect relativeRect) {
         super(relativeRect);
         this.label = label;
     }

@@ -202,4 +202,46 @@ public class NBTUtils {
         NBTTagCompound itemTag = getMuseItemTag(stack);
         itemTag.removeTag(TAG_VALUES);
     }
+
+    /**
+     * Replaced in later versions of Minecraft by ItemStack.getOrCreateTag()
+     */
+    public static NBTTagCompound getNBTTag(@Nonnull ItemStack itemStack) {
+        if (!itemStack.isEmpty() && itemStack.hasTagCompound()) {
+            return itemStack.getTagCompound();
+        } else {
+            NBTTagCompound tag = new NBTTagCompound();
+            itemStack.setTagCompound(tag);
+            return tag;
+        }
+    }
+
+
+    public static String getStringOrNull(@Nonnull ItemStack stack, String key) {
+        return getStringOrNull(getMuseItemTag(stack), key);
+    }
+
+    public static String getStringOrNull(@Nonnull NBTTagCompound itemProperties, String key) {
+        String value = null;
+        if (itemProperties != null) {
+            if (itemProperties.hasKey(key)) {
+                value = itemProperties.getString(key);
+            }
+        }
+        return value;
+    }
+
+    public static void setStringOrNull(NBTTagCompound itemProperties, String key, String value) {
+        if (itemProperties != null) {
+            if (value.isEmpty()) {
+                itemProperties.removeTag(key);
+            } else {
+                itemProperties.setString(key, value);
+            }
+        }
+    }
+
+    public static void setStringOrNull(@Nonnull ItemStack stack, String key, String value) {
+        setStringOrNull(getMuseItemTag(stack), key, value);
+    }
 }

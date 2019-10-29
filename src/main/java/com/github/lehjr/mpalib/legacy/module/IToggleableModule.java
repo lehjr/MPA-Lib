@@ -1,4 +1,4 @@
-package com.github.lehjr.mpalib.module.legacy;
+package com.github.lehjr.mpalib.legacy.module;
 
 public interface IToggleableModule extends IPowerModule {
 

@@ -36,11 +36,55 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 public class ItemUtils {
+    /**
+     * Helper function for making recipes. Returns a copy of the itemstack with
+     * the specified stacksize.
+     *
+     * @param stack  Itemstack to copy
+     * @param number New Stacksize
+     * @return A new itemstack with the specified properties
+     */
+    public static ItemStack copyAndResize(@Nonnull ItemStack stack, int number) {
+        ItemStack copy = stack.copy();
+        copy.setCount(number);
+        return copy;
+    }
+
+    public static List<Integer> deleteFromInventory(NonNullList<ItemStack> cost, InventoryPlayer inventory) {
+        List<Integer> slots = new LinkedList<>();
+        for (ItemStack stackInCost : cost) {
+            int remaining = stackInCost.getCount();
+            for (int i = 0; i < inventory.getSizeInventory() && remaining > 0; i++) {
+                ItemStack stackInInventory = inventory.getStackInSlot(i);
+                if (isSameItem(stackInInventory, stackInCost)) {
+                    int numToTake = Math.min(stackInInventory.getCount(), remaining);
+                    stackInInventory.setCount(stackInInventory.getCount() - numToTake);
+                    remaining -= numToTake;
+                    if (stackInInventory.getCount() == 0) {
+                        inventory.setInventorySlotContents(i, ItemStack.EMPTY);
+                    }
+                    slots.add(i);
+                }
+            }
+        }
+        return slots;
+    }
+
+    public static boolean isSameItem(@Nonnull ItemStack stack1, @Nonnull ItemStack stack2) {
+        if (stack1.isEmpty() || stack2.isEmpty() || stack1.getItem() != stack2.getItem()) {
+            return false;
+        } else
+            return !((!stack1.isItemStackDamageable())
+                    && (stack1.getItemDamage() != stack2.getItemDamage()));
+    }
+
     /**
      * Scans a specified player's equipment slots for modular items.
      *

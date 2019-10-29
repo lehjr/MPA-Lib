@@ -28,10 +28,15 @@ package com.github.lehjr.mpalib.client.render.modelspec;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.forge.obj.MPALibOBJModel;
+import com.github.lehjr.mpalib.client.model.helper.ModelHelper;
 import com.github.lehjr.mpalib.map.MPALibRegistry;
 import com.github.lehjr.mpalib.string.StringUtils;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.model.IModelState;
+
+import javax.annotation.Nullable;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -61,10 +66,18 @@ public class ModelRegistry extends MPALibRegistry<SpecBase> {
     /**
      * TextureSpec does not have an IModelState so this is relatively safe
      */
-    public MPALibOBJModel.MPALibOBJBakedModel loadBakedModel(ResourceLocation resource) {
+    public MPALibOBJModel.MPALibOBJBakedModel loadBakedModel(ResourceLocation resource, IModelState modelState) {
         String name = StringUtils.extractName(resource);
         SpecBase spec = get(name);
+        if (spec == null)
+            return wrap(resource, modelState);
         return ((ModelSpec) (spec)).getModel();
+    }
+
+    @Nullable
+    public static MPALibOBJModel.MPALibOBJBakedModel wrap(ResourceLocation modelLocation, IModelState modelState) {
+        IBakedModel bakedModel = ModelHelper.getBakedOBJModel(modelLocation, modelState);
+        return bakedModel instanceof MPALibOBJModel.MPALibOBJBakedModel ? (MPALibOBJModel.MPALibOBJBakedModel) bakedModel : null;
     }
 
     public Iterable<SpecBase> getSpecs() {

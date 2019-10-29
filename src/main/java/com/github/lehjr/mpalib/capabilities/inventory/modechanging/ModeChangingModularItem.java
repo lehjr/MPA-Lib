@@ -30,7 +30,6 @@ import com.github.lehjr.mpalib.capabilities.inventory.modularitem.ModularItem;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.mpalib.capabilities.module.rightclick.IRightClickModule;
 import com.github.lehjr.mpalib.network.MPALibPackets;
-import com.github.lehjr.mpalib.network.legacypackets.LegacyModeChangeRequestPacket;
 import com.github.lehjr.mpalib.network.packets.ModeChangeRequestPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;

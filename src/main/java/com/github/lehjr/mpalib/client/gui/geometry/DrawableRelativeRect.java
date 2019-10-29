@@ -33,7 +33,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.DoubleBuffer;
 
-public class DrawableRelativeRect extends MuseRelativeRect {
+public class DrawableRelativeRect extends RelativeRect {
     Colour backgroundColour;
     Colour borderColour;
     DoubleBuffer vertices;

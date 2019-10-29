@@ -1,4 +1,4 @@
-package com.github.lehjr.mpalib.item.legacy;
+package com.github.lehjr.mpalib.legacy.item;
 
 /**
  * Ported to Java by lehjr on 11/4/16.

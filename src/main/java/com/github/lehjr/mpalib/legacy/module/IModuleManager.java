@@ -1,10 +1,10 @@
-package com.github.lehjr.mpalib.module.legacy;
+package com.github.lehjr.mpalib.legacy.module;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.item.ItemUtils;
-import com.github.lehjr.mpalib.item.legacy.IModeChangingItem;
-import com.github.lehjr.mpalib.item.legacy.IModularItem;
+import com.github.lehjr.mpalib.legacy.item.IModeChangingItem;
+import com.github.lehjr.mpalib.legacy.item.IModularItem;
 import com.github.lehjr.mpalib.nbt.NBTUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

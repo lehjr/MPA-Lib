@@ -31,7 +31,7 @@ import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
-public class DrawableTile extends MuseRelativeRect {
+public class DrawableTile extends RelativeRect {
     Colour backgroundColour;
     Colour borderColour;
 

@@ -1,13 +1,13 @@
-package com.github.lehjr.mpalib.item.legacy;
+package com.github.lehjr.mpalib.legacy.item;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
-import com.github.lehjr.mpalib.module.legacy.IEnchantmentModule;
-import com.github.lehjr.mpalib.module.legacy.IModuleManager;
-import com.github.lehjr.mpalib.module.legacy.IPowerModule;
-import com.github.lehjr.mpalib.module.legacy.IRightClickModule;
+import com.github.lehjr.mpalib.legacy.module.IEnchantmentModule;
+import com.github.lehjr.mpalib.legacy.module.IModuleManager;
+import com.github.lehjr.mpalib.legacy.module.IPowerModule;
+import com.github.lehjr.mpalib.legacy.module.IRightClickModule;
 import com.github.lehjr.mpalib.nbt.NBTUtils;
 import com.github.lehjr.mpalib.network.MPALibPackets;
-import com.github.lehjr.mpalib.network.legacypackets.LegacyModeChangeRequestPacket;
+import com.github.lehjr.mpalib.legacy.network.LegacyModeChangeRequestPacket;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

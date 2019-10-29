@@ -28,7 +28,7 @@ package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.client.gui.geometry.DrawableArrow;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
-import com.github.lehjr.mpalib.client.gui.geometry.MuseRelativeRect;
+import com.github.lehjr.mpalib.client.gui.geometry.RelativeRect;
 import com.github.lehjr.mpalib.math.Colour;
 
 import java.util.List;
@@ -61,7 +61,7 @@ public class ClickableMuseArrow extends DrawableArrow implements IClickable {
         this.backgroundColourHighlighted = backgroundColourHighlighted;
     }
 
-    public ClickableMuseArrow(MuseRelativeRect ref, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
+    public ClickableMuseArrow(RelativeRect ref, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
         super(ref, backgroundColour, borderColour);
         this.backgroundColourNotHighlighted = backgroundColour;
         this.backgroundColourHighlighted = backgroundColourHighlighted;

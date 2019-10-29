@@ -74,8 +74,8 @@ public class GameOverlayEventHandler {
         int i = player.inventory.currentItem;
         ItemStack stack = player.inventory.getCurrentItem();
 
-        if (!stack.isEmpty() && stack.getItem() instanceof com.github.lehjr.mpalib.item.legacy.IModeChangingItem) {
-            com.github.lehjr.mpalib.item.legacy.IModeChangingItem item = (com.github.lehjr.mpalib.item.legacy.IModeChangingItem) (stack.getItem());
+        if (!stack.isEmpty() && stack.getItem() instanceof com.github.lehjr.mpalib.legacy.item.IModeChangingItem) {
+            com.github.lehjr.mpalib.legacy.item.IModeChangingItem item = (com.github.lehjr.mpalib.legacy.item.IModeChangingItem) (stack.getItem());
             ScaledResolution screen = new ScaledResolution(mc);
             TextureUtils.pushTexture(TextureUtils.TEXTURE_QUILT);
             RenderState.blendingOn();

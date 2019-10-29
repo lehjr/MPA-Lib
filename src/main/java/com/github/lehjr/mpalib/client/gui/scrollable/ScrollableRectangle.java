@@ -28,10 +28,10 @@ package com.github.lehjr.mpalib.client.gui.scrollable;
 
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.geometry.Rect;
-import com.github.lehjr.mpalib.client.gui.geometry.MuseRelativeRect;
+import com.github.lehjr.mpalib.client.gui.geometry.RelativeRect;
 
-public class ScrollableRectangle extends MuseRelativeRect {
-    public ScrollableRectangle(MuseRelativeRect relativeRect) {
+public class ScrollableRectangle extends RelativeRect {
+    public ScrollableRectangle(RelativeRect relativeRect) {
         super(relativeRect.left(), relativeRect.top(), relativeRect.right(), relativeRect.bottom());
     }
 

@@ -1,4 +1,4 @@
-package com.github.lehjr.mpalib.item.legacy;
+package com.github.lehjr.mpalib.legacy.item;
 
 import forestry.api.apiculture.IArmorApiarist;
 import net.minecraft.entity.EntityLivingBase;

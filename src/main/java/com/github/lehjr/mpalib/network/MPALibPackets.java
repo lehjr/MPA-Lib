@@ -2,7 +2,7 @@ package com.github.lehjr.mpalib.network;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.network.packets.*;
-import com.github.lehjr.mpalib.network.legacypackets.LegacyModeChangeRequestPacket;
+import com.github.lehjr.mpalib.legacy.network.LegacyModeChangeRequestPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;

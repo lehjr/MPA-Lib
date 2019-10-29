@@ -1,6 +1,6 @@
-package com.github.lehjr.mpalib.item.legacy;
+package com.github.lehjr.mpalib.legacy.item;
 
-import com.github.lehjr.mpalib.module.legacy.IModuleManager;
+import com.github.lehjr.mpalib.legacy.module.IModuleManager;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;

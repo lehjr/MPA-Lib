@@ -1,6 +1,7 @@
-package com.github.lehjr.mpalib.module.legacy;
+package com.github.lehjr.mpalib.legacy.module;
 
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
+import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleTarget;
 import com.github.lehjr.mpalib.nbt.propertymodifier.IPropertyModifier;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;

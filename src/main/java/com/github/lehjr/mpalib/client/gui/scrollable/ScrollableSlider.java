@@ -28,12 +28,12 @@ package com.github.lehjr.mpalib.client.gui.scrollable;
 
 import com.github.lehjr.mpalib.client.gui.clickable.ClickableSlider;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
-import com.github.lehjr.mpalib.client.gui.geometry.MuseRelativeRect;
+import com.github.lehjr.mpalib.client.gui.geometry.RelativeRect;
 
 public class ScrollableSlider extends ScrollableRectangle {
     ClickableSlider slider;
 
-    public ScrollableSlider(ClickableSlider slider, MuseRelativeRect relativeRect) {
+    public ScrollableSlider(ClickableSlider slider, RelativeRect relativeRect) {
         super(relativeRect);
         this.slider = slider;
     }

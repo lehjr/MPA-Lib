@@ -1,4 +1,4 @@
-package com.github.lehjr.mpalib.module.legacy;
+package com.github.lehjr.mpalib.legacy.module;
 
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import net.minecraft.entity.EntityLivingBase;

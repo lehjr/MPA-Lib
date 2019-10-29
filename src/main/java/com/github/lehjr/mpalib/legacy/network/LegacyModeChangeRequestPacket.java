@@ -1,7 +1,7 @@
-package com.github.lehjr.mpalib.network.legacypackets;
+package com.github.lehjr.mpalib.legacy.network;
 
-import com.github.lehjr.mpalib.item.legacy.IModeChangingItem;
-import com.github.lehjr.mpalib.module.legacy.IModuleManager;
+import com.github.lehjr.mpalib.legacy.item.IModeChangingItem;
+import com.github.lehjr.mpalib.legacy.module.IModuleManager;
 import com.github.lehjr.mpalib.network.MuseByteBufferUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
