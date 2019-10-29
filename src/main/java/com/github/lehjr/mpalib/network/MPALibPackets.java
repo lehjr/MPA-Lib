@@ -1,7 +1,7 @@
 package com.github.lehjr.mpalib.network;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
-import com.github.lehjr.mpalib.network.packets.ConfigPacket;
+import com.github.lehjr.mpalib.network.packets.*;
 import com.github.lehjr.mpalib.network.legacypackets.LegacyModeChangeRequestPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,8 +15,24 @@ public class MPALibPackets {
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(MPALIbConstants.MODID);
 
     public static void registerNuminaPackets() {
-        INSTANCE.registerMessage(ConfigPacket.Handler.class, ConfigPacket.class, 0, Side.CLIENT);
-        INSTANCE.registerMessage(LegacyModeChangeRequestPacket.Handler.class, LegacyModeChangeRequestPacket.class, 1, Side.SERVER);
+        int i = 0;
+
+        // MPS/MPA
+        INSTANCE.registerMessage(ConfigPacket.Handler.class, ConfigPacket.class, i++, Side.CLIENT);
+        INSTANCE.registerMessage(PlayerUpdatePacket.Handler.class, PlayerUpdatePacket.class, i++, Side.SERVER);
+
+        //MPA
+        INSTANCE.registerMessage(ModeChangeRequestPacket.Handler.class, ModeChangeRequestPacket.class, i++, Side.SERVER);
+        INSTANCE.registerMessage(ToggleRequestPacket.Handler.class, ToggleRequestPacket.class, i++, Side.SERVER);
+        INSTANCE.registerMessage(TweakRequestDoublePacket.Handler.class, TweakRequestDoublePacket.class, i++, Side.SERVER);
+
+        // Legacy MPS
+        INSTANCE.registerMessage(LegacyModeChangeRequestPacket.Handler.class, LegacyModeChangeRequestPacket.class, i++, Side.SERVER);
+
+
+
+
+
     }
 
     public static void sendTo(IMessage message, EntityPlayerMP player) {

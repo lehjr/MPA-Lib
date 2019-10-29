@@ -29,6 +29,7 @@ package com.github.lehjr.mpalib.client.gui.slot;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.mpalib.client.gui.GuiIcons;
+import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
@@ -78,7 +79,7 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public void draw() {
+    public void render(int mouseX, int mouseY, float partialTicks) {
         if (!getStack().isEmpty()) {
             Renderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getStack());
             if (!allowed) {

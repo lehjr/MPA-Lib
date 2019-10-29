@@ -1,5 +1,7 @@
 package com.github.lehjr.mpalib.config;
 
+import com.github.lehjr.mpalib.energy.ElectricAdapterManager;
+import com.github.lehjr.mpalib.energy.adapter.IElectricAdapter;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -69,7 +71,7 @@ public enum MPALibConfig {
      * Used for getting the tier of an ItemStack. Used for various functions
      */
     public static int getTierForItem(@Nonnull ItemStack itemStack) {
-        ElectricAdapter adapter = ElectricAdapter.wrap(itemStack);
+        IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(itemStack, true);
         if (adapter != null) {
             int maxEnergy = adapter.getMaxEnergyStored();
             if (maxEnergy <= getTier1MaxRF())

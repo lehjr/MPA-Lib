@@ -35,6 +35,7 @@ import com.github.lehjr.mpalib.string.StringUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+import scala.actors.threadpool.Arrays;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -75,9 +76,9 @@ public class ClickableModule extends Clickable {
 
     @Override
     public List<String> getToolTip() {
-        List<ITextComponent> toolTipText = new ArrayList<>();
+        List<String> toolTipText = new ArrayList<>();
         toolTipText.add(getLocalizedName());
-        toolTipText.addAll(StringUtils.wrapITextComponentToLength(getLocalizedDescription(), 30));
+        toolTipText.addAll(Arrays.asList(StringUtils.wordUtilsWrap(getLocalizedDescription(), 30)));
         return toolTipText;
     }
 
@@ -101,16 +102,16 @@ public class ClickableModule extends Clickable {
         return isVisible;
     }
 
-    public ITextComponent getLocalizedName() {
+    public String getLocalizedName() {
         if (this.getModule().isEmpty())
             return null;
         return this.getModule().getDisplayName();
     }
 
-    public ITextComponent getLocalizedDescription() {
+    public String getLocalizedDescription() {
         if (this.getModule().isEmpty())
             return null;
-        return new TextComponentTranslation(this.getModule().getTranslationKey().concat(".desc"));
+        return new TextComponentTranslation(this.getModule().getTranslationKey().concat(".desc")).getFormattedText();
     }
 
     @Override

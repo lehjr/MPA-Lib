@@ -2,6 +2,7 @@ package com.github.lehjr.mpalib.proxy;
 
 import com.github.lehjr.forge.obj.MPALibOBJLoader;
 import com.github.lehjr.mpalib.client.event.FOVUpdateEventHandler;
+import com.github.lehjr.mpalib.client.event.GameOverlayEventHandler;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;

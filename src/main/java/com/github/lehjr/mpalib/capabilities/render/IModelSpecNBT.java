@@ -61,9 +61,9 @@ public interface IModelSpecNBT {
     default Colour getColorFromItemStack() {
         try {
             NBTTagCompound renderTag = getMuseRenderTag();
-            if (renderTag.contains(MPALIbConstants.NBT_TEXTURESPEC_TAG)) {
-                TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(MPALIbConstants.NBT_TEXTURESPEC_TAG));
-                NBTTagCompound specTag = renderTag.getCompound(MPALIbConstants.NBT_TEXTURESPEC_TAG);
+            if (renderTag.hasKey(MPALIbConstants.NBT_TEXTURESPEC_TAG)) {
+                TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompoundTag(MPALIbConstants.NBT_TEXTURESPEC_TAG));
+                NBTTagCompound specTag = renderTag.getCompoundTag(MPALIbConstants.NBT_TEXTURESPEC_TAG);
                 int index = partSpec.getColourIndex(specTag);
                 int[] colours = getColorArray();
                 if (colours.length > index)

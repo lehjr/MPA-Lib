@@ -39,6 +39,12 @@ public abstract class Clickable implements IClickable {
     }
 
     @Override
+    public void move(Point2D position) {
+        this.position.setX(position.getX());
+        this.position.setY(position.getY());
+    }
+
+    @Override
     public void setOnPressed(IPressable onPressed) {
         this.onPressed = onPressed;
     }

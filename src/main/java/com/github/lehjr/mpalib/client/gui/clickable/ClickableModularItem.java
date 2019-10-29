@@ -43,8 +43,9 @@ public class ClickableModularItem extends ClickableItemSlot {
         super(itemHandler, index, xPosition, yPosition);
     }
 
+    @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        super.draw(mouseX, mouseY, partialTicks);
+        super.render(mouseX, mouseY, partialTicks);
         if (this.slotNumber > 35 || this.slotNumber == Minecraft.getMinecraft().player.inventory.currentItem) {
             Renderer.drawString("e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARKGREEN);
         }

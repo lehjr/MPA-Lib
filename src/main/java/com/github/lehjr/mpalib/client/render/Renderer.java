@@ -1,6 +1,7 @@
 package com.github.lehjr.mpalib.client.render;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.geometry.SwirlyCircle;
 import com.github.lehjr.mpalib.math.Colour;

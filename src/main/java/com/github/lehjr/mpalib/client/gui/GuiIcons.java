@@ -27,6 +27,9 @@
 package com.github.lehjr.mpalib.client.gui;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.client.render.IconUtils;
+import com.github.lehjr.mpalib.client.render.RenderState;
+import com.github.lehjr.mpalib.client.render.TextureUtils;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
@@ -66,13 +69,13 @@ public class GuiIcons {
             this.xmax = (xmax != null) ? xmax : Integer.MAX_VALUE;
             this.ymax = (ymax != null) ? ymax : Integer.MAX_VALUE;
 
-            TextureUtils.pushTexture(location);
+            TextureUtils.pushTexture(location.toString());
             GL11.glPushMatrix();
             double s = size / 16.0;
             RenderState.blendingOn();
             GL11.glScaled(s, s, s);
 
-            IconUtils.drawIconPartialOccluded(x / s, y / s, new GuiIconDrawer(location) /* FIXME: this will need to be changed to a reference or id */, this.c, this.xmin / s, this.ymin / s, this.xmax / s, this.ymax / s);
+            IconUtils.drawIconPartialOccluded(x / s, y / s, new GuiIconDrawer(location.toString()) /* FIXME: this will need to be changed to a reference or id */, this.c, this.xmin / s, this.ymin / s, this.xmax / s, this.ymax / s);
             RenderState.blendingOff();
             GL11.glPopMatrix();
             TextureUtils.popTexture();
@@ -128,12 +131,8 @@ public class GuiIcons {
     }
 
     public static class GuiIconDrawer extends TextureAtlasSprite {
-        protected GuiIconDrawer(ResourceLocation locationIn) {
-            super(locationIn, 8, 8);
-        }
-
-        protected GuiIconDrawer(String locationIn) {
-            super(new ResourceLocation(locationIn), 8, 8);
+        protected GuiIconDrawer(String spriteName) {
+            super(spriteName);
         }
 
         @Override

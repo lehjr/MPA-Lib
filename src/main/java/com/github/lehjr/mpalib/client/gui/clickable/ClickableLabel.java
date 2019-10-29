@@ -144,6 +144,11 @@ public class ClickableLabel implements IClickable {
     }
 
     @Override
+    public void move(Point2D position) {
+        this.move(position.getX(), position.getY());
+    }
+
+    @Override
     public Point2D getPosition() {
         return position;
     }

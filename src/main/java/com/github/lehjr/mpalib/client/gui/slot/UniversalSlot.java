@@ -26,10 +26,11 @@
 
 package com.github.lehjr.mpalib.client.gui.slot;
 
+import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
@@ -43,8 +44,8 @@ import java.util.List;
  * A universal base for both IInventory and IItemHandler based slots
  *
  */
-public class UniversalSlot extends Slot implements IClickable{
-    private static IInventory emptyInventory = new Inventory(0);
+public class UniversalSlot extends Slot implements IClickable {
+    private static IInventory emptyInventory = new InventoryBasic("[Null]", true, 0);
     private final IItemHandler itemHandler;
     public static final int offsetx = 8;
     public static final int offsety = 8;
@@ -184,13 +185,18 @@ public class UniversalSlot extends Slot implements IClickable{
      * Not implemented here due to being handled elsewhere
      */
     @Override
-    public void draw() {
+    public void render(int mouseX, int mouseY, float partialTicks) {
 
     }
 
     @Override
     public Point2D getPosition() {
         return position;
+    }
+
+    @Override
+    public void move(Point2D position) {
+        this.move(position.getX(), position.getY());
     }
 
     @Override

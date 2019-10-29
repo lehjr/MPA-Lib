@@ -26,6 +26,7 @@
 
 package com.github.lehjr.mpalib.client.gui.slot;
 
+import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import net.minecraft.client.Minecraft;
@@ -52,7 +53,7 @@ public class ClickableItemSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public void draw() {
+    public void render(int mouseX, int mouseY, float partialTicks) {
         Renderer.drawItemAt(
                 getPosition().getX() - offsetx,
                 getPosition().getY() - offsety, getStack());

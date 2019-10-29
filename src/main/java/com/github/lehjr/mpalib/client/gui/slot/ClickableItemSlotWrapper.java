@@ -26,6 +26,7 @@
 
 package com.github.lehjr.mpalib.client.gui.slot;
 
+import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.geometry.SpiralPointToPoint2D;
 import com.github.lehjr.mpalib.client.render.Renderer;
@@ -64,13 +65,18 @@ public class ClickableItemSlotWrapper implements IClickable {
     }
 
     @Override
-    public void draw() {
+    public void render(int mouseX, int mouseY, float partialTicks) {
         if(spiralPosition != null)
             move(spiralPosition);
 
         Renderer.drawItemAt(
                 getPosition().getX() - offsetx,
                 getPosition().getY() - offsety, slot.getStack());
+    }
+
+    @Override
+    public void move(Point2D position) {
+        this.move(position.getX(), position.getY());
     }
 
     @Override

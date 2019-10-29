@@ -59,7 +59,7 @@ public class ClickableItem extends Clickable {
     }
 
     @Override
-    public void draw() {
+    public void render(int mouseX, int mouseY, float partialTicks) {
         Renderer.drawItemAt(
                 getPosition().getX() - offsetx,
                 getPosition().getY() - offsety, getStack());

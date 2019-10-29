@@ -75,17 +75,17 @@ public class StatsFrame extends ScrollableFrame {
     }
 
     @Override
-    public boolean mouseClicked(double x, double y, int button) {
-        return false;
+    public void onMouseDown(double x, double y, int button) {
+
     }
 
     @Override
-    public boolean mouseReleased(double x, double y, int button) {
-        return false;
+    public void onMouseUp(double x, double y, int button) {
+
     }
 
     @Override
-    public List<ITextComponent> getToolTip(int x, int y) {
+    public List<String> getToolTip(int x, int y) {
         // TODO Auto-generated method stub
         return null;
     }

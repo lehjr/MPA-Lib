@@ -78,7 +78,7 @@ public class ClickableButton extends Clickable {
     }
 
     @Override
-    public void draw() {
+    public void render(int mouseX, int mouseY, float partialTicks) {
         if (visible) {
             this.rect.setLeft(position.getX() - radius.getX());
             this.rect.setTop(position.getY() - radius.getY());

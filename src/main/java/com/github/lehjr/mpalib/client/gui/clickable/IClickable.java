@@ -9,6 +9,8 @@ import java.util.List;
 public interface IClickable {
     void render(int mouseX, int mouseY, float partialTicks);
 
+    void move(Point2D position);
+
     void move(double x, double y);
 
     Point2D getPosition();
