@@ -1,6 +1,7 @@
 package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -51,6 +52,18 @@ public interface IClickable {
     default void disableAndHide() {
         disable();
         hide();
+    }
+
+    default boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if(hitBox(mouseX, mouseY) && this.isEnabled() && this.isVisible()) {
+//            InputMappings.Input mouseKey = InputMappings.Type.MOUSE.getOrMakeInput(button);
+            boolean flag = Minecraft.getMinecraft().gameSettings.keyBindPickBlock.isActiveAndMatches(button);
+
+            if (button == 0 || button == 1 || flag) {
+                this.onPressed();
+            }
+        }
+        return false;
     }
 
     void setOnPressed(IPressable onPressed);

@@ -66,8 +66,8 @@ public enum ElectricAdapterManager {
             when excluding foreign items, only modular items and modules can be charged/discharged. This SHOULD be enough to filter out foreign tools
         */
         if ((excludeForeignItems &&
-                (Optional.of(itemStack.getCapability(PowerModuleCapability.POWER_MODULE, null)).isPresent() ||
-                        Optional.of(itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).map(iH-> iH instanceof IModularItem).orElse(false))) ||
+                (Optional.ofNullable(itemStack.getCapability(PowerModuleCapability.POWER_MODULE, null)).isPresent() ||
+                        Optional.ofNullable(itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).map(iH-> iH instanceof IModularItem).orElse(false))) ||
                 !excludeForeignItems) {
             for (Function<ItemStack, IElectricAdapter> adapter : adapters) {
 

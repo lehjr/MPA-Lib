@@ -27,9 +27,9 @@
 package com.github.lehjr.mpalib.client.gui.scrollable;
 
 import com.github.lehjr.mpalib.client.gui.frame.IGuiFrame;
-import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
+import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.math.MathUtils;
 import net.minecraft.client.renderer.GlStateManager;
@@ -72,6 +72,16 @@ public class ScrollableFrame implements IGuiFrame {
     public void setBottomRight(Point2D bottomRight) {
         this.border.setBottom(bottomRight.getY());
         this.border.setRight(bottomRight.getX());
+    }
+
+    @Override
+    public boolean onMouseDown(double mouseX, double mouseY, int button) {
+        return this.border.containsPoint(mouseX, mouseY);
+    }
+
+    @Override
+    public boolean onMouseUp(double mouseX, double mouseY, int button) {
+        return  this.border.containsPoint(mouseX, mouseY);
     }
 
     @Override
@@ -163,14 +173,6 @@ public class ScrollableFrame implements IGuiFrame {
 
     public boolean isEnabled() {
         return this.enabled;
-    }
-
-    @Override
-    public void onMouseDown(double x, double y, int button) {
-    }
-
-    @Override
-    public void onMouseUp(double x, double y, int button) {
     }
 
     public Point2D getUpperLeft() {

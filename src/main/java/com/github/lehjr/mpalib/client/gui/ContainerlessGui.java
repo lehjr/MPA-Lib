@@ -57,6 +57,10 @@ public class ContainerlessGui extends GuiScreen {
     public ContainerlessGui() {
         super();
         frames = new ArrayList();
+        backgroundRect = new DrawableRect(absX(-1), absY(-1), absX(1), absY(1), true,
+                new Colour(0.0F, 0.2F, 0.0F, 0.8F),
+                new Colour(0.1F, 0.9F, 0.1F, 0.8F));
+
     }
 
     /**
@@ -65,24 +69,14 @@ public class ContainerlessGui extends GuiScreen {
     @Override
     public void initGui() {
         super.initGui();
-        this.frames.clear();
         // this.controlList.clear();
         Keyboard.enableRepeatEvents(true);
         creationTime = System.currentTimeMillis();
 
         int xpadding = (width - getxSize()) / 2;
         int ypadding = (height - ySize) / 2;
-        backgroundRect = new DrawableRect(absX(-1), absY(-1), absX(1), absY(1), true, new Colour(0.1F, 0.9F, 0.1F, 0.8F), new Colour(0.0F, 0.2F,
-                0.0F, 0.8F));
+        backgroundRect.setTargetDimensions(absX(-1), absY(-1), absX(1), absY(1));
     }
-
-
-
-
-
-
-
-
 
     /**
      * Draws the gradient-rectangle background you see in the TinkerTable gui.

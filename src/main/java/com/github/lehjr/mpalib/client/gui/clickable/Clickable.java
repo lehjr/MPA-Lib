@@ -1,7 +1,6 @@
 package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
-import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public abstract class Clickable implements IClickable {
 
     @Override
     public boolean isEnabled() {
-        return isEnabled();
+        return enabled;
     }
 
     @Override
@@ -63,8 +62,6 @@ public abstract class Clickable implements IClickable {
     public void show() {
         this.isVisible = true;
     }
-
-
 
     @Override
     public void enableAndShow() {

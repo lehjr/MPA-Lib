@@ -71,6 +71,10 @@ public class GameOverlayEventHandler {
     public void drawModeChangeIcons() {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayerSP player = mc.player;
+        if (player.getEntityWorld() == null) {
+            return;
+        }
+
         int i = player.inventory.currentItem;
         ItemStack stack = player.inventory.getCurrentItem();
 
@@ -105,8 +109,8 @@ public class GameOverlayEventHandler {
             RenderState.blendingOff();
             TextureUtils.popTexture();
             Colour.WHITE.doGL();
-        } else {
-            Optional.of(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler->{
+        } else if (stack.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+            Optional.ofNullable(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler->{
                 if (handler instanceof IModeChangingItem) {
                     ItemStack module = ((IModeChangingItem) handler).getActiveModule();
                     if (!module.isEmpty()) {

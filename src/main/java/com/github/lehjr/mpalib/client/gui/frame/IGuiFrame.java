@@ -8,7 +8,7 @@ public interface IGuiFrame {
      * @param mouseY
      * @param button
      */
-    void onMouseDown(double mouseX, double mouseY, int button);
+    boolean onMouseDown(double mouseX, double mouseY, int button);
 
     /**
      * @param mouseX
@@ -16,15 +16,7 @@ public interface IGuiFrame {
      * @param button
      * @return true if mouse release is inside this frame and is handled here, else false
      */
-    void onMouseUp(double mouseX, double mouseY, int button);
-
-//    /**
-//     * @param mouseX
-//     * @param mouseY
-//     * @param dWheel
-//     * @return true if mouse pointer is inside this frame and scroll is handled here, else false
-//     */
-//    boolean mouseScrolled(double mouseX, double mouseY, double dWheel);
+    boolean onMouseUp(double mouseX, double mouseY, int button);
 
     /**
      * Fired when gui init is fired, during the creation phase and on resize. Can be used to setup the frame

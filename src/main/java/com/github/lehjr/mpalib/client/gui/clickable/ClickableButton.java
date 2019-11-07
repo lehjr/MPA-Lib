@@ -31,30 +31,25 @@ import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.util.text.ITextComponent;
-
-import java.util.List;
 
 /**
  * @author MachineMuse
  */
 public class ClickableButton extends Clickable {
-    protected ITextComponent label;
+    protected String label;
     protected Point2D radius;
     protected DrawableRect rect;
-    protected boolean enabled;
-    protected boolean visible = true;
     private final Colour enabledBorder  = new Colour(0.3F, 0.3F, 0.3F, 1);
     private final Colour enabledBackground = new Colour(0.5F, 0.6F, 0.8F, 1);
     private final Colour disabledBorder = new Colour(0.8F, 0.6F, 0.6F, 1);
     private final Colour disabledBackground = new Colour(0.8F, 0.3F, 0.3F, 1);
 
-    public ClickableButton(ITextComponent label, Point2D position, boolean enabled) {
+    public ClickableButton(String label, Point2D position, boolean enabled) {
         this.label = label;
         this.position = position;
 
-        if (label.getFormattedText().contains("\n")) {
-            String[] x = label.getFormattedText().split("\n");
+        if (label.contains("\n")) {
+            String[] x = label.split("\n");
 
             int longestIndex = 0;
             for (int i = 0; i < x.length; i++) {
@@ -63,7 +58,7 @@ public class ClickableButton extends Clickable {
             }
             this.radius = new Point2D(Renderer.getStringWidth(x[longestIndex]) / 2 + 2, 6 * x.length);
         } else {
-            this.radius = new Point2D(Renderer.getStringWidth(label.getFormattedText()) / 2 + 2, 6);
+            this.radius = new Point2D(Renderer.getStringWidth(label) / 2 + 2, 6);
         }
 
         this.rect = new DrawableRect(
@@ -79,7 +74,7 @@ public class ClickableButton extends Clickable {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        if (visible) {
+        if (isVisible()) {
             this.rect.setLeft(position.getX() - radius.getX());
             this.rect.setTop(position.getY() - radius.getY());
             this.rect.setRight(position.getX() + radius.getX());
@@ -89,13 +84,13 @@ public class ClickableButton extends Clickable {
             this.rect.draw();
             // standardItemLighting calls to fix issues with container slot highlighting causing issues with this
             RenderHelper.disableStandardItemLighting();
-            if (label.getFormattedText().contains("\n")) {
-                String[] s = label.getFormattedText().split("\n");
+            if (label.contains("\n")) {
+                String[] s = label.split("\n");
                 for (int i = 0; i < s.length; i++) {
                     Renderer.drawCenteredString(s[i], position.getX(), position.getY() - (4 * s.length) + (i * 8));
                 }
             } else {
-                Renderer.drawCenteredString(this.label.getFormattedText(), position.getX(), position.getY() - 4);
+                Renderer.drawCenteredString(this.label, position.getX(), position.getY() - 4);
             }
             RenderHelper.enableGUIStandardItemLighting();
         }
@@ -107,52 +102,20 @@ public class ClickableButton extends Clickable {
 
     @Override
     public boolean hitBox(double x, double y) {
+        if (!enabled) {
+            return false;
+        }
         boolean hitx = Math.abs(position.getX() - x) < radius.getX();
         boolean hity = Math.abs(position.getY() - y) < radius.getY();
         return hitx && hity;
     }
 
-    @Override
-    public List<String> getToolTip() {
-        return null;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    @Override
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public void buttonOn() {
-        this.setEnabled(true);
-        this.setVisible(true);
-    }
-
-    public void buttonOff() {
-        this.setEnabled(false);
-        this.setVisible(false);
-    }
-
-    @Override
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public ClickableButton setLable(ITextComponent label) {
+    public ClickableButton setLable(String label) {
         this.label = label;
         return this;
     }
 
-    public ITextComponent getLabel() {
+    public String getLabel() {
         return label;
     }
 }

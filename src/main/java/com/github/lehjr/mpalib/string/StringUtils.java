@@ -30,6 +30,7 @@ import com.github.lehjr.mpalib.client.render.Renderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import scala.actors.threadpool.Arrays;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -227,17 +228,12 @@ public class StringUtils {
      *                         length
      *                         </pre>
      */
-    public static List<ITextComponent> wrapStringToLength(String str, int length) {
+    public static List<String> wrapStringToLength(String str, int length) {
         if (str == null) {
             str = "";
         }
 
-        String[] stringArray = wordUtilsWrap(str, length);
-
-        List<ITextComponent> retList = new ArrayList<>();
-        for (String s : stringArray)
-            retList.add(new TextComponentString(s));
-        return retList;
+        return Arrays.asList(wordUtilsWrap(str, length));
     }
 
     // org.apache.commons.lang3.StringUtils.isBlank
@@ -325,12 +321,6 @@ public class StringUtils {
         wrappedLine.append(str, offset, str.length());
 
         return wrappedLine.toString().split(System.lineSeparator());
-    }
-
-    public static List<ITextComponent> wrapITextComponentToLength(ITextComponent component, int length) {
-        if (component == null)
-            component = new TextComponentString("");
-        return wrapStringToLength(component.getUnformattedComponentText(), length);
     }
 
     /**

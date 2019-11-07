@@ -34,7 +34,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class TexturedButton extends Button {
     double textureSize;
-    ResourceLocation textureLocation;
+    String textureLocation;
     Double textureX;
     Double textureY;
 
@@ -44,7 +44,7 @@ public class TexturedButton extends Button {
                           Colour borderColourEnabled,
                           Colour borderColourDisabled,
                           double textureSize,
-                          ResourceLocation textureLocation) {
+                          String textureLocation) {
         super(left, top, right, bottom, growFromMiddle, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
         this.textureSize = textureSize;
         this.textureLocation = textureLocation;
@@ -56,7 +56,7 @@ public class TexturedButton extends Button {
                           Colour borderColourEnabled,
                           Colour borderColourDisabled,
                           double textureSize,
-                          ResourceLocation textureLocation) {
+                          String textureLocation) {
         super(left, top, right, bottom, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
         this.textureSize = textureSize;
         this.textureLocation = textureLocation;;
@@ -68,7 +68,7 @@ public class TexturedButton extends Button {
                           Colour borderColourEnabled,
                           Colour borderColourDisabled,
                           double textureSize,
-                          ResourceLocation textureLocation) {
+                          String textureLocation) {
         super(ul, br, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
         this.textureSize = textureSize;
         this.textureLocation = textureLocation;
@@ -80,7 +80,7 @@ public class TexturedButton extends Button {
                           Colour borderColourEnabled,
                           Colour borderColourDisabled,
                           double textureSize,
-                          ResourceLocation textureLocation) {
+                          String textureLocation) {
         super(ref, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
         this.textureSize = textureSize;
         this.textureLocation = textureLocation;
@@ -104,7 +104,7 @@ public class TexturedButton extends Button {
         else
             color = Colour.RED.withAlpha(0.6);
 
-        new GuiIcons.GuiIcon(textureSize, textureLocation,
+        new GuiIcons.GuiIcon(textureSize, textureLocation.toString(),
                 textureX != null ? this.centerx() + textureX : this.centerx(),
                 textureY != null ? this.centery() + textureY : this.centery(),
                 color, null, null, null, null);

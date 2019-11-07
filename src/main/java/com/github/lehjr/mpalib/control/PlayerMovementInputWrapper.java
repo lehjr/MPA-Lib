@@ -66,7 +66,7 @@ public class PlayerMovementInputWrapper {
     }
 
     static Optional<IPlayerKeyStates> getCapability(EntityPlayer player) {
-        return Optional.of(player.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES, null));
+        return Optional.ofNullable(player.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES, null));
     }
 
     static PlayerMovementInput fromServer(EntityPlayer player) {

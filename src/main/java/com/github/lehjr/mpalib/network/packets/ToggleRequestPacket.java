@@ -43,6 +43,9 @@ public class ToggleRequestPacket implements IMessage {
     String registryName;
     boolean toggleval;
 
+    public ToggleRequestPacket() {
+    }
+
     public ToggleRequestPacket(ResourceLocation registryName, boolean active) {
         this.registryName = registryName.toString();
         this.toggleval = active;
@@ -70,7 +73,7 @@ public class ToggleRequestPacket implements IMessage {
                 final EntityPlayerMP player = ctx.getServerHandler().player;
                 player.getServerWorld().addScheduledTask(() -> {
                     for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                        Optional.of(player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler -> {
+                        Optional.ofNullable(player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler -> {
                             if (handler instanceof IModularItem) {
                                 ((IModularItem) handler).toggleModule(new ResourceLocation(registryName), toggleval);
                             }

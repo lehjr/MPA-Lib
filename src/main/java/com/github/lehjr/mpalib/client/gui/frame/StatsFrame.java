@@ -30,11 +30,10 @@ import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.scrollable.ScrollableFrame;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
-import com.github.lehjr.mpalib.nbt.NBTUtils;
 import com.github.lehjr.mpalib.nbt.NBTTagAccessor;
+import com.github.lehjr.mpalib.nbt.NBTUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -75,13 +74,13 @@ public class StatsFrame extends ScrollableFrame {
     }
 
     @Override
-    public void onMouseDown(double x, double y, int button) {
-
+    public boolean onMouseDown(double x, double y, int button) {
+        return this.border.containsPoint(x, y);
     }
 
     @Override
-    public void onMouseUp(double x, double y, int button) {
-
+    public boolean onMouseUp(double x, double y, int button) {
+        return this.border.containsPoint(x, y);
     }
 
     @Override

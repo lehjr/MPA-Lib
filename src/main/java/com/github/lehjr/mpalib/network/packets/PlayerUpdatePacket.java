@@ -39,6 +39,9 @@ public class PlayerUpdatePacket implements IMessage {
     boolean downKeyState;
     boolean jumpKeyState;
 
+    public PlayerUpdatePacket() {
+    }
+
     public PlayerUpdatePacket(boolean downKeyState, boolean jumpkeyState) {
         this.downKeyState = downKeyState;
         this.jumpKeyState = jumpkeyState;
@@ -61,7 +64,7 @@ public class PlayerUpdatePacket implements IMessage {
         public IMessage onMessage(PlayerUpdatePacket message, MessageContext ctx) {
             EntityPlayerMP player = ctx.getServerHandler().player;
             player.getServerWorld().addScheduledTask(() -> {
-                Optional.of(player.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES, null)).ifPresent(playerCap -> {
+                Optional.ofNullable(player.getCapability(CapabilityPlayerKeyStates.PLAYER_KEYSTATES, null)).ifPresent(playerCap -> {
                     playerCap.setDownKeyState(message.downKeyState);
                     playerCap.setJumpKeyState(message.jumpKeyState);
                 });

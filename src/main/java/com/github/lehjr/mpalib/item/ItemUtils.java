@@ -84,6 +84,33 @@ public class ItemUtils {
             return !((!stack1.isItemStackDamageable())
                     && (stack1.getItemDamage() != stack2.getItemDamage()));
     }
+//
+//    /**
+//     * Scans a specified player's equipment slots for modular items.
+//     *
+//     * @param player Entity player that has the equipment slots to scan.
+//     * @return A List of ItemStacks in the equipment slots which implement
+//     * IModularItem
+//     */
+//    public static NonNullList<ItemStack> getModularItemsEquipped(EntityPlayer player) {
+//        NonNullList<ItemStack> modulars = NonNullList.create();
+//        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+//            ItemStack itemStack = player.getItemStackFromSlot(slot);
+//
+//            Optional.ofNullable(itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler-> {
+//                switch(slot.getSlotType()) {
+//                    case HAND:
+//                        if (handler instanceof IModeChangingItem)
+//                            modulars.add(itemStack);
+//                    case ARMOR:
+//                        if (handler instanceof IModularItem)
+//                            modulars.add(itemStack);
+//                }
+//            });
+//
+//        }
+//        return modulars;
+//    }
 
     /**
      * Scans a specified player's equipment slots for modular items.
@@ -92,25 +119,53 @@ public class ItemUtils {
      * @return A List of ItemStacks in the equipment slots which implement
      * IModularItem
      */
-    public static NonNullList<ItemStack> getModularItemsEquipped(EntityPlayer player) {
+    public static NonNullList<ItemStack> getLegacyModularItemsEquipped(EntityPlayer player) {
         NonNullList<ItemStack> modulars = NonNullList.create();
         for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             ItemStack itemStack = player.getItemStackFromSlot(slot);
 
-            Optional.of(itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler-> {
-                switch(slot.getSlotType()) {
-                    case HAND:
-                        if (handler instanceof IModeChangingItem)
-                            modulars.add(itemStack);
-                    case ARMOR:
-                        if (handler instanceof IModularItem)
-                            modulars.add(itemStack);
-                }
-            });
-
+            switch(slot.getSlotType()) {
+                case HAND:
+                    if (itemStack.getItem() instanceof com.github.lehjr.mpalib.legacy.item.IModeChangingItem )
+                        modulars.add(itemStack);
+                case ARMOR:
+                    if (itemStack.getItem() instanceof com.github.lehjr.mpalib.legacy.item.IModularItem)
+                        modulars.add(itemStack);
+            }
         }
         return modulars;
     }
+//
+//    /**
+//     * Scans a specified player's inventory for modular items.
+//     *
+//     * @param player Entity player that has the inventory to scan.
+//     * @return A List of ItemStacks in the playuer's inventory which implement
+//     * IModularItem
+//     */
+//    public static NonNullList<ItemStack> getModularItemsInInventory(EntityPlayer player) {
+//        return getModularItemsInInventory(player.inventory);
+//    }
+//
+//    /**
+//     * Scans a specified inventory for modular items.
+//     *
+//     * @param inv IInventory to scan.
+//     * @return A List of ItemStacks in the inventory which implement
+//     * IModularItem
+//     */
+//    public static NonNullList<ItemStack> getModularItemsInInventory(IInventory inv) {
+//        NonNullList<ItemStack> stacks = NonNullList.create();
+//
+//        for (int i = 0; i < inv.getSizeInventory(); i++) {
+//            ItemStack itemStack = inv.getStackInSlot(i);
+//            Optional.ofNullable(itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler -> {
+//                if (handler instanceof IModularItem)
+//                    stacks.add(itemStack);
+//            });
+//        }
+//        return stacks;
+//    }
 
     /**
      * Scans a specified player's inventory for modular items.
@@ -119,8 +174,8 @@ public class ItemUtils {
      * @return A List of ItemStacks in the playuer's inventory which implement
      * IModularItem
      */
-    public static NonNullList<ItemStack> getModularItemsInInventory(EntityPlayer player) {
-        return getModularItemsInInventory(player.inventory);
+    public static NonNullList<ItemStack> getLegacyModularItemsInInventory(EntityPlayer player) {
+        return getLegacyModularItemsInInventory(player.inventory);
     }
 
     /**
@@ -130,18 +185,67 @@ public class ItemUtils {
      * @return A List of ItemStacks in the inventory which implement
      * IModularItem
      */
-    public static NonNullList<ItemStack> getModularItemsInInventory(IInventory inv) {
+    public static NonNullList<ItemStack> getLegacyModularItemsInInventory(IInventory inv) {
         NonNullList<ItemStack> stacks = NonNullList.create();
 
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack itemStack = inv.getStackInSlot(i);
-            Optional.of(itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler -> {
-                if (handler instanceof IModularItem)
-                    stacks.add(itemStack);
-            });
+            if (itemStack.getItem() instanceof com.github.lehjr.mpalib.legacy.item.IModularItem) {
+                stacks.add(itemStack);
+            }
         }
         return stacks;
     }
+//
+//    /**
+//     * Scans a specified inventory for modular items.
+//     *
+//     * @param player's whose inventory to scan.
+//     * @return A List of inventory slots containing an IModularItem
+//     */
+//    public static List<Integer> getModularItemSlotsEquiped(EntityPlayer player) {
+//        // mainhand ... a hotbar number
+//        // offhand .... 40
+//        // head ....... 39
+//        // chest ...... 38
+//        // legs ....... 37
+//        // feet ....... 36
+//
+//        ArrayList<Integer> slots = new ArrayList<>();
+//        Optional.ofNullable(player.getHeldItemMainhand().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler ->{
+//            if (handler instanceof IModeChangingItem) {
+//                slots.add(player.inventory.currentItem);
+//            }
+//        });
+//
+//        for (int i = 36; i < player.inventory.getSizeInventory(); i++) {
+//            Optional.ofNullable(player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler ->{
+//                if (handler instanceof IModularItem) {
+//                    slots.add(player.inventory.currentItem);
+//                }
+//            });
+//        }
+//        return slots;
+//    }
+
+//    /**
+//     * Scans a specified inventory for modular items.
+//     *
+//     * @param player's whose inventory to scan.
+//     * @return A List of inventory slots containing an IModularItem
+//     */
+//    public static List<Integer> getModularItemSlotsInInventory(EntityPlayer player) {
+//        ArrayList<Integer> slots = new ArrayList<>();
+//        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+//            int finalI = i;
+//            Optional.ofNullable(player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
+//                    .ifPresent(handler -> {
+//                        if (handler instanceof IModularItem)
+//                            slots.add(finalI);
+//                    });
+//        }
+//        return slots;
+//    }
 
     /**
      * Scans a specified inventory for modular items.
@@ -149,44 +253,14 @@ public class ItemUtils {
      * @param player's whose inventory to scan.
      * @return A List of inventory slots containing an IModularItem
      */
-    public static List<Integer> getModularItemSlotsEquiped(EntityPlayer player) {
-        // mainhand ... a hotbar number
-        // offhand .... 40
-        // head ....... 39
-        // chest ...... 38
-        // legs ....... 37
-        // feet ....... 36
-
+    public static List<Integer> getLegacyModularItemSlotsInInventory(EntityPlayer player) {
         ArrayList<Integer> slots = new ArrayList<>();
-        Optional.of(player.getHeldItemMainhand().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler ->{
-            if (handler instanceof IModeChangingItem)
-                slots.add(player.inventory.currentItem);
-        });
-
-        for (int i = 36; i < player.inventory.getSizeInventory(); i++) {
-            Optional.of(player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler ->{
-                if (handler instanceof IModularItem)
-                    slots.add(player.inventory.currentItem);
-            });
-        }
-        return slots;
-    }
-
-    /**
-     * Scans a specified inventory for modular items.
-     *
-     * @param player's whose inventory to scan.
-     * @return A List of inventory slots containing an IModularItem
-     */
-    public static List<Integer> getModularItemSlotsInInventory(EntityPlayer player) {
-        ArrayList<Integer> slots = new ArrayList<>();
+        ItemStack stack;
         for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-            int finalI = i;
-            Optional.of(player.inventory.getStackInSlot(i).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
-                    .ifPresent(handler -> {
-                        if (handler instanceof IModularItem)
-                            slots.add(finalI);
-                    });
+            stack = player.inventory.getStackInSlot(i);
+            if (!stack.isEmpty() && stack.getItem() instanceof com.github.lehjr.mpalib.legacy.item.IModularItem) {
+                slots.add(i);
+            }
         }
         return slots;
     }

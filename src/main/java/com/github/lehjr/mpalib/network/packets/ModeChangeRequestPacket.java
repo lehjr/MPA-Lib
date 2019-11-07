@@ -45,7 +45,7 @@ public class ModeChangeRequestPacket implements IMessage {
                     int slot = message.slot;
                     int mode = message.mode;
                     if (slot > -1 && slot < 9) {
-                        Optional.of(player.inventory.mainInventory.get(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
+                        Optional.ofNullable(player.inventory.mainInventory.get(slot).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
                                 .ifPresent(handler -> {
                                     if (handler instanceof IModeChangingItem)
                                         ((IModeChangingItem) handler).setActiveMode(mode);

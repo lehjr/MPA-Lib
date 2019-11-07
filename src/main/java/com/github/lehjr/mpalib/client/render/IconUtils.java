@@ -1,6 +1,5 @@
 package com.github.lehjr.mpalib.client.render;
 
-import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.math.MathUtils;
 import net.minecraft.client.Minecraft;

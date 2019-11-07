@@ -31,7 +31,6 @@ import com.github.lehjr.mpalib.network.MuseByteBufferUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -87,7 +86,7 @@ public class TweakRequestDoublePacket implements IMessage {
 
                     if (moduleName != null && tweakName != null) {
                         ItemStack stack = player.inventory.getStackInSlot(itemSlot);
-                        Optional.of(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(iItemHandler -> {
+                        Optional.ofNullable(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(iItemHandler -> {
                             if (iItemHandler instanceof IModularItem) {
                                 ((IModularItem) iItemHandler).setModuleTweakDouble(moduleName, tweakName, tweakValue);
                             }

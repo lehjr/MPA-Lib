@@ -29,7 +29,6 @@ package com.github.lehjr.mpalib.client.render.modelspec;
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -54,13 +53,13 @@ public class ModelPartSpec extends PartSpecBase {
     }
 
     @Override
-    public ITextComponent getDisaplayName() {
-        return new TextComponentTranslation(new StringBuilder("model.")
+    public String getDisaplayName() {
+        return new StringBuilder("model.")
                 .append(this.spec.getOwnName())
                 .append(".")
                 .append(this.partName)
                 .append(".partName")
-                .toString());
+                .toString();
     }
 
     public boolean getGlow() {

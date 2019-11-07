@@ -33,7 +33,7 @@ import com.github.lehjr.mpalib.math.Colour;
 
 import java.util.List;
 
-public class ClickableMuseArrow extends DrawableArrow implements IClickable {
+public class ClickableArrow extends DrawableArrow implements IClickable {
     protected IPressable onPressed;
     protected IReleasable onReleased;
 
@@ -43,25 +43,25 @@ public class ClickableMuseArrow extends DrawableArrow implements IClickable {
     protected boolean isEnabled = true;
     protected boolean isVisible = true;
 
-    public ClickableMuseArrow(double left, double top, double right, double bottom, boolean growFromMiddle, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
+    public ClickableArrow(double left, double top, double right, double bottom, boolean growFromMiddle, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
         super(left, top, right, bottom, growFromMiddle, backgroundColour, borderColour);
         this.backgroundColourNotHighlighted = backgroundColour;
         this.backgroundColourHighlighted = backgroundColourHighlighted;
     }
 
-    public ClickableMuseArrow(double left, double top, double right, double bottom, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
+    public ClickableArrow(double left, double top, double right, double bottom, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
         super(left, top, right, bottom, backgroundColour, borderColour);
         this.backgroundColourNotHighlighted = backgroundColour;
         this.backgroundColourHighlighted = backgroundColourHighlighted;
     }
 
-    public ClickableMuseArrow(Point2D ul, Point2D br, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
+    public ClickableArrow(Point2D ul, Point2D br, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
         super(ul, br, backgroundColour, borderColour);
         this.backgroundColourNotHighlighted = backgroundColour;
         this.backgroundColourHighlighted = backgroundColourHighlighted;
     }
 
-    public ClickableMuseArrow(RelativeRect ref, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
+    public ClickableArrow(RelativeRect ref, Colour backgroundColour, Colour backgroundColourHighlighted, Colour borderColour) {
         super(ref, backgroundColour, borderColour);
         this.backgroundColourNotHighlighted = backgroundColour;
         this.backgroundColourHighlighted = backgroundColourHighlighted;

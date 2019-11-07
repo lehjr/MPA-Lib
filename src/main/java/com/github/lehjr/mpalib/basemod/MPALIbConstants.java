@@ -37,8 +37,8 @@ public class MPALIbConstants {
     // Misc
     public static final String RESOURCE_PREFIX = MODID + ":";
     public static final String TEXTURE_PREFIX = RESOURCE_PREFIX + "textures/";
-    public static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation(TEXTURE_PREFIX + "gui/lightning-medium.png");
-    public static final ResourceLocation GLASS_TEXTURE = new ResourceLocation(TEXTURE_PREFIX + "gui/glass.png");
+    public static final String LIGHTNING_TEXTURE = TEXTURE_PREFIX + "gui/lightning-medium.png";
+    public static final String GLASS_TEXTURE = TEXTURE_PREFIX + "gui/glass.png";
     public static final String BLANK_ARMOR_MODEL_PATH = TEXTURE_PREFIX + "item/armor/blankarmor.png";
 
     // Config

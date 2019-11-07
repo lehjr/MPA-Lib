@@ -43,8 +43,9 @@ import org.lwjgl.opengl.GL11;
  */
 public class GuiIcons {
     public static class GuiIcon {
+
         final double size;
-        final ResourceLocation location;
+        final String filepath;
 
         final double x;
         final double y;
@@ -54,13 +55,9 @@ public class GuiIcons {
         final double xmax;
         final double ymax;
 
-        public GuiIcon(double size, String locationIn, double x, double y, Colour c, Double xmin, Double ymin, Double xmax, Double ymax) {
-            this(size, new ResourceLocation(locationIn), x, y, c, xmin, ymin, xmax, ymax);
-        }
-
-        public GuiIcon(double size, ResourceLocation locationIn, double x, double y, Colour c, Double xmin, Double ymin, Double xmax, Double ymax) {
+        public GuiIcon(double size, String filepath, double x, double y, Colour c, Double xmin, Double ymin, Double xmax, Double ymax) {
             this.size = size;
-            this.location = locationIn.getPath().toLowerCase().endsWith(".png") ? locationIn : new ResourceLocation(locationIn.getNamespace(), locationIn.getPath() + ".png");
+            this.filepath = filepath;
             this.x = x;
             this.y = y;
             this.c = (c != null) ? c : Colour.WHITE;
@@ -69,13 +66,13 @@ public class GuiIcons {
             this.xmax = (xmax != null) ? xmax : Integer.MAX_VALUE;
             this.ymax = (ymax != null) ? ymax : Integer.MAX_VALUE;
 
-            TextureUtils.pushTexture(location.toString());
+            TextureUtils.pushTexture(filepath);
             GL11.glPushMatrix();
-            double s = size / 16.0;
             RenderState.blendingOn();
+            double s = size / 16.0;
             GL11.glScaled(s, s, s);
 
-            IconUtils.drawIconPartialOccluded(x / s, y / s, new GuiIconDrawer(location.toString()) /* FIXME: this will need to be changed to a reference or id */, this.c, this.xmin / s, this.ymin / s, this.xmax / s, this.ymax / s);
+            IconUtils.drawIconPartialOccluded(x / s, y / s, new GuiIconDrawer(filepath) /* FIXME: this will need to be changed to a reference or id */, this.c, this.xmin / s, this.ymin / s, this.xmax / s, this.ymax / s);
             RenderState.blendingOff();
             GL11.glPopMatrix();
             TextureUtils.popTexture();
@@ -136,6 +133,16 @@ public class GuiIcons {
         }
 
         @Override
+        public int getIconWidth() {
+            return 8;
+        }
+
+        @Override
+        public int getIconHeight() {
+            return 8;
+        }
+
+        @Override
         public float getMinU() {
             return 0;
         }
@@ -163,6 +170,11 @@ public class GuiIcons {
         @Override
         public float getInterpolatedV(double d0) {
             return (float) d0;
+        }
+
+        @Override
+        public String getIconName() {
+            return "GuiIcon";
         }
 
         public int getOriginX() {

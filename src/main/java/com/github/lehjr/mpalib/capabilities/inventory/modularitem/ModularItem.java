@@ -79,7 +79,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)) {
                 final int index = i;
-                Optional.of(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).ifPresent(m -> {
+                Optional.ofNullable(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).ifPresent(m -> {
                     if (m instanceof IToggleableModule) {
                         ((IToggleableModule) m).toggleModule(online);
                         // not enough to update the module, the tag for the item in the slot has to be updated too
@@ -119,7 +119,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
 
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
-            if (Optional.of(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(c ->
+            if (Optional.ofNullable(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(c ->
                     type.isAssignableFrom(c.getClass())).orElse(false))
                 modules.add(module);
         }
@@ -163,7 +163,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
             return false;
 
         // is module valid for this targer?
-        return (Optional.of(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m -> {
+        return (Optional.ofNullable(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m -> {
 
             // check if allowed
             if (m.isAllowed()) {
@@ -217,7 +217,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
      * return true for a module is allowed and either can't be turned off or is on, otherwise return false
      */
     public boolean isModuleOnline(ItemStack module) {
-        return Optional.of(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m -> {
+        return Optional.ofNullable(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m -> {
             if (m.isAllowed()) {
                 if (m instanceof IToggleableModule) {
                     return ((IToggleableModule) m).isModuleOnline();
@@ -234,7 +234,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)) {
-                if (Optional.of(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m -> {
+                if (Optional.ofNullable(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m -> {
                     if (m.isAllowed()) {
                        if(m instanceof IToggleableModule){
                             return ((IToggleableModule) m).isModuleOnline();
@@ -253,7 +253,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
     @Override
     public void tick(EntityPlayer player) {
         for (int i = 0; i < getSlots(); i++) {
-            Optional.of(getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE, null)).ifPresent(m ->{
+            Optional.ofNullable(getStackInSlot(i).getCapability(PowerModuleCapability.POWER_MODULE, null)).ifPresent(m ->{
                 if (m.isAllowed() && m instanceof IPlayerTickModule) {
                     if (((IPlayerTickModule) m).isModuleOnline()) {
                         ((IPlayerTickModule) m).onPlayerTickActive(player, this.getModularItemStack());
@@ -293,7 +293,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
                 return 0;
 
             // get the module category... CATEGORY_NONE) is actually just a fallback
-            EnumModuleCategory category = Optional.of(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m -> m.getCategory())
+            EnumModuleCategory category = Optional.ofNullable(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m -> m.getCategory())
                     .orElse(EnumModuleCategory.NONE);
 
             // Specfic module type for limited modules
@@ -317,7 +317,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)) {
-                if (Optional.of(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m -> {
+                if (Optional.ofNullable(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m -> {
                     NBTUtils.setModuleDoubleOrRemove(module, key, value);
                     return true;
                 }).orElse(false)) {

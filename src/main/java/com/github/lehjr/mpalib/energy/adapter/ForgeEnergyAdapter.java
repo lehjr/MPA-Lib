@@ -40,7 +40,7 @@ public class ForgeEnergyAdapter implements IElectricAdapter {
 
     public ForgeEnergyAdapter(@Nonnull ItemStack itemStack) {
         this.itemStack = itemStack;
-        energyStorage = Optional.of(itemStack.getCapability(CapabilityEnergy.ENERGY, null));
+        energyStorage = Optional.ofNullable(itemStack.getCapability(CapabilityEnergy.ENERGY, null));
     }
 
     @Nullable

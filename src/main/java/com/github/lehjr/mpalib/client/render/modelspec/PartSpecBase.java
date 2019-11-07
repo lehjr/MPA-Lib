@@ -28,7 +28,6 @@ package com.github.lehjr.mpalib.client.render.modelspec;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.ITextComponent;
 
 import java.util.Objects;
 
@@ -62,7 +61,7 @@ public abstract class PartSpecBase {
         return this.defaultcolourindex;
     }
 
-    public abstract ITextComponent getDisaplayName();
+    public abstract String getDisaplayName();
 
     public int getColourIndex(NBTTagCompound nbt) {
         return nbt.hasKey(MPALIbConstants.TAG_COLOUR_INDEX) ? nbt.getInteger(MPALIbConstants.TAG_COLOUR_INDEX) : this.defaultcolourindex;

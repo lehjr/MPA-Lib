@@ -86,7 +86,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     }
 
     boolean isValidMode(@Nonnull ItemStack module) {
-        return Optional.of(module.getCapability(PowerModuleCapability.POWER_MODULE, null))
+        return Optional.ofNullable(module.getCapability(PowerModuleCapability.POWER_MODULE, null))
                 .map( m-> m.isAllowed() && m instanceof IRightClickModule).orElse(false);
     }
 
@@ -104,7 +104,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
     public ItemStack getActiveModule() {
         int activeModeIndex = getActiveMode();
         ItemStack module = activeModeIndex != -1 ? getStackInSlot(activeModeIndex) : ItemStack.EMPTY;
-        return Optional.of(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m->m.isAllowed() && m instanceof IRightClickModule).orElse(false)
+        return Optional.ofNullable(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m->m.isAllowed() && m instanceof IRightClickModule).orElse(false)
                 ? module : ItemStack.EMPTY;
     }
 
@@ -132,7 +132,7 @@ public class ModeChangingModularItem extends ModularItem implements IModeChangin
         for(int i=1; i < getSlots();  i++) {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)
-                    && Optional.of(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m-> m instanceof IRightClickModule).orElse(false)) {
+                    && Optional.ofNullable(module.getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m-> m instanceof IRightClickModule).orElse(false)) {
                 setActiveMode(i);
                 return;
             }

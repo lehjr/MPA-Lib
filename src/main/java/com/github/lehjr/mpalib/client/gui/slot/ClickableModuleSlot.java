@@ -169,7 +169,7 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     }
 
     public EnumModuleCategory getCategory() {
-        return Optional.of(getStack().getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m->m.getCategory()).orElse(EnumModuleCategory.NONE);
+        return Optional.ofNullable(getStack().getCapability(PowerModuleCapability.POWER_MODULE, null)).map(m->m.getCategory()).orElse(EnumModuleCategory.NONE);
     }
 
     public boolean equals(ClickableModuleSlot other) {

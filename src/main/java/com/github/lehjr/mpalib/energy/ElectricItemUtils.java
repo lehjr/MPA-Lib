@@ -128,7 +128,7 @@ public class ElectricItemUtils {
             ItemStack stack = player.getItemStackFromSlot(slot);
             // check if the tool is a modular item. If not, skip it.
             if (!stack.isEmpty() && stack.getItem() instanceof ItemTool) {
-                if (Optional.of(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).map(iItemHandler ->
+                if (Optional.ofNullable(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).map(iItemHandler ->
                         !(iItemHandler instanceof IModularItem)).orElse(true)){
                     continue;
                 }

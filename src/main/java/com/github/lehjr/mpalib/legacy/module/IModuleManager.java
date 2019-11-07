@@ -130,7 +130,7 @@ public interface IModuleManager {
 
     default void toggleModuleForPlayer(EntityPlayer player, String dataName, boolean toggleval) {
         IPowerModule module = getModuleMap().get(dataName);
-        for (ItemStack stack : ItemUtils.getModularItemsEquipped(player)) {
+        for (ItemStack stack : ItemUtils.getLegacyModularItemsEquipped(player)) {
             NBTTagCompound itemTag = NBTUtils.getMuseItemTag(stack);
             if (toggleModule(itemTag, dataName, toggleval) && module instanceof IEnchantmentModule) {
                 if (toggleval)
@@ -165,7 +165,7 @@ public interface IModuleManager {
 
     default List<IPowerModule> getPlayerInstalledModules(EntityPlayer player) {
         List<IPowerModule> installedModules = new ArrayList();
-        for (ItemStack stack : ItemUtils.getModularItemsEquipped(player)) {
+        for (ItemStack stack : ItemUtils.getLegacyModularItemsEquipped(player)) {
             NBTTagCompound itemTag = NBTUtils.getMuseItemTag(stack);
             for (IPowerModule module : getValidModulesForItem(stack)) {
                 if (tagHasModule(itemTag, module.getDataName())) {

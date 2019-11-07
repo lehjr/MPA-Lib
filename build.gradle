@@ -46,7 +46,7 @@ minecraft {
     version = minecraft_version + "-" + forge_version
     runDir = "run"
     mappings = mcp_mappings
-    replace "@NMPALIB_VERSION@", project.version
+    replace "@MPALIB_VERSION@", project.version
     useDepAts = true
 }
 

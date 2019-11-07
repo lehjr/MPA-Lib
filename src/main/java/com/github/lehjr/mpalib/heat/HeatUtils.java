@@ -28,16 +28,19 @@ package com.github.lehjr.mpalib.heat;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.capabilities.heat.HeatCapability;
+import com.github.lehjr.mpalib.capabilities.inventory.modechanging.IModeChangingItem;
+import com.github.lehjr.mpalib.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.mpalib.item.ItemUtils;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Handler for heating and cooling.
@@ -58,11 +61,38 @@ public class HeatUtils {
      * Should only be called server side
      */
     public static double getPlayerMaxHeat(EntityPlayer player) {
-        double maxHeat = 0;
-        for (ItemStack stack : ItemUtils.getModularItemsEquipped(player)) {
-            maxHeat += getItemMaxHeat(stack);
+        AtomicReference<Double> maxHeat = new AtomicReference<>((double) 0);
+
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+            ItemStack itemStack = player.getItemStackFromSlot(slot);
+
+            Optional.ofNullable(itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).ifPresent(handler -> {
+                switch (slot.getSlotType()) {
+                    case HAND:
+                        if (handler instanceof IModeChangingItem) {
+                            maxHeat.updateAndGet(v -> new Double((double) (v + getItemMaxHeat(itemStack))));
+                        }
+                    case ARMOR:
+                        if (handler instanceof IModularItem) {
+                            maxHeat.updateAndGet(v -> new Double((double) (v + getItemMaxHeat(itemStack))));
+                        }
+                }
+            });
+
+            // Legacy support
+            switch (slot.getSlotType()) {
+                case HAND:
+                    if (itemStack.getItem() instanceof com.github.lehjr.mpalib.legacy.item.IModeChangingItem) {
+                        maxHeat.updateAndGet(v -> new Double((double) (v + getItemMaxHeat(itemStack))));
+                    }
+                case ARMOR:
+                    if (itemStack.getItem() instanceof com.github.lehjr.mpalib.legacy.item.IModularItem) {
+                        maxHeat.updateAndGet(v -> new Double((double) (v + getItemMaxHeat(itemStack))));
+                    }
+            }
         }
-        return maxHeat;
+
+        return maxHeat.get();
     }
 
     public static double coolPlayer(EntityPlayer player, double coolJoules) {
@@ -77,7 +107,7 @@ public class HeatUtils {
                 continue;
             }
             if (coolingLeft > 0) {
-                    coolingLeft -= coolItem(stack, coolingLeft);
+                coolingLeft -= coolItem(stack, coolingLeft);
             } else {
                 break;
             }
@@ -124,19 +154,19 @@ public class HeatUtils {
     }
 
     public static double getItemMaxHeat(@Nonnull ItemStack stack) {
-        return Optional.of(stack.getCapability(HeatCapability.HEAT, null)).map(h->h.getMaxHeatStored()).orElse(0D);
+        return Optional.ofNullable(stack.getCapability(HeatCapability.HEAT, null)).map(h -> h.getMaxHeatStored()).orElse(0D);
     }
 
     public static double getItemHeat(@Nonnull ItemStack stack) {
-        return Optional.of(stack.getCapability(HeatCapability.HEAT, null)).map(h->h.getHeatStored()).orElse(0D);
+        return Optional.ofNullable(stack.getCapability(HeatCapability.HEAT, null)).map(h -> h.getHeatStored()).orElse(0D);
     }
 
     public static double heatItem(@Nonnull ItemStack stack, double value) {
-        return Optional.of(stack.getCapability(HeatCapability.HEAT, null)).map(h->h.receiveHeat(value, false)).orElse(0D);
+        return Optional.ofNullable(stack.getCapability(HeatCapability.HEAT, null)).map(h -> h.receiveHeat(value, false)).orElse(0D);
     }
 
     public static double coolItem(@Nonnull ItemStack stack, double value) {
-        return Optional.of(stack.getCapability(HeatCapability.HEAT, null)).map(h->h.extractHeat(value, false)).orElse(0D);
+        return Optional.ofNullable(stack.getCapability(HeatCapability.HEAT, null)).map(h -> h.extractHeat(value, false)).orElse(0D);
     }
 
     protected static final class OverheatDamage extends DamageSource {
