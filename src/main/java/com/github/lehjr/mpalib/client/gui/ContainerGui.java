@@ -1,192 +1,164 @@
-///*
-// * Copyright (c) 2019 MachineMuse, Lehjr
-// * All rights reserved.
-// *
-// * Redistribution and use in source and binary forms, with or without
-// * modification, are permitted provided that the following conditions are met:
-// *
-// *  * Redistributions of source code must retain the above copyright notice, this
-// *    list of conditions and the following disclaimer.
-// *
-// *  * Redistributions in binary form must reproduce the above copyright notice,
-// *    this list of conditions and the following disclaimer in the documentation
-// *    and/or other materials provided with the distribution.
-// *
-// * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-// * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-// * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-// * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-// * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-// */
-//
-//package com.github.lehjr.mpalib.client.gui;
-//
-//import com.github.lehjr.mpalib.client.gui.frame.IGuiFrame;
-//import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
-//import com.github.lehjr.mpalib.math.Colour;
-//import net.minecraft.client.Minecraft;
-//import net.minecraft.entity.player.InventoryPlayer;
-//import net.minecraft.inventory.Container;
-//import net.minecraft.util.text.ITextComponent;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class ContainerGui<T extends Container> extends ContainerScreen2<T> {
-//    protected long creationTime;
-//    protected DrawableRect tooltipRect;
-//    protected List<IGuiFrame> frames;
-//
-//    public ContainerGui(T container, InventoryPlayer playerInventory, ITextComponent title) {
-//        super(container, playerInventory, title);
-//        frames = new ArrayList();
-//        tooltipRect = new DrawableRect(
-//                0, 0, 0, 0,
-//                false,
-//                Colour.BLACK.withAlpha(0.9),
-//                Colour.PURPLE);
-//    }
-//
-//    @Override
-//    public void init(Minecraft minecraft, int width, int height) {
-//        super.init(minecraft, width, height);
-//    }
-//
-//    @Override
-//    public void init() {
-//        super.init();
-//        minecraft.keyboardListener.enableRepeatEvents(true);
-//        creationTime = System.currentTimeMillis();
-//    }
-//
-//    /**
-//     * Draws the gradient-rectangle background you see in the TinkerTable gui.
-//     */
-//    public void drawRectangularBackground() {
-//
-//    }
-//
-//    /**
-//     * Adds a frame to this gui's draw list.
-//     *
-//     * @param frame
-//     */
-//    public void addFrame(IGuiFrame frame) {
-//        frames.add(frame);
-//    }
-//
-//    /**
-//     * Draws all clickables in a list
-//     */
-//    public void drawClickables(List<? extends IClickable> list, int mouseX, int mouseY, float partialTicks) {
-//        if (list == null) {
-//            return;
-//        }
-//        for (IClickable clickie : list) {
-//            clickie.draw(mouseX, mouseY, partialTicks);
-//        }
-//    }
-//
-//    @Override
-//    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-//        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
-//        this.drawRectangularBackground(); // The window rectangle
-//    }
-//
-//    /**
-//     * Called every frame, draws the screen!
-//     */
-//    @Override
-//    public void render(int mouseX, int mouseY, float partialTicks) {
-//        update(mouseX, mouseY);
-//        renderFrames(mouseX, mouseY, partialTicks);
-//        super.render(mouseX, mouseY, partialTicks);
-//    }
-//
-//    public void update(double x, double y) {
-//        for (IGuiFrame frame : frames) {
-//            frame.update(x, y);
-//        }
-//    }
-//
-//    public void renderFrames(int mouseX, int mouseY, float partialTicks) {
-//        for (IGuiFrame frame : frames) {
-//            frame.render(mouseX, mouseY, partialTicks);
-//        }
-//    }
-//
-//    @Override
-//    public void tick() {
-//        super.tick();
-//    }
-//
-//    @Override
-//    public boolean mouseScrolled(double mouseX, double mouseY, double dWheel) {
-//        for (IGuiFrame frame : frames) {
-//            if (frame.mouseScrolled(mouseX, mouseY, dWheel))
-//                return true;
-//        }
-//        if (super.mouseScrolled(mouseX, mouseY, dWheel))
-//            return true;
-//        return false;
-//    }
-//
-//    /**
-//     * Called when the mouse is clicked.
-//     */
-//    @Override
-//    public boolean mouseClicked(double x, double y, int button) {
-//        for (IGuiFrame frame : frames) {
-//            if(frame.mouseClicked(x, y, button))
-//                return true;
-//        }
-//        if (super.mouseClicked(x, y, button))
-//            return true;
-//        return false;
-//    }
-//
-//    /**
-//     * Called when the mouse is moved or a mouse button is released. Signature:
-//     * (mouseX, mouseY, which) which==-1 is mouseMove, which==0 or which==1 is
-//     * mouseUp
-//     */
-//    @Override
-//    public boolean mouseReleased(double x, double y, int which) {
-//        for (IGuiFrame frame : frames) {
-//            frame.mouseReleased(x, y, which);
-//        }
-//        if (super.mouseReleased(x, y, which))
-//            return true;
-//        return false;
-//    }
-//
-//    public void drawToolTip(int mouseX, int mouseY) {
-////        int mouseX = (int) (minecraft.mouseHelper.getMouseX() * this.width / this.minecraft.mainWindow.getWidth());
-////        int mouseY = (int) (minecraft.mouseHelper.getMouseY() * this.height / (double) this.minecraft.mainWindow.getHeight());
-//        List<ITextComponent> tooltip = getToolTip(mouseX, mouseY);
-//        if (tooltip != null) {
-//            tooltip.forEach(ITextComponent::getFormattedText);
-//            List<String> toolTip2 = new ArrayList<>();
-//            for (ITextComponent component : tooltip) {
-//                toolTip2.add(component.getFormattedText());
-//            }
-//            renderTooltip(toolTip2, mouseX,mouseY);
-//        }
-//    }
-//
-//    public List<ITextComponent> getToolTip(int x, int y) {
-//        List<ITextComponent> hitTip;
-//        for (IGuiFrame frame : frames) {
-//            hitTip = frame.getToolTip(x, y);
-//            if (hitTip != null) {
-//                return hitTip;
-//            }
-//        }
-//        return null;
-//    }
-//}
+/*
+ * Copyright (c) 2019 MachineMuse, Lehjr
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *  * Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ *
+ *  * Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+package com.github.lehjr.mpalib.client.gui;
+
+import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
+import com.github.lehjr.mpalib.client.gui.frame.IGuiFrame;
+import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
+import com.github.lehjr.mpalib.math.Colour;
+import net.minecraft.inventory.Container;
+import org.lwjgl.input.Keyboard;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ContainerGui extends ContainerScreen2 {
+    protected long creationTime;
+    protected DrawableRect tooltipRect;
+    protected List<IGuiFrame> frames;
+
+    public ContainerGui(Container container) {
+        super(container);
+        frames = new ArrayList();
+        tooltipRect = new DrawableRect(
+                0, 0, 0, 0,
+                false,
+                Colour.BLACK.withAlpha(0.9),
+                Colour.PURPLE);
+    }
+
+    @Override
+    public void initGui() {
+        super.initGui();
+        Keyboard.enableRepeatEvents(true);
+        creationTime = System.currentTimeMillis();
+    }
+
+    /**
+     * Draws the gradient-rectangle background you see in the TinkerTable gui.
+     */
+    public void drawRectangularBackground() {
+
+    }
+
+    /**
+     * Adds a frame to this gui's draw list.
+     *
+     * @param frame
+     */
+    public void addFrame(IGuiFrame frame) {
+        frames.add(frame);
+    }
+
+    /**
+     * Draws all clickables in a list
+     */
+    public void drawClickables(List<? extends IClickable> list, int mouseX, int mouseY, float partialTicks) {
+        if (list == null) {
+            return;
+        }
+        for (IClickable clickie : list) {
+            clickie.render(mouseX, mouseY, partialTicks);
+        }
+    }
+
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+        this.drawRectangularBackground(); // The window rectangle
+    }
+
+    /**
+     * Called every frame, draws the screen!
+     */
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        update(mouseX, mouseY);
+        renderFrames(mouseX, mouseY, partialTicks);
+        super.drawScreen(mouseX, mouseY, partialTicks);
+    }
+
+    public void update(double x, double y) {
+        for (IGuiFrame frame : frames) {
+            frame.update(x, y);
+        }
+    }
+
+    public void renderFrames(int mouseX, int mouseY, float partialTicks) {
+        for (IGuiFrame frame : frames) {
+            frame.render(mouseX, mouseY, partialTicks);
+        }
+    }
+
+    /**
+     * Called when the mouse is clicked.
+     */
+    @Override
+    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        for (IGuiFrame frame : frames) {
+            if(frame.onMouseDown(mouseX, mouseY, mouseButton))
+                return;
+        }
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
+    /**
+     * Called when the mouse is moved or a mouse button is released. Signature:
+     * (mouseX, mouseY, which) which==-1 is mouseMove, which==0 or which==1 is
+     * mouseUp
+     */
+    @Override
+    public void mouseReleased(int mouseX, int mouseY, int state) {
+        for (IGuiFrame frame : frames) {
+            if (frame.onMouseUp(mouseX, mouseY, state)) {
+                return;
+            }
+        }
+        super.mouseReleased(mouseX, mouseY, state);
+    }
+
+    public void drawToolTip(int mouseX, int mouseY) {
+//        int mouseX = (int) (minecraft.mouseHelper.getMouseX() * this.width / this.minecraft.mainWindow.getWidth());
+//        int mouseY = (int) (minecraft.mouseHelper.getMouseY() * this.height / (double) this.minecraft.mainWindow.getHeight());
+        List<String> tooltip = getToolTip(mouseX, mouseY);
+        if (tooltip != null) {
+            this.drawHoveringText(tooltip, mouseX, mouseY, fontRenderer);
+        }
+    }
+
+    public List<String> getToolTip(int x, int y) {
+        List<String> hitTip;
+        for (IGuiFrame frame : frames) {
+            hitTip = frame.getToolTip(x, y);
+            if (hitTip != null) {
+                return hitTip;
+            }
+        }
+        return null;
+    }
+}

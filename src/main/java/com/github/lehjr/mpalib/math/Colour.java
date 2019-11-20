@@ -84,7 +84,7 @@ public class Colour {
         this.a = 1.0;
     }
 
-    public void doColor4f() {
+    public void docolor() {
         GlStateManager.color((float) r, (float) g, (float) b, (float) a);
     }
 //    /**

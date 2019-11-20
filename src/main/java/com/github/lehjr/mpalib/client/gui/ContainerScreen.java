@@ -120,13 +120,13 @@
 //        RenderHelper.enableGUIStandardItemLighting();
 //        GlStateManager.pushMatrix();
 //        GlStateManager.translatef((float)i, (float)j, 0.0F);
-//        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 //        GlStateManager.enableRescaleNormal();
 //        this.hoveredSlot = null;
 //        int k = 240;
 //        int l = 240;
 //        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
-//        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 //
 //
 //        // Render Items ---------------------------------------------------------------------------
@@ -148,7 +148,7 @@
 //                this.fillGradient(slotX, slotY, slotX + 16, slotY + 16, slotColor, slotColor);
 //                GlStateManager.colorMask(true, true, true, true);
 //                GlStateManager.enableLighting();
-//                GlStateManager.enableDepthTest();
+//                GlStateManager.enableDepth();
 //            }
 //        }
 //        //End Render Items ---------------------------------------------------------------------------
@@ -192,7 +192,7 @@
 //
 //        GlStateManager.popMatrix();
 //        GlStateManager.enableLighting();
-//        GlStateManager.enableDepthTest();
+//        GlStateManager.enableDepth();
 //        RenderHelper.enableStandardItemLighting();
 //    }
 //
@@ -284,7 +284,7 @@
 //                fill(posX, posY, posX + 16, posY + 16, -2130706433);
 //            }
 //
-//            GlStateManager.enableDepthTest();
+//            GlStateManager.enableDepth();
 //            this.itemRenderer.renderItemAndEffectIntoGUI(this.minecraft.player, itemstack, posX, posY);
 //            this.itemRenderer.renderItemOverlayIntoGUI(this.font, itemstack, posX, posY, s);
 //        }
