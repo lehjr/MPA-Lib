@@ -39,17 +39,11 @@ import java.util.List;
 
 public class ContainerGui extends ContainerScreen2 {
     protected long creationTime;
-    protected DrawableRect tooltipRect;
     protected List<IGuiFrame> frames;
 
     public ContainerGui(Container container) {
         super(container);
         frames = new ArrayList();
-        tooltipRect = new DrawableRect(
-                0, 0, 0, 0,
-                false,
-                Colour.BLACK.withAlpha(0.9),
-                Colour.PURPLE);
     }
 
     @Override
@@ -87,10 +81,11 @@ public class ContainerGui extends ContainerScreen2 {
         }
     }
 
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
-        this.drawRectangularBackground(); // The window rectangle
+    /**
+     * Draws the background layer for the GUI.
+     */
+    public void drawBackground() {
+        this.drawDefaultBackground(); // Shading on the world view
     }
 
     /**

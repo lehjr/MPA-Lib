@@ -35,7 +35,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -165,15 +164,12 @@ public class ContainerScreen2 extends GuiScreen {
         this.renderSlots(mouseX, mouseY, partialTicks);
         this.drawHoveredHighlight();
         this.renderDragged(mouseX, mouseY, partialTicks);
-
         GlStateManager.popMatrix();
     }
 
     public void renderSlots(int mouseX, int mouseY, float partialTicks) {
         RenderHelper.disableStandardItemLighting();
         this.hoveredSlot = null;
-        int k = 240;
-        int l = 240;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         for (int slotIndex = 0; slotIndex < this.inventorySlots.inventorySlots.size(); ++slotIndex) {
@@ -186,53 +182,6 @@ public class ContainerScreen2 extends GuiScreen {
             }
         }
         RenderHelper.enableGUIStandardItemLighting();
-
-
-        RenderHelper.disableStandardItemLighting();
-        this.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        RenderHelper.enableGUIStandardItemLighting();
-//        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.GuiContainerEvent.DrawForeground(this, mouseX, mouseY));
-        InventoryPlayer inventoryplayer = this.mc.player.inventory;
-        ItemStack itemstack = this.draggedStack.isEmpty() ? inventoryplayer.getItemStack() : this.draggedStack;
-
-        if (!itemstack.isEmpty()) {
-            int k2 = this.draggedStack.isEmpty() ? 8 : 16;
-            String s = null;
-
-            if (!this.draggedStack.isEmpty() && this.isRightMouseClick) {
-                itemstack = itemstack.copy();
-                itemstack.setCount(MathHelper.ceil((float) itemstack.getCount() / 2.0F));
-            } else if (this.dragSplitting && this.dragSplittingSlots.size() > 1) {
-                itemstack = itemstack.copy();
-                itemstack.setCount(this.dragSplittingRemnant);
-
-                if (itemstack.isEmpty()) {
-                    s = "" + TextFormatting.YELLOW + "0";
-                }
-            }
-
-            this.drawItemStack(itemstack, mouseX - this.guiLeft - 8, mouseY - this.guiTop - k2, s);
-        }
-
-        if (!this.returningStack.isEmpty()) {
-            float f = (float) (Minecraft.getSystemTime() - this.returningStackTime) / 100.0F;
-
-            if (f >= 1.0F) {
-                f = 1.0F;
-                this.returningStack = ItemStack.EMPTY;
-            }
-
-            int l2 = this.returningStackDestSlot.xPos - this.touchUpX;
-            int i3 = this.returningStackDestSlot.yPos - this.touchUpY;
-            int l1 = this.touchUpX + (int) ((float) l2 * f);
-            int i2 = this.touchUpY + (int) ((float) i3 * f);
-            this.drawItemStack(this.returningStack, l1, i2, (String) null);
-        }
-
-        GlStateManager.popMatrix();
-        GlStateManager.enableLighting();
-        GlStateManager.enableDepth();
-        RenderHelper.enableStandardItemLighting();
     }
 
 
@@ -298,14 +247,7 @@ public class ContainerScreen2 extends GuiScreen {
             int i2 = this.touchUpY + (int) ((float) posY * f);
             this.drawItemStack(this.returningStack, l1, i2, (String) null);
         }
-
-//        GlStateManager.popMatrix();
-//        GlStateManager.enableLighting();
-//        GlStateManager.enableDepth();
-//        RenderHelper.enableStandardItemLighting();
     }
-
-
 
     /**
      * Not called here. Must call from your class that extends this
