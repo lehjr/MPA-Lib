@@ -818,10 +818,4 @@ public class ContainerScreen2 extends GuiScreen {
         this.ySize = ySize;
         this.guiTop = (this.height - getYSize()) / 2;
     }
-
-    protected int slotColor = -2130706433;
-
-    public int getSlotColor(int index) {
-        return slotColor;
-    }
 }
