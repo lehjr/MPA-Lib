@@ -110,6 +110,7 @@ public class ContainerScreen2 extends GuiScreen {
     private Slot lastClickSlot;
     private int lastClickButton;
     private boolean doubleClick;
+    protected final int slotColor = -2130706433;
     private ItemStack shiftClickedSlot = ItemStack.EMPTY;
 
     public ContainerScreen2(Container inventorySlotsIn) {
@@ -354,7 +355,7 @@ public class ContainerScreen2 extends GuiScreen {
 
         if (!flag1) {
             if (flag) {
-                drawRect(posX, posY, posX + 16, posY + 16, -2130706433);
+                drawRect(posX, posY, posX + 16, posY + 16, slotColor);
             }
 
             //            GlStateManager.enableDepth();
