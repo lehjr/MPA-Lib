@@ -44,9 +44,11 @@ public interface IModelSpecNBT {
 
     EnumSpecType getSpecType();
 
-    NBTTagCompound getMuseRenderTag();
+    NBTTagCompound getRenderTag();
 
-    NBTTagCompound setMuseRenderTag(NBTTagCompound renderDataIn, String tagName);
+    NBTTagCompound setPresetTag(String presetName);
+
+    NBTTagCompound setRenderTag(NBTTagCompound renderDataIn, String tagName);
 
     NBTTagCompound getDefaultRenderTag();
 
@@ -60,7 +62,7 @@ public interface IModelSpecNBT {
 
     default Colour getColorFromItemStack() {
         try {
-            NBTTagCompound renderTag = getMuseRenderTag();
+            NBTTagCompound renderTag = getRenderTag();
             if (renderTag.hasKey(MPALIbConstants.NBT_TEXTURESPEC_TAG)) {
                 TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompoundTag(MPALIbConstants.NBT_TEXTURESPEC_TAG));
                 NBTTagCompound specTag = renderTag.getCompoundTag(MPALIbConstants.NBT_TEXTURESPEC_TAG);

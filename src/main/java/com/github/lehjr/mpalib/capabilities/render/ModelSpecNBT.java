@@ -30,14 +30,18 @@ import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.github.lehjr.mpalib.client.render.modelspec.EnumSpecType;
 import com.github.lehjr.mpalib.nbt.NBTUtils;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<NBTTagCompound> {
     ItemStack itemStack;
@@ -54,13 +58,24 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<NBTTagCompo
     }
 
     @Override
-    public NBTTagCompound setMuseRenderTag(NBTTagCompound renderDataIn, String tagName) {
+    public NBTTagCompound setPresetTag(String presetName) {
+        NBTTagCompound itemTag = NBTUtils.getMuseItemTag(itemStack);
+        if (itemTag.hasKey(TAG_RENDER, Constants.NBT.TAG_COMPOUND)) {
+            itemTag.removeTag(TAG_RENDER);
+        }
+        itemTag.setString(MPALIbConstants.TAG_COSMETIC_PRESET, presetName);
+        return getRenderTag(); // Warning!!!: See note below
+    }
+
+    @Override
+    public NBTTagCompound setRenderTag(NBTTagCompound renderDataIn, String tagName) {
         NBTTagCompound itemTag = NBTUtils.getMuseItemTag(itemStack);
         if (tagName != null) {
             if (Objects.equals(tagName, MPALIbConstants.TAG_RENDER)) {
                 itemTag.removeTag(MPALIbConstants.TAG_RENDER);
-                if (!renderDataIn.isEmpty())
+                if (!renderDataIn.isEmpty()) {
                     itemTag.setTag(MPALIbConstants.TAG_RENDER, renderDataIn);
+                }
             } else {
                 NBTTagCompound renderTag;
                 if (!itemTag.hasKey(MPALIbConstants.TAG_RENDER)) {
@@ -78,7 +93,7 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<NBTTagCompo
                 }
             }
         }
-        return getMuseRenderTag();
+        return getRenderTag();
     }
 
     @Override
@@ -89,9 +104,13 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<NBTTagCompo
         return EnumSpecType.NONE;
     }
 
+    /**
+     * Warning!! if using cosmetic presents you must override this in your implementation and get the preset's render tag from your config since this is not universal.
+     * @return
+     */
     @Override
     @Nullable
-    public NBTTagCompound getMuseRenderTag() {
+    public NBTTagCompound getRenderTag() {
         NBTTagCompound itemTag = NBTUtils.getMuseItemTag(itemStack);
         return itemTag.getCompoundTag(TAG_RENDER);
     }
@@ -115,9 +134,8 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<NBTTagCompo
 
     @Override
     public int[] getColorArray() {
-        return  getMuseRenderTag().getIntArray(MPALIbConstants.TAG_COLOURS);
+        return  getRenderTag().getIntArray(MPALIbConstants.TAG_COLOURS);
     }
-
 
     /**
      * new array means setting a new array index for the same getValue
@@ -129,18 +147,18 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<NBTTagCompo
 
     @Override
     public NBTTagCompound setColorArray(int[] colors) {
-        getMuseRenderTag().setIntArray(MPALIbConstants.TAG_COLOURS, colors);
-        return getMuseRenderTag();
+        getRenderTag().setIntArray(MPALIbConstants.TAG_COLOURS, colors);
+        return getRenderTag();
     }
 
     // NBTBaseSerializable<NBTTagCompound> ----------------------------------------------------------------------------------
     @Override
     public NBTTagCompound serializeNBT() {
-        return getMuseRenderTag();
+        return getRenderTag();
     }
 
     @Override
     public void deserializeNBT(NBTTagCompound nbt) {
-        setMuseRenderTag(nbt, MPALIbConstants.TAG_RENDER);
+        setRenderTag(nbt, MPALIbConstants.TAG_RENDER);
     }
 }
