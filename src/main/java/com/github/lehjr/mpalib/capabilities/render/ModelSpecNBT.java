@@ -111,8 +111,36 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<NBTTagCompo
     @Override
     @Nullable
     public NBTTagCompound getRenderTag() {
+        NBTTagCompound retTag = getPresetTagOrNull();
+
+        if (retTag == null) {
+            NBTTagCompound itemTag = getRenderTagOrNull();
+        }
+
+        if (retTag == null) {
+            return getDefaultRenderTag();
+        }
+
+        return retTag;
+    }
+
+    @Nullable
+    @Override
+    public NBTTagCompound getRenderTagOrNull() {
         NBTTagCompound itemTag = NBTUtils.getMuseItemTag(itemStack);
         return itemTag.getCompoundTag(TAG_RENDER);
+    }
+
+    @Nullable
+    @Override
+    public NBTTagCompound getPresetTagOrNull() {
+        return null;
+    }
+
+    // Override in your implementation to enable custom models.
+    @Override
+    public boolean canUseCustomModels() {
+        return false;
     }
 
     @Override

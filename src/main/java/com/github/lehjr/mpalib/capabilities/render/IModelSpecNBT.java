@@ -36,6 +36,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public interface IModelSpecNBT {
@@ -45,6 +46,14 @@ public interface IModelSpecNBT {
     EnumSpecType getSpecType();
 
     NBTTagCompound getRenderTag();
+
+    @Nullable
+    NBTTagCompound getRenderTagOrNull();
+
+    boolean canUseCustomModels();
+
+    @Nullable
+    NBTTagCompound getPresetTagOrNull();
 
     NBTTagCompound setPresetTag(String presetName);
 

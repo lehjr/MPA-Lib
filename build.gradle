@@ -36,7 +36,7 @@ repositories {
 }
 
 dependencies {
-//    deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}"            //Forestry
+    deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}"            //Forestry
     deobfCompile "net.darkhax.tesla:Tesla-${minecraft_version}:${tesla_version}"                         //Tesla
     deobfCompile "cofh:RedstoneFlux:1.12-${rf_version}:universal"
     deobfCompile "net.industrial-craft:industrialcraft-2:${ic2api_version}-ex112"                   //IC2 API
