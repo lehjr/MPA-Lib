@@ -32,44 +32,34 @@ import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.renderer.RenderHelper;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author MachineMuse
  */
 public class ClickableButton extends Clickable {
-    protected String label;
+    protected List<String> label;
     protected Point2D radius;
     protected DrawableRect rect;
     private final Colour enabledBorder  = new Colour(0.3F, 0.3F, 0.3F, 1);
     private final Colour enabledBackground = new Colour(0.5F, 0.6F, 0.8F, 1);
     private final Colour disabledBorder = new Colour(0.8F, 0.6F, 0.6F, 1);
     private final Colour disabledBackground = new Colour(0.8F, 0.3F, 0.3F, 1);
+    double labelWidth;
 
-    public ClickableButton(String label, Point2D position, boolean enabled) {
-        this.label = label;
-        this.position = position;
-
-        if (label.contains("\n")) {
-            String[] x = label.split("\n");
-
-            int longestIndex = 0;
-            for (int i = 0; i < x.length; i++) {
-                if (x[i].length() > x[longestIndex].length())
-                    longestIndex = i;
-            }
-            this.radius = new Point2D(Renderer.getStringWidth(x[longestIndex]) / 2 + 2, 6 * x.length);
-        } else {
-            this.radius = new Point2D(Renderer.getStringWidth(label) / 2 + 2, 6);
-        }
-
+    public ClickableButton(String labelIn, Point2D positionIn, boolean enabledIn) {
+        this.position = positionIn;
+        this.setLable(labelIn);
         this.rect = new DrawableRect(
-                position.getX() - radius.getX(),
-                position.getY() - radius.getY(),
-                position.getX() + radius.getX(),
-                position.getY() + radius.getY(),
+                positionIn.getX() - radius.getX(),
+                positionIn.getY() - radius.getY(),
+                positionIn.getX() + radius.getX(),
+                positionIn.getY() + radius.getY(),
                 enabledBorder,
                 enabledBackground
         );
-        this.setEnabled(enabled);
+        this.setEnabled(enabledIn);
     }
 
     @Override
@@ -84,16 +74,11 @@ public class ClickableButton extends Clickable {
             this.rect.draw();
             // standardItemLighting calls to fix issues with container slot highlighting causing issues with this
             RenderHelper.disableStandardItemLighting();
-            if (label.contains("\n")) {
-                String[] s = label.split("\n");
-                for (int i = 0; i < s.length; i++) {
-                    Renderer.drawCenteredString(s[i], position.getX(), position.getY() - (4 * s.length) + (i * 8));
-                }
-            } else {
-                Renderer.drawCenteredString(this.label, position.getX(), position.getY() - 4);
+            for (int i = 0; i < label.size(); i++) {
+                Renderer.drawCenteredString(label.get(i), position.getX(), position.getY() - (4 * label.get(i).length()) + (i * 8));
             }
-            RenderHelper.enableGUIStandardItemLighting();
         }
+        RenderHelper.enableGUIStandardItemLighting();
     }
 
     public Point2D getRadius () {
@@ -110,12 +95,25 @@ public class ClickableButton extends Clickable {
         return hitx && hity;
     }
 
-    public ClickableButton setLable(String label) {
-        this.label = label;
+    public ClickableButton setLable(String labelIn) {
+        this.label = Arrays.asList(labelIn.split("\n"));
+
+        labelWidth = 0;
+            for (String string: label) {
+                double stringWidth = Renderer.getStringWidth(string);
+                if(stringWidth > labelWidth) {
+                    labelWidth = stringWidth;
+                }
+            }
+            this.radius = new Point2D(labelWidth / 2 + 2, 6 * label.size());
         return this;
     }
 
-    public String getLabel() {
+    public double getLabelWidth() {
+        return labelWidth;
+    }
+
+    public List<String> getLabel() {
         return label;
     }
 }
