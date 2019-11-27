@@ -75,10 +75,10 @@ public class ClickableButton extends Clickable {
             // standardItemLighting calls to fix issues with container slot highlighting causing issues with this
             RenderHelper.disableStandardItemLighting();
             for (int i = 0; i < label.size(); i++) {
-                Renderer.drawCenteredString(label.get(i), position.getX(), position.getY() - (4 * label.get(i).length()) + (i * 8));
+                Renderer.drawCenteredString(label.get(i), position.getX(), position.getY() - (4 * label.size()) + (i * 8));
             }
+            RenderHelper.enableGUIStandardItemLighting();
         }
-        RenderHelper.enableGUIStandardItemLighting();
     }
 
     public Point2D getRadius () {

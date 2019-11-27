@@ -13,7 +13,5 @@ import javax.annotation.Nonnull;
  * Ported to Java by lehjr on 11/3/16.
  */
 public interface IModularItem {
-    double getMaxBaseHeat(@Nonnull ItemStack itemStack);
-
     IModuleManager getModuleManager();
 }
