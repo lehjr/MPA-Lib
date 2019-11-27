@@ -24,7 +24,7 @@ public final class PlayerTracker {
         if (!isUsingBuiltInServer || (isUsingBuiltInServer && FMLCommonHandler.instance().getMinecraftServerInstance().getCurrentPlayerCount() > 1)) {
 
             // sync config settings between client and server
-            MPALibPackets.sendTo(new ConfigPacket(), (EntityPlayerMP) player);
+            MPALibPackets.INSTANCE.sendTo(new ConfigPacket(), (EntityPlayerMP) player);
         }
     }
 }

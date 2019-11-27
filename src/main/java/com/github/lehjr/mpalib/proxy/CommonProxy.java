@@ -21,7 +21,7 @@ import java.io.File;
  */
 public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
-        MPALibPackets.registerNuminaPackets();
+        MPALibPackets.registerPackets();
         HeatCapability.register();
         CapabilityPlayerKeyStates.register();
         MPALib.INSTANCE.configDir = new File(event.getModConfigurationDirectory(), MPALIbConstants.CONFIG_FOLDER);

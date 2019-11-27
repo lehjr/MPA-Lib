@@ -14,12 +14,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class MPALibPackets {
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(MPALIbConstants.MODID);
 
-    public static void registerNuminaPackets() {
+    public static void registerPackets() {
         int i = 0;
 
         // MPS/MPA
         INSTANCE.registerMessage(ConfigPacket.Handler.class, ConfigPacket.class, i++, Side.CLIENT);
         INSTANCE.registerMessage(PlayerUpdatePacket.Handler.class, PlayerUpdatePacket.class, i++, Side.SERVER);
+        INSTANCE.registerMessage(ColourInfoPacket.Handler.class, ColourInfoPacket.class, i++, Side.SERVER);
+        INSTANCE.registerMessage(CosmeticInfoPacket.Handler.class, CosmeticInfoPacket.class, i++, Side.SERVER);
+        INSTANCE.registerMessage(CosmeticPresetPacket.Handler.class, CosmeticPresetPacket.class, i++, Side.SERVER);
 
         //MPA
         INSTANCE.registerMessage(ModeChangeRequestPacket.Handler.class, ModeChangeRequestPacket.class, i++, Side.SERVER);
@@ -28,11 +31,6 @@ public class MPALibPackets {
 
         // Legacy MPS
         INSTANCE.registerMessage(LegacyModeChangeRequestPacket.Handler.class, LegacyModeChangeRequestPacket.class, i++, Side.SERVER);
-
-
-
-
-
     }
 
     public static void sendTo(IMessage message, EntityPlayerMP player) {

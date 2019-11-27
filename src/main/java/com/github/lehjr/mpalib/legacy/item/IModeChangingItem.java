@@ -79,7 +79,7 @@ public interface IModeChangingItem extends IModularItem {
             int newindex = clampMode(modes.indexOf(this.getActiveMode(stack)) + dMode, modes.size());
             String newmode = (String) modes.get(newindex);
             this.setActiveMode(stack, newmode);
-            MPALibPackets.sendToServer(new LegacyModeChangeRequestPacket(newmode, player.inventory.currentItem));
+            MPALibPackets.INSTANCE.sendToServer(new LegacyModeChangeRequestPacket(newmode, player.inventory.currentItem));
         }
     }
 
