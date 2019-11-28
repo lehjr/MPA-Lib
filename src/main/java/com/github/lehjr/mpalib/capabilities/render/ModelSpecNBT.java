@@ -114,7 +114,7 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<NBTTagCompo
         NBTTagCompound retTag = getPresetTagOrNull();
 
         if (retTag == null) {
-            NBTTagCompound itemTag = getRenderTagOrNull();
+            retTag = getRenderTagOrNull();
         }
 
         if (retTag == null) {
@@ -128,7 +128,8 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<NBTTagCompo
     @Override
     public NBTTagCompound getRenderTagOrNull() {
         NBTTagCompound itemTag = NBTUtils.getMuseItemTag(itemStack);
-        return itemTag.getCompoundTag(TAG_RENDER);
+        NBTTagCompound renderTag = itemTag.getCompoundTag(TAG_RENDER);
+        return renderTag.isEmpty() ? null : renderTag;
     }
 
     @Nullable
