@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -27,7 +28,7 @@
 package com.github.lehjr.mpalib.network.packets;
 
 import com.github.lehjr.mpalib.capabilities.render.ModelSpecNBTCapability;
-import com.github.lehjr.mpalib.network.MuseByteBufferUtils;
+import com.github.lehjr.mpalib.network.MPALibByteBufferUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -59,13 +60,13 @@ public class ColourInfoPacket implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
         this.itemSlot = buf.readInt();
-        this.tagData = MuseByteBufferUtils.readIntArray(buf);
+        this.tagData = MPALibByteBufferUtils.readIntArray(buf);
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeInt(itemSlot);
-        MuseByteBufferUtils.writeIntArray(buf, tagData);
+        MPALibByteBufferUtils.writeIntArray(buf, tagData);
     }
 
     public static class Handler implements IMessageHandler<ColourInfoPacket, IMessage> {

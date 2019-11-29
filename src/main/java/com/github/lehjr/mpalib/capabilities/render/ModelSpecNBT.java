@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -30,18 +31,15 @@ import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.github.lehjr.mpalib.client.render.modelspec.EnumSpecType;
 import com.github.lehjr.mpalib.nbt.NBTUtils;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<NBTTagCompound> {
     ItemStack itemStack;
@@ -59,7 +57,7 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<NBTTagCompo
 
     @Override
     public NBTTagCompound setPresetTag(String presetName) {
-        NBTTagCompound itemTag = NBTUtils.getMuseItemTag(itemStack);
+        NBTTagCompound itemTag = NBTUtils.getItemTag(itemStack);
         if (itemTag.hasKey(TAG_RENDER, Constants.NBT.TAG_COMPOUND)) {
             itemTag.removeTag(TAG_RENDER);
         }
@@ -69,7 +67,7 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<NBTTagCompo
 
     @Override
     public NBTTagCompound setRenderTag(NBTTagCompound renderDataIn, String tagName) {
-        NBTTagCompound itemTag = NBTUtils.getMuseItemTag(itemStack);
+        NBTTagCompound itemTag = NBTUtils.getItemTag(itemStack);
         if (tagName != null) {
             if (Objects.equals(tagName, MPALIbConstants.TAG_RENDER)) {
                 itemTag.removeTag(MPALIbConstants.TAG_RENDER);
@@ -127,7 +125,7 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<NBTTagCompo
     @Nullable
     @Override
     public NBTTagCompound getRenderTagOrNull() {
-        NBTTagCompound itemTag = NBTUtils.getMuseItemTag(itemStack);
+        NBTTagCompound itemTag = NBTUtils.getItemTag(itemStack);
         NBTTagCompound renderTag = itemTag.getCompoundTag(TAG_RENDER);
         return renderTag.isEmpty() ? null : renderTag;
     }

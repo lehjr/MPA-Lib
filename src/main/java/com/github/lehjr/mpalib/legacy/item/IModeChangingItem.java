@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -80,7 +81,7 @@ public interface IModeChangingItem extends IModularItem {
     }
 
     default String getActiveMode(@Nonnull ItemStack stack) {
-        String modeFromNBT = NBTUtils.getMuseItemTag(stack).getString(MPALIbConstants.TAG_MODE);
+        String modeFromNBT = NBTUtils.getItemTag(stack).getString(MPALIbConstants.TAG_MODE);
         if (modeFromNBT.isEmpty()) {
             List<String> validModes = getValidModes(stack);
             return (validModes != null && (validModes.size() > 0) ? validModes.get(0) : "");
@@ -93,7 +94,7 @@ public interface IModeChangingItem extends IModularItem {
         IPowerModule oldModule = getModuleManager().getModule(activeMode);
         if (oldModule instanceof IEnchantmentModule)
             ((IEnchantmentModule) oldModule).removeEnchantment(stack);
-        NBTUtils.getMuseItemTag(stack).setString(MPALIbConstants.TAG_MODE, newMode);
+        NBTUtils.getItemTag(stack).setString(MPALIbConstants.TAG_MODE, newMode);
         IPowerModule module = getModuleManager().getModule(newMode);
         if (module instanceof IEnchantmentModule)
             ((IEnchantmentModule) module).addEnchantment(stack);

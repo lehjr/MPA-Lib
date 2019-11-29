@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -78,7 +79,7 @@ public interface IModuleManager {
     // fixme: this requires sync between logical sides.
     default double getOrSetModularPropertyDouble(@Nonnull ItemStack stack, String propertyName) {
         double propertyValue = 0;
-        NBTTagCompound valuesTag = NBTUtils.getMuseValuesTag(stack);
+        NBTTagCompound valuesTag = NBTUtils.getValuesTag(stack);
         if (!valuesTag.hasKey(propertyName, Constants.NBT.TAG_DOUBLE)) {
             propertyValue = computeModularPropertyDouble(stack, propertyName);
             if (propertyValue > 0)
@@ -93,7 +94,7 @@ public interface IModuleManager {
 
     default Object computeModularProperty(@Nonnull ItemStack stack, String propertyName) {
         double propertyValue = 0;
-        NBTTagCompound itemTag = NBTUtils.getMuseItemTag(stack);
+        NBTTagCompound itemTag = NBTUtils.getItemTag(stack);
         for (IPowerModule module : getAllModules()) {
             if (itemHasActiveModule(stack, module.getDataName())) {
                 propertyValue = module.applyPropertyModifiers(itemTag, propertyName, propertyValue);
@@ -101,27 +102,6 @@ public interface IModuleManager {
         }
         return propertyValue;
     }
-
-//    default int computeModularPropertyInteger (@Nonnull ItemStack stack, String propertyName) {
-//        return (int) Math.round((double)computeModularProperty(stack, propertyName));
-//    }
-//
-////    // fixme: this requires sync between logical sides.
-//    default int getOrSetModularPropertyInteger(@Nonnull ItemStack stack, String propertyName) {
-//        int propertyValue = 0;
-//        NBTTagCompound valuesTag = MuseNBTUtils.getMuseValuesTag(stack);
-//        if (!valuesTag.hasKey(propertyName, Constants.NBT.TAG_INT)) {
-//            propertyValue = computeModularPropertyInteger(stack, propertyName);
-//            if (propertyValue > 0) {
-//                valuesTag.setInteger(propertyName, propertyValue);
-//            }
-//        } else {
-//            propertyValue = valuesTag.getInteger(propertyName);
-//            if (propertyValue == 0)
-//                valuesTag.removeTag(propertyName);
-//        }
-//        return propertyValue;
-//    }
 
     default List<IPowerModule> getValidModulesForItem(@Nonnull ItemStack stack) {
         List<IPowerModule> validModules = new ArrayList();
@@ -134,7 +114,7 @@ public interface IModuleManager {
     }
 
     default boolean itemHasModule(@Nonnull ItemStack stack, String moduleName) {
-        return tagHasModule(NBTUtils.getMuseItemTag(stack), moduleName);
+        return tagHasModule(NBTUtils.getItemTag(stack), moduleName);
     }
 
     default boolean tagHasModule(NBTTagCompound tag, String moduleName) {
@@ -157,7 +137,7 @@ public interface IModuleManager {
     default void toggleModuleForPlayer(EntityPlayer player, String dataName, boolean toggleval) {
         IPowerModule module = getModuleMap().get(dataName);
         for (ItemStack stack : ItemUtils.getLegacyModularItemsEquipped(player)) {
-            NBTTagCompound itemTag = NBTUtils.getMuseItemTag(stack);
+            NBTTagCompound itemTag = NBTUtils.getItemTag(stack);
             if (toggleModule(itemTag, dataName, toggleval) && module instanceof IEnchantmentModule) {
                 if (toggleval)
                     ((IEnchantmentModule) module).addEnchantment(stack);
@@ -169,7 +149,7 @@ public interface IModuleManager {
 
     default int getNumberInstalledModulesOfType(@Nonnull ItemStack stack, EnumModuleCategory category) {
         int matches = 0;
-        NBTTagCompound itemTag = NBTUtils.getMuseItemTag(stack);
+        NBTTagCompound itemTag = NBTUtils.getItemTag(stack);
         for (IPowerModule module : getValidModulesForItem(stack)) {
             if (tagHasModule(itemTag, module.getDataName()) && module.getCategory() == category) {
                 matches += 1;
@@ -180,7 +160,7 @@ public interface IModuleManager {
 
     default List<IPowerModule> getItemInstalledModules(@Nonnull ItemStack stack) {
         List<IPowerModule> installedModules = new ArrayList();
-        NBTTagCompound itemTag = NBTUtils.getMuseItemTag(stack);
+        NBTTagCompound itemTag = NBTUtils.getItemTag(stack);
         for (IPowerModule module : getValidModulesForItem(stack)) {
             if (tagHasModule(itemTag, module.getDataName())) {
                 installedModules.add(module);
@@ -192,7 +172,7 @@ public interface IModuleManager {
     default List<IPowerModule> getPlayerInstalledModules(EntityPlayer player) {
         List<IPowerModule> installedModules = new ArrayList();
         for (ItemStack stack : ItemUtils.getLegacyModularItemsEquipped(player)) {
-            NBTTagCompound itemTag = NBTUtils.getMuseItemTag(stack);
+            NBTTagCompound itemTag = NBTUtils.getItemTag(stack);
             for (IPowerModule module : getValidModulesForItem(stack)) {
                 if (tagHasModule(itemTag, module.getDataName())) {
                     installedModules.add(module);
@@ -203,7 +183,7 @@ public interface IModuleManager {
     }
 
     default boolean isModuleOnline(@Nonnull ItemStack itemStack, String moduleName) {
-        return isModuleOnline(NBTUtils.getMuseItemTag(itemStack), moduleName);
+        return isModuleOnline(NBTUtils.getItemTag(itemStack), moduleName);
     }
 
     default boolean isModuleOnline(NBTTagCompound itemTag, String moduleName) {
@@ -219,7 +199,7 @@ public interface IModuleManager {
         IPowerModule module = getModuleMap().get(moduleName);
         if (module instanceof IEnchantmentModule)
             ((IEnchantmentModule) module).addEnchantment(stack);
-        tagAddModule(NBTUtils.getMuseItemTag(stack), moduleName);
+        tagAddModule(NBTUtils.getItemTag(stack), moduleName);
     }
 
     default boolean removeModule(NBTTagCompound tag, String moduleName) {
@@ -235,7 +215,7 @@ public interface IModuleManager {
         IPowerModule module = getModuleMap().get(moduleName);
         if (module instanceof IEnchantmentModule)
             ((IEnchantmentModule) module).removeEnchantment(stack);
-        return removeModule(NBTUtils.getMuseItemTag(stack), moduleName);
+        return removeModule(NBTUtils.getItemTag(stack), moduleName);
     }
 
     default boolean itemHasActiveModule(@Nonnull ItemStack itemStack, String moduleName) {
@@ -250,7 +230,7 @@ public interface IModuleManager {
 
             return moduleName.equals(item.getActiveMode(itemStack));
         } else {
-            return isModuleOnline(NBTUtils.getMuseItemTag(itemStack), moduleName);
+            return isModuleOnline(NBTUtils.getItemTag(itemStack), moduleName);
         }
     }
 

@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -43,7 +44,7 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-public class MuseByteBufferUtils extends ByteBufUtils {
+public class MPALibByteBufferUtils extends ByteBufUtils {
     public static void writeCompressedItemStack(ByteBuf buf, @Nonnull ItemStack itemStack) {
         writeCompressedNBT(buf, itemStack.serializeNBT());
     }

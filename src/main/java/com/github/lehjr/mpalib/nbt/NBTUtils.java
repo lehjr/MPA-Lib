@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -34,6 +35,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class NBTUtils {
+    /** legacy tag names retained for compatability **/
     public static final String TAG_ITEM_PREFIX = "MMModItem";// Machine Muse Mod
     public static final String TAG_MODULE_PREFIX = "MMModModule";// Machine Muse Mod
     public static final String TAG_VALUES = "commonValues"; // commonly used values that would normally be recalculated several times a minute.
@@ -44,13 +46,11 @@ public class NBTUtils {
      * @param stack
      * @return an NBTTagCompound, may be newly created. If stack is empty, returns null.
      */
-    public static NBTTagCompound getMuseItemTag(@Nonnull ItemStack stack) {
+    public static NBTTagCompound getItemTag(@Nonnull ItemStack stack) {
         if (stack.isEmpty())
             return new NBTTagCompound();
 
         NBTTagCompound stackTag = stack.getTagCompound() != null ? stack.getTagCompound() : new NBTTagCompound();
-
-
 
         NBTTagCompound properties = (stackTag.hasKey(TAG_ITEM_PREFIX)) ? stackTag.getCompoundTag(TAG_ITEM_PREFIX) : new NBTTagCompound();
         stackTag.setTag(TAG_ITEM_PREFIX, properties);
@@ -64,7 +64,7 @@ public class NBTUtils {
      * @param module
      * @return an NBTTagCompound, may be newly created. If stack is empty, returns null.
      */
-    public static NBTTagCompound getMuseModuleTag(@Nonnull ItemStack module) {
+    public static NBTTagCompound getModuleTag(@Nonnull ItemStack module) {
         if (module.isEmpty())
             return new NBTTagCompound();
 
@@ -81,11 +81,11 @@ public class NBTUtils {
      * returns the getValue if it exists, otherwise 0.
      */
     public static double getModuleDoubleOrZero(@Nonnull ItemStack stack, String string) {
-        return getDoubleOrZero(getMuseModuleTag(stack), string);
+        return getDoubleOrZero(getModuleTag(stack), string);
     }
 
     public static double getModularItemDoubleOrZero(@Nonnull ItemStack stack, String string) {
-        return getDoubleOrZero(getMuseItemTag(stack), string);
+        return getDoubleOrZero(getItemTag(stack), string);
     }
 
     public static double getDoubleOrZero(NBTTagCompound nbt, String tagName) {
@@ -97,11 +97,11 @@ public class NBTUtils {
      * would be zero.
      */
     public static void setModularItemDoubleOrRemove(@Nonnull ItemStack stack, String string, double value) {
-        setDoubleOrRemove(NBTUtils.getMuseItemTag(stack), string, value);
+        setDoubleOrRemove(NBTUtils.getItemTag(stack), string, value);
     }
 
     public static void setModuleDoubleOrRemove(@Nonnull ItemStack stack, String string, double value) {
-        setDoubleOrRemove(NBTUtils.getMuseModuleTag(stack), string, value);
+        setDoubleOrRemove(NBTUtils.getModuleTag(stack), string, value);
     }
 
     /**
@@ -124,11 +124,11 @@ public class NBTUtils {
      * returns the getValue if it exists, otherwise 0.
      */
     public static int getModuleIntOrZero(@Nonnull ItemStack module, String string) {
-        return getIntOrZero(getMuseModuleTag(module), string);
+        return getIntOrZero(getModuleTag(module), string);
     }
 
     public static int getModularItemIntOrZero(@Nonnull ItemStack module, String string) {
-        return getIntOrZero(getMuseItemTag(module), string);
+        return getIntOrZero(getItemTag(module), string);
     }
 
     static int getIntOrZero(NBTTagCompound nbt, String tagName) {
@@ -136,11 +136,11 @@ public class NBTUtils {
     }
 
     public static void setModuleIntOrRemove(@Nonnull ItemStack stack, String tagName, int value) {
-        setIntOrRemove(getMuseModuleTag(stack), tagName, value);
+        setIntOrRemove(getModuleTag(stack), tagName, value);
     }
 
     public static void setModularItemIntOrRemove(@Nonnull ItemStack stack, String tagName, int value) {
-        setIntOrRemove(getMuseItemTag(stack), tagName, value);
+        setIntOrRemove(getItemTag(stack), tagName, value);
     }
 
     public static void setIntOrRemove(@Nonnull NBTTagCompound nbt, String tagName, int value) {
@@ -152,7 +152,7 @@ public class NBTUtils {
 
     // Boolean --------------------------------------------------------------------------------------------------------
     public static boolean getModuleBooleanOrSetDefault(@Nonnull ItemStack module, String tagName, boolean defBool) {
-        NBTTagCompound moduleTag = getMuseModuleTag(module);
+        NBTTagCompound moduleTag = getModuleTag(module);
         if (moduleTag.hasKey(tagName, Constants.NBT.TAG_BYTE)) {
             return getBooleanOrFalse(moduleTag, tagName);
         } else {
@@ -162,11 +162,11 @@ public class NBTUtils {
     }
 
     public static boolean getModuleBooleanOrFalse(@Nonnull ItemStack module, String string) {
-        return getBooleanOrFalse(getMuseModuleTag(module), string);
+        return getBooleanOrFalse(getModuleTag(module), string);
     }
 
     public static boolean getItemBooleanOrFalse(@Nonnull ItemStack module, String string) {
-        return getBooleanOrFalse(getMuseItemTag(module), string);
+        return getBooleanOrFalse(getItemTag(module), string);
     }
 
     static boolean getBooleanOrFalse(NBTTagCompound nbt, String tagName) {
@@ -174,20 +174,20 @@ public class NBTUtils {
     }
 
     public static void setModuleBoolean(@Nonnull ItemStack module, String string, boolean value) {
-        getMuseModuleTag(module).setBoolean(string, value);
+        getModuleTag(module).setBoolean(string, value);
     }
 
     public static void setModularItemBoolean(@Nonnull ItemStack module, String string, boolean value) {
-        getMuseItemTag(module).setBoolean(string, value);
+        getItemTag(module).setBoolean(string, value);
     }
 
     // Store commonly recalculated values in a compound tag.
     @Nullable
-    public static NBTTagCompound getMuseValuesTag(@Nonnull ItemStack stack) {
+    public static NBTTagCompound getValuesTag(@Nonnull ItemStack stack) {
         if (stack.isEmpty())
             return null;
 
-        NBTTagCompound itemTag = getMuseItemTag(stack);
+        NBTTagCompound itemTag = getItemTag(stack);
         NBTTagCompound valuesTag;
         if (itemTag.hasKey(TAG_VALUES)) {
             valuesTag = itemTag.getCompoundTag(TAG_VALUES);
@@ -198,8 +198,8 @@ public class NBTUtils {
         return valuesTag;
     }
 
-    public static void removeMuseValuesTag(@Nonnull ItemStack stack) {
-        NBTTagCompound itemTag = getMuseItemTag(stack);
+    public static void removeValuesTag(@Nonnull ItemStack stack) {
+        NBTTagCompound itemTag = getItemTag(stack);
         itemTag.removeTag(TAG_VALUES);
     }
 
@@ -218,7 +218,7 @@ public class NBTUtils {
 
 
     public static String getStringOrNull(@Nonnull ItemStack stack, String key) {
-        return getStringOrNull(getMuseItemTag(stack), key);
+        return getStringOrNull(getItemTag(stack), key);
     }
 
     public static String getStringOrNull(@Nonnull NBTTagCompound itemProperties, String key) {
@@ -242,6 +242,6 @@ public class NBTUtils {
     }
 
     public static void setStringOrNull(@Nonnull ItemStack stack, String key, String value) {
-        setStringOrNull(getMuseItemTag(stack), key, value);
+        setStringOrNull(getItemTag(stack), key, value);
     }
 }

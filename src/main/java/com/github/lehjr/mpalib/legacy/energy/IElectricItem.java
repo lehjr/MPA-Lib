@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -64,7 +65,7 @@ public interface IElectricItem
         if (itemStack.isEmpty() || !(itemStack.getItem() instanceof IElectricItem))
             return 0;
         IElectricItem iMuseElectricItem = (IElectricItem) itemStack.getItem();
-        return ElectricConversions.museEnergyToEU(iMuseElectricItem.getMaxEnergyStored(itemStack) * 0.75);
+        return ElectricConversions.forgeEnergyToEU(iMuseElectricItem.getMaxEnergyStored(itemStack) * 0.75);
     }
 
     @Override
@@ -73,10 +74,10 @@ public interface IElectricItem
         if (amount == Double.POSITIVE_INFINITY || amount == Double.NEGATIVE_INFINITY)
             amount = Integer.MAX_VALUE * 0.25D;
 
-        int transfer = (ignoreTransferLimit || amount < getTransferLimit(itemStack)) ? ElectricConversions.museEnergyFromEU(amount) : ElectricConversions.museEnergyFromEU(getTransferLimit(itemStack));
+        int transfer = (ignoreTransferLimit || amount < getTransferLimit(itemStack)) ? ElectricConversions.forgeEnergyFromEU(amount) : ElectricConversions.forgeEnergyFromEU(getTransferLimit(itemStack));
         transfer = Math.abs(transfer);
 
-        return ElectricConversions.museEnergyToEU(receiveEnergy(itemStack, transfer, simulate));
+        return ElectricConversions.forgeEnergyToEU(receiveEnergy(itemStack, transfer, simulate));
     }
 
     @Override
@@ -85,31 +86,31 @@ public interface IElectricItem
         if (amount == Double.POSITIVE_INFINITY || amount == Double.NEGATIVE_INFINITY)
             amount = Integer.MAX_VALUE * 0.25D;
 
-        int transfer = (ignoreTransferLimit || amount < getTransferLimit(itemStack)) ? ElectricConversions.museEnergyFromEU(amount) : ElectricConversions.museEnergyFromEU(getTransferLimit(itemStack));
+        int transfer = (ignoreTransferLimit || amount < getTransferLimit(itemStack)) ? ElectricConversions.forgeEnergyFromEU(amount) : ElectricConversions.forgeEnergyFromEU(getTransferLimit(itemStack));
         transfer = Math.abs(transfer);
 
-        return ElectricConversions.museEnergyToEU(extractEnergy(itemStack, transfer, simulate));
+        return ElectricConversions.forgeEnergyToEU(extractEnergy(itemStack, transfer, simulate));
     }
 
     @Override
     default double getMaxCharge(ItemStack itemStack) {
-        return ElectricConversions.museEnergyToEU(getMaxEnergyStored(itemStack));
+        return ElectricConversions.forgeEnergyToEU(getMaxEnergyStored(itemStack));
     }
 
     @Override
     default double getCharge(ItemStack itemStack) {
-        return ElectricConversions.museEnergyToEU(getEnergyStored(itemStack));
+        return ElectricConversions.forgeEnergyToEU(getEnergyStored(itemStack));
     }
 
 
     @Override
     default boolean canUse(ItemStack itemStack, double amount) {
-        return ElectricConversions.museEnergyFromEU(amount) < getEnergyStored(itemStack);
+        return ElectricConversions.forgeEnergyFromEU(amount) < getEnergyStored(itemStack);
     }
 
     @Override
     default boolean use(ItemStack itemStack, double amount, EntityLivingBase entityLivingBase) {
-        return ElectricItem.rawManager.use(itemStack, ElectricConversions.museEnergyToEU(amount), entityLivingBase);
+        return ElectricItem.rawManager.use(itemStack, ElectricConversions.forgeEnergyToEU(amount), entityLivingBase);
     }
 
     @Override

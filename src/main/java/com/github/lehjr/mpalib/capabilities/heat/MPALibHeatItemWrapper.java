@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -37,19 +38,19 @@ import net.minecraftforge.common.util.INBTSerializable;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class MuseHeatItemWrapper extends HeatStorage implements ICapabilityProvider, IHeatWrapper, INBTSerializable<NBTTagDouble> {
+public class MPALibHeatItemWrapper extends HeatStorage implements ICapabilityProvider, IHeatWrapper, INBTSerializable<NBTTagDouble> {
     ItemStack container;
     private final IHeatStorage holder = this;
 
-    public MuseHeatItemWrapper(@Nonnull ItemStack container, double capacity) {
+    public MPALibHeatItemWrapper(@Nonnull ItemStack container, double capacity) {
         this(container, capacity, capacity, capacity);
     }
 
-    public MuseHeatItemWrapper(@Nonnull ItemStack container, double capacity, double maxTransfer) {
+    public MPALibHeatItemWrapper(@Nonnull ItemStack container, double capacity, double maxTransfer) {
         this(container, capacity, maxTransfer, maxTransfer);
     }
 
-    public MuseHeatItemWrapper(@Nonnull ItemStack container, double capacity, double maxReceive, double maxExtract) {
+    public MPALibHeatItemWrapper(@Nonnull ItemStack container, double capacity, double maxReceive, double maxExtract) {
         super(capacity, maxReceive, maxExtract, 0);
         this.container = container;
     }

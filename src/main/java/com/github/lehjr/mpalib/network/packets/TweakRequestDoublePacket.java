@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -27,7 +28,7 @@
 package com.github.lehjr.mpalib.network.packets;
 
 import com.github.lehjr.mpalib.capabilities.inventory.modularitem.IModularItem;
-import com.github.lehjr.mpalib.network.MuseByteBufferUtils;
+import com.github.lehjr.mpalib.network.MPALibByteBufferUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -60,16 +61,16 @@ public class TweakRequestDoublePacket implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
         this.itemSlot = buf.readInt();
-        this.moduleName = new ResourceLocation(MuseByteBufferUtils.readUTF8String(buf));
-        this.tweakName = MuseByteBufferUtils.readUTF8String(buf);
+        this.moduleName = new ResourceLocation(MPALibByteBufferUtils.readUTF8String(buf));
+        this.tweakName = MPALibByteBufferUtils.readUTF8String(buf);
         this.tweakValue = buf.readDouble();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeInt(itemSlot);
-        MuseByteBufferUtils.writeUTF8String(buf, moduleName.toString());
-        MuseByteBufferUtils.writeUTF8String(buf, tweakName);
+        MPALibByteBufferUtils.writeUTF8String(buf, moduleName.toString());
+        MPALibByteBufferUtils.writeUTF8String(buf, tweakName);
         buf.writeDouble(tweakValue);
     }
 

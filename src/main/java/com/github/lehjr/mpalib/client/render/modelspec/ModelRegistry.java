@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -103,9 +104,9 @@ public class ModelRegistry extends MPALibRegistry<SpecBase> {
         return getPart(nbt, getModel(nbt));
     }
 
-    public NBTTagCompound getSpecTag(NBTTagCompound museRenderTag, PartSpecBase spec) {
+    public NBTTagCompound getSpecTag(NBTTagCompound renderTag, PartSpecBase spec) {
         String name = makeName(spec);
-        return (museRenderTag.hasKey(name)) ? (museRenderTag.getCompoundTag(name)) : null;
+        return (renderTag.hasKey(name)) ? (renderTag.getCompoundTag(name)) : null;
     }
 
     public String makeName(PartSpecBase spec) {

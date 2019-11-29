@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -46,33 +47,33 @@ public class ElectricConversions {
         return MPALibConfig.INSTANCE.getTierForItem(stack);
     }
 
-    public static double museEnergyToEU(final double museEnergy) {
-        return museEnergy / config.getIC2Ratio();
+    public static double forgeEnergyToEU(final double forgeEnergy) {
+        return forgeEnergy / config.getIC2Ratio();
     }
 
-    public static int museEnergyFromEU(final double eu) {
+    public static int forgeEnergyFromEU(final double eu) {
         return (int) Math.round(eu * config.getIC2Ratio());
     }
 
     /**
      * Mekanism ------------------------------------------------------------------------------------
      */
-    public static double museEnergyToMek(final double museEnergy) { // no current conversion rate
-        return Math.ceil(museEnergy / config.getMekRatio());
+    public static double forgeEnergyToMek(final double forgeEnergy) { // no current conversion rate
+        return Math.ceil(forgeEnergy / config.getMekRatio());
     }
 
-    public static int museEnergyFromMek(final double mj) { // no current conversion rate
+    public static int forgeEnergyFromMek(final double mj) { // no current conversion rate
         return (int) Math.round(mj * config.getMekRatio());
     }
 
     /**
      * Applied Energistics 2 ----------------------------------------------------------------------
      */
-    public static double museEnergyFromAE(final double ae) {
+    public static double forgeEnergyFromAE(final double ae) {
         return ae * config.getAE2Ratio();
     }
 
-    public static double museEnergyToAE(final double museEnergy) {
-        return museEnergy / config.getAE2Ratio();
+    public static double forgeEnergyToAE(final double forgeEnergy) {
+        return forgeEnergy / config.getAE2Ratio();
     }
 }

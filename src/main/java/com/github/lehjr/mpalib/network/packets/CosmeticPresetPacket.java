@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -27,7 +28,7 @@
 package com.github.lehjr.mpalib.network.packets;
 
 import com.github.lehjr.mpalib.capabilities.render.ModelSpecNBTCapability;
-import com.github.lehjr.mpalib.network.MuseByteBufferUtils;
+import com.github.lehjr.mpalib.network.MPALibByteBufferUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -52,13 +53,13 @@ public class CosmeticPresetPacket implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
         itemSlot = buf.readInt();
-        presetName = MuseByteBufferUtils.readUTF8String(buf);
+        presetName = MPALibByteBufferUtils.readUTF8String(buf);
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeInt(itemSlot);
-        MuseByteBufferUtils.writeUTF8String(buf, presetName);
+        MPALibByteBufferUtils.writeUTF8String(buf, presetName);
     }
 
     public static class Handler implements IMessageHandler<CosmeticPresetPacket, IMessage> {

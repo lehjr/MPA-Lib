@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -54,7 +55,7 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
 //        energy = Math.min(capacity, MuseNBTUtils.getModuleIntOrZero(container, TAG_ENERGY));
 //    }
     public void updateFromNBT() {
-        final NBTTagCompound nbt = NBTUtils.getMuseModuleTag(container);
+        final NBTTagCompound nbt = NBTUtils.getModuleTag(container);
         if (nbt != null && nbt.hasKey(TAG_ENERGY, Constants.NBT.TAG_INT)) {
             deserializeNBT((NBTTagInt) nbt.getTag(TAG_ENERGY));
         }

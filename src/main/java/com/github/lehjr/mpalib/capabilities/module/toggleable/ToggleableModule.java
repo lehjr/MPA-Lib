@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -54,7 +55,7 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
 //    }
 
     public void updateFromNBT() {
-        final NBTTagCompound nbt = NBTUtils.getMuseModuleTag(module);
+        final NBTTagCompound nbt = NBTUtils.getModuleTag(module);
         if (nbt != null && nbt.hasKey(TAG_ONLINE, Constants.NBT.TAG_BYTE)) {
             deserializeNBT((NBTTagByte) nbt.getTag(TAG_ONLINE));
         } else {

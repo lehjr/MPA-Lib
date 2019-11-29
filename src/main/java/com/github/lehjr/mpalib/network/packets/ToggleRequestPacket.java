@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -27,7 +28,7 @@
 package com.github.lehjr.mpalib.network.packets;
 
 import com.github.lehjr.mpalib.capabilities.inventory.modularitem.IModularItem;
-import com.github.lehjr.mpalib.network.MuseByteBufferUtils;
+import com.github.lehjr.mpalib.network.MPALibByteBufferUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
@@ -53,13 +54,13 @@ public class ToggleRequestPacket implements IMessage {
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        this.registryName = MuseByteBufferUtils.readUTF8String(buf);
+        this.registryName = MPALibByteBufferUtils.readUTF8String(buf);
         this.toggleval = buf.readBoolean();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        MuseByteBufferUtils.writeUTF8String(buf, registryName);
+        MPALibByteBufferUtils.writeUTF8String(buf, registryName);
         buf.writeBoolean(toggleval);
     }
 

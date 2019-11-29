@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -155,7 +156,7 @@ public class PowerModule implements IPowerModule {
 
     @Override
     public double applyPropertyModifiers(String propertyName) {
-        return applyPropertyModifiers(propertyName, NBTUtils.getMuseModuleTag(module));
+        return applyPropertyModifiers(propertyName, NBTUtils.getModuleTag(module));
     }
 
     @Override
@@ -217,7 +218,7 @@ public class PowerModule implements IPowerModule {
     public int applyPropertyModifierBaseInt(String propertyName) {
         int propertyValue = 0;
         Iterable<IPropertyModifierInteger> propertyModifiersIterable = propertyBaseIntegers.get(propertyName);
-        NBTTagCompound moduleTag = NBTUtils.getMuseModuleTag(getModuleStack());
+        NBTTagCompound moduleTag = NBTUtils.getModuleTag(getModuleStack());
         for (IPropertyModifier modifier : propertyModifiersIterable) {
             propertyValue = ((IPropertyModifierInteger) modifier).applyModifier(moduleTag, propertyValue);
         }

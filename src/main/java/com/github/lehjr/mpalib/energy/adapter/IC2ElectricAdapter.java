@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -65,21 +66,21 @@ public class IC2ElectricAdapter implements IElectricAdapter {
 
     @Override
     public int getEnergyStored() {
-        return ElectricConversions.museEnergyFromEU(ElectricItem.manager.getCharge(this.stack));
+        return ElectricConversions.forgeEnergyFromEU(ElectricItem.manager.getCharge(this.stack));
     }
 
     @Override
     public int getMaxEnergyStored() {
-        return ElectricConversions.museEnergyFromEU(this.item.getMaxCharge(this.stack));
+        return ElectricConversions.forgeEnergyFromEU(this.item.getMaxCharge(this.stack));
     }
 
     @Override
     public int extractEnergy(int requested, boolean simulate) {
-        return ElectricConversions.museEnergyFromEU(ElectricItem.manager.discharge(this.stack, ElectricConversions.museEnergyToEU(requested), this.getTier(), true, false, simulate));
+        return ElectricConversions.forgeEnergyFromEU(ElectricItem.manager.discharge(this.stack, ElectricConversions.forgeEnergyToEU(requested), this.getTier(), true, false, simulate));
     }
 
     @Override
     public int receiveEnergy(int provided, boolean simulate) {
-        return ElectricConversions.museEnergyFromEU(ElectricItem.manager.charge(this.stack, ElectricConversions.museEnergyToEU(provided), this.getTier(), true, simulate));
+        return ElectricConversions.forgeEnergyFromEU(ElectricItem.manager.charge(this.stack, ElectricConversions.forgeEnergyToEU(provided), this.getTier(), true, simulate));
     }
 }

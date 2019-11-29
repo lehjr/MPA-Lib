@@ -1,4 +1,5 @@
 /*
+ * MPA-Lib (Formerly known as Numina)
  * Copyright (c) 2019 MachineMuse, Lehjr
  * All rights reserved.
  *
@@ -28,7 +29,7 @@ package com.github.lehjr.mpalib.legacy.network;
 
 import com.github.lehjr.mpalib.legacy.item.IModeChangingItem;
 import com.github.lehjr.mpalib.legacy.module.IModuleManager;
-import com.github.lehjr.mpalib.network.MuseByteBufferUtils;
+import com.github.lehjr.mpalib.network.MPALibByteBufferUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -52,13 +53,13 @@ public class LegacyModeChangeRequestPacket implements IMessage {
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        this.mode = MuseByteBufferUtils.readUTF8String(buf);
+        this.mode = MPALibByteBufferUtils.readUTF8String(buf);
         this.slot = buf.readInt();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        MuseByteBufferUtils.writeUTF8String(buf, mode);
+        MPALibByteBufferUtils.writeUTF8String(buf, mode);
         buf.writeInt(slot);
     }
 
