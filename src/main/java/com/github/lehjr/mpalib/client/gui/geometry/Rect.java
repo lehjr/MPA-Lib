@@ -185,6 +185,11 @@ public class Rect {
         grow();
     }
 
+    public void setPosition(Point2D position) {
+        setLeft(position.getX() - finalWidth() * 0.5);
+        setTop(position.getY() - finalHeight() * 0.5);
+    }
+
     public boolean growFromMiddle() {
         return growFromMiddle;
     }

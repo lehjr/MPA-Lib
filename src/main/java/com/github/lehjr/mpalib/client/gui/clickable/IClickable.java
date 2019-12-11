@@ -43,6 +43,8 @@ public interface IClickable {
 
     Point2D getPosition();
 
+    void setPosition(Point2D position);
+
     boolean hitBox(double x, double y);
 
     List<String> getToolTip();

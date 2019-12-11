@@ -153,4 +153,14 @@ public class ClickableLabel implements IClickable {
     public Point2D getPosition() {
         return position;
     }
+
+    /**
+     * Done this way so that moving positions (like FlyFromPointToPoint) don't (shouldn't) get messed up ...
+     * @param position
+     */
+    @Override
+    public void setPosition(Point2D position) {
+        this.position.setX(position.getX());
+        this.position.setY(position.getY());
+    }
 }

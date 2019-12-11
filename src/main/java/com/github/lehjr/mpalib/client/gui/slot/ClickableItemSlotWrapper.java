@@ -75,6 +75,13 @@ public class ClickableItemSlotWrapper implements IClickable {
                 getPosition().getY() - offsety, slot.getStack());
     }
 
+    // FIXME!!! "move" behaviour differs from other established behaviour
+
+    @Override
+    public void setPosition(Point2D position) {
+        this.move(position.getX(), position.getY());
+    }
+
     @Override
     public void move(Point2D position) {
         this.move(position.getX(), position.getY());
