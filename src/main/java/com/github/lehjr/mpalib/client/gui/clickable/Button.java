@@ -128,14 +128,8 @@ public class Button extends DrawableRect implements IClickable {
     }
 
     @Override
-    public void move(double x, double y) {
-        setLeft(x - width()/2);
-        setRight(y - height()/2);
-    }
-
-    @Override
     public Point2D getPosition() {
-        return new Point2D(centerx(), centery());
+        return center();
     }
 
     @Override

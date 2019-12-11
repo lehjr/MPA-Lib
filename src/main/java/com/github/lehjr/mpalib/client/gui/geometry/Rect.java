@@ -185,6 +185,12 @@ public class Rect {
         grow();
     }
 
+    public void move(double x, double y) {
+        ulFinal = whFinal.plus(x, y);
+        whFinal = whFinal.plus(x, y);
+        grow();
+    }
+
     public void setPosition(Point2D position) {
         setLeft(position.getX() - finalWidth() * 0.5);
         setTop(position.getY() - finalHeight() * 0.5);
