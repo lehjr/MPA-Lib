@@ -86,6 +86,8 @@ public class LabledButton extends Button {
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         super.render(mouseX, mouseY, partialTicks);
-        Renderer.drawCenteredString(this.label, centerx(), centery() - 4);
+        if (isVisible) {
+            Renderer.drawCenteredString(this.label, centerx(), centery() - 4);
+        }
     }
 }
