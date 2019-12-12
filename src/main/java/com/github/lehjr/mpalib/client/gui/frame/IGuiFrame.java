@@ -27,9 +27,12 @@
 
 package com.github.lehjr.mpalib.client.gui.frame;
 
+import com.github.lehjr.mpalib.client.gui.geometry.IRect;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
+
 import java.util.List;
 
-public interface IGuiFrame {
+public interface IGuiFrame extends IRect {
     /**
      * @param mouseX
      * @param mouseY
@@ -77,4 +80,109 @@ public interface IGuiFrame {
      * @return tooltip or null if not returning tooltip;
      */
     List<String> getToolTip(int x, int y);
+
+
+    IRect getBorder();
+
+    /** IRect for easier placement data and manipulation ----------------------------------------------------------- */
+
+    @Override
+    default Point2D center() {
+        return getBorder().center();
+    }
+
+    @Override
+    default Point2D getUL() {
+        return getBorder().getUL();
+    }
+
+    @Override
+    default Point2D getULFinal() {
+        return getBorder().getULFinal();
+    }
+
+    @Override
+    default Point2D getWH() {
+        return getBorder().getWH();
+    }
+
+    @Override
+    default Point2D getWHFinal() {
+        return getBorder().getWHFinal();
+    }
+
+    @Override
+    default double left() {
+        return getBorder().left();
+    }
+
+    @Override
+    default double finalLeft() {
+        return getBorder().finalLeft();
+    }
+
+    @Override
+    default double top() {
+        return getBorder().top();
+    }
+
+    @Override
+    default double finalTop() {
+        return getBorder().finalTop();
+    }
+
+    @Override
+    default double right() {
+        return getBorder().right();
+    }
+
+    @Override
+    default double finalRight() {
+        return getBorder().finalRight();
+    }
+
+    @Override
+    default double bottom() {
+        return getBorder().bottom();
+    }
+
+    @Override
+    default double finalBottom() {
+        return getBorder().finalBottom();
+    }
+
+    @Override
+    default double width() {
+        return getBorder().width();
+    }
+
+    @Override
+    default double finalWidth() {
+        return getBorder().finalWidth();
+    }
+
+    @Override
+    default double height() {
+        return getBorder().height();
+    }
+
+    @Override
+    default double finalHeight() {
+        return getBorder().finalHeight();
+    }
+
+    @Override
+    default boolean growFromMiddle() {
+        return getBorder().growFromMiddle();
+    }
+
+    @Override
+    default double centerx() {
+        return getBorder().centerx();
+    }
+
+    @Override
+    default double centery() {
+        return getBorder().centery();
+    }
 }

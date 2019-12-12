@@ -29,6 +29,7 @@ package com.github.lehjr.mpalib.client.gui.scrollable;
 
 import com.github.lehjr.mpalib.client.gui.frame.IGuiFrame;
 import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
+import com.github.lehjr.mpalib.client.gui.geometry.IRect;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
@@ -55,14 +56,6 @@ public class ScrollableFrame implements IGuiFrame {
 
     protected double getScrollAmount() {
         return 8;
-    }
-
-    public void setTargetDimensions(double left, double top, double right, double bottom) {
-        this.border.setTargetDimensions(left, top, right, bottom);
-    }
-
-    public void setTargetDimensions(Point2D ul, Point2D wh) {
-        this.border.setTargetDimensions(ul, wh);
     }
 
     public void setTopLeft(Point2D topLeft) {
@@ -187,5 +180,71 @@ public class ScrollableFrame implements IGuiFrame {
     @Override
     public List<String> getToolTip(int x, int y) {
         return null;
+    }
+
+    @Override
+    public IRect getBorder() {
+        return this.border;
+    }
+
+    @Override
+    public void setTargetDimensions(double left, double top, double right, double bottom) {
+        border.setTargetDimensions(left, top, right, bottom);
+    }
+
+    @Override
+    public void setTargetDimensions(Point2D ul, Point2D wh) {
+        border.setTargetDimensions(ul, wh);
+    }
+
+    @Override
+    public IRect setLeft(double value) {
+        setLeft(value);
+        return this;
+    }
+
+    @Override
+    public IRect setRight(double value) {
+        setRight(value);
+        return this;
+    }
+
+    @Override
+    public IRect setTop(double value) {
+        setTop(value);
+        return this;
+    }
+
+    @Override
+    public IRect setBottom(double value) {
+        setBottom(value);
+        return this;
+    }
+
+    @Override
+    public IRect setWidth(double value) {
+        border.setWidth(value);
+        return this;
+    }
+
+    @Override
+    public IRect setHeight(double value) {
+        border.setHeight(value);
+        return this;
+    }
+
+    @Override
+    public void move(Point2D moveAmount) {
+        border.move(moveAmount);
+    }
+
+    @Override
+    public void move(double x, double y) {
+        border.move(x, y);
+    }
+
+    @Override
+    public void setPosition(Point2D position) {
+        border.setPosition(position);
     }
 }

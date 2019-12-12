@@ -29,6 +29,7 @@ package com.github.lehjr.mpalib.client.gui.frame;
 
 import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.client.gui.geometry.DrawableTile;
+import com.github.lehjr.mpalib.client.gui.geometry.IRect;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.slot.UniversalSlot;
 import com.github.lehjr.mpalib.math.Colour;
@@ -152,5 +153,82 @@ public class InventoryFrame implements IGuiFrame {
     @Override
     public List<String> getToolTip(int i, int i1) {
         return null;
+    }
+
+    @Override
+    public IRect getBorder() {
+        return this.border;
+    }
+
+    @Override
+    public void setTargetDimensions(double left, double top, double right, double bottom) {
+        border.setTargetDimensions(left, top, right, bottom);
+        loadSlots();
+    }
+
+    @Override
+    public void setTargetDimensions(Point2D ul, Point2D wh) {
+        border.setTargetDimensions(ul, wh);
+        loadSlots();
+    }
+
+    @Override
+    public IRect setLeft(double value) {
+        setLeft(value);
+        loadSlots();
+        return this;
+    }
+
+    @Override
+    public IRect setRight(double value) {
+        setRight(value);
+        loadSlots();
+        return this;
+    }
+
+    @Override
+    public IRect setTop(double value) {
+        setTop(value);
+        loadSlots();
+        return this;
+    }
+
+    @Override
+    public IRect setBottom(double value) {
+        setBottom(value);
+        loadSlots();
+        return this;
+    }
+
+    @Override
+    public IRect setWidth(double value) {
+        border.setWidth(value);
+        loadSlots();
+        return this;
+    }
+
+    @Override
+    public IRect setHeight(double value) {
+        border.setHeight(value);
+        loadSlots();
+        return this;
+    }
+
+    @Override
+    public void move(Point2D moveAmount) {
+        border.move(moveAmount);
+        loadSlots();
+    }
+
+    @Override
+    public void move(double x, double y) {
+        border.move(x, y);
+        loadSlots();
+    }
+
+    @Override
+    public void setPosition(Point2D position) {
+        border.setPosition(position);
+        loadSlots();
     }
 }

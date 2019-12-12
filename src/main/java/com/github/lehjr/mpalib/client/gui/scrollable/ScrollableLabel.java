@@ -80,7 +80,8 @@ public class ScrollableLabel extends ScrollableRectangle {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        if (enabled)
+        if (enabled) {
             label.render(mouseX, mouseY, partialTicks);
+        }
     }
 }
