@@ -106,8 +106,8 @@ public class TexturedButton extends Button {
             color = Colour.RED.withAlpha(0.6);
 
         new GuiIcons.GuiIcon(textureSize, textureLocation.toString(),
-                textureX != null ? this.centerx() + textureX : this.centerx(),
-                textureY != null ? this.centery() + textureY : this.centery(),
+                textureX != null ? this.tile.centerx() + textureX : this.tile.centerx(),
+                textureY != null ? this.tile.centery() + textureY : this.tile.centery(),
                 color, null, null, null, null);
     }
 }

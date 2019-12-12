@@ -27,17 +27,17 @@
 
 package com.github.lehjr.mpalib.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
+import com.github.lehjr.mpalib.client.gui.geometry.DrawableTile;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.geometry.Rect;
 import com.github.lehjr.mpalib.math.Colour;
 
 import java.util.List;
 
-public class Button extends DrawableRect implements IClickable {
+public class Button implements IClickable {
     protected IPressable onPressed;
     protected IReleasable onReleased;
-
+    protected DrawableTile tile;
     protected boolean isEnabled = true;
     protected boolean isVisible = true;
     Colour backgroundColourEnabled;
@@ -52,7 +52,7 @@ public class Button extends DrawableRect implements IClickable {
                   Colour backgroundColourDisabled,
                   Colour borderColourEnabled,
                   Colour borderColourDisabled) {
-        super(left, top, right, bottom, growFromMiddle, backgroundColourEnabled, borderColourEnabled);
+        this.tile = new DrawableTile(left, top, right, bottom, growFromMiddle, backgroundColourEnabled, borderColourEnabled);
         this.backgroundColourEnabled = backgroundColourEnabled;
         this.backgroundColourDisabled = backgroundColourDisabled;
         this.borderColourEnabled = borderColourEnabled;
@@ -64,7 +64,7 @@ public class Button extends DrawableRect implements IClickable {
                   Colour backgroundColourDisabled,
                   Colour borderColourEnabled,
                   Colour borderColourDisabled) {
-        super(left, top, right, bottom, backgroundColourEnabled, borderColourEnabled);
+        this.tile = new DrawableTile(left, top, right, bottom, backgroundColourEnabled, borderColourEnabled);
         this.backgroundColourEnabled = backgroundColourEnabled;
         this.backgroundColourDisabled = backgroundColourDisabled;
         this.borderColourEnabled = borderColourEnabled;
@@ -76,7 +76,7 @@ public class Button extends DrawableRect implements IClickable {
                   Colour backgroundColourDisabled,
                   Colour borderColourEnabled,
                   Colour borderColourDisabled) {
-        super(ul, br, backgroundColourEnabled, borderColourEnabled);
+        this.tile = new DrawableTile(ul, br, backgroundColourEnabled, borderColourEnabled);
         this.backgroundColourEnabled = backgroundColourEnabled;
         this.backgroundColourDisabled = backgroundColourDisabled;
         this.borderColourEnabled = borderColourEnabled;
@@ -88,7 +88,7 @@ public class Button extends DrawableRect implements IClickable {
                   Colour backgroundColourDisabled,
                   Colour borderColourEnabled,
                   Colour borderColourDisabled) {
-        super(ref, backgroundColourEnabled, borderColourEnabled);
+        this.tile = new DrawableTile(ref.finalLeft(), ref.finalTop(), ref.finalRight(), ref.finalBottom(), backgroundColourEnabled, borderColourEnabled);
         this.backgroundColourEnabled = backgroundColourEnabled;
         this.backgroundColourDisabled = backgroundColourDisabled;
         this.borderColourEnabled = borderColourEnabled;
@@ -110,33 +110,128 @@ public class Button extends DrawableRect implements IClickable {
         if (isVisible) {
             if (isEnabled()) {
                 if (hitBox(mouseX, mouseY)) {
-                    super.setBackgroundColour(new Colour(
+                    this.tile.setBackgroundColour(new Colour(
                             (byte)(this.backgroundColourEnabled.r + highlight < 255 ? this.backgroundColourEnabled.r + highlight : 255),
                             (byte)(this.backgroundColourEnabled.g + highlight < 255 ? this.backgroundColourEnabled.g + highlight : 255),
                             (byte)(this.backgroundColourEnabled.b + highlight < 255 ? this.backgroundColourEnabled.b + highlight : 255),
                             1));
                 } else {
-                    super.setBackgroundColour(this.backgroundColourEnabled);
+                    this.tile.setBackgroundColour(this.backgroundColourEnabled);
                 }
-                super.setBorderColour(this.borderColourEnabled);
+                this.tile.setBorderColour(this.borderColourEnabled);
             } else {
-                super.setBackgroundColour(backgroundColourDisabled);
-                super.setBorderColour(this.borderColourDisabled);
+                this.tile.setBackgroundColour(backgroundColourDisabled);
+                this.tile.setBorderColour(this.borderColourDisabled);
             }
-            super.draw();
+            this.tile.draw();
         }
     }
 
+    public void setTargetDimensions(double left, double top, double right, double bottom) {
+        this.tile.setTargetDimensions(left, top, right, bottom);
+    }
+
+    public void setTargetDimensions(Point2D ul, Point2D wh) {
+        this.tile.setTargetDimensions(ul, wh);
+    }
+
+    public double left() {
+        return this.tile.left();
+    }
+
+    public double finalLeft() {
+        return this.tile.finalLeft();
+    }
+
+    public double top() {
+        return this.tile.top();
+    }
+
+    public double finalTop() {
+        return this.tile.finalTop();
+    }
+
+    public double right() {
+        return this.tile.right();
+    }
+
+    public double finalRight() {
+        return this.tile.finalRight();
+    }
+
+    public double bottom() {
+        return this.tile.bottom();
+    }
+
+    public double finalBottom() {
+        return this.tile.finalBottom();
+    }
+
+    public double width() {
+        return this.tile.width();
+    }
+
+    public double finalWidth() {
+        return this.tile.finalWidth();
+    }
+
+    public double height() {
+        return this.tile.height();
+    }
+
+    public double finalHeight() {
+        return this.tile.finalHeight();
+    }
+
+    public void setLeft(double value) {
+        tile.setLeft(value);
+    }
+
+    public void setRight(double value) {
+        this.tile.setRight(value);
+    }
+
+    public void setTop(double value) {
+        this.tile.setTop(value);
+    }
+
+    public void setBottom(double value) {
+        this.tile.setBottom(value);
+    }
+
+    public void setWidth(double value) {
+        this.tile.setWidth(value);
+    }
+
+    public void setHeight(double value) {
+        this.tile.setHeight(value);
+    }
+
     @Override
-    public Point2D getPosition() {
-        return center();
+    public void move(Point2D position) {
+        this.tile.move(position);
+    }
+
+    @Override
+    public void move(double x, double y) {
+        this.tile.move(x, y);
+    }
+
+    @Override
+    public void setPosition(Point2D position) {
+        this.tile.setPosition(position);
     }
 
     @Override
     public boolean hitBox(double x, double y) {
         if (isVisible() && isEnabled())
-            return x >= left() && x <= right() && y >= top() && y <= bottom();
+            return x >= this.tile.left() && x <= this.tile.right() && y >= this.tile.top() && y <= this.tile.bottom();
         return false;
+    }
+
+    @Override
+    public Point2D getPosition() {
+        return this.tile.center();
     }
 
     @Override
