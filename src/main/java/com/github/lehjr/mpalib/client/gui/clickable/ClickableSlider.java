@@ -46,7 +46,6 @@ import net.minecraft.client.resources.I18n;
 public class ClickableSlider extends Clickable {
     final int cornersize = 3;
     private double valueInternal = 0;
-    Point2D pos;
     double width;
     private String id;
     private String label;
@@ -57,7 +56,6 @@ public class ClickableSlider extends Clickable {
 
 
     public ClickableSlider(Point2D pos, double width, String id, String label) {
-        this.pos = pos;
         this.width = width;
         this.id = id;
         this.position = pos;
@@ -80,6 +78,19 @@ public class ClickableSlider extends Clickable {
         this.insideRect.setRight(position.getX() + width * (getValue() - 0.5) + cornersize);
         this.outsideRect.draw();
         this.insideRect.draw();
+    }
+
+    @Override
+    public void setPosition(Point2D position) {
+        super.setPosition(position);
+        this.insideRect = new DrawableRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, 0, position.getY() + 16, Colour.ORANGE, Colour.LIGHTBLUE);
+        this.outsideRect = new DrawableRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, position.getX() + width / 2.0 + cornersize, position.getY() + 16, Colour.DARKBLUE, Colour.LIGHTBLUE);
+    }
+
+    public void setWidth(double widthIn) {
+        this.width = widthIn;
+        this.insideRect = new DrawableRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, 0, position.getY() + 16, Colour.ORANGE, Colour.LIGHTBLUE);
+        this.outsideRect = new DrawableRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, position.getX() + width / 2.0 + cornersize, position.getY() + 16, Colour.DARKBLUE, Colour.LIGHTBLUE);
     }
 
     @Override
@@ -122,6 +133,6 @@ public class ClickableSlider extends Clickable {
     }
 
     public void setValueByX(double x) {
-        valueInternal = MathUtils.clampDouble((x - pos.getX()) / width + 0.5, 0, 1);
+        valueInternal = MathUtils.clampDouble((x - position.getX()) / width + 0.5, 0, 1);
     }
 }

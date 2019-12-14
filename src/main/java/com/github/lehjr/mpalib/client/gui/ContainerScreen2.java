@@ -545,10 +545,12 @@ public class ContainerScreen2 extends GuiScreen {
     public void mouseReleased(int mouseX, int mouseY, int state) {
         super.mouseReleased(mouseX, mouseY, state); //Forge, Call parent to release buttons
         Slot slot = this.getSlotAtPosition(mouseX, mouseY);
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        boolean flag = this.hasClickedOutside(mouseX, mouseY, i, j);
-        if (slot != null) flag = false; // Forge, prevent dropping of items through slots outside of GUI boundaries
+        int left = this.guiLeft;
+        int top = this.guiTop;
+        boolean flag = this.hasClickedOutside(mouseX, mouseY, left, top);
+        if (slot != null) {
+            flag = false; // Forge, prevent dropping of items through slots outside of GUI boundaries
+        }
         int k = -1;
 
         if (slot != null) {
@@ -603,15 +605,15 @@ public class ContainerScreen2 extends GuiScreen {
                             this.returningStack = ItemStack.EMPTY;
                         } else {
                             this.handleMouseClick(this.clickedSlot, this.clickedSlot.slotNumber, state, ClickType.PICKUP);
-                            this.touchUpX = mouseX - i;
-                            this.touchUpY = mouseY - j;
+                            this.touchUpX = mouseX - left;
+                            this.touchUpY = mouseY - top;
                             this.returningStackDestSlot = this.clickedSlot;
                             this.returningStack = this.draggedStack;
                             this.returningStackTime = Minecraft.getSystemTime();
                         }
                     } else if (!this.draggedStack.isEmpty()) {
-                        this.touchUpX = mouseX - i;
-                        this.touchUpY = mouseY - j;
+                        this.touchUpX = mouseX - left;
+                        this.touchUpY = mouseY - top;
                         this.returningStackDestSlot = this.clickedSlot;
                         this.returningStack = this.draggedStack;
                         this.returningStackTime = Minecraft.getSystemTime();
@@ -670,7 +672,7 @@ public class ContainerScreen2 extends GuiScreen {
     /**
      * Called when the mouse is clicked over a slot or outside the gui.
      */
-    protected void handleMouseClick(Slot slotIn, int slotId, int mouseButton, ClickType type) {
+    public void handleMouseClick(Slot slotIn, int slotId, int mouseButton, ClickType type) {
         if (slotIn != null) {
             slotId = slotIn.slotNumber;
         }
@@ -720,6 +722,7 @@ public class ContainerScreen2 extends GuiScreen {
     /**
      * Called when the screen is unloaded. Used to disable keyboard repeat events
      */
+    @Override
     public void onGuiClosed() {
         if (this.mc.player != null) {
             this.inventorySlots.onContainerClosed(this.mc.player);
@@ -727,7 +730,7 @@ public class ContainerScreen2 extends GuiScreen {
     }
 
     /**
-     * Whether or not this gui pauses the game in single player.
+     * Returns true if this GUI should pause the game when it is displayed in single-player
      */
     @Override
     public boolean doesGuiPauseGame() {
@@ -790,6 +793,11 @@ public class ContainerScreen2 extends GuiScreen {
         return (int) ((absy - padding) * 2 / getYSize() - 1);
     }
 
+    /* ======================================== FORGE START =====================================*/
+
+    /**
+     * Returns the slot that is currently displayed under the mouse.
+     */
     @javax.annotation.Nullable
     public Slot getSlotUnderMouse() {
         return this.hoveredSlot;
@@ -820,4 +828,6 @@ public class ContainerScreen2 extends GuiScreen {
         this.ySize = ySize;
         this.guiTop = (this.height - getYSize()) / 2;
     }
+
+    /* ======================================== FORGE END   =====================================*/
 }
