@@ -27,7 +27,6 @@
 
 package com.github.lehjr.mpalib.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.gui.clickable.Clickable;
 import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.Renderer;
@@ -77,7 +76,7 @@ public class RangedSlider extends Clickable {
         this(id, position, 150, label, minVal, maxVal, currentVal, par);
     }
 
-    public RangedSlider(int id, Point2D position, double width, String label, double minVal, double maxVal, double currentVal, @Nullable ISlider par) {
+    public RangedSlider(int id, Point2D position, double width, String label, double minVal, double maxVal, double currentVal, @Nullable ISlider iSlider) {
         this.width = width;
         this.id = id;
         this.position = position;
@@ -86,7 +85,7 @@ public class RangedSlider extends Clickable {
         minValue = minVal;
         maxValue = maxVal;
         sliderValue = (currentVal - minValue) / (maxValue - minValue);
-        parent = par;
+        parent = iSlider;
     }
 
     void createNewRects() {
@@ -104,15 +103,6 @@ public class RangedSlider extends Clickable {
         this.outsideRect.draw();
         this.insideRect.setPosition(new Point2D( this.position.getX() + this.width * (this.sliderValue - 0.5D), this.outsideRect.centery()));
         this.insideRect.draw();
-    }
-
-
-    /**
-     * Renders the specified text to the screen, center-aligned. Args : renderer, string, x, y, color
-     */
-    public void drawCenteredString(String text, double x, double y, int color) {
-        FontRenderer fontrenderer = Minecraft.getMinecraft().fontRenderer;
-        fontrenderer.drawStringWithShadow(text, (float) (x - fontrenderer.getStringWidth(text) / 2), (float) y, color);
     }
 
     public void updateSlider() {
