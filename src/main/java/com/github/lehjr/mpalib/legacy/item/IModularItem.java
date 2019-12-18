@@ -28,9 +28,6 @@
 package com.github.lehjr.mpalib.legacy.item;
 
 import com.github.lehjr.mpalib.legacy.module.IModuleManager;
-import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nonnull;
 
 /**
  * Interface for ItemPowerArmor and ItemPowerTool to share.

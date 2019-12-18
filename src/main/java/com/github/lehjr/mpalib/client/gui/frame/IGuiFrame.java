@@ -84,6 +84,40 @@ public interface IGuiFrame extends IRect {
 
     IRect getBorder();
 
+    void setEnabled(boolean enabled);
+
+    boolean isEnabled();
+
+    void setVisible(boolean visible);
+
+    boolean isVisible();
+
+    default void hide() {
+        setVisible(false);
+    }
+
+    default void show() {
+        setVisible(true);
+    }
+
+    default void enable() {
+        setEnabled(true);
+    }
+
+    default void disable() {
+        setEnabled(false);
+    }
+
+    default void enableAndShow() {
+        enable();
+        show();
+    }
+
+    default void disableAndHide() {
+        disable();
+        hide();
+    }
+
     /** IRect for easier placement data and manipulation ----------------------------------------------------------- */
 
     @Override

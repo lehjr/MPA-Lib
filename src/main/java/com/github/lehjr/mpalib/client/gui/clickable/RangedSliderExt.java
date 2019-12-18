@@ -27,7 +27,6 @@
 
 package com.github.lehjr.mpalib.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.gui.clickable.RangedSlider;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.MathUtils;
@@ -49,7 +48,7 @@ public class RangedSliderExt extends RangedSlider {
      */
     public String displayString;
 
-    public RangedSliderExt(int id, Point2D position, int width, String label, String prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr) {
+    public RangedSliderExt(int id, Point2D position, double width, String label, String prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr) {
         this(id, position, width, label, prefix, suf, minVal, maxVal, currentVal, showDec, drawStr, null);
     }
 
@@ -57,7 +56,7 @@ public class RangedSliderExt extends RangedSlider {
         this(id, position, 150, label, displayStr, "", minVal, maxVal, currentVal, true, true, iSlider);
     }
 
-    public RangedSliderExt(int id, Point2D position, int width, String label, String prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider iSlider) {
+    public RangedSliderExt(int id, Point2D position, double width, String label, String prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider iSlider) {
         super(id, position, width, label, minVal, maxVal, currentVal, iSlider);
         dispString = prefix;
         parent = iSlider;
@@ -84,7 +83,9 @@ public class RangedSliderExt extends RangedSlider {
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         super.render(mouseX, mouseY, partialTicks);
-        Renderer.drawCenteredString(I18n.format(this.displayString), outsideRect.finalRight() + 8, outsideRect.finalBottom());
+        if(this.isVisible) {
+            Renderer.drawCenteredString(I18n.format(this.displayString), position.getX() + this.width * 0.5 + 8, position.getY());
+        }
     }
 
     @Override

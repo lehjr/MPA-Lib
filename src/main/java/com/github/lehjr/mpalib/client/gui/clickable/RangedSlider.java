@@ -32,8 +32,6 @@ import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.math.MathUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 
 import javax.annotation.Nullable;
@@ -45,7 +43,7 @@ public class RangedSlider extends Clickable {
     final int cornersize = 3;
 
     private final double height = 16;
-    private double width;
+    protected double width;
     private String label;
 
     DrawableRect insideRect;
@@ -96,13 +94,15 @@ public class RangedSlider extends Clickable {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        if (label != null) {
-            Renderer.drawCenteredString(I18n.format(label), position.getX(), position.getY());
-        }
+        if (this.isVisible) {
+            if (label != null) {
+                Renderer.drawCenteredString(I18n.format(label), position.getX(), position.getY());
+            }
 
-        this.outsideRect.draw();
-        this.insideRect.setPosition(new Point2D( this.position.getX() + this.width * (this.sliderValue - 0.5D), this.outsideRect.centery()));
-        this.insideRect.draw();
+            this.outsideRect.draw();
+            this.insideRect.setPosition(new Point2D(this.position.getX() + this.width * (this.sliderValue - 0.5D), this.outsideRect.centery()));
+            this.insideRect.draw();
+        }
     }
 
     public void updateSlider() {

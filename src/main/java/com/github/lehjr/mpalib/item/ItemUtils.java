@@ -27,21 +27,17 @@
 
 package com.github.lehjr.mpalib.item;
 
-import com.github.lehjr.mpalib.capabilities.inventory.modechanging.IModeChangingItem;
-import com.github.lehjr.mpalib.capabilities.inventory.modularitem.IModularItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 public class ItemUtils {
     /**

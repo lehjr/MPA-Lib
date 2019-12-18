@@ -29,8 +29,6 @@ package com.github.lehjr.mpalib.string;
 
 import com.github.lehjr.mpalib.client.render.Renderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import scala.actors.threadpool.Arrays;
 
 import java.text.DecimalFormat;

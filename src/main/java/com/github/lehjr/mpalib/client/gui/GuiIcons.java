@@ -33,7 +33,6 @@ import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.client.render.TextureUtils;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 /**

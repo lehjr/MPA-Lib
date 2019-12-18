@@ -25,48 +25,38 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.mpalib.client.render.modelspec;
+package com.github.lehjr.mpalib.recipe;
 
-import com.google.common.base.Objects;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import javax.annotation.Nonnull;
 
 /**
- * This just provides a way to tie the armor skin for vanilla armor
+ * @author lehjr
  */
-public class TexturePartSpec extends PartSpecBase {
-    final String textureLocation;
-
-    public TexturePartSpec(final SpecBase spec,
-                           final SpecBinding binding,
-                           final Integer enumColourIndex,
-                           final String partName,
-                           final String textureLocation) {
-        super(spec, binding, partName, enumColourIndex);
-        this.textureLocation = textureLocation;
+public class MPALibShapedOreRecipe extends ShapedOreRecipe {
+    public MPALibShapedOreRecipe(ResourceLocation group, Block result, Object... recipe) {
+        super(group, result, recipe);
     }
 
-    @Override
-    public String getDisaplayName() {
-        return new StringBuilder("textureSpec.")
-                .append(this.binding.getSlot().getName())
-                .append(".partName")
-                .toString();
+    public MPALibShapedOreRecipe(ResourceLocation group, Item result, Object... recipe) {
+        super(group, result, recipe);
     }
 
-    public String getTextureLocation() {
-        return textureLocation;
+    public MPALibShapedOreRecipe(ResourceLocation group, @Nonnull ItemStack result, Object... recipe) {
+        super(group, result, recipe);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        TexturePartSpec that = (TexturePartSpec) o;
-        return Objects.equal(getTextureLocation(), that.getTextureLocation());
+    public MPALibShapedOreRecipe(ResourceLocation group, @Nonnull ItemStack result, CraftingHelper.ShapedPrimer primer) {
+        super(group, result, primer);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(super.hashCode(), getTextureLocation());
-    }
+
+
+
 }

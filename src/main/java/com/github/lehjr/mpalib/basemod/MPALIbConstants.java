@@ -27,8 +27,6 @@
 
 package com.github.lehjr.mpalib.basemod;
 
-import net.minecraft.util.ResourceLocation;
-
 public class MPALIbConstants {
     // Mod
     public static final String MODID = "mpalib";

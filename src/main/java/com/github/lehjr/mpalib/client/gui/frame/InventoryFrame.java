@@ -49,6 +49,8 @@ public class InventoryFrame implements IGuiFrame {
     List<Integer> slotIndexes;
     List<DrawableTile> tiles;
     Point2D slot_ulShift = new Point2D(0, 0);
+    protected boolean isEnabled = true;
+    protected boolean isVisible = true;
 
     public InventoryFrame(Container containerIn,
                           Point2D topleft,
@@ -108,12 +110,16 @@ public class InventoryFrame implements IGuiFrame {
 
     @Override
     public boolean onMouseDown(double mouseX, double mouseY, int button) {
-        return this.border.containsPoint(mouseX, mouseY);
+        return this.isEnabled() &&
+                this.isVisible() &&
+                this.border.containsPoint(mouseX, mouseY);
     }
 
     @Override
     public boolean onMouseUp(double mouseX, double mouseY, int button) {
-        return this.border.containsPoint(mouseX, mouseY);
+        return this.isEnabled() &&
+                this.isVisible() &&
+                this.border.containsPoint(mouseX, mouseY);
     }
 
     public Point2D getUlShift() {
@@ -137,22 +143,45 @@ public class InventoryFrame implements IGuiFrame {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        border.preDraw();
-        border.drawBackground();
+        if (isVisible()) {
+            border.preDraw();
+            border.drawBackground();
 
-        if (this.tiles != null && !this.tiles.isEmpty()) {
-            for (DrawableTile tile : tiles) {
-                tile.draw();
+            if (this.tiles != null && !this.tiles.isEmpty()) {
+                for (DrawableTile tile : tiles) {
+                    tile.draw();
+                }
             }
-        }
 
-        border.drawBorder();
-        this.border.postDraw();
+            border.drawBorder();
+            this.border.postDraw();
+        }
     }
 
     @Override
     public List<String> getToolTip(int i, int i1) {
         return null;
+    }
+
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+
+    @Override
+    public boolean isVisible() {
+        return isVisible;
     }
 
     @Override

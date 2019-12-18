@@ -30,7 +30,6 @@ package com.github.lehjr.mpalib.client.render.modelspec;
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

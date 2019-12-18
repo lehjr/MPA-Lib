@@ -52,13 +52,20 @@ public class CheckBox implements IClickable {
     protected DrawableTile tile;
 
     String label;
+    final int id;
 
-    public CheckBox(Point2D position, String displayString, boolean isChecked){
+
+    public CheckBox(int id, Point2D position, String displayString, boolean isChecked){
+        this.id = id;
         Point2D ul = position.plus(4, 4);
         this.tile = new DrawableTile(ul, ul.plus(8, 8), Colour.BLACK, Colour.DARKGREY);
         this.label = displayString;
         this.isChecked = isChecked;
         this.enableAndShow();
+    }
+
+    public int id() {
+        return id;
     }
 
     public void setPosition(Point2D position) {

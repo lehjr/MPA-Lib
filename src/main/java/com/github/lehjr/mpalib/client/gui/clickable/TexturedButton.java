@@ -31,7 +31,6 @@ import com.github.lehjr.mpalib.client.gui.GuiIcons;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.gui.geometry.Rect;
 import com.github.lehjr.mpalib.math.Colour;
-import net.minecraft.util.ResourceLocation;
 
 public class TexturedButton extends Button {
     double textureSize;

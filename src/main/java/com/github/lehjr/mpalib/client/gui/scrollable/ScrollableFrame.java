@@ -45,8 +45,8 @@ public class ScrollableFrame implements IGuiFrame {
     protected int totalsize;
     protected int currentscrollpixels;
     protected int lastdWheel = Mouse.getDWheel();
-    protected boolean visibile = true;
-    protected boolean enabled = true;
+    protected boolean isVisible = true;
+    protected boolean isEnabled = true;
 
     protected DrawableRect border;
 
@@ -145,28 +145,24 @@ public class ScrollableFrame implements IGuiFrame {
         this.show();
     }
 
-    public void hide () {
-        this.visibile = false;
+    @Override
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 
-    public void show() {
-        this.visibile = true;
-    }
-
-    public boolean isVisibile() {
-        return this.visibile;
-    }
-
-    public void enable() {
-        this.enabled = true;
-    }
-
-    public void disable() {
-        this.enabled = false;
-    }
-
+    @Override
     public boolean isEnabled() {
-        return this.enabled;
+        return isEnabled;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+
+    @Override
+    public boolean isVisible() {
+        return isVisible;
     }
 
     public Point2D getUpperLeft() {

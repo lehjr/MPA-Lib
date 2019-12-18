@@ -29,8 +29,6 @@ package com.github.lehjr.mpalib.client.gui;
 
 import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.frame.IGuiFrame;
-import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
-import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.inventory.Container;
 import org.lwjgl.input.Keyboard;
 
