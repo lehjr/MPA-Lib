@@ -89,8 +89,8 @@ public class RangedSliderExt extends RangedSlider {
     }
 
     @Override
-    public void updateSlider() {
-        this.sliderValue = MathUtils.clampDouble(sliderValue, 0.0D, 1.0D);
+    public void update(double mouseX, double mouseY) {
+        super.update(mouseX, mouseY);
 
         String val;
 

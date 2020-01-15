@@ -33,6 +33,7 @@ import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.math.MathUtils;
 import net.minecraft.client.resources.I18n;
+import org.lwjgl.input.Mouse;
 
 import javax.annotation.Nullable;
 
@@ -105,10 +106,15 @@ public class RangedSlider extends Clickable {
         }
     }
 
-    public void updateSlider() {
-        this.sliderValue = MathUtils.clampDouble(sliderValue, 0.0D, 1.0D);
+    public void update(double mouseX, double mouseY) {
+        double siderStart = this.sliderValue;
+        if (dragging && this.isEnabled() && this.isVisible() && this.hitBox(mouseX, mouseY)) {
+            this.sliderValue = MathUtils.clampDouble((mouseX - this.position.getX()) / (this.width -3) + 0.5, 0.0D, 1.0D);
+        } else {
+            this.sliderValue = MathUtils.clampDouble(sliderValue, 0.0D, 1.0D);
+        }
 
-        if (parent != null) {
+        if (siderStart != sliderValue && parent != null) {
             parent.onChangeSliderValue(this);
         }
     }
@@ -135,8 +141,8 @@ public class RangedSlider extends Clickable {
     /**
      * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
      */
-
-    public void mouseReleased(int mouseX, int mouseY) {
+    public void mouseReleased(double mouseX, double mouseY, int button) {
+        update(mouseX, mouseY);
         this.dragging = false;
     }
 
@@ -161,8 +167,7 @@ public class RangedSlider extends Clickable {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (this.isEnabled() && this.isVisible() && this.hitBox(mouseX, mouseY)) {
-            this.sliderValue = MathUtils.clampDouble((mouseX - this.position.getX()) / (this.width -3) + 0.5, 0.0D, 1.0D);
-            updateSlider();
+            update(mouseX, mouseY);
             this.dragging = true;
             return true;
         }

@@ -359,6 +359,10 @@ public class ContainerScreen2 extends GuiScreen {
                 drawRect(posX, posY, posX + 16, posY + 16, slotColor);
             }
 
+            // this has no effect at all ?!?!! just want to move the items forward a bit
+//            this.itemRender.zLevel = 200F;
+//            this.zLevel = 200F;
+
             //            GlStateManager.enableDepth();
             RenderState.on2D(); // FIXME?...  see original vanilla code if this fails
             this.itemRender.renderItemAndEffectIntoGUI(this.mc.player, itemstack, posX, posY);
