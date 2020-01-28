@@ -55,7 +55,7 @@ public class ScrollableFrame implements IGuiFrame {
     }
 
     protected double getScrollAmount() {
-        return 8;
+        return 1;
     }
 
     public void setTopLeft(Point2D topLeft) {
