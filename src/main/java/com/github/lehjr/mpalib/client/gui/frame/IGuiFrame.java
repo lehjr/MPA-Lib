@@ -26,11 +26,13 @@
 
 package com.github.lehjr.mpalib.client.gui.frame;
 
+import com.github.lehjr.mpalib.client.gui.geometry.IRect;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
 
-public interface IGuiFrame {
+public interface IGuiFrame extends IRect {
     /**
      * @param mouseX
      * @param mouseY
@@ -58,15 +60,19 @@ public interface IGuiFrame {
     /**
      * Fired when gui init is fired, during the creation phase and on resize. Can be used to setup the frame
      * including setting target dimensions.
+     *
      * @param left
      * @param top
      * @param right
      * @param bottom
      */
-    void init(double left, double top, double right, double bottom);
+    default void init(double left, double top, double right, double bottom) {
+        getBorder().setTargetDimensions(left, top, right, bottom);
+    }
 
     /**
      * Called in the render loop before rendering. Use to update this frame
+     *
      * @param mouseX
      * @param mouseY
      */
@@ -74,6 +80,7 @@ public interface IGuiFrame {
 
     /**
      * Render elements of this frame. Ordering is important.
+     *
      * @param mouseX
      * @param mouseY
      * @param partialTicks
@@ -81,10 +88,178 @@ public interface IGuiFrame {
     void render(int mouseX, int mouseY, float partialTicks);
 
     /**
-     *
      * @param x mouseX
      * @param y mouseY
      * @return tooltip or null if not returning tooltip;
      */
     List<ITextComponent> getToolTip(int x, int y);
+
+    IRect getBorder();
+
+    void setEnabled(boolean enabled);
+
+    boolean isEnabled();
+
+    void setVisible(boolean visible);
+
+    boolean isVisible();
+
+    default void hide() {
+        setVisible(false);
+    }
+
+    default void show() {
+        setVisible(true);
+    }
+
+    default void enable() {
+        setEnabled(true);
+    }
+
+    default void disable() {
+        setEnabled(false);
+    }
+
+    default void enableAndShow() {
+        enable();
+        show();
+    }
+
+    default void disableAndHide() {
+        disable();
+        hide();
+    }
+
+    /**
+     * IRect for easier placement data and manipulation -----------------------------------------------------------
+     */
+    @Override
+    default void setTargetDimensions(double left, double top, double right, double bottom) {
+        getBorder().setTargetDimensions(left, top, right, bottom);
+    }
+
+    @Override
+    default void setTargetDimensions(Point2D ul, Point2D wh) {
+        getBorder().setTargetDimensions(ul.copy(), wh.copy());
+    }
+
+    @Override
+    default void move(Point2D moveAmount) {
+        getBorder().move(moveAmount.copy());
+    }
+
+    @Override
+    default void move(double x, double y) {
+        getBorder().move(x, y);
+    }
+
+    @Override
+    default void setPosition(Point2D position) {
+        getBorder().setPosition(position.copy());
+    }
+
+    @Override
+    default boolean containsPoint(double x, double y) {
+        return getBorder().containsPoint(x, y);
+    }
+
+    @Override
+    default Point2D center() {
+        return getBorder().center();
+    }
+
+    @Override
+    default Point2D getUL() {
+        return getBorder().getUL();
+    }
+
+    @Override
+    default Point2D getULFinal() {
+        return getBorder().getULFinal();
+    }
+
+    @Override
+    default Point2D getWH() {
+        return getBorder().getWH();
+    }
+
+    @Override
+    default Point2D getWHFinal() {
+        return getBorder().getWHFinal();
+    }
+
+    @Override
+    default double left() {
+        return getBorder().left();
+    }
+
+    @Override
+    default double finalLeft() {
+        return getBorder().finalLeft();
+    }
+
+    @Override
+    default double top() {
+        return getBorder().top();
+    }
+
+    @Override
+    default double finalTop() {
+        return getBorder().finalTop();
+    }
+
+    @Override
+    default double right() {
+        return getBorder().right();
+    }
+
+    @Override
+    default double finalRight() {
+        return getBorder().finalRight();
+    }
+
+    @Override
+    default double bottom() {
+        return getBorder().bottom();
+    }
+
+    @Override
+    default double finalBottom() {
+        return getBorder().finalBottom();
+    }
+
+    @Override
+    default double width() {
+        return getBorder().width();
+    }
+
+    @Override
+    default double finalWidth() {
+        return getBorder().finalWidth();
+    }
+
+    @Override
+    default double height() {
+        return getBorder().height();
+    }
+
+    @Override
+    default double finalHeight() {
+        return getBorder().finalHeight();
+    }
+
+    @Override
+    default boolean growFromMiddle() {
+        return getBorder().growFromMiddle();
+    }
+
+    @Override
+    default double centerx() {
+        return getBorder().centerx();
+    }
+
+    @Override
+    default double centery() {
+        return getBorder().centery();
+    }
 }

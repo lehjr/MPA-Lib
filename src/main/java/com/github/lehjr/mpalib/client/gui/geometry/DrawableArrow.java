@@ -31,7 +31,7 @@ import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import org.lwjgl.opengl.GL11;
 
-public class DrawableArrow extends MuseRelativeRect {
+public class DrawableArrow extends RelativeRect {
     Colour backgroundColour;
     Colour borderColour;
     boolean drawShaft = true;
@@ -61,7 +61,7 @@ public class DrawableArrow extends MuseRelativeRect {
         this.borderColour = borderColour;
     }
 
-    public DrawableArrow(MuseRelativeRect ref,
+    public DrawableArrow(RelativeRect ref,
                          Colour backgroundColour,
                          Colour borderColour) {
         super(ref.left(), ref.top(), ref.right(), ref.bottom(), ref.growFromMiddle());

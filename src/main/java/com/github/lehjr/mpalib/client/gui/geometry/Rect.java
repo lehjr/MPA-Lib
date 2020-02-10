@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.client.gui.geometry;
 
-public class Rect {
+public class Rect implements IRect {
     /** Note: separate "target values" are because window based sizes don't initialize properly in the constructor */
     /** target upper, left point */
     Point2D ulFinal;//
@@ -90,117 +90,150 @@ public class Rect {
         return new Rect(this.left(), this.top(), this.right(), this.bottom(), (this.ul != this.ulFinal || this.wh != this.whFinal));
     }
 
-    public Point2D center() {
-        return new Point2D(centerx(), centery());
+    @Override
+    public Point2D getUL() {
+        return ul;
     }
 
+    @Override
+    public Point2D getULFinal() {
+        return ulFinal;
+    }
+
+    @Override
+    public Point2D getWH() {
+        return wh;
+    }
+
+    @Override
+    public Point2D getWHFinal() {
+        return whFinal;
+    }
+
+    @Override
     public double left() {
         return ul.getX();
     }
 
+    @Override
     public double finalLeft() {
         return ulFinal.getX();
     }
 
+    @Override
     public double top() {
         return ul.getY();
     }
 
+    @Override
     public double finalTop() {
         return ulFinal.getY();
     }
 
+    @Override
     public double right() {
         return ul.getX() + wh.getX();
     }
 
+    @Override
     public double finalRight() {
         return ulFinal.getX() + whFinal.getX();
     }
 
+    @Override
     public double bottom() {
         return ul.getY() + wh.getY();
     }
 
+    @Override
     public double finalBottom() {
         return ulFinal.getY() + whFinal.getY();
     }
 
+    @Override
     public double width() {
         return wh.getX();
     }
 
+    @Override
     public double finalWidth() {
         return whFinal.getY();
     }
 
+    @Override
     public double height() {
         return wh.getY();
     }
 
+    @Override
     public double finalHeight() {
         return whFinal.getY();
     }
 
-    public Rect setLeft(double value) {
-        ul.x = value;
-        ulFinal.x =value;
+    @Override
+    public IRect setLeft(double value) {
+        ul.setX(value);
+        ulFinal.setX(value);
         return this;
     }
 
-    public Rect setRight(double value) {
-        wh.x = value - ul.getX();
-        whFinal.x = value - ulFinal.getX();
+    @Override
+    public IRect setRight(double value) {
+        wh.setX(value - ul.getX());
+        whFinal.setX(value - ulFinal.getX());
         return this;
     }
 
-    public Rect setTop(double value) {
-        ul.y = value;
-        ulFinal.y = value;
+    @Override
+    public IRect setTop(double value) {
+        ul.setY(value);
+        ulFinal.setY(value);
         return this;
     }
 
-    public Rect setBottom(double value) {
-        wh.y = value - ul.getY();
-        whFinal.y = value - ulFinal.getY();
+    @Override
+    public IRect setBottom(double value) {
+        wh.setY(value - ul.getY());
+        whFinal.setY(value - ulFinal.getY());
         return this;
     }
 
-    public Rect setWidth(double value) {
-        wh.x = value;
-        whFinal.x = value;
+    @Override
+    public IRect setWidth(double value) {
+        wh.setX(value);
+        whFinal.setX(value);
         return this;
     }
 
-    public Rect setHeight(double value) {
+    @Override
+    public IRect setHeight(double value) {
         wh.y = value;
         whFinal.y = value;
         return this;
     }
 
+    @Override
     public void move(Point2D moveAmount) {
         ulFinal = whFinal.plus(moveAmount);
         whFinal = whFinal.plus(moveAmount);
         grow();
     }
 
+    @Override
+    public void move(double x, double y) {
+        ulFinal = whFinal.plus(x, y);
+        whFinal = whFinal.plus(x, y);
+        grow();
+    }
+
+    @Override
+    public void setPosition(Point2D position) {
+        ulFinal = position.minus(whFinal.times(0.5));
+        grow();
+    }
+
+    @Override
     public boolean growFromMiddle() {
         return growFromMiddle;
-    }
-
-    public boolean equals(Rect other) {
-        return ul.equals(other.ul) && wh.equals(other.wh);
-    }
-
-    public boolean containsPoint(double x, double y) {
-        return x > left() && x < right() && y > top() && y < bottom();
-    }
-
-    public double centerx() {
-        return (left() + right()) / 2.0;
-    }
-
-    public double centery() {
-        return (top() + bottom()) / 2.0;
     }
 }

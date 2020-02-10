@@ -31,7 +31,7 @@ import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import org.lwjgl.opengl.GL11;
 
-public class DrawableTile extends MuseRelativeRect {
+public class DrawableTile extends RelativeRect {
     Colour backgroundColour;
     Colour borderColour;
 

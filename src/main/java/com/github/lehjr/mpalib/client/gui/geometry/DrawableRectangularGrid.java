@@ -36,7 +36,7 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
     int gridWidth;
     Float horizontalSegmentSize;
     Float verticleSegmentSize;
-    final MuseRelativeRect[] boxes;
+    final RelativeRect[] boxes;
 
     public DrawableRectangularGrid(double left, double top, double right, double bottom, boolean growFromMiddle,
                                    Colour insideColour,
@@ -48,7 +48,7 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
         this.gridColour = gridColour;
         this.gridHeight = gridHeight;
         this.gridWidth = gridWidth;
-        this.boxes = new MuseRelativeRect[gridHeight*gridWidth];
+        this.boxes = new RelativeRect[gridHeight*gridWidth];
         setBoxes();
     }
 
@@ -62,7 +62,7 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
         this.gridColour = gridColour;
         this.gridHeight = gridHeight;
         this.gridWidth = gridWidth;
-        this.boxes = new MuseRelativeRect[gridHeight*gridWidth];
+        this.boxes = new RelativeRect[gridHeight*gridWidth];
         setBoxes();
     }
 
@@ -76,11 +76,11 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
         this.gridColour = gridColour;
         this.gridHeight = gridHeight;
         this.gridWidth = gridWidth;
-        this.boxes = new MuseRelativeRect[gridHeight*gridWidth];
+        this.boxes = new RelativeRect[gridHeight*gridWidth];
         setBoxes();
     }
 
-    public DrawableRectangularGrid(MuseRelativeRect ref,
+    public DrawableRectangularGrid(RelativeRect ref,
                                    Colour insideColour,
                                    Colour outsideColour,
                                    Colour gridColour,
@@ -90,18 +90,18 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
         this.gridColour = gridColour;
         this.gridHeight = gridHeight;
         this.gridWidth = gridWidth;
-        this.boxes = new MuseRelativeRect[gridHeight*gridWidth];
+        this.boxes = new RelativeRect[gridHeight*gridWidth];
         setBoxes();
     }
 
     void setBoxes() {
         for (int i = 0; i < boxes.length; i++) {
-            boxes[i] = new MuseRelativeRect(0, 0, 0, 0);
+            boxes[i] = new RelativeRect(0, 0, 0, 0);
         }
     }
 
 
-    public MuseRelativeRect[] getBoxes() {
+    public RelativeRect[] getBoxes() {
         return boxes;
     }
 
@@ -179,7 +179,7 @@ public class DrawableRectangularGrid extends DrawableRelativeRect {
     public DrawableRelativeRect setLeft(double value) {
         double diff = value - left();
         super.setLeft(value);
-        for (MuseRelativeRect box : boxes) {
+        for (RelativeRect box : boxes) {
             if (box != null)
                 box.setLeft(box.left() + diff);
         }
