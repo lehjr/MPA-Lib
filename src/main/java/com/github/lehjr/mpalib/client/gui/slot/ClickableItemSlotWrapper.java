@@ -87,6 +87,11 @@ public class ClickableItemSlotWrapper implements IClickable {
     }
 
     @Override
+    public void setPosition(Point2D position) {
+        this.move(position.getX(), position.getY());
+    }
+
+    @Override
     public boolean hitBox(double x, double y) {
         boolean hitx = Math.abs(x - getPosition().getX()) < offsetx;
         boolean hity = Math.abs(y - getPosition().getY()) < offsety;
