@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.capabilities.energy;
 
-import com.github.lehjr.mpalib.nbt.MuseNBTUtils;
+import com.github.lehjr.mpalib.nbt.NBTUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.IntNBT;
@@ -53,7 +53,7 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
 //        energy = Math.min(capacity, MuseNBTUtils.getModuleIntOrZero(container, TAG_ENERGY));
 //    }
     public void updateFromNBT() {
-        final CompoundNBT nbt = MuseNBTUtils.getMuseModuleTag(container);
+        final CompoundNBT nbt = NBTUtils.getModuleTag(container);
         if (nbt != null && nbt.contains(TAG_ENERGY, net.minecraftforge.common.util.Constants.NBT.TAG_INT)) {
             deserializeNBT((IntNBT) nbt.get(TAG_ENERGY));
         }
@@ -64,7 +64,7 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
     public int receiveEnergy(final int maxReceive, final boolean simulate) {
         final int energyReceived = super.receiveEnergy(maxReceive, simulate);
         if (!simulate && energyReceived != 0) {
-            MuseNBTUtils.setModuleIntOrRemove(container, TAG_ENERGY, energy);
+            NBTUtils.setModuleIntOrRemove(container, TAG_ENERGY, energy);
         }
 
         return energyReceived;
@@ -74,7 +74,7 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
     public int extractEnergy(final int maxExtract, final boolean simulate) {
         final int energyExtracted = super.extractEnergy(maxExtract, simulate);
         if (!simulate && energyExtracted != 0) {
-            MuseNBTUtils.setModuleIntOrRemove(container, TAG_ENERGY, energy);
+            NBTUtils.setModuleIntOrRemove(container, TAG_ENERGY, energy);
         }
 
         return energyExtracted;

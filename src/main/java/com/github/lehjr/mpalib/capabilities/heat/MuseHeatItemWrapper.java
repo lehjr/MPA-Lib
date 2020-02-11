@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.capabilities.heat;
 
-import com.github.lehjr.mpalib.nbt.MuseNBTUtils;
+import com.github.lehjr.mpalib.nbt.NBTUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.DoubleNBT;
 import net.minecraft.util.Direction;
@@ -58,13 +58,13 @@ public class MuseHeatItemWrapper extends HeatStorage implements ICapabilityProvi
     /** IItemStackContainerUpdate ----------------------------------------------------------------- */
     @Override
     public void updateFromNBT() {
-        heat = Math.min(capacity, MuseNBTUtils.getModularItemDoubleOrZero(container, HeatCapability.CURRENT_HEAT));
+        heat = Math.min(capacity, NBTUtils.getModularItemDoubleOrZero(container, HeatCapability.CURRENT_HEAT));
     }
     @Override
     public double receiveHeat(double heatProvided, boolean simulate) {
         final double heatReceived = super.receiveHeat(heatProvided, simulate);
         if (!simulate && heatReceived != 0) {
-            MuseNBTUtils.setModularItemDoubleOrRemove(container, HeatCapability.CURRENT_HEAT, heat);
+            NBTUtils.setModularItemDoubleOrRemove(container, HeatCapability.CURRENT_HEAT, heat);
         }
         return heatReceived;
     }
@@ -73,7 +73,7 @@ public class MuseHeatItemWrapper extends HeatStorage implements ICapabilityProvi
     public double extractHeat(double heatRequested, boolean simulate) {
         final double heatExtracted = super.extractHeat(heatRequested, simulate);
         if (!simulate && heatExtracted > 0) {
-            MuseNBTUtils.setModularItemDoubleOrRemove(container, HeatCapability.CURRENT_HEAT, heat);
+            NBTUtils.setModularItemDoubleOrRemove(container, HeatCapability.CURRENT_HEAT, heat);
         }
         return heatExtracted;
     }

@@ -202,7 +202,7 @@ public class ModelTransformCalibration {
 
     public TRSRTransformation getTransform() {
         transformCalibration();
-        return MuseModelHelper.get(xOffest, yOffest, zOffest, angleX, angleY, angleZ, scalemodifier);
+        return ModelHelper.get(xOffest, yOffest, zOffest, angleX, angleY, angleZ, scalemodifier);
     }
 
 

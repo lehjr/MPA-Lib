@@ -29,7 +29,7 @@ package com.github.lehjr.mpalib.capabilities.render;
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.client.render.modelspec.EnumSpecType;
-import com.github.lehjr.mpalib.nbt.MuseNBTUtils;
+import com.github.lehjr.mpalib.nbt.NBTUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -54,8 +54,8 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
     }
 
     @Override
-    public CompoundNBT setMuseRenderTag(CompoundNBT renderDataIn, String tagName) {
-        CompoundNBT itemTag = MuseNBTUtils.getMuseItemTag(itemStack);
+    public CompoundNBT setRenderTag(CompoundNBT renderDataIn, String tagName) {
+        CompoundNBT itemTag = NBTUtils.getMuseItemTag(itemStack);
         if (tagName != null) {
             if (Objects.equals(tagName, MPALIbConstants.TAG_RENDER)) {
                 itemTag.remove(MPALIbConstants.TAG_RENDER);
@@ -78,7 +78,7 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
                 }
             }
         }
-        return getMuseRenderTag();
+        return getRenderTag();
     }
 
     @Override
@@ -91,8 +91,8 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
 
     @Override
     @Nullable
-    public CompoundNBT getMuseRenderTag() {
-        CompoundNBT itemTag = MuseNBTUtils.getMuseItemTag(itemStack);
+    public CompoundNBT getRenderTag() {
+        CompoundNBT itemTag = NBTUtils.getMuseItemTag(itemStack);
         return itemTag.getCompound(TAG_RENDER);
     }
 
@@ -115,7 +115,7 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
 
     @Override
     public int[] getColorArray() {
-        return  getMuseRenderTag().getIntArray(MPALIbConstants.TAG_COLOURS);
+        return  getRenderTag().getIntArray(MPALIbConstants.TAG_COLOURS);
     }
 
 
@@ -129,18 +129,18 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
 
     @Override
     public CompoundNBT setColorArray(int[] colors) {
-        getMuseRenderTag().putIntArray(MPALIbConstants.TAG_COLOURS, colors);
-        return getMuseRenderTag();
+        getRenderTag().putIntArray(MPALIbConstants.TAG_COLOURS, colors);
+        return getRenderTag();
     }
 
     // INBTSerializable<CompoundNBT> ----------------------------------------------------------------------------------
     @Override
     public CompoundNBT serializeNBT() {
-        return getMuseRenderTag();
+        return getRenderTag();
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-        setMuseRenderTag(nbt, MPALIbConstants.TAG_RENDER);
+        setRenderTag(nbt, MPALIbConstants.TAG_RENDER);
     }
 }

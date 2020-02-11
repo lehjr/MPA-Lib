@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.nbt.propertymodifier;
 
-import com.github.lehjr.mpalib.nbt.MuseNBTUtils;
+import com.github.lehjr.mpalib.nbt.NBTUtils;
 import net.minecraft.nbt.CompoundNBT;
 
 public class PropertyModifierLinearAdditiveDouble implements IPropertyModifierDouble {
@@ -40,7 +40,7 @@ public class PropertyModifierLinearAdditiveDouble implements IPropertyModifierDo
 
     @Override
     public Double applyModifier(CompoundNBT moduleTag, double value) {
-        return value + multiplier * MuseNBTUtils.getDoubleOrZero(moduleTag, tradeoffName);
+        return value + multiplier * NBTUtils.getDoubleOrZero(moduleTag, tradeoffName);
     }
 
     public String getTradeoffName() {

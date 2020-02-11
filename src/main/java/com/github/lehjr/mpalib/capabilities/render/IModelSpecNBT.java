@@ -44,9 +44,9 @@ public interface IModelSpecNBT {
 
     EnumSpecType getSpecType();
 
-    CompoundNBT getMuseRenderTag();
+    CompoundNBT getRenderTag();
 
-    CompoundNBT setMuseRenderTag(CompoundNBT renderDataIn, String tagName);
+    CompoundNBT setRenderTag(CompoundNBT renderDataIn, String tagName);
 
     CompoundNBT getDefaultRenderTag();
 
@@ -60,7 +60,7 @@ public interface IModelSpecNBT {
 
     default Colour getColorFromItemStack() {
         try {
-            CompoundNBT renderTag = getMuseRenderTag();
+            CompoundNBT renderTag = getRenderTag();
             if (renderTag.contains(MPALIbConstants.NBT_TEXTURESPEC_TAG)) {
                 TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(MPALIbConstants.NBT_TEXTURESPEC_TAG));
                 CompoundNBT specTag = renderTag.getCompound(MPALIbConstants.NBT_TEXTURESPEC_TAG);

@@ -63,7 +63,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Function;
 
-public class MuseModelHelper {
+public class ModelHelper {
     public static TRSRTransformation get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scaleX, float scaleY, float scaleZ) {
         return new TRSRTransformation(
                 // Transform
@@ -139,7 +139,7 @@ public class MuseModelHelper {
         if (model != null) {
             IBakedModel bakedModel = model.bake(
                     bakery,
-                    MuseModelHelper.defaultTextureGetter(),
+                    ModelHelper.defaultTextureGetter(),
                     new BasicState(state, false),
                     DefaultVertexFormats.ITEM);
             return bakedModel;

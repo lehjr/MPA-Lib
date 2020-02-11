@@ -30,7 +30,7 @@ import com.github.lehjr.mpalib.capabilities.IConfig;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleTarget;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.PowerModule;
-import com.github.lehjr.mpalib.nbt.MuseNBTUtils;
+import com.github.lehjr.mpalib.nbt.NBTUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.ByteNBT;
 import net.minecraft.nbt.CompoundNBT;
@@ -54,7 +54,7 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
 //    }
 
     public void updateFromNBT() {
-        final CompoundNBT nbt = MuseNBTUtils.getMuseModuleTag(module);
+        final CompoundNBT nbt = NBTUtils.getModuleTag(module);
         if (nbt != null && nbt.contains(TAG_ONLINE, Constants.NBT.TAG_BYTE)) {
             deserializeNBT((ByteNBT) nbt.get(TAG_ONLINE));
         } else {
@@ -76,7 +76,7 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
     @Override
     public void toggleModule(boolean online) {
         this.online = online;
-        MuseNBTUtils.setModuleBoolean(module, TAG_ONLINE, online);
+        NBTUtils.setModuleBoolean(module, TAG_ONLINE, online);
     }
 
     @Override

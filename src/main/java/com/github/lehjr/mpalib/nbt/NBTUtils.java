@@ -33,7 +33,7 @@ import net.minecraftforge.common.util.Constants;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class MuseNBTUtils {
+public class NBTUtils {
     public static final String TAG_ITEM_PREFIX = "MMModItem";// Machine Muse Mod
     public static final String TAG_MODULE_PREFIX = "MMModModule";// Machine Muse Mod
     public static final String TAG_VALUES = "commonValues"; // commonly used values that would normally be recalculated several times a minute.
@@ -61,7 +61,7 @@ public class MuseNBTUtils {
      * @param module
      * @return an CompoundNBT, may be newly created. If stack is empty, returns null.
      */
-    public static CompoundNBT getMuseModuleTag(@Nonnull ItemStack module) {
+    public static CompoundNBT getModuleTag(@Nonnull ItemStack module) {
         if (module.isEmpty())
             return new CompoundNBT();
 
@@ -78,7 +78,7 @@ public class MuseNBTUtils {
      * returns the getValue if it exists, otherwise 0.
      */
     public static double getModuleDoubleOrZero(@Nonnull ItemStack stack, String string) {
-        return getDoubleOrZero(getMuseModuleTag(stack), string);
+        return getDoubleOrZero(getModuleTag(stack), string);
     }
 
     public static double getModularItemDoubleOrZero(@Nonnull ItemStack stack, String string) {
@@ -94,11 +94,11 @@ public class MuseNBTUtils {
      * would be zero.
      */
     public static void setModularItemDoubleOrRemove(@Nonnull ItemStack stack, String string, double value) {
-        setDoubleOrRemove(MuseNBTUtils.getMuseItemTag(stack), string, value);
+        setDoubleOrRemove(NBTUtils.getMuseItemTag(stack), string, value);
     }
 
     public static void setModuleDoubleOrRemove(@Nonnull ItemStack stack, String string, double value) {
-        setDoubleOrRemove(MuseNBTUtils.getMuseModuleTag(stack), string, value);
+        setDoubleOrRemove(NBTUtils.getModuleTag(stack), string, value);
     }
 
     /**
@@ -121,7 +121,7 @@ public class MuseNBTUtils {
      * returns the getValue if it exists, otherwise 0.
      */
     public static int getModuleIntOrZero(@Nonnull ItemStack module, String string) {
-        return getIntOrZero(getMuseModuleTag(module), string);
+        return getIntOrZero(getModuleTag(module), string);
     }
 
     public static int getModularItemIntOrZero(@Nonnull ItemStack module, String string) {
@@ -133,7 +133,7 @@ public class MuseNBTUtils {
     }
 
     public static void setModuleIntOrRemove(@Nonnull ItemStack stack, String tagName, int value) {
-        setIntOrRemove(getMuseModuleTag(stack), tagName, value);
+        setIntOrRemove(getModuleTag(stack), tagName, value);
     }
 
     public static void setModularItemIntOrRemove(@Nonnull ItemStack stack, String tagName, int value) {
@@ -149,7 +149,7 @@ public class MuseNBTUtils {
 
     // Boolean --------------------------------------------------------------------------------------------------------
     public static boolean getModuleBooleanOrSetDefault(@Nonnull ItemStack module, String tagName, boolean defBool) {
-        CompoundNBT moduleTag = getMuseModuleTag(module);
+        CompoundNBT moduleTag = getModuleTag(module);
         if (moduleTag.contains(tagName, Constants.NBT.TAG_BYTE)) {
             return getBooleanOrFalse(moduleTag, tagName);
         } else {
@@ -159,7 +159,7 @@ public class MuseNBTUtils {
     }
 
     public static boolean getModuleBooleanOrFalse(@Nonnull ItemStack module, String string) {
-        return getBooleanOrFalse(getMuseModuleTag(module), string);
+        return getBooleanOrFalse(getModuleTag(module), string);
     }
 
     public static boolean getItemBooleanOrFalse(@Nonnull ItemStack module, String string) {
@@ -171,7 +171,7 @@ public class MuseNBTUtils {
     }
 
     public static void setModuleBoolean(@Nonnull ItemStack module, String string, boolean value) {
-        getMuseModuleTag(module).putBoolean(string, value);
+        getModuleTag(module).putBoolean(string, value);
     }
 
     public static void setModularItemBoolean(@Nonnull ItemStack module, String string, boolean value) {

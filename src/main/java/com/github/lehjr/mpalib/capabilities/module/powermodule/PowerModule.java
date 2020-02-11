@@ -28,7 +28,7 @@ package com.github.lehjr.mpalib.capabilities.module.powermodule;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.capabilities.IConfig;
-import com.github.lehjr.mpalib.nbt.MuseNBTUtils;
+import com.github.lehjr.mpalib.nbt.NBTUtils;
 import com.github.lehjr.mpalib.nbt.propertymodifier.*;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -155,7 +155,7 @@ public class PowerModule implements IPowerModule {
 
     @Override
     public double applyPropertyModifiers(String propertyName) {
-        return applyPropertyModifiers(propertyName, MuseNBTUtils.getMuseModuleTag(module));
+        return applyPropertyModifiers(propertyName, NBTUtils.getModuleTag(module));
     }
 
     @Override
@@ -217,7 +217,7 @@ public class PowerModule implements IPowerModule {
     public int applyPropertyModifierBaseInt(String propertyName) {
         int propertyValue = 0;
         Iterable<IPropertyModifierInteger> propertyModifiersIterable = propertyBaseIntegers.get(propertyName);
-        CompoundNBT moduleTag = MuseNBTUtils.getMuseModuleTag(getModuleStack());
+        CompoundNBT moduleTag = NBTUtils.getModuleTag(getModuleStack());
         for (IPropertyModifier modifier : propertyModifiersIterable) {
             propertyValue = ((IPropertyModifierInteger) modifier).applyModifier(moduleTag, propertyValue);
         }

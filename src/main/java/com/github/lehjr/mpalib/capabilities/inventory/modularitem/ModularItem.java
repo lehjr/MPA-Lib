@@ -32,7 +32,7 @@ import com.github.lehjr.mpalib.capabilities.module.powermodule.IPowerModule;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.mpalib.capabilities.module.tickable.IPlayerTickModule;
 import com.github.lehjr.mpalib.capabilities.module.toggleable.IToggleableModule;
-import com.github.lehjr.mpalib.nbt.MuseNBTUtils;
+import com.github.lehjr.mpalib.nbt.NBTUtils;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -321,7 +321,7 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)) {
                 if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
-                    MuseNBTUtils.setModuleDoubleOrRemove(module, key, value);
+                    NBTUtils.setModuleDoubleOrRemove(module, key, value);
                     return true;
                 }).orElse(false)) {
                     onContentsChanged(i);
