@@ -5,8 +5,6 @@ import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.client.sound.Musique;
 import com.github.lehjr.mpalib.math.Colour;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 
@@ -43,6 +41,10 @@ public class CheckBox implements IClickable{
             }
             Renderer.drawString(label, tile.centerx() + 8, tile.centery() - 4, Colour.WHITE);
         }
+    }
+
+    public int getId() {
+        return id;
     }
 
     @Override
