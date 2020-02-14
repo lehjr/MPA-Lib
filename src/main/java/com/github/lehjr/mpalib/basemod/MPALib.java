@@ -79,7 +79,6 @@ public class MPALib {
         ModelLoaderRegistry.registerLoader(MPALibOBJLoader.INSTANCE); // crashes if called in mod constructor
         MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
         MinecraftForge.EVENT_BUS.register(new RenderGameOverlayEventHandler());
-//        MinecraftForge.EVENT_BUS.register(MouseScrollEventHandler.INSTANCE);
     }
 
     @SubscribeEvent

@@ -63,7 +63,7 @@ public class CheckBox implements IClickable{
 
     @Override
     public Point2D getPosition() {
-        return null;
+        return tile.center();
     }
 
     @Override
