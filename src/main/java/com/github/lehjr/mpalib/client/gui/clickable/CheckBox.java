@@ -30,6 +30,7 @@ public class CheckBox implements IClickable{
         this.label = displayString;
         this.isChecked = isChecked;
         this.enableAndShow();
+        tile.setSmoothing(false);
     }
 
     @Override

@@ -83,8 +83,9 @@ public class MPALib {
 
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
-        if (!(event.getObject() instanceof PlayerEntity))
+        if (!(event.getObject() instanceof PlayerEntity)) {
             return;
+        }
         event.addCapability(new ResourceLocation(MPALIbConstants.MODID, "player_keystates"), new CapabilityPlayerKeyStates());
     }
 }

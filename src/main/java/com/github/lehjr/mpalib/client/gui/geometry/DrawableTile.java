@@ -34,6 +34,7 @@ import org.lwjgl.opengl.GL11;
 public class DrawableTile extends RelativeRect {
     Colour backgroundColour;
     Colour borderColour;
+    float lineWidth = 4.0F;
 
     public DrawableTile(double left, double top, double right, double bottom, boolean growFromMiddle,
                         Colour backgroundColour,
@@ -41,6 +42,10 @@ public class DrawableTile extends RelativeRect {
         super(left, top, right, bottom, growFromMiddle);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
+    }
+
+    public void setLineWidth(float lineWidthIn) {
+        lineWidth = lineWidthIn;
     }
 
     public DrawableTile(double left, double top, double right, double bottom,
@@ -108,13 +113,24 @@ public class DrawableTile extends RelativeRect {
         GlStateManager.vertex3f((float)left(), (float)bottom(), 1);
     }
 
+    boolean smoothing = true;
+    public void setSmoothing(boolean smoothingIn) {
+        smoothing = smoothingIn;
+    }
+
+
     public void preDraw() {
         RenderState.on2D();
         RenderState.texturelessOn();
 
-        // makes the lines and radii nicer
-        GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT,  GL11.GL_NICEST);
+        if (smoothing) {
+            // makes the lines and radii nicer
+            GL11.glEnable(GL11.GL_LINE_SMOOTH);
+            GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+        } else {
+            GL11.glDisable(GL11.GL_LINE_SMOOTH);
+            GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_FASTEST);
+        }
     }
 
     public void postDraw() {
@@ -134,17 +150,21 @@ public class DrawableTile extends RelativeRect {
         vertices();
         GlStateManager.end();
 
+        GlStateManager.lineWidth(lineWidth);
         GlStateManager.begin(GL11.GL_LINE_LOOP);
-//        GlStateManager.lineWidth(4f);
+
         borderColour.doGL();
         vertices();
         GlStateManager.end();
         postDraw();
 
-        if (!smooth)
+        if (!smooth) {
             GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        }
         GL11.glLineWidth(lineWidth);
     }
+
+
     public DrawableTile setBackgroundColour(Colour insideColour) {
         this.backgroundColour = insideColour;
         return this;
