@@ -79,18 +79,6 @@ public class ContainerlessGui extends Screen {
         frames.add(frame);
     }
 
-//    /**
-//     * Draws all clickables in a list
-//     */
-//    public void drawClickables(List<? extends IClickable> list, int mouseX, int mouseY, float partialTicks) {
-//        if (list == null) {
-//            return;
-//        }
-//        for (IClickable clickie : list) {
-//            clickie.render(mouseX, mouseY, partialTicks);
-//        }
-//    }
-
     @Override
     public void renderBackground() {
         super.renderBackground();
@@ -118,26 +106,6 @@ public class ContainerlessGui extends Screen {
             frame.render(mouseX, mouseY, partialTicks);
         }
     }
-
-//    /**
-//     * Returns the first ID in the list that is hit by a click
-//     *
-//     * @return
-//     */
-//    public int hitboxClickables(int x, int y, List<? extends IClickable> list) {
-//        if (list == null) {
-//            return -1;
-//        }
-//        IClickable clickie;
-//        for (int i = 0; i < list.size(); i++) {
-//            clickie = list.get(i);
-//            if (clickie.hitBox(x, y)) {
-//                // MuseLogger.logDebug("Hit!");
-//                return i;
-//            }
-//        }
-//        return -1;
-//    }
 
     /**
      * Whether or not this gui pauses the game in single player.

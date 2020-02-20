@@ -43,7 +43,6 @@ public class ScrollableFrame implements IGuiFrame {
     protected final int buttonsize = 5;
     protected int totalsize;
     protected int currentscrollpixels;
-    protected double lastdWheel = 0; //fixme
     protected boolean visible = true;
     protected boolean enabled = true;
 

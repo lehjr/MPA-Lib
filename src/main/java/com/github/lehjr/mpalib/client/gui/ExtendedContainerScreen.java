@@ -1,36 +1,10 @@
-/*
- * Copyright (c) 2019 MachineMuse, Lehjr
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *  * Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- *
- *  * Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.github.lehjr.mpalib.client.gui;
 
-import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.frame.IGuiFrame;
 import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.text.ITextComponent;
@@ -38,13 +12,13 @@ import net.minecraft.util.text.ITextComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContainerGui<T extends Container> extends ContainerScreen2<T> {
+public class ExtendedContainerScreen<T extends Container> extends ContainerScreen<T> {
     protected long creationTime;
     protected DrawableRect tooltipRect;
     protected List<IGuiFrame> frames;
 
-    public ContainerGui(T container, PlayerInventory playerInventory, ITextComponent title) {
-        super(container, playerInventory, title);
+    public ExtendedContainerScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn) {
+        super(screenContainer, inv, titleIn);
         frames = new ArrayList();
         tooltipRect = new DrawableRect(
                 0, 0, 0, 0,
@@ -81,21 +55,8 @@ public class ContainerGui<T extends Container> extends ContainerScreen2<T> {
         frames.add(frame);
     }
 
-    /**
-     * Draws all clickables in a list
-     */
-    public void drawClickables(List<? extends IClickable> list, int mouseX, int mouseY, float partialTicks) {
-        if (list == null) {
-            return;
-        }
-        for (IClickable clickie : list) {
-            clickie.render(mouseX, mouseY, partialTicks);
-        }
-    }
-
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
         this.drawRectangularBackground(); // The window rectangle
     }
 
@@ -119,11 +80,6 @@ public class ContainerGui<T extends Container> extends ContainerScreen2<T> {
         for (IGuiFrame frame : frames) {
             frame.render(mouseX, mouseY, partialTicks);
         }
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
     }
 
     @Override
@@ -169,8 +125,6 @@ public class ContainerGui<T extends Container> extends ContainerScreen2<T> {
     }
 
     public void drawToolTip(int mouseX, int mouseY) {
-//        int mouseX = (int) (minecraft.mouseHelper.getMouseX() * this.width / this.minecraft.mainWindow.getWidth());
-//        int mouseY = (int) (minecraft.mouseHelper.getMouseY() * this.height / (double) this.minecraft.mainWindow.getHeight());
         List<ITextComponent> tooltip = getToolTip(mouseX, mouseY);
         if (tooltip != null) {
             tooltip.forEach(ITextComponent::getFormattedText);

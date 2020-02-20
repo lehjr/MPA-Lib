@@ -56,7 +56,7 @@ public class MPALibConfig {
     }
 
     static File setupConfigFile(String fileName) {
-        Path configFile = Paths.get("config/machinemuse").resolve(MPALIbConstants.MODID).resolve(fileName);
+        Path configFile = Paths.get("config/lehjr").resolve(MPALIbConstants.MODID).resolve(fileName);
         File cfgFile = configFile.toFile();
         try {
             if (!cfgFile.getParentFile().exists())
