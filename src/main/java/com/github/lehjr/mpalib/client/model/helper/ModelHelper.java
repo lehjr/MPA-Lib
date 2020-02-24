@@ -26,13 +26,13 @@
 
 package com.github.lehjr.mpalib.client.model.helper;
 
+import com.github.lehjr.forge.obj.MPALibOBJLoader;
+import com.github.lehjr.forge.obj.MPALibOBJModel;
+import com.github.lehjr.mpalib.basemod.MPALibLogger;
+import com.github.lehjr.mpalib.math.Colour;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.UnmodifiableIterator;
-import com.github.lehjr.mpalib.basemod.MPALibLogger;
-import com.github.lehjr.forge.obj.MPALibOBJLoader;
-import com.github.lehjr.forge.obj.MPALibOBJModel;
-import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;

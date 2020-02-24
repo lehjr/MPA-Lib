@@ -27,9 +27,9 @@
 package com.github.lehjr.mpalib.client.event;
 
 import com.github.lehjr.mpalib.capabilities.inventory.modechanging.IModeChangingItem;
+import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.client.render.TextureUtils;
-import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;

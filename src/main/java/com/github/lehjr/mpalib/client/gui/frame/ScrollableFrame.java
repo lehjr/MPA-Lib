@@ -26,14 +26,13 @@
 
 package com.github.lehjr.mpalib.client.gui.frame;
 
-import com.github.lehjr.mpalib.client.gui.geometry.IRect;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.github.lehjr.mpalib.client.gui.frame.IGuiFrame;
 import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
+import com.github.lehjr.mpalib.client.gui.geometry.IRect;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.math.MathUtils;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.opengl.GL11;
 

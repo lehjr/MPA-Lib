@@ -26,9 +26,9 @@
 
 package com.github.lehjr.mpalib.map;
 
+import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.github.lehjr.mpalib.basemod.MPALibLogger;
 
 import java.util.Map;
 

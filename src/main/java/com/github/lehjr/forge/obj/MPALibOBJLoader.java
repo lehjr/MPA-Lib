@@ -35,6 +35,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.resource.IResourceType;
+import net.minecraftforge.resource.VanillaResourceType;
 import org.apache.commons.io.IOUtils;
 
 import java.io.FileNotFoundException;
@@ -116,6 +117,6 @@ public enum MPALibOBJLoader implements ICustomModelLoader {
 
     @Override
     public IResourceType getResourceType() {
-        return null;
+        return VanillaResourceType.MODELS;
     }
 }

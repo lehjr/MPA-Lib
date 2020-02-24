@@ -2,7 +2,7 @@ package com.github.lehjr.mpalib.nbt;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants;
 
 public class NBT2Json {

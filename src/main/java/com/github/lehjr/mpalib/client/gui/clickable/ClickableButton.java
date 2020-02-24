@@ -30,7 +30,6 @@ import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
@@ -77,8 +76,28 @@ public class ClickableButton extends Clickable {
         this.setEnabled(enabled);
     }
 
+    /**
+     * Container based GUI's should use the separate button and text renderer
+     *
+     * @param mouseX
+     * @param mouseY
+     * @param partialTicks
+     */
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
+        renderButton(mouseX, mouseY, partialTicks);
+        renderText(mouseX, mouseY, partialTicks);
+    }
+
+    /**
+     * Container based GUI's should use the separate button and text renderer
+     * Call this from the container GUI's main render loop
+     *
+     * @param mouseX
+     * @param mouseY
+     * @param partialTicks
+     */
+    public void renderButton(int mouseX, int mouseY, float partialTicks) {
         if (visible) {
             this.rect.setLeft(position.getX() - radius.getX());
             this.rect.setTop(position.getY() - radius.getY());
@@ -87,8 +106,18 @@ public class ClickableButton extends Clickable {
             this.rect.setBorderColour(isEnabled() ? enabledBorder : disabledBorder);
             this.rect.setBackgroundColour(isEnabled() ? enabledBackground : disabledBackground);
             this.rect.draw();
-            // standardItemLighting calls to fix issues with container slot highlighting causing issues with this
-            RenderHelper.disableStandardItemLighting();
+        }
+    }
+
+    /**
+     * Container based GUI's should use the separate button and text renderer
+     * Call this from the container GUI's drawGuiContainerForegroundLayer
+     * @param mouseX
+     * @param mouseY
+     * @param partialTicks
+     */
+    public void renderText(int mouseX, int mouseY, float partialTicks) {
+        if (visible) {
             if (label.getFormattedText().contains("\n")) {
                 String[] s = label.getFormattedText().split("\n");
                 for (int i = 0; i < s.length; i++) {
@@ -97,7 +126,6 @@ public class ClickableButton extends Clickable {
             } else {
                 Renderer.drawCenteredString(this.label.getFormattedText(), position.getX(), position.getY() - 4);
             }
-            RenderHelper.enableGUIStandardItemLighting();
         }
     }
 

@@ -26,8 +26,8 @@
 
 package com.github.lehjr.mpalib.math;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
+import com.mojang.blaze3d.platform.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector4f;

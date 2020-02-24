@@ -26,8 +26,8 @@
 
 package com.github.lehjr.mpalib.client.render.modelspec;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.forge.obj.MPALibOBJModel;
+import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.map.MPALibRegistry;
 import com.github.lehjr.mpalib.string.StringUtils;
 import net.minecraft.nbt.CompoundNBT;

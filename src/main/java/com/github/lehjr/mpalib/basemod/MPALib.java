@@ -25,13 +25,13 @@
  */
 package com.github.lehjr.mpalib.basemod;
 
+import com.github.lehjr.forge.obj.MPALibOBJLoader;
 import com.github.lehjr.mpalib.capabilities.heat.HeatCapability;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.mpalib.capabilities.player.CapabilityPlayerKeyStates;
 import com.github.lehjr.mpalib.capabilities.render.ModelSpecNBTCapability;
 import com.github.lehjr.mpalib.client.event.FOVUpdateEventHandler;
 import com.github.lehjr.mpalib.client.event.RenderGameOverlayEventHandler;
-import com.github.lehjr.forge.obj.MPALibOBJLoader;
 import com.github.lehjr.mpalib.network.MPALibPackets;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;

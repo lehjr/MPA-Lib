@@ -27,6 +27,7 @@
 
 package com.github.lehjr.forge.obj;
 
+import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.cache.CacheBuilder;
@@ -36,7 +37,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;

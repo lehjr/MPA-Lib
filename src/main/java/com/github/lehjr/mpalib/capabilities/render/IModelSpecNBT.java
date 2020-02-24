@@ -26,8 +26,8 @@
 
 package com.github.lehjr.mpalib.capabilities.render;
 
-import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.github.lehjr.mpalib.client.render.modelspec.EnumSpecType;
 import com.github.lehjr.mpalib.client.render.modelspec.ModelRegistry;
 import com.github.lehjr.mpalib.client.render.modelspec.TexturePartSpec;
