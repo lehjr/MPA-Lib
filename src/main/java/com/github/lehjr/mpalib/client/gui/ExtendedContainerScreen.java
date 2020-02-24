@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;
@@ -145,5 +146,59 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
             }
         }
         return null;
+    }
+
+    public void setXSize(int xSize) {
+        this.xSize = xSize;
+        this.guiLeft = (this.width - getXSize()) / 2;
+    }
+
+    public void setYSize(int ySize) {
+        this.ySize = ySize;
+        this.guiTop = (this.height - getYSize()) / 2;
+    }
+
+    /**
+     * Returns absolute screen coordinates (int 0 to width) from a relative
+     * coordinate (float -1.0F to +1.0F)
+     *
+     * @param relx Relative X coordinate
+     * @return Absolute X coordinate
+     */
+    public int absX(double relx) {
+        int absx = (int) ((relx + 1) * getXSize() / 2);
+        int xpadding = (width - getXSize()) / 2;
+        return absx + xpadding;
+    }
+
+    /**
+     * Returns relative coordinate (float -1.0F to +1.0F) from absolute
+     * coordinates (int 0 to width)
+     */
+    public int relX(double absx) {
+        int padding = (width - getXSize()) / 2;
+        return (int) ((absx - padding) * 2 / getXSize() - 1);
+    }
+
+    /**
+     * Returns absolute screen coordinates (int 0 to width) from a relative
+     * coordinate (float -1.0F to +1.0F)
+     *
+     * @param rely Relative Y coordinate
+     * @return Absolute Y coordinate
+     */
+    public int absY(double rely) {
+        int absy = (int) ((rely + 1) * getYSize() / 2);
+        int ypadding = (height - getYSize()) / 2;
+        return absy + ypadding;
+    }
+
+    /**
+     * Returns relative coordinate (float -1.0F to +1.0F) from absolute
+     * coordinates (int 0 to width)
+     */
+    public int relY(float absy) {
+        int padding = (height - getYSize()) / 2;
+        return (int) ((absy - padding) * 2 / getYSize() - 1);
     }
 }
