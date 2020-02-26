@@ -47,7 +47,6 @@ import net.minecraftforge.client.model.BasicState;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.client.model.pipeline.VertexTransformer;
 import net.minecraftforge.common.model.IModelState;
@@ -150,9 +149,9 @@ public class ModelHelper {
     public List<BakedQuad> getQuadsByGroups(IBakedModel bakedModelIn, final List<String> visibleGroups, TRSRTransformation transformation) {
         List<BakedQuad> quads = null;
 
-        if (bakedModelIn instanceof OBJModel.OBJBakedModel) {
+        if (bakedModelIn instanceof MPALibOBJModel.MPALIbOBJBakedModel) {
             try {
-                OBJModel obj = ((OBJModel.OBJBakedModel) bakedModelIn).getModel();
+                MPALibOBJModel obj = ((MPALibOBJModel.MPALIbOBJBakedModel) bakedModelIn).getModel();
 
                 // ModelState for handling visibility of each group.
                 IModelState modelState = part -> {
