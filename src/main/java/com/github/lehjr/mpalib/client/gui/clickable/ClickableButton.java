@@ -41,8 +41,6 @@ public class ClickableButton extends Clickable {
     protected ITextComponent label;
     protected Point2D radius;
     protected DrawableRect rect;
-    protected boolean enabled;
-    protected boolean visible = true;
     private final Colour enabledBorder  = new Colour(0.3F, 0.3F, 0.3F, 1);
     private final Colour enabledBackground = new Colour(0.5F, 0.6F, 0.8F, 1);
     private final Colour disabledBorder = new Colour(0.8F, 0.6F, 0.6F, 1);
@@ -98,7 +96,7 @@ public class ClickableButton extends Clickable {
      * @param partialTicks
      */
     public void renderButton(int mouseX, int mouseY, float partialTicks) {
-        if (visible) {
+        if (isVisible) {
             this.rect.setLeft(position.getX() - radius.getX());
             this.rect.setTop(position.getY() - radius.getY());
             this.rect.setRight(position.getX() + radius.getX());
@@ -117,7 +115,7 @@ public class ClickableButton extends Clickable {
      * @param partialTicks
      */
     public void renderText(int mouseX, int mouseY, float partialTicks) {
-        if (visible) {
+        if (isVisible) {
             if (label.getFormattedText().contains("\n")) {
                 String[] s = label.getFormattedText().split("\n");
                 for (int i = 0; i < s.length; i++) {
@@ -145,21 +143,6 @@ public class ClickableButton extends Clickable {
         return null;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    @Override
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public void buttonOn() {
         this.setEnabled(true);
         this.setVisible(true);
@@ -168,11 +151,6 @@ public class ClickableButton extends Clickable {
     public void buttonOff() {
         this.setEnabled(false);
         this.setVisible(false);
-    }
-
-    @Override
-    public boolean isVisible() {
-        return visible;
     }
 
     public ClickableButton setLable(ITextComponent label) {
