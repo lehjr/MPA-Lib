@@ -27,6 +27,8 @@
 package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
+import com.github.lehjr.mpalib.client.sound.Musique;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
@@ -40,7 +42,7 @@ public abstract class Clickable implements IClickable {
     protected Point2D position;
     IPressable onPressed;
     IReleasable onReleased;
-    boolean enabled = true;
+    boolean isEnabled = true;
     boolean isVisible = true;
 
     public Clickable() {
@@ -53,22 +55,22 @@ public abstract class Clickable implements IClickable {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return isEnabled;
     }
 
     @Override
     public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+        this.isEnabled = enabled;
     }
 
     @Override
     public void enable() {
-        this.enabled = true;
+        this.isEnabled = true;
     }
 
     @Override
     public void disable() {
-        this.enabled = false;
+        this.isEnabled = false;
     }
 
     @Override
@@ -136,12 +138,16 @@ public abstract class Clickable implements IClickable {
 
     @Override
     public void onPressed() {
-        this.onPressed.onPressed(this);
+        if (this.isVisible() && this.isEnabled() && this.onPressed != null) {
+            this.onPressed.onPressed(this);
+        }
     }
 
     @Override
     public void onReleased() {
-        this.onReleased.onReleased(this);
+        if (this.isVisible() && this.isEnabled() && this.onReleased != null) {
+            this.onReleased.onReleased(this);
+        }
     }
 
     @Override

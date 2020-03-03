@@ -10,13 +10,7 @@ import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
 
-public class CheckBox implements IClickable{
-    protected IPressable onPressed;
-    protected IReleasable onReleased;
-
-    protected boolean isVisible;
-    protected boolean isEnabled;
-
+public class CheckBox extends Clickable {
     protected boolean isChecked;
     protected DrawableTile tile;
 
@@ -88,50 +82,11 @@ public class CheckBox implements IClickable{
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
-        this.isEnabled = enabled;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isEnabled;
-    }
-
-    @Override
-    public void setVisible(boolean isVisible) {
-        this.isVisible = isVisible;
-    }
-
-    @Override
-    public boolean isVisible() {
-        return isVisible;
-    }
-
-    @Override
-    public void setOnPressed(IPressable iPressable) {
-        this.onPressed = iPressable;
-    }
-
-    @Override
-    public void setOnReleased(IReleasable iReleasable) {
-        this.onReleased = iReleasable;
-    }
-
-    @Override
-    public void onReleased() {
-        if (this.isVisible && this.isEnabled && this.onReleased != null) {
-            this.onReleased.onReleased(this);
-        }
-    }
-
-    @Override
     public void onPressed() {
-        if (this.isVisible && this.isEnabled) {
+        super.onPressed();
+        if (this.isVisible() && this.isEnabled()) {
             Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK, 1);
             this.isChecked = !this.isChecked;
-            if (this.onPressed != null) {
-                this.onPressed.onPressed(this);
-            }
         }
     }
 }

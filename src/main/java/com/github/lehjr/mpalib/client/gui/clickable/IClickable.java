@@ -94,6 +94,7 @@ public interface IClickable {
             if (button == 0 || button == 1 || flag) {
                 this.onPressed();
             }
+            return true;
         }
         return false;
     }
