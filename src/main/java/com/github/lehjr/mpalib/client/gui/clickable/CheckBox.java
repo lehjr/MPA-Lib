@@ -45,7 +45,7 @@ public class CheckBox extends Clickable {
     @Override
     public boolean hitBox(double x, double y) {
         if (this.isVisible() && this.isEnabled()) {
-            return x >= this.tile.left() && x <= this.tile.right() && y >= this.tile.top() && y <= this.tile.bottom();
+            return tile.containsPoint(x, y);
         } else {
             return false;
         }
@@ -57,15 +57,9 @@ public class CheckBox extends Clickable {
     }
 
     @Override
-    public Point2D getPosition() {
-        return tile.center();
-    }
-
-    @Override
     public void setPosition(Point2D position) {
-        Point2D ul = position.plus(4, 4);
-        tile.setLeft(ul.getX());
-        tile.setTop(ul.getY());
+        super.setPosition(position);
+        tile.setPosition(position);
     }
 
     @Override
