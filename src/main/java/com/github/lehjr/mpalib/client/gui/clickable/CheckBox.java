@@ -77,10 +77,10 @@ public class CheckBox extends Clickable {
 
     @Override
     public void onPressed() {
-        super.onPressed();
         if (this.isVisible() && this.isEnabled()) {
             Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK, 1);
             this.isChecked = !this.isChecked;
         }
+        super.onPressed();
     }
 }
