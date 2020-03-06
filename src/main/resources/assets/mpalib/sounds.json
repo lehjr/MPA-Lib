@@ -3,7 +3,7 @@
     "category":"master",
     "sounds":[
       {
-        "name":"modularpowerarmor:gui_install",
+        "name":"mpalib:gui_install",
         "stream":false
       }
     ]
@@ -12,7 +12,7 @@
     "category":"master",
     "sounds":[
       {
-        "name":"modularpowerarmor:gui_select",
+        "name":"mpalib:gui_select",
         "stream":false
       }
     ]
@@ -21,7 +21,7 @@
     "category":"master",
     "sounds":[
       {
-        "name":"modularpowerarmor:boop",
+        "name":"mpalib:boop",
         "stream":false
       }
     ]
