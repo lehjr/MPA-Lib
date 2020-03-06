@@ -47,7 +47,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@Mod(MPALIbConstants.MODID)
+@Mod(MPALIbConstants.MOD_ID)
 public class MPALib {
     public MPALib() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MPALibConfig.COMMON_SPEC, MPALibConfig.setupConfigFile("mpalib-common.toml").getAbsolutePath());
@@ -86,6 +86,6 @@ public class MPALib {
         if (!(event.getObject() instanceof PlayerEntity)) {
             return;
         }
-        event.addCapability(new ResourceLocation(MPALIbConstants.MODID, "player_keystates"), new CapabilityPlayerKeyStates());
+        event.addCapability(new ResourceLocation(MPALIbConstants.MOD_ID, "player_keystates"), new CapabilityPlayerKeyStates());
     }
 }

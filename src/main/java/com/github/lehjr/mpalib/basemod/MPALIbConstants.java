@@ -30,17 +30,17 @@ import net.minecraft.util.ResourceLocation;
 
 public class MPALIbConstants {
     // Mod
-    public static final String MODID = "mpalib";
+    public static final String MOD_ID = "mpalib";
 
     // Misc
-    public static final String RESOURCE_PREFIX = MODID + ":";
+    public static final String RESOURCE_PREFIX = MOD_ID + ":";
     public static final String TEXTURE_PREFIX = RESOURCE_PREFIX + "textures/";
     public static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation(TEXTURE_PREFIX + "gui/lightning-medium.png");
     public static final ResourceLocation GLASS_TEXTURE = new ResourceLocation(TEXTURE_PREFIX + "gui/glass.png");
     public static final String BLANK_ARMOR_MODEL_PATH = TEXTURE_PREFIX + "item/armor/blankarmor.png";
 
     // NuminaConfig
-    public static final String CONFIG_PREFIX = "config." + MODID + ".";
+    public static final String CONFIG_PREFIX = "config." + MOD_ID + ".";
     public static final String CONFIG_USE_FOV_FIX = CONFIG_PREFIX + "useFOVFix";
     public static final String CONFIG_USE_FOV_NORMALIZE = CONFIG_PREFIX + "normalizeFOV";
     public static final String CONFIG_FOV_FIX_DEAULT_STATE = CONFIG_PREFIX + "FOVFixDefaultState";

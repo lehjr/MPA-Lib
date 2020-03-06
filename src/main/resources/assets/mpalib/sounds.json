@@ -1,0 +1,29 @@
+{
+  "gui_install":{
+    "category":"master",
+    "sounds":[
+      {
+        "name":"modularpowerarmor:gui_install",
+        "stream":false
+      }
+    ]
+  },
+  "gui_select":{
+    "category":"master",
+    "sounds":[
+      {
+        "name":"modularpowerarmor:gui_select",
+        "stream":false
+      }
+    ]
+  },
+  "boop":{
+    "category":"master",
+    "sounds":[
+      {
+        "name":"modularpowerarmor:boop",
+        "stream":false
+      }
+    ]
+  }
+}

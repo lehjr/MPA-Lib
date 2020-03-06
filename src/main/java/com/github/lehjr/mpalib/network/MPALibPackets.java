@@ -38,7 +38,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 public class MPALibPackets {
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel CHANNEL_INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(MPALIbConstants.MODID, "data"),
+            new ResourceLocation(MPALIbConstants.MOD_ID, "data"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals
