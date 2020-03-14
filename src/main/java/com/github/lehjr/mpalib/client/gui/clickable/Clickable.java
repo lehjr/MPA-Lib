@@ -27,8 +27,6 @@
 package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
-import com.github.lehjr.mpalib.client.sound.Musique;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
