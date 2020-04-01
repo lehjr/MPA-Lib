@@ -61,9 +61,9 @@ public class MovingSoundPlayer extends TickableSound {
 
     @Override
     public void tick() {
-        this.x = (float) this.player().posX;
-        this.y = (float) this.player().posY;
-        this.z = (float) this.player().posZ;
+        this.x = (float) this.player().getPosX();
+        this.y = (float) this.player().getPosY();
+        this.z = (float) this.player().getPosZ();
     }
 
     @Override

@@ -128,8 +128,8 @@ public final class RenderState {
         GL11.glPushMatrix();
         Minecraft mc = Minecraft.getInstance();
 //        int dw = mc.mainWindow.getWidth();
-        int dh = mc.mainWindow.getHeight();
-        double scaleFactor = mc.mainWindow.getGuiScaleFactor();
+        int dh = mc.getMainWindow().getHeight();
+        double scaleFactor = mc.getMainWindow().getGuiScaleFactor();
         double newx = x * scaleFactor;
         double newy = dh - h * scaleFactor - y * scaleFactor;
         double neww = w * scaleFactor;

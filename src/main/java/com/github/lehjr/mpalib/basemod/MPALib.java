@@ -25,7 +25,6 @@
  */
 package com.github.lehjr.mpalib.basemod;
 
-import com.github.lehjr.forge.obj.MPALibOBJLoader;
 import com.github.lehjr.mpalib.capabilities.heat.HeatCapability;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.mpalib.capabilities.player.CapabilityPlayerKeyStates;
@@ -36,7 +35,6 @@ import com.github.lehjr.mpalib.network.MPALibPackets;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -76,7 +74,7 @@ public class MPALib {
     }
 
     private void setupClient(final FMLClientSetupEvent event) {
-        ModelLoaderRegistry.registerLoader(MPALibOBJLoader.INSTANCE); // crashes if called in mod constructor
+//        ModelLoaderRegistry.registerLoader(MPALibOBJLoader.INSTANCE); // crashes if called in mod constructor
         MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
         MinecraftForge.EVENT_BUS.register(new RenderGameOverlayEventHandler());
     }

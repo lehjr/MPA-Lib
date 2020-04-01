@@ -58,7 +58,10 @@ public class NBT2Json {
                     break;
 
                 case Constants.NBT.TAG_COMPOUND: // 10
-                    jsonObjectIn.add(key, CompoundNBT2Json(nbt.getCompound(key), new JsonObject()));
+                    // filter out empty compound tags
+                    if (!nbt.getCompound(key).isEmpty()) {
+                        jsonObjectIn.add(key, CompoundNBT2Json(nbt.getCompound(key), new JsonObject()));
+                    }
                     break;
 
                 case Constants.NBT.TAG_INT_ARRAY: // 11

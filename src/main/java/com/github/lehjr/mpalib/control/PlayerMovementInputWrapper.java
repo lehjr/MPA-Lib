@@ -83,7 +83,7 @@ public class PlayerMovementInputWrapper {
                 player.moveForward,
                 jumpKey,
                 downKey,
-                player.isSneaking());
+                player.isCrouching());
     }
 
     static PlayerMovementInput fromClient(PlayerEntity player) {
@@ -103,6 +103,6 @@ public class PlayerMovementInputWrapper {
                 clientPlayer.movementInput.moveForward,
                 jumpKey,
                 downKey,
-        clientPlayer.movementInput.sneak);
+        clientPlayer.isCrouching());
     }
 }

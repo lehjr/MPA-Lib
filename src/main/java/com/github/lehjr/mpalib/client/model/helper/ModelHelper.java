@@ -34,28 +34,27 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.UnmodifiableIterator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.TransformationMatrix;
+import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.client.renderer.Vector4f;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.texture.MissingTextureSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.BasicState;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
+import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
 import net.minecraftforge.client.model.pipeline.VertexTransformer;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.Models;
-import net.minecraftforge.common.model.TRSRTransformation;
 
 import javax.annotation.Nullable;
-import javax.vecmath.Vector3f;
-import javax.vecmath.Vector4f;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -63,18 +62,18 @@ import java.util.Random;
 import java.util.function.Function;
 
 public class ModelHelper {
-    public static TRSRTransformation get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scaleX, float scaleY, float scaleZ) {
-        return new TRSRTransformation(
+    public static TransformationMatrix get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scaleX, float scaleY, float scaleZ) {
+        return new TransformationMatrix(
                 // Transform
                 new Vector3f(transformX / 16, transformY / 16, transformZ / 16),
                 // Angles
-                TRSRTransformation.quatFromXYZDegrees(new Vector3f(angleX, angleY, angleZ)),
+                TransformationMatrix.quatFromXYZDegrees(new Vector3f(angleX, angleY, angleZ)),
                 // Scale
                 new Vector3f(scaleX, scaleY, scaleZ),
                 null);
     }
 
-    public static TRSRTransformation get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scale) {
+    public static TransformationMatrix get(float transformX, float transformY, float transformZ, float angleX, float angleY, float angleZ, float scale) {
         return get(transformX, transformY, transformZ, angleX, angleY, angleZ, scale, scale, scale);
     }
 
@@ -146,7 +145,7 @@ public class ModelHelper {
         return null;
     }
 
-    public List<BakedQuad> getQuadsByGroups(IBakedModel bakedModelIn, final List<String> visibleGroups, TRSRTransformation transformation) {
+    public List<BakedQuad> getQuadsByGroups(IBakedModel bakedModelIn, final List<String> visibleGroups, TransformationMatrix transformation) {
         List<BakedQuad> quads = null;
 
         if (bakedModelIn instanceof MPALibOBJModel.MPALIbOBJBakedModel) {
@@ -194,14 +193,14 @@ public class ModelHelper {
      * This is better than changing material colors for Wavefront models because it means that you can use a single material for the entire model
      * instead of unique ones for each group. It also means you don't necessarily need a Wavefront model.
      */
-    public static List<BakedQuad> getColouredQuadsWithGlowAndTransform(List<BakedQuad> quadList, Colour colour, final TRSRTransformation transform, boolean glow) {
+    public static List<BakedQuad> getColouredQuadsWithGlowAndTransform(List<BakedQuad> quadList, Colour colour, final TransformationMatrix transform, boolean glow) {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
         quadList.forEach(quad -> builder.add(colouredQuadWithGlowAndTransform(colour, quad, !glow, transform)));
         return builder.build();
     }
 
-    public static BakedQuad colouredQuadWithGlowAndTransform(Colour colour, BakedQuad quad, boolean applyDifuse, TRSRTransformation transform) {
-        QuadTransformer transformer = new QuadTransformer(colour, transform, quad.getFormat(), applyDifuse);
+    public static BakedQuad colouredQuadWithGlowAndTransform(Colour colour, BakedQuad quad, boolean applyDifuse, TransformationMatrix transform) {
+        QuadTransformer transformer = new QuadTransformer(colour, transform, quad.func_187508_a(), applyDifuse);
         quad.pipe(transformer);
         return transformer.build();
     }
@@ -222,25 +221,27 @@ public class ModelHelper {
     }
 
     public static BakedQuad colorQuad(Colour color, BakedQuad quad, boolean applyDifuse) {
-        QuadTransformer transformer = new QuadTransformer(color, quad.getFormat(), applyDifuse);
+        QuadTransformer transformer = new QuadTransformer(color, quad.func_187508_a(), applyDifuse);
         quad.pipe(transformer);
         return transformer.build();
     }
 
-
+    // see TRSRTransformer as example
     private static class QuadTransformer extends VertexTransformer {
         Colour colour;
         Boolean applyDiffuse;
-        TRSRTransformation transform;
+        TransformationMatrix transform;
 
-        public QuadTransformer(Colour colour, VertexFormat format, boolean applyDiffuse) {
-            super(new UnpackedBakedQuad.Builder(format));
+        // TODO: see what info is missing
+
+        public QuadTransformer(Colour colour, TextureAtlasSprite texture, boolean applyDiffuse) {
+            super(new BakedQuadBuilder(texture));
             this.colour = colour;
             this.applyDiffuse = applyDiffuse;
         }
 
-        public QuadTransformer(Colour colour, final TRSRTransformation transform, VertexFormat format, boolean applyDiffuse) {
-            super(new UnpackedBakedQuad.Builder(format));
+        public QuadTransformer(Colour colour, final TransformationMatrix transform, TextureAtlasSprite texture, boolean applyDiffuse) {
+            super(new BakedQuadBuilder(texture));
             this.transform = transform;
             this.colour = colour;
             this.applyDiffuse = applyDiffuse;
@@ -248,27 +249,25 @@ public class ModelHelper {
 
         @Override
         public void put(int element, float... data) {
-            VertexFormatElement.Usage usage = parent.getVertexFormat().getElement(element).getUsage();
+            VertexFormatElement.Usage usage = parent.getVertexFormat().getElements().get(element).getUsage();
 //            System.out.println("element: " + element);
 //            System.out.println("usage: " + usage.getDisplayName());
             // change color
-            if (colour != null &&
-                    usage == VertexFormatElement.Usage.COLOR &&
-                    data.length >= 4) {
+            if (colour != null && usage == VertexFormatElement.Usage.COLOR && data.length >= 4) {
                 data[0] = (float) colour.r;
                 data[1] = (float) colour.g;
                 data[2] = (float) colour.b;
                 data[3] = (float) colour.a;
                 super.put(element, data);
                 // transform normals and position
-            } else if (transform != null &&
-                    usage == VertexFormatElement.Usage.POSITION &&
-                    data.length >= 4) {
-                float[] newData = new float[4];
-                Vector4f vec = new Vector4f(data);
-                transform.getMatrixVec().transform(vec);
-                vec.get(newData);
-                parent.put(element, newData);
+            } else if (transform != null && usage == VertexFormatElement.Usage.POSITION && data.length >= 4) {
+                Vector4f pos = new Vector4f(data[0], data[1], data[2], data[3]);
+                transform.transformPosition(pos);
+                data[0] = pos.getX();
+                data[1] = pos.getY();
+                data[2] = pos.getZ();
+                data[3] = pos.getW();
+                parent.put(element, data);
             } else
                 super.put(element, data);
         }
@@ -278,8 +277,8 @@ public class ModelHelper {
             super.setApplyDiffuseLighting(applyDiffuse != null ? applyDiffuse : diffuse);
         }
 
-        public UnpackedBakedQuad build() {
-            return ((UnpackedBakedQuad.Builder) parent).build();
+        public BakedQuad build() {
+            return ((BakedQuadBuilder) parent).build();
         }
     }
 }

@@ -36,8 +36,6 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.model.ModelManager;
-import net.minecraft.client.renderer.model.PositionTextureVertex;
-import net.minecraft.client.renderer.model.TexturedQuad;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;

@@ -102,13 +102,13 @@ public final class PlayerUtils {
             return 0;
 //        }
 
-        double cool = ((2.0 - getBiome(player).getTemperature(new BlockPos((int) player.posX, (int) player.posY, (int) player.posZ)) / 2)); // Algorithm that returns a getValue from 0.0 -> 1.0. Biome temperature is from 0.0 -> 2.0
+        double cool = ((2.0 - getBiome(player).getTemperature(new BlockPos((int) player.getPosX(), (int) player.getPosY(), (int) player.getPosZ())) / 2)); // Algorithm that returns a getValue from 0.0 -> 1.0. Biome temperature is from 0.0 -> 2.0
 
         if (player.isInWater())
             cool += 0.5;
 
         // If high in the air, increase cooling
-        if ((int) player.posY > 128)
+        if ((int) player.getPosY() > 128)
             cool += 0.5;
 
         // If nighttime and in the desert, increase cooling
@@ -130,7 +130,6 @@ public final class PlayerUtils {
     }
 
     public static Biome getBiome(PlayerEntity player) {
-        Chunk chunk = (Chunk) player.world.getChunk(player.getPosition());
-        return chunk.getBiome(player.getPosition());
+        return player.world.getBiome(player.getPosition());
     }
 }

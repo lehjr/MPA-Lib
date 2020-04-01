@@ -27,9 +27,9 @@
 package com.github.lehjr.mpalib.client.model.helper;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.TransformationMatrix;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.model.TRSRTransformation;
 import org.lwjgl.glfw.GLFW;
 
 @OnlyIn(Dist.CLIENT)
@@ -90,7 +90,7 @@ public class ModelTransformCalibration {
     }
 
     static boolean isKeyPressed(int key) {
-        return GLFW.glfwGetKey(Minecraft.getInstance().mainWindow.getHandle(), key) == GLFW.GLFW_PRESS;
+        return GLFW.glfwGetKey(Minecraft.getInstance().getMainWindow().getHandle(), key) == GLFW.GLFW_PRESS;
     }
 
     //----------------------------------
@@ -200,7 +200,7 @@ public class ModelTransformCalibration {
         }
     }
 
-    public TRSRTransformation getTransform() {
+    public TransformationMatrix getTransform() {
         transformCalibration();
         return ModelHelper.get(xOffest, yOffest, zOffest, angleX, angleY, angleZ, scalemodifier);
     }

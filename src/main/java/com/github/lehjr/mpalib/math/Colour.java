@@ -30,7 +30,6 @@ import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.mojang.blaze3d.platform.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
-import javax.vecmath.Vector4f;
 import java.awt.*;
 import java.util.Objects;
 
@@ -55,6 +54,7 @@ public class Colour {
     public static final Colour GREEN = new Colour(0.0, 1.0, 0.0, 1.0);
     public static final Colour DARKGREEN = new Colour(0.0, 0.8, 0.2, 1.0);
     public static final Colour PURPLE = new Colour(0.6, 0.1, 0.9, 1.0);
+    public static final Colour AQUA_BLUE = new Colour(0, 1.0, 1.0, 1.0);
 
     /**
      * The RGBA values are stored as doubles from 0.0D (nothing) to 1.0D (full
@@ -202,15 +202,6 @@ public class Colour {
 
     public Color awtColor() {
         return new Color((float) r, (float) g, (float) b, (float) a);
-    }
-
-    public Vector4f toVector4f() {
-        Vector4f colorVec = new Vector4f();
-        colorVec.w = (float) a;
-        colorVec.x = (float) r;
-        colorVec.y = (float) g;
-        colorVec.z = (float) b;
-        return colorVec;
     }
 
     @Override

@@ -72,7 +72,7 @@ public class RenderGameOverlayEventHandler {
                 int mode = ((IModeChangingItem) handler).getActiveMode();
                 ItemStack module = ((IModeChangingItem) handler).getActiveModule();
                 if (!module.isEmpty()) {
-                    MainWindow screen = mc.mainWindow;
+                    MainWindow screen = mc.getMainWindow();
                     TextureUtils.pushTexture(TextureUtils.TEXTURE_QUILT);
                     RenderState.blendingOn();
                     double currX;

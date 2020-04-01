@@ -27,7 +27,7 @@
 package com.github.lehjr.mpalib.client.render.modelspec;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.inventory.EquipmentSlotType;
 
 import java.util.Arrays;
@@ -67,7 +67,7 @@ public enum MorphTarget {
         return Arrays.stream(values()).filter(morph -> name.toUpperCase().equals(morph.name)).findAny().orElseGet(null);
     }
 
-    public RendererModel apply(BipedModel m) {
+    public ModelRenderer apply(BipedModel m) {
         switch (this) {
             case Head:
                 return m.bipedHead;

@@ -27,10 +27,9 @@
 package com.github.lehjr.mpalib.client.render.modelspec;
 
 import com.github.lehjr.forge.obj.MPALibOBJModel;
+import net.minecraft.client.renderer.TransformationMatrix;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.resources.I18n;
-import net.minecraftforge.common.model.IModelState;
-import net.minecraftforge.common.model.TRSRTransformation;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -51,7 +50,7 @@ public class ModelSpec extends SpecBase {
         this.model = model;
     }
 
-    public TRSRTransformation getTransform(ItemCameraTransforms.TransformType transformType) {
+    public TransformationMatrix getTransform(ItemCameraTransforms.TransformType transformType) {
         Optional<TRSRTransformation> transformation = modelState.apply(Optional.of(transformType));
         return transformation.orElse(TRSRTransformation.identity());
     }

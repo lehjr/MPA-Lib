@@ -94,9 +94,4 @@ public class MPALibTileEntity extends TileEntity {
         stack.write(itemnbt);
         nbt.put(name, itemnbt);
     }
-
-//    @Override
-//    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-//        return oldState.getBlock() != newSate.getBlock();
-//    }
 }

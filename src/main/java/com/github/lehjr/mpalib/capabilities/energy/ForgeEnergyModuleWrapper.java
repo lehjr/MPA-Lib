@@ -83,7 +83,7 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
     /** INBTSerializable -------------------------------------------------------------------------- */
     @Override
     public IntNBT serializeNBT() {
-        return new IntNBT(energy);
+        return IntNBT.valueOf(energy);
     }
 
     @Override
