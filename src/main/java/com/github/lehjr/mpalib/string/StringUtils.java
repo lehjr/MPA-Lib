@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.string;
 
-import com.github.lehjr.mpalib.client.render.Renderer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -328,8 +328,9 @@ public class StringUtils {
     }
 
     public static List<ITextComponent> wrapITextComponentToLength(ITextComponent component, int length) {
-        if (component == null)
+        if (component == null) {
             component = new StringTextComponent("");
+        }
         return wrapStringToLength(component.getUnformattedComponentText(), length);
     }
 
@@ -353,6 +354,7 @@ public class StringUtils {
     public static List<String> wrapStringToVisualLength(String str, double length) {
         List<String> strlist = new ArrayList<>();
 
+
         String[] words = str.split(" ");
         if (words.length == 0) {
             return null;
@@ -361,7 +363,7 @@ public class StringUtils {
         String currLine = words[0];
         for (int i = 1; i < words.length; i++) {
             String approxLine = currLine + " " + words[i];
-            if (Renderer.getStringWidth(approxLine) > length) {
+            if (Minecraft.getInstance().fontRenderer.getStringWidth(approxLine) > length) {
                 strlist.add(currLine);
                 currLine = " " + words[i];
             } else {

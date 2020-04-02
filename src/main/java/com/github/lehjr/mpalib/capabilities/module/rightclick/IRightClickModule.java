@@ -51,7 +51,7 @@ public interface IRightClickModule extends IPowerModule {
         return ActionResultType.PASS;
     }
 
-    default void onPlayerStoppedUsing(@Nonnull  ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+    default void onPlayerStoppedUsing(@Nonnull ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
     }
 
     default int getEnergyUsage() {

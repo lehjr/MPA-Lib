@@ -33,7 +33,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.DesertBiome;
-import net.minecraft.world.chunk.Chunk;
 
 import javax.annotation.Nonnull;
 

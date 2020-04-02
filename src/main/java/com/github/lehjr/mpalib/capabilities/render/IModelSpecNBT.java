@@ -28,9 +28,9 @@ package com.github.lehjr.mpalib.capabilities.render;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
-import com.github.lehjr.mpalib.client.render.modelspec.EnumSpecType;
-import com.github.lehjr.mpalib.client.render.modelspec.ModelRegistry;
-import com.github.lehjr.mpalib.client.render.modelspec.TexturePartSpec;
+import com.github.lehjr.mpalib.capabilities.render.modelspec.EnumSpecType;
+import com.github.lehjr.mpalib.capabilities.render.modelspec.ModelRegistry;
+import com.github.lehjr.mpalib.capabilities.render.modelspec.TexturePartSpec;
 import com.github.lehjr.mpalib.math.Colour;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;

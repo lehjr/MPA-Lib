@@ -29,7 +29,7 @@ package com.github.lehjr.mpalib.basemod;
 import org.apache.logging.log4j.LogManager;
 
 public final class MPALibLogger {
-    public static final org.apache.logging.log4j.Logger logger = LogManager.getLogger("Lehjr");
+    public static final org.apache.logging.log4j.Logger logger = LogManager.getLogger("lehjr");
 
     public static void logDebug(String string) {
         boolean debugging = true;

@@ -29,7 +29,6 @@ package com.github.lehjr.mpalib.item;
 import com.github.lehjr.mpalib.capabilities.inventory.modechanging.IModeChangingItem;
 import com.github.lehjr.mpalib.capabilities.inventory.modularitem.IModularItem;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -144,30 +143,5 @@ public class ItemUtils {
                     });
         }
         return slots;
-    }
-
-    /**
-     * Checks if the player has a copy of all of the items in
-     * workingUpgradeCost.
-     *
-     * @param workingUpgradeCost
-     * @param inventory
-     * @return
-     */
-    @Deprecated // Install costs should be abandoned as modules are now items
-    public static boolean hasInInventory(List<ItemStack> workingUpgradeCost, PlayerInventory inventory) {
-        for (ItemStack stackInCost : workingUpgradeCost) {
-            int found = 0;
-            for (int i = 0; i < inventory.getSizeInventory(); i++) {
-                ItemStack stackInInventory = inventory.getStackInSlot(i);
-                if (ItemStack.areItemStacksEqual(stackInInventory, stackInCost)) {
-                    found += stackInInventory.getCount();
-                }
-            }
-            if (found < stackInCost.getCount()) {
-                return false;
-            }
-        }
-        return true;
     }
 }

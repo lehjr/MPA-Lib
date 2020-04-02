@@ -31,12 +31,10 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class NBTUtils {
     public static final String TAG_ITEM_PREFIX = "MMModItem";// Machine Muse Mod
     public static final String TAG_MODULE_PREFIX = "MMModModule";// Machine Muse Mod
-    public static final String TAG_VALUES = "commonValues"; // commonly used values that would normally be recalculated several times a minute.
 
     /**
      * Gets or creates stack.getTag.getTag(TAG_ITEM_PREFIX)
@@ -176,27 +174,5 @@ public class NBTUtils {
 
     public static void setModularItemBoolean(@Nonnull ItemStack module, String string, boolean value) {
         getMuseItemTag(module).putBoolean(string, value);
-    }
-
-    // Store commonly recalculated values in a compound tag.
-    @Nullable
-    public static CompoundNBT getMuseValuesTag(@Nonnull ItemStack stack) {
-        if (stack.isEmpty())
-            return null;
-
-        CompoundNBT itemTag = getMuseItemTag(stack);
-        CompoundNBT valuesTag;
-        if (itemTag.contains(TAG_VALUES)) {
-            valuesTag = itemTag.getCompound(TAG_VALUES);
-        } else {
-            valuesTag = new CompoundNBT();
-            itemTag.put(TAG_VALUES, valuesTag);
-        }
-        return valuesTag;
-    }
-
-    public static void removeMuseValuesTag(@Nonnull ItemStack stack) {
-        CompoundNBT itemTag = getMuseItemTag(stack);
-        itemTag.remove(TAG_VALUES);
     }
 }

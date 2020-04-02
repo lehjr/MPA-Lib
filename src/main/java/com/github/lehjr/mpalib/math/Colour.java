@@ -27,7 +27,6 @@
 package com.github.lehjr.mpalib.math;
 
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
-import com.mojang.blaze3d.platform.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -84,17 +83,6 @@ public class Colour {
         this.b = b;
         this.a = 1.0;
     }
-
-    public void doColor4f() {
-        GlStateManager.color4f((float) r, (float) g, (float) b, (float) a);
-    }
-//    /**
-//     * Secondary constructor. Sets RGB accordingly and sets alpha to 1.0F (full
-//     * opacity)
-//     */
-//    public Colour(float r, float g, float b) {
-//        this(r, g, b, 1.0F);
-//    }
 
     /**
      * Takes colours in the integer format that Minecraft uses, and converts.
@@ -173,10 +161,6 @@ public class Colour {
         double complement = 1 - d;
         return new Colour(this.r * complement + target.r * d, this.g * complement + target.g * d, this.b * complement + target.b * d, this.a
                 * complement + target.a * d);
-    }
-
-    public void doGL() {
-        GL11.glColor4d(r, g, b, a);
     }
 
     public Colour withAlpha(double newalpha) {
