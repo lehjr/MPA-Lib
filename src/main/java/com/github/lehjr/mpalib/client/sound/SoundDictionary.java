@@ -16,9 +16,6 @@ public class SoundDictionary {
 
     @SubscribeEvent
     public static void registerSoundEvent(RegistryEvent.Register<SoundEvent> event) {
-        System.out.println("registering sounds");
-
-
         event.getRegistry().registerAll(
                 SOUND_EVENT_GUI_INSTALL,
                 SOUND_EVENT_GUI_SELECT,

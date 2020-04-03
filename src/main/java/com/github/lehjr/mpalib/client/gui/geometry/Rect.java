@@ -66,6 +66,12 @@ public class Rect implements IRect {
         this(left, top, right, bottom, false);
     }
 
+    public Rect(Point2D ul, Point2D br, boolean growFromMiddle) {
+        this.ulFinal = this.ul = ul;
+        this.whFinal = this.wh = br.minus(ul);
+        this.growFromMiddle = growFromMiddle;
+    }
+
     public Rect(Point2D ul, Point2D br) {
         this.ulFinal = this.ul = ul;
         this.whFinal = this.wh = br.minus(ul);

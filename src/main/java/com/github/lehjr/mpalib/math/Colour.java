@@ -39,35 +39,35 @@ import java.util.Objects;
  * @author MachineMuse
  */
 public class Colour {
-    public static final Colour LIGHTBLUE = new Colour(0.5, 0.5, 1.0, 1.0);
-    public static final Colour BLUE = new Colour(0.0, 0.0, 1.0, 1.0);
-    public static final Colour DARKBLUE = new Colour(0.0, 0.0, 0.5, 1.0);
-    public static final Colour ORANGE = new Colour(0.9, 0.6, 0.2, 1.0);
-    public static final Colour YELLOW = new Colour(0.0, 0.0, 0.5, 1.0);
-    public static final Colour WHITE = new Colour(1.0, 1.0, 1.0, 1.0);
-    public static final Colour BLACK = new Colour(0.0, 0.0, 0.0, 1.0);
-    public static final Colour LIGHTGREY = new Colour(0.827,0.827,0.827,1.0);
-    public static final Colour DARKGREY = new Colour(0.4, 0.4, 0.4, 1.0);
-    public static final Colour RED = new Colour(1.0, 0.2, 0.2, 1.0);
-    public static final Colour LIGHTGREEN = new Colour(0.5, 1.0, 0.5, 1.0);
-    public static final Colour GREEN = new Colour(0.0, 1.0, 0.0, 1.0);
-    public static final Colour DARKGREEN = new Colour(0.0, 0.8, 0.2, 1.0);
-    public static final Colour PURPLE = new Colour(0.6, 0.1, 0.9, 1.0);
-    public static final Colour AQUA_BLUE = new Colour(0, 1.0, 1.0, 1.0);
+    public static final Colour LIGHTBLUE = new Colour(0.5F, 0.5F, 1.0F, 1.0F);
+    public static final Colour BLUE = new Colour(0.0F, 0.0F, 1.0F, 1.0F);
+    public static final Colour DARKBLUE = new Colour(0.0F, 0.0F, 0.5F, 1.0F);
+    public static final Colour ORANGE = new Colour(0.9F, 0.6F, 0.2F, 1.0F);
+    public static final Colour YELLOW = new Colour(0.0F, 0.0F, 0.5F, 1.0F);
+    public static final Colour WHITE = new Colour(1.0F, 1.0F, 1.0F, 1.0F);
+    public static final Colour BLACK = new Colour(0.0F, 0.0F, 0.0F, 1.0F);
+    public static final Colour LIGHTGREY = new Colour(0.827F,0.827F,0.827F,1.0F);
+    public static final Colour DARKGREY = new Colour(0.4F, 0.4F, 0.4F, 1.0F);
+    public static final Colour RED = new Colour(1.0F, 0.2F, 0.2F, 1.0F);
+    public static final Colour LIGHTGREEN = new Colour(0.5F, 1.0F, 0.5F, 1.0F);
+    public static final Colour GREEN = new Colour(0.0F, 1.0F, 0.0F, 1.0F);
+    public static final Colour DARKGREEN = new Colour(0.0F, 0.8F, 0.2F, 1.0F);
+    public static final Colour PURPLE = new Colour(0.6F, 0.1F, 0.9F, 1.0F);
+    public static final Colour AQUA_BLUE = new Colour(0F, 1.0F, 1.0F, 1.0F);
 
     /**
-     * The RGBA values are stored as doubles from 0.0D (nothing) to 1.0D (full
+     * The RGBA values are stored as floats from 0.0F (nothing) to 1.0F (full
      * saturation/opacity)
      */
-    public final double r;
-    public final double g;
-    public final double b;
-    public final double a;
+    public final float r;
+    public final float g;
+    public final float b;
+    public final float a;
 
     /**
      * Constructor. Just sets the RGBA values to the parameters.
      */
-    public Colour(double r, double g, double b, double a) {
+    public Colour(float r, float g, float b, float a) {
         this.r = r;
         this.g = g;
         this.b = b;
@@ -77,24 +77,24 @@ public class Colour {
     /**
      * Constructor. Just sets the RGBA values to the parameters.
      */
-    public Colour(double r, double g, double b) {
+    public Colour(float r, float g, float b) {
         this.r = r;
         this.g = g;
         this.b = b;
-        this.a = 1.0;
+        this.a = 1.0F;
     }
 
     /**
      * Takes colours in the integer format that Minecraft uses, and converts.
      */
     public Colour(int c) {
-        this.a = (c >> 24 & 0xFF) / 255.0D;
-        this.r = (c >> 16 & 0xFF) / 255.0D;
-        this.g = (c >> 8 & 0xFF) / 255.0D;
-        this.b = (c & 0xFF) / 255.0D;
+        this.a = (c >> 24 & 0xFF) / 255.0F;
+        this.r = (c >> 16 & 0xFF) / 255.0F;
+        this.g = (c >> 8 & 0xFF) / 255.0F;
+        this.b = (c & 0xFF) / 255.0F;
     }
 
-    public static int getInt(double r, double g, double b, double a) {
+    public static int getInt(float r, float g, float b, float a) {
         int val = 0;
         val = val | ((int) (a * 255) << 24);
         val = val | ((int) (r * 255) << 16);
@@ -112,11 +112,11 @@ public class Colour {
     }
 
     public static void doGLByInt(int c) {
-        double a = (c >> 24 & 255) / 255.0F;
-        double r = (c >> 16 & 255) / 255.0F;
-        double g = (c >> 8 & 255) / 255.0F;
-        double b = (c & 255) / 255.0F;
-        GL11.glColor4d(r, g, b, a);
+        float a = (c >> 24 & 255) / 255.0F;
+        float r = (c >> 16 & 255) / 255.0F;
+        float g = (c >> 8 & 255) / 255.0F;
+        float b = (c & 255) / 255.0F;
+        GL11.glColor4f(r, g, b, a);
     }
 
     /**
@@ -157,18 +157,18 @@ public class Colour {
      * Returns a colour at interval interval along a linear gradient from this
      * to target
      */
-    public Colour interpolate(Colour target, double d) {
-        double complement = 1 - d;
+    public Colour interpolate(Colour target, float d) {
+        float complement = 1 - d;
         return new Colour(this.r * complement + target.r * d, this.g * complement + target.g * d, this.b * complement + target.b * d, this.a
                 * complement + target.a * d);
     }
 
-    public Colour withAlpha(double newalpha) {
+    public Colour withAlpha(float newalpha) {
         return new Colour(this.r, this.g, this.b, newalpha);
     }
 
-    public double[] asArray() {
-        return new double[]{r, g, b, a};
+    public float[] asArray() {
+        return new float[]{r, g, b, a};
     }
 
     // format is 0xRRGGBBAA
@@ -178,7 +178,7 @@ public class Colour {
 //        return Integer.toHexString(getInt()).toUpperCase();
     }
 
-    public String hexDigits(double x) {
+    public String hexDigits(float x) {
         int y = (int) (x * 255);
         String hexDigits = "0123456789ABCDEF";
         return hexDigits.charAt(y / 16) + "" + hexDigits.charAt(y % 16);
