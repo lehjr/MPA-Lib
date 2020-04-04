@@ -26,6 +26,7 @@
 
 package com.github.lehjr.mpalib.client.gui.geometry;
 
+@Deprecated
 public class SpiralPointToPoint2D extends Point2D {
     protected final Point2D center;
     protected final long spawnTime;

@@ -26,17 +26,20 @@
 
 package com.github.lehjr.mpalib.client.gui.geometry;
 
-import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
 public class DrawableTile extends RelativeRect {
     Colour backgroundColour;
     Colour borderColour;
-    float lineWidth = 4.0F;
+    float zLevel = 1;
+    boolean shrinkBorder = false;
 
-    public DrawableTile(double left, double top, double right, double bottom, boolean growFromMiddle,
+    public DrawableTile(float left, float top, float right, float bottom, boolean growFromMiddle,
                         Colour backgroundColour,
                         Colour borderColour) {
         super(left, top, right, bottom, growFromMiddle);
@@ -44,11 +47,7 @@ public class DrawableTile extends RelativeRect {
         this.borderColour = borderColour;
     }
 
-    public void setLineWidth(float lineWidthIn) {
-        lineWidth = lineWidthIn;
-    }
-
-    public DrawableTile(double left, double top, double right, double bottom,
+    public DrawableTile(float left, float top, float right, float bottom,
                         Colour backgroundColour,
                         Colour borderColour) {
         super(left, top, right, bottom, false);
@@ -56,12 +55,20 @@ public class DrawableTile extends RelativeRect {
         this.borderColour = borderColour;
     }
 
-    public DrawableTile(Point2D ul, Point2D br,
+    public DrawableTile(Point2F ul, Point2F br,
                         Colour backgroundColour,
                         Colour borderColour) {
         super(ul, br);
         this.backgroundColour = backgroundColour;
         this.borderColour = borderColour;
+    }
+
+    /**
+     * determine if the border should be smaller than the background rectangle (like tooltips)
+     * @param shrinkBorder
+     */
+    public void setShrinkBorder(boolean shrinkBorder) {
+        this.shrinkBorder = shrinkBorder;
     }
 
     @Override
@@ -71,99 +78,40 @@ public class DrawableTile extends RelativeRect {
     }
 
     @Override
-    public DrawableTile setLeft(double value) {
+    public DrawableTile setLeft(float value) {
         super.setLeft(value);
         return this;
     }
 
     @Override
-    public DrawableTile setRight(double value) {
+    public DrawableTile setRight(float value) {
         super.setRight(value);
         return this;
     }
 
     @Override
-    public DrawableTile setTop(double value) {
+    public DrawableTile setTop(float value) {
         super.setTop(value);
         return this;
     }
 
     @Override
-    public DrawableTile setBottom(double value) {
+    public DrawableTile setBottom(float value) {
         super.setBottom(value);
         return this;
     }
 
     @Override
-    public DrawableTile setWidth(double value) {
+    public DrawableTile setWidth(float value) {
         super.setWidth(value);
         return this;
     }
 
     @Override
-    public DrawableTile setHeight(double value) {
+    public DrawableTile setHeight(float value) {
         super.setHeight(value);
         return this;
     }
-
-    void vertices() {
-        GlStateManager.vertex3f((float)left(), (float)top(), 1);
-        GlStateManager.vertex3f((float)right(), (float)top(), 1);
-        GlStateManager.vertex3f((float)right(), (float)bottom(), 1);
-        GlStateManager.vertex3f((float)left(), (float)bottom(), 1);
-    }
-
-    boolean smoothing = true;
-    public void setSmoothing(boolean smoothingIn) {
-        smoothing = smoothingIn;
-    }
-
-
-    public void preDraw() {
-        RenderState.on2D();
-        RenderState.texturelessOn();
-
-        if (smoothing) {
-            // makes the lines and radii nicer
-            GL11.glEnable(GL11.GL_LINE_SMOOTH);
-            GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
-        } else {
-            GL11.glDisable(GL11.GL_LINE_SMOOTH);
-            GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_FASTEST);
-        }
-    }
-
-    public void postDraw() {
-        Colour.WHITE.doGL();
-        RenderState.texturelessOff();
-        RenderState.glowOff();
-    }
-
-    public void draw() {
-        float lineWidth = GL11.glGetFloat(GL11.GL_LINE_WIDTH);
-        boolean smooth  = GL11.glIsEnabled(GL11.GL_LINE_SMOOTH);
-
-        preDraw();
-
-        GlStateManager.begin(GL11.GL_POLYGON);
-        backgroundColour.doGL();
-        vertices();
-        GlStateManager.end();
-
-        GlStateManager.lineWidth(lineWidth);
-        GlStateManager.begin(GL11.GL_LINE_LOOP);
-
-        borderColour.doGL();
-        vertices();
-        GlStateManager.end();
-        postDraw();
-
-        if (!smooth) {
-            GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        }
-        GL11.glLineWidth(lineWidth);
-    }
-
 
     public DrawableTile setBackgroundColour(Colour insideColour) {
         this.backgroundColour = insideColour;
@@ -173,5 +121,41 @@ public class DrawableTile extends RelativeRect {
     public DrawableTile setBorderColour(Colour outsideColour) {
         this.borderColour = outsideColour;
         return this;
+    }
+
+    void draw(Colour colour, int glMode, float shrinkBy) {
+        RenderSystem.disableTexture();
+        RenderSystem.enableBlend();
+        RenderSystem.disableAlphaTest();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBuffer();
+        buffer.begin(glMode, DefaultVertexFormats.POSITION_COLOR);
+        buffer.pos(right() - shrinkBy, top() + shrinkBy, zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+        buffer.pos(left() + shrinkBy, top() + shrinkBy, zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+        buffer.pos(left() + shrinkBy, bottom() - shrinkBy, zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+        buffer.pos(right() - shrinkBy, bottom() - shrinkBy, zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+        tessellator.draw();
+
+        RenderSystem.shadeModel(GL11.GL_FLAT);
+        RenderSystem.disableBlend();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.enableTexture();
+    }
+
+    public void drawBackground() {
+        draw(backgroundColour, GL11.GL_QUADS, 0);
+    }
+
+    public void drawBorder(float shrinkBy) {
+        draw(borderColour, GL11.GL_LINE_LOOP, shrinkBy);
+    }
+
+    public void draw(float zLevel) {
+        this.zLevel = zLevel;
+        drawBackground();
+        drawBorder(shrinkBorder ? 1 : 0);
     }
 }

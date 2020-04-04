@@ -34,6 +34,7 @@ package com.github.lehjr.mpalib.client.gui.geometry;
  *
  * @author MachineMuse
  */
+@Deprecated
 public class Point2D {
     protected double x;
     protected double y;
