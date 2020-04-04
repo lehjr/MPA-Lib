@@ -29,7 +29,7 @@ package com.github.lehjr.mpalib.client.gui.geometry;
 import com.github.lehjr.mpalib.math.Colour;
 import org.lwjgl.BufferUtils;
 
-import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,19 +51,17 @@ public class GradientAndArcCalculator {
      * @param zoffset    Convenience parameter, added to every vertex
      * @return
      */
-    public static DoubleBuffer getArcPoints(double startangle, double endangle, double radius, double xoffset, double yoffset, double zoffset) {
-        // roughly 8 vertices per Minecraft 'pixel' - should result in at least 2 vertices per real pixel on the screen.
-//        int numVertices = (int) Math.ceil(Math.abs((endangle - startangle) * 16 * Math.PI)); // getValue from wayyyyy back early on
+    public static FloatBuffer getArcPoints(float startangle, float endangle, float radius, float xoffset, float yoffset, float zoffset) {
         int numVertices = (int) Math.ceil(Math.abs((endangle - startangle) * 2 * Math.PI));
-        double theta = (endangle - startangle) / numVertices;
-        DoubleBuffer buffer = BufferUtils.createDoubleBuffer(numVertices * 3);
+        float theta = (endangle - startangle) / numVertices;
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(numVertices * 3);
 
-        double x = radius * Math.sin(startangle);
-        double y = radius * Math.cos(startangle);
-        double tf = Math.tan(theta); // precompute tangent factor: how much to move along the tangent line each iteration
-        double rf = Math.cos(theta); // precompute radial factor: how much to move back towards the origin each iteration
-        double tx;
-        double ty;
+        float x = radius * (float) Math.sin(startangle);
+        float y = radius * (float) Math.cos(startangle);
+        float tf = (float) Math.tan(theta); // precompute tangent factor: how much to move along the tangent line each iteration
+        float rf = (float) Math.cos(theta); // precompute radial factor: how much to move back towards the origin each iteration
+        float tx;
+        float ty;
 
         for (int i = 0; i < numVertices; i++) {
             buffer.put(x + xoffset);
@@ -77,16 +75,58 @@ public class GradientAndArcCalculator {
             y *= rf;
         }
         buffer.flip();
+
         return buffer;
     }
+
+    /**
+     * Efficient algorithm for drawing circles and arcs in pure opengl!
+     * Note: this version does not add z values!!!
+     *
+     * @param startangle Start angle in radians
+     * @param endangle   End angle in radians
+     * @param radius     Radius of the circle (used in calculating number of segments to draw as well as size of the arc)
+     * @param xoffset    Convenience parameter, added to every vertex
+     * @param yoffset    Convenience parameter, added to every vertex
+     * @return
+     */
+    public static FloatBuffer getArcPoints(float startangle, float endangle, float radius, float xoffset, float yoffset) {
+        int numVertices = (int) Math.ceil(Math.abs((endangle - startangle) * 2 * Math.PI));
+        float theta = (endangle - startangle) / numVertices;
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(numVertices * 2);
+
+        float x = radius * (float) Math.sin(startangle);
+        float y = radius * (float) Math.cos(startangle);
+        float tf = (float) Math.tan(theta); // precompute tangent factor: how much to move along the tangent line each iteration
+        float rf = (float) Math.cos(theta); // precompute radial factor: how much to move back towards the origin each iteration
+        float tx;
+        float ty;
+
+        for (int i = 0; i < numVertices; i++) {
+            buffer.put(x + xoffset);
+            buffer.put(y + yoffset);
+            tx = y; // compute tangent lines
+            ty = -x;
+            x += tx * tf; // add tangent line * tangent factor
+            y += ty * tf;
+            x *= rf;
+            y *= rf;
+        }
+        buffer.flip();
+
+        return buffer;
+    }
+
+
+
 
     /**
      * Creates a list of points linearly interpolated between points a and b noninclusive.
      *
      * @return A list of num points
      */
-    public static List<Point2D> pointsInLine(int num, Point2D a, Point2D b) {
-        List<Point2D> points = new ArrayList<>();
+    public static List<Point2F> pointsInLine(int num, Point2F a, Point2F b) {
+        List<Point2F> points = new ArrayList<>();
         switch (num) {
             case -1:
                 break;
@@ -96,7 +136,7 @@ public class GradientAndArcCalculator {
                 points.add(b.minus(a).times(0.5F).plus(a));
                 break;
             default:
-                Point2D step = b.minus(a).times(1.0F / (num + 1));
+                Point2F step = b.minus(a).times(1.0F / (num + 1));
                 for (int i = 0; i < num; i++) {
                     points.add(a.plus(step.times(i + 1)));
                 }
@@ -152,10 +192,10 @@ public class GradientAndArcCalculator {
      * @param numsegments
      * @return
      */
-    public static DoubleBuffer getColourGradient(Colour c1, Colour c2, int numsegments) {
-        DoubleBuffer buffer = BufferUtils.createDoubleBuffer(numsegments * 4);
+    public static FloatBuffer getColourGradient(Colour c1, Colour c2, int numsegments) {
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(numsegments * 4);
         // declaring "i" as an int instead of double is what broke the swirly circle.
-        for (double i = 0; i < numsegments; i++) {
+        for (float i = 0; i < numsegments; i++) {
             Colour c3 = c1.interpolate(c2, i / numsegments);
             buffer.put(c3.r);
             buffer.put(c3.g);

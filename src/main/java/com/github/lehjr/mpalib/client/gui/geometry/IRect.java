@@ -7,75 +7,75 @@ public interface IRect {
     /**
      *  Alternative to spawning a completely new object. Especially handy for GUI's with large constructors
      */
-    void setTargetDimensions(double left, double top, double right, double bottom);
+    void setTargetDimensions(float left, float top, float right, float bottom);
 
-    void setTargetDimensions(Point2D ul, Point2D wh);
+    void setTargetDimensions(Point2F ul, Point2F wh);
 
-    default Point2D center() {
-        return new Point2D(centerx(), centery());
+    default Point2F center() {
+        return new Point2F(centerx(), centery());
     }
 
-    Point2D getUL();
+    Point2F getUL();
 
-    Point2D getULFinal();
+    Point2F getULFinal();
 
-    Point2D getWH();
+    Point2F getWH();
 
-    Point2D getWHFinal();
+    Point2F getWHFinal();
 
-    double left();
+    float left();
 
-    double finalLeft();
+    float finalLeft();
 
-    double top();
+    float top();
 
-    double finalTop();
+    float finalTop();
 
-    double right();
+    float right();
 
-    double finalRight();
+    float finalRight();
 
-    double bottom();
+    float bottom();
 
-    double finalBottom();
+    float finalBottom();
 
-    double width();
+    float width();
 
-    double finalWidth();
+    float finalWidth();
 
-    double height();
+    float height();
 
-    double finalHeight();
+    float finalHeight();
 
-    IRect setLeft(double value);
+    IRect setLeft(float value);
 
-    IRect setRight(double value);
+    IRect setRight(float value);
 
-    IRect setTop(double value);
+    IRect setTop(float value);
 
-    IRect setBottom(double value);
+    IRect setBottom(float value);
 
-    IRect setWidth(double value);
+    IRect setWidth(float value);
 
-    IRect setHeight(double value);
+    IRect setHeight(float value);
 
-    void move(Point2D moveAmount);
+    void move(Point2F moveAmount);
 
-    void move(double x, double y);
+    void move(float x, float y);
 
-    void setPosition(Point2D position);
+    void setPosition(Point2F position);
 
     boolean growFromMiddle();
 
-    default boolean containsPoint(double x, double y) {
+    default boolean containsPoint(float x, float y) {
         return x > left() && x < right() && y > top() && y < bottom();
     }
 
-    default double centerx() {
-        return (left() + right()) / 2.0;
+    default float centerx() {
+        return (left() + right()) / 2.0F;
     }
 
-    default double centery() {
-        return (top() + bottom()) / 2.0;
+    default float centery() {
+        return (top() + bottom()) / 2.0F;
     }
 }

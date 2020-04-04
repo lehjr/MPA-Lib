@@ -31,20 +31,20 @@ public class RelativeRect extends Rect {
     protected Rect rectAboveMe;
     protected Rect rectLeftOfMe;
     protected Rect rectRightOfMe;
-    protected double leftPadding = 0;
-    protected double topPadding = 0;
-    protected double rightPadding = 0;
-    protected double bottomPadding = 0;
+    protected float leftPadding = 0;
+    protected float topPadding = 0;
+    protected float rightPadding = 0;
+    protected float bottomPadding = 0;
 
-    public RelativeRect(double left, double top, double right, double bottom) {
+    public RelativeRect(float left, float top, float right, float bottom) {
         super(left, top, right, bottom);
     }
 
-    public RelativeRect(double left, double top, double right, double bottom, boolean growFromMiddle) {
+    public RelativeRect(float left, float top, float right, float bottom, boolean growFromMiddle) {
         super(left, top, right, bottom, growFromMiddle);
     }
 
-    public RelativeRect(Point2D ul, Point2D br) {
+    public RelativeRect(Point2F ul, Point2F br) {
         super(ul, br);
     }
 
@@ -53,7 +53,7 @@ public class RelativeRect extends Rect {
      * returns the full grown right side of that plus padding
      */
     @Override
-    public double left() {
+    public float left() {
         if(rectLeftOfMe != null) {
             return rectLeftOfMe.right() + leftPadding;
         }
@@ -65,7 +65,7 @@ public class RelativeRect extends Rect {
      * returns the full grown bottom side of that plus padding
      */
     @Override
-    public double top() {
+    public float top() {
         if (rectAboveMe != null) {
             return rectAboveMe.bottom() + topPadding;
         }
@@ -77,7 +77,7 @@ public class RelativeRect extends Rect {
      * returns the left side of that plus padding
      */
     @Override
-    public double right() {
+    public float right() {
         if (rectRightOfMe != null) {
             return rectRightOfMe.left() + rightPadding;
         }
@@ -85,7 +85,7 @@ public class RelativeRect extends Rect {
     }
 
     @Override
-    public double bottom() {
+    public float bottom() {
         if (rectBelowMe != null) {
             return rectBelowMe.top() + bottomPadding;
         }

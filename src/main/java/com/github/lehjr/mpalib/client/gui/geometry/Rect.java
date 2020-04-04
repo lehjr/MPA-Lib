@@ -29,19 +29,19 @@ package com.github.lehjr.mpalib.client.gui.geometry;
 public class Rect implements IRect {
     /** Note: separate "target values" are because window based sizes don't initialize properly in the constructor */
     /** target upper, left point */
-    Point2D ulFinal;//
+    Point2F ulFinal;//
     /** target width and height */
-    Point2D whFinal;
+    Point2F whFinal;
     /** top left origin */
-    Point2D ul;
+    Point2F ul;
     /** width, height */
-    Point2D wh;
+    Point2F wh;
 
     final boolean growFromMiddle;
 
-    public Rect(double left, double top, double right, double bottom, boolean growFromMiddle) {
-        ulFinal = new Point2D(left, top);
-        whFinal = new Point2D(right - left, bottom - top);
+    public Rect(float left, float top, float right, float bottom, boolean growFromMiddle) {
+        ulFinal = new Point2F(left, top);
+        whFinal = new Point2F(right - left, bottom - top);
         ul = ulFinal.copy();
         wh = whFinal.copy();
         this.growFromMiddle = growFromMiddle;
@@ -50,29 +50,29 @@ public class Rect implements IRect {
     /**
      *  Alternative to spawning a completely new object. Especially handy for GUI's with large constructors
      */
-    public void setTargetDimensions(double left, double top, double right, double bottom) {
-        ulFinal = new Point2D(left, top);
-        whFinal = new Point2D(right - left, bottom - top);
+    public void setTargetDimensions(float left, float top, float right, float bottom) {
+        ulFinal = new Point2F(left, top);
+        whFinal = new Point2F(right - left, bottom - top);
         grow();
     }
 
-    public void setTargetDimensions(Point2D ul, Point2D wh) {
+    public void setTargetDimensions(Point2F ul, Point2F wh) {
         ulFinal = ul;
         whFinal = wh;
         grow();
     }
 
-    public Rect(double left, double top, double right, double bottom) {
+    public Rect(float left, float top, float right, float bottom) {
         this(left, top, right, bottom, false);
     }
 
-    public Rect(Point2D ul, Point2D br, boolean growFromMiddle) {
+    public Rect(Point2F ul, Point2F br, boolean growFromMiddle) {
         this.ulFinal = this.ul = ul;
         this.whFinal = this.wh = br.minus(ul);
         this.growFromMiddle = growFromMiddle;
     }
 
-    public Rect(Point2D ul, Point2D br) {
+    public Rect(Point2F ul, Point2F br) {
         this.ulFinal = this.ul = ul;
         this.whFinal = this.wh = br.minus(ul);
         this.growFromMiddle = false;
@@ -83,9 +83,9 @@ public class Rect implements IRect {
      */
     void grow() {
         if (growFromMiddle) {
-            Point2D center = ulFinal.plus(whFinal.times(0.5));
-            this.ul = new FlyFromPointToPoint2D(center, ulFinal, 200);
-            this.wh = new FlyFromPointToPoint2D(new Point2D(0, 0), whFinal, 200);
+            Point2F center = ulFinal.plus(whFinal.times(0.5F));
+            this.ul = new FlyFromPointToPoint2F(center, ulFinal, 200);
+            this.wh = new FlyFromPointToPoint2F(new Point2F(0, 0), whFinal, 200);
         } else {
             this.ul = this.ulFinal.copy();
             this.wh = this.whFinal.copy();
@@ -97,144 +97,144 @@ public class Rect implements IRect {
     }
 
     @Override
-    public Point2D getUL() {
+    public Point2F getUL() {
         return ul;
     }
 
     @Override
-    public Point2D getULFinal() {
+    public Point2F getULFinal() {
         return ulFinal;
     }
 
     @Override
-    public Point2D getWH() {
+    public Point2F getWH() {
         return wh;
     }
 
     @Override
-    public Point2D getWHFinal() {
+    public Point2F getWHFinal() {
         return whFinal;
     }
 
     @Override
-    public double left() {
+    public float left() {
         return ul.getX();
     }
 
     @Override
-    public double finalLeft() {
+    public float finalLeft() {
         return ulFinal.getX();
     }
 
     @Override
-    public double top() {
+    public float top() {
         return ul.getY();
     }
 
     @Override
-    public double finalTop() {
+    public float finalTop() {
         return ulFinal.getY();
     }
 
     @Override
-    public double right() {
+    public float right() {
         return ul.getX() + wh.getX();
     }
 
     @Override
-    public double finalRight() {
+    public float finalRight() {
         return ulFinal.getX() + whFinal.getX();
     }
 
     @Override
-    public double bottom() {
+    public float bottom() {
         return ul.getY() + wh.getY();
     }
 
     @Override
-    public double finalBottom() {
+    public float finalBottom() {
         return ulFinal.getY() + whFinal.getY();
     }
 
     @Override
-    public double width() {
+    public float width() {
         return wh.getX();
     }
 
     @Override
-    public double finalWidth() {
+    public float finalWidth() {
         return whFinal.getY();
     }
 
     @Override
-    public double height() {
+    public float height() {
         return wh.getY();
     }
 
     @Override
-    public double finalHeight() {
+    public float finalHeight() {
         return whFinal.getY();
     }
 
     @Override
-    public IRect setLeft(double value) {
+    public IRect setLeft(float value) {
         ul.setX(value);
         ulFinal.setX(value);
         return this;
     }
 
     @Override
-    public IRect setRight(double value) {
+    public IRect setRight(float value) {
         wh.setX(value - ul.getX());
         whFinal.setX(value - ulFinal.getX());
         return this;
     }
 
     @Override
-    public IRect setTop(double value) {
+    public IRect setTop(float value) {
         ul.setY(value);
         ulFinal.setY(value);
         return this;
     }
 
     @Override
-    public IRect setBottom(double value) {
+    public IRect setBottom(float value) {
         wh.setY(value - ul.getY());
         whFinal.setY(value - ulFinal.getY());
         return this;
     }
 
     @Override
-    public IRect setWidth(double value) {
+    public IRect setWidth(float value) {
         wh.setX(value);
         whFinal.setX(value);
         return this;
     }
 
     @Override
-    public IRect setHeight(double value) {
+    public IRect setHeight(float value) {
         wh.y = value;
         whFinal.y = value;
         return this;
     }
 
     @Override
-    public void move(Point2D moveAmount) {
+    public void move(Point2F moveAmount) {
         ulFinal = whFinal.plus(moveAmount);
         whFinal = whFinal.plus(moveAmount);
         grow();
     }
 
     @Override
-    public void move(double x, double y) {
+    public void move(float x, float y) {
         ulFinal = whFinal.plus(x, y);
         whFinal = whFinal.plus(x, y);
         grow();
     }
 
     @Override
-    public void setPosition(Point2D position) {
-        ulFinal = position.minus(whFinal.times(0.5));
+    public void setPosition(Point2F position) {
+        ulFinal = position.minus(whFinal.times(0.5F));
         grow();
     }
 

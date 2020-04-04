@@ -27,7 +27,7 @@
 package com.github.lehjr.mpalib.client.gui.frame;
 
 import com.github.lehjr.mpalib.client.gui.geometry.IRect;
-import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
+import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
@@ -66,7 +66,7 @@ public interface IGuiFrame extends IRect {
      * @param right
      * @param bottom
      */
-    default void init(double left, double top, double right, double bottom) {
+    default void init(float left, float top, float right, float bottom) {
         getBorder().setTargetDimensions(left, top, right, bottom);
     }
 
@@ -76,7 +76,7 @@ public interface IGuiFrame extends IRect {
      * @param mouseX
      * @param mouseY
      */
-    void update(double mouseX, double mouseY);
+    void update(float mouseX, float mouseY);
 
     /**
      * Render elements of this frame. Ordering is important.
@@ -134,117 +134,117 @@ public interface IGuiFrame extends IRect {
      * IRect for easier placement data and manipulation -----------------------------------------------------------
      */
     @Override
-    default void setTargetDimensions(double left, double top, double right, double bottom) {
+    default void setTargetDimensions(float left, float top, float right, float bottom) {
         getBorder().setTargetDimensions(left, top, right, bottom);
     }
 
     @Override
-    default void setTargetDimensions(Point2D ul, Point2D wh) {
+    default void setTargetDimensions(Point2F ul, Point2F wh) {
         getBorder().setTargetDimensions(ul.copy(), wh.copy());
     }
 
     @Override
-    default void move(Point2D moveAmount) {
+    default void move(Point2F moveAmount) {
         getBorder().move(moveAmount.copy());
     }
 
     @Override
-    default void move(double x, double y) {
+    default void move(float x, float y) {
         getBorder().move(x, y);
     }
 
     @Override
-    default void setPosition(Point2D position) {
+    default void setPosition(Point2F position) {
         getBorder().setPosition(position.copy());
     }
 
     @Override
-    default boolean containsPoint(double x, double y) {
+    default boolean containsPoint(float x, float y) {
         return getBorder().containsPoint(x, y);
     }
 
     @Override
-    default Point2D center() {
+    default Point2F center() {
         return getBorder().center();
     }
 
     @Override
-    default Point2D getUL() {
+    default Point2F getUL() {
         return getBorder().getUL();
     }
 
     @Override
-    default Point2D getULFinal() {
+    default Point2F getULFinal() {
         return getBorder().getULFinal();
     }
 
     @Override
-    default Point2D getWH() {
+    default Point2F getWH() {
         return getBorder().getWH();
     }
 
     @Override
-    default Point2D getWHFinal() {
+    default Point2F getWHFinal() {
         return getBorder().getWHFinal();
     }
 
     @Override
-    default double left() {
+    default float left() {
         return getBorder().left();
     }
 
     @Override
-    default double finalLeft() {
+    default float finalLeft() {
         return getBorder().finalLeft();
     }
 
     @Override
-    default double top() {
+    default float top() {
         return getBorder().top();
     }
 
     @Override
-    default double finalTop() {
+    default float finalTop() {
         return getBorder().finalTop();
     }
 
     @Override
-    default double right() {
+    default float right() {
         return getBorder().right();
     }
 
     @Override
-    default double finalRight() {
+    default float finalRight() {
         return getBorder().finalRight();
     }
 
     @Override
-    default double bottom() {
+    default float bottom() {
         return getBorder().bottom();
     }
 
     @Override
-    default double finalBottom() {
+    default float finalBottom() {
         return getBorder().finalBottom();
     }
 
     @Override
-    default double width() {
+    default float width() {
         return getBorder().width();
     }
 
     @Override
-    default double finalWidth() {
+    default float finalWidth() {
         return getBorder().finalWidth();
     }
 
     @Override
-    default double height() {
+    default float height() {
         return getBorder().height();
     }
 
     @Override
-    default double finalHeight() {
+    default float finalHeight() {
         return getBorder().finalHeight();
     }
 
@@ -254,12 +254,12 @@ public interface IGuiFrame extends IRect {
     }
 
     @Override
-    default double centerx() {
+    default float centerx() {
         return getBorder().centerx();
     }
 
     @Override
-    default double centery() {
+    default float centery() {
         return getBorder().centery();
     }
 }
