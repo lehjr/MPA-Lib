@@ -26,13 +26,10 @@
 
 package com.github.lehjr.mpalib.capabilities.render.modelspec;
 
-import net.minecraft.client.renderer.TransformationMatrix;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.client.model.obj.OBJModel;
 
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Author: MachineMuse (Claire Semple)

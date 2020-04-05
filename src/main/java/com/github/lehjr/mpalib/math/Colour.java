@@ -84,6 +84,13 @@ public class Colour {
         this.a = 1.0F;
     }
 
+    public Colour(int r, int g, int b) {
+        this.r = r / 255.0F;
+        this.g = g / 255.0F;
+        this.b = b / 255.0F;
+        this.a = 1.0F;
+    }
+
     /**
      * Takes colours in the integer format that Minecraft uses, and converts.
      */
