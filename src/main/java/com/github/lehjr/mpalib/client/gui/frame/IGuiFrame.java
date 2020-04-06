@@ -76,7 +76,7 @@ public interface IGuiFrame extends IRect {
      * @param mouseX
      * @param mouseY
      */
-    void update(float mouseX, float mouseY);
+    void update(double mouseX, double mouseY);
 
     /**
      * Render elements of this frame. Ordering is important.

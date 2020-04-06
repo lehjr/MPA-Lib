@@ -129,7 +129,6 @@ public final class RenderState {
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_SCISSOR_BIT);
         GL11.glPushMatrix();
         Minecraft mc = Minecraft.getInstance();
-//        int dw = mc.mainWindow.getWidth();
         int dh = mc.getMainWindow().getHeight();
         double scaleFactor = mc.getMainWindow().getGuiScaleFactor();
         double newx = x * scaleFactor;

@@ -43,8 +43,9 @@ public class NBTUtils {
      * @return an CompoundNBT, may be newly created. If stack is empty, returns null.
      */
     public static CompoundNBT getMuseItemTag(@Nonnull ItemStack stack) {
-        if (stack.isEmpty())
+        if (stack.isEmpty()) {
             return new CompoundNBT();
+        }
 
         CompoundNBT stackTag = stack.getOrCreateTag();
         CompoundNBT properties = (stackTag.contains(TAG_ITEM_PREFIX)) ? stackTag.getCompound(TAG_ITEM_PREFIX) : new CompoundNBT();
@@ -60,14 +61,58 @@ public class NBTUtils {
      * @return an CompoundNBT, may be newly created. If stack is empty, returns null.
      */
     public static CompoundNBT getModuleTag(@Nonnull ItemStack module) {
-        if (module.isEmpty())
+        if (module.isEmpty()) {
             return new CompoundNBT();
+        }
 
         CompoundNBT stackTag = module.getOrCreateTag();
         CompoundNBT properties = (stackTag.contains(TAG_MODULE_PREFIX)) ? stackTag.getCompound(TAG_MODULE_PREFIX) : new CompoundNBT();
         stackTag.put(TAG_MODULE_PREFIX, properties);
         module.setTag(stackTag);
         return properties;
+    }
+
+    // Floats ---------------------------------------------------------------------------------------------------------
+    /**
+     * Bouncer for succinctness. Checks the itemStack's modular properties and
+     * returns the getValue if it exists, otherwise 0.
+     */
+    public static float getModuleFloatOrZero(@Nonnull ItemStack stack, String string) {
+        return getFloatOrZero(getModuleTag(stack), string);
+    }
+
+    public static float getModularItemFloatOrZero(@Nonnull ItemStack stack, String string) {
+        return getFloatOrZero(getMuseItemTag(stack), string);
+    }
+
+    public static float getFloatOrZero(CompoundNBT nbt, String tagName) {
+        return (nbt.contains(tagName, Constants.NBT.TAG_FLOAT) ? nbt.getFloat(tagName) : 0);
+    }
+
+    /**
+     * Sets the given itemstack's modular property, or removes it if the getValue
+     * would be zero.
+     */
+    public static void setModularItemFloatOrRemove(@Nonnull ItemStack stack, String string, float value) {
+        setFloatOrRemove(NBTUtils.getMuseItemTag(stack), string, value);
+    }
+
+    public static void setModuleFloatOrRemove(@Nonnull ItemStack stack, String string, float value) {
+        setFloatOrRemove(NBTUtils.getModuleTag(stack), string, value);
+    }
+
+    /**
+     * Sets the getValue of the given nbt tag, or removes it if the getValue would be
+     * zero.
+     */
+    public static void setFloatOrRemove(CompoundNBT itemProperties, String string, float value) {
+        if (itemProperties != null) {
+            if (value == 0) {
+                itemProperties.remove(string);
+            } else {
+                itemProperties.putFloat(string, value);
+            }
+        }
     }
 
     // Doubles --------------------------------------------------------------------------------------------------------

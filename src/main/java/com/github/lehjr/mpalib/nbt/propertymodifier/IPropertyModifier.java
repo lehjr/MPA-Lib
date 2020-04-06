@@ -29,5 +29,5 @@ package com.github.lehjr.mpalib.nbt.propertymodifier;
 import net.minecraft.nbt.CompoundNBT;
 
 public interface IPropertyModifier<T extends Number> {
-    T applyModifier(CompoundNBT moduleTag, double value);
+    T applyModifier(CompoundNBT moduleTag, T value);
 }

@@ -44,7 +44,7 @@ public class PropertyModifierFlatAdditiveDouble implements IPropertyModifierDoub
      * @return getValue + this.valueAdded
      */
     @Override
-    public Double applyModifier(CompoundNBT moduleTag, double value) {
+    public Double applyModifier(CompoundNBT moduleTag, Double value) {
         return value + this.valueAdded;
     }
 }

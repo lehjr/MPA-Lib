@@ -71,6 +71,10 @@ public interface IRect {
         return x > left() && x < right() && y > top() && y < bottom();
     }
 
+    default boolean containsPoint(double x, double y) {
+        return x > left() && x < right() && y > top() && y < bottom();
+    }
+
     default float centerx() {
         return (left() + right()) / 2.0F;
     }

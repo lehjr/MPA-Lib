@@ -47,7 +47,7 @@ public class PowerModule implements IPowerModule {
     protected ItemStack module;
     protected final EnumModuleCategory category;
     protected final EnumModuleTarget target;
-    protected Map<String, List<IPropertyModifierDouble>> propertyModifiers;
+    protected Map<String, List<IPropertyModifierFloat>> propertyModifiers;
     protected Map<String, List<IPropertyModifierInteger>> propertyBaseIntegers;
     IConfig config;
 
@@ -88,19 +88,19 @@ public class PowerModule implements IPowerModule {
         return unit == null ? "" : unit;
     }
 
-    /** Double ------------------------------------------------------------------------------------ */
+    /** Float ------------------------------------------------------------------------------------- */
     /**
      * Adds a base key and multiplierValue to the map based on the config setting.
      */
     @Override
-    public void addTradeoffPropertyDouble(String tradeoffName, String propertyName, double multiplier) {
-        double propFromConfig = config.getTradeoffPropertyDoubleOrDefault(category, module, tradeoffName, propertyName, multiplier);
-        addPropertyModifier(propertyName, new PropertyModifierLinearAdditiveDouble(tradeoffName, propFromConfig));
+    public void addTradeoffPropertyFloat(String tradeoffName, String propertyName, float multiplier) {
+        float propFromConfig = config.getTradeoffPropertyFloatOrDefault(category, module, tradeoffName, propertyName, multiplier);
+        addPropertyModifier(propertyName, new PropertyModifierLinearAdditiveFloat(tradeoffName, propFromConfig));
     }
 
     @Override
-    public void addPropertyModifier(String propertyName, IPropertyModifierDouble modifier) {
-        List<IPropertyModifierDouble> modifiers = propertyModifiers.get(propertyName);
+    public void addPropertyModifier(String propertyName, IPropertyModifierFloat modifier) {
+        List<IPropertyModifierFloat> modifiers = propertyModifiers.get(propertyName);
         if (modifiers == null) {
             modifiers = new LinkedList();
         }
@@ -113,34 +113,34 @@ public class PowerModule implements IPowerModule {
      * Also adds a [ propertyName, unitOfMeasureLabel ] k-v pair to a map used for displyaing a label
      */
     @Override
-    public void addTradeoffPropertyDouble(String tradeoffName, String propertyName, double multiplier, String unit) {
+    public void addTradeoffPropertyFloat(String tradeoffName, String propertyName, float multiplier, String unit) {
         units.put(propertyName, unit);
-        addTradeoffPropertyDouble(tradeoffName, propertyName, multiplier);
+        addTradeoffPropertyFloat(tradeoffName, propertyName, multiplier);
     }
 
-    public void addSimpleTradeoffDouble(IPowerModule module,
+    public void addSimpleTradeoffFloat(IPowerModule module,
                                         String tradeoffName,
                                         String firstPropertyName,
                                         String firstUnits,
-                                        double firstPropertyBase,
-                                        double firstPropertyMultiplier,
+                                        float firstPropertyBase,
+                                        float firstPropertyMultiplier,
                                         String secondPropertyName,
                                         String secondUnits,
-                                        double secondPropertyBase,
-                                        double secondPropertyMultiplier) {
-        this.addBasePropertyDouble(firstPropertyName, firstPropertyBase, firstUnits);
-        this.addTradeoffPropertyDouble(tradeoffName, firstPropertyName, firstPropertyMultiplier);
-        this.addBasePropertyDouble(secondPropertyName, secondPropertyBase, secondUnits);
-        this.addTradeoffPropertyDouble(tradeoffName, secondPropertyName, secondPropertyMultiplier);
+                                        float secondPropertyBase,
+                                        float secondPropertyMultiplier) {
+        this.addBasePropertyFloat(firstPropertyName, firstPropertyBase, firstUnits);
+        this.addTradeoffPropertyFloat(tradeoffName, firstPropertyName, firstPropertyMultiplier);
+        this.addBasePropertyFloat(secondPropertyName, secondPropertyBase, secondUnits);
+        this.addTradeoffPropertyFloat(tradeoffName, secondPropertyName, secondPropertyMultiplier);
     }
 
     /**
      * Adds a base key and getValue to the map based on the config setting.
      */
     @Override
-    public void addBasePropertyDouble(String propertyName, double baseVal) {
-        double propFromConfig = config.getBasePropertyDoubleOrDefault(category, module, propertyName, baseVal);
-        addPropertyModifier(propertyName, new PropertyModifierFlatAdditiveDouble(propFromConfig));
+    public void addBasePropertyFloat(String propertyName, float baseVal) {
+        float propFromConfig = config.getBasePropertyFloatOrDefault(category, module, propertyName, baseVal);
+        addPropertyModifier(propertyName, new PropertyModifierFlatAdditiveFloat(propFromConfig));
     }
 
     /**
@@ -148,23 +148,23 @@ public class PowerModule implements IPowerModule {
      * Also adds a [ propertyName, unitOfMeasureLabel ] k-v pair to a map used for displyaing a label
      */
     @Override
-    public void addBasePropertyDouble(String propertyName, double baseVal, String unit) {
+    public void addBasePropertyFloat(String propertyName, float baseVal, String unit) {
         units.put(propertyName, unit);
-        addBasePropertyDouble(propertyName, baseVal);
+        addBasePropertyFloat(propertyName, baseVal);
     }
 
     @Override
-    public double applyPropertyModifiers(String propertyName) {
+    public float applyPropertyModifiers(String propertyName) {
         return applyPropertyModifiers(propertyName, NBTUtils.getModuleTag(module));
     }
 
     @Override
-    public double applyPropertyModifiers(String propertyName, CompoundNBT moduleTag) {
-        double propertyValue = 0;
+    public float applyPropertyModifiers(String propertyName, CompoundNBT moduleTag) {
+        float propertyValue = 0;
         if (propertyModifiers.containsKey(propertyName)) {
-            Iterable<IPropertyModifierDouble> propertyModifiersIterable = propertyModifiers.get(propertyName);
+            Iterable<IPropertyModifierFloat> propertyModifiersIterable = propertyModifiers.get(propertyName);
             for (IPropertyModifier modifier : propertyModifiersIterable) {
-                propertyValue = ((IPropertyModifierDouble) modifier).applyModifier(moduleTag, propertyValue);
+                propertyValue = ((IPropertyModifierFloat) modifier).applyModifier(moduleTag, propertyValue);
             }
         }
         return propertyValue;
@@ -176,7 +176,7 @@ public class PowerModule implements IPowerModule {
     */
 
     @Override
-    public Map<String, List<IPropertyModifierDouble>> getPropertyModifiers() {
+    public Map<String, List<IPropertyModifierFloat>> getPropertyModifiers() {
         return propertyModifiers;
     }
 

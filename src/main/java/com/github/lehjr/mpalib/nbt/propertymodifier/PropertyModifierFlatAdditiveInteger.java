@@ -48,7 +48,7 @@ public class PropertyModifierFlatAdditiveInteger implements IPropertyModifierInt
      * @return getValue + this.valueAdded
      */
     @Override
-    public Integer applyModifier(CompoundNBT moduleTag, double value) {
+    public Integer applyModifier(CompoundNBT moduleTag, Integer value) {
         long rounded = roundWithOffset(value, roundTo, offset);
         return this.valueAdded + (int) Math.round(Double.valueOf(rounded));
     }

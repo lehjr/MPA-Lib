@@ -30,5 +30,5 @@ import net.minecraft.nbt.CompoundNBT;
 
 public interface IPropertyModifierDouble extends IPropertyModifier<Double> {
     @Override
-    Double applyModifier(CompoundNBT moduleTag, double value);
+    Double applyModifier(CompoundNBT moduleTag, Double value);
 }

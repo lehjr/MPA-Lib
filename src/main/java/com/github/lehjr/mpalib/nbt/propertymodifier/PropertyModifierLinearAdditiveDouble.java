@@ -39,7 +39,7 @@ public class PropertyModifierLinearAdditiveDouble implements IPropertyModifierDo
     }
 
     @Override
-    public Double applyModifier(CompoundNBT moduleTag, double value) {
+    public Double applyModifier(CompoundNBT moduleTag, Double value) {
         return value + multiplier * NBTUtils.getDoubleOrZero(moduleTag, tradeoffName);
     }
 

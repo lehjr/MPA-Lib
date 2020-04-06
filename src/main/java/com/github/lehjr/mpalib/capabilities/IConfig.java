@@ -32,18 +32,18 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 
 public interface IConfig {
-    double getBasePropertyDoubleOrDefault(
+    float getBasePropertyFloatOrDefault(
             EnumModuleCategory category,
             @Nonnull ItemStack module,
             String propertyName,
-            double baseVal);
+            float baseVal);
 
-    double getTradeoffPropertyDoubleOrDefault(
+    float getTradeoffPropertyFloatOrDefault(
             EnumModuleCategory category,
             @Nonnull ItemStack module,
             String tradeoffName,
             String propertyName,
-            double multiplier);
+            float multiplier);
 
     int getBasePropertIntegerOrDefault(
             EnumModuleCategory category,
