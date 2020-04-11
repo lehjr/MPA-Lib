@@ -315,13 +315,13 @@ public class ModularItem extends ItemStackHandler implements IModularItem {
     }
 
     @Override
-    public boolean setModuleTweakDouble(ResourceLocation moduleName, String key, double value) {
+    public boolean setModuleTweakFloat(ResourceLocation moduleName, String key, float value) {
         boolean handled = false;
         for (int i = 0; i < getSlots(); i++) {
             ItemStack module = getStackInSlot(i);
             if (!module.isEmpty() && module.getItem().getRegistryName().equals(moduleName)) {
                 if (module.getCapability(PowerModuleCapability.POWER_MODULE).map(m -> {
-                    NBTUtils.setModuleDoubleOrRemove(module, key, value);
+                    NBTUtils.setModuleFloatOrRemove(module, key, value);
                     return true;
                 }).orElse(false)) {
                     onContentsChanged(i);

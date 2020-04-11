@@ -117,9 +117,6 @@ public class GradientAndArcCalculator {
         return buffer;
     }
 
-
-
-
     /**
      * Creates a list of points linearly interpolated between points a and b noninclusive.
      *
@@ -151,8 +148,8 @@ public class GradientAndArcCalculator {
      *
      * @return A list of num points
      */
-    public static List<Point2D> pointsInLine(int num, Point2D a, Point2D b, double minSpacingX, double minSpacingY) {
-        List<Point2D> points = new ArrayList<>();
+    public static List<Point2F> pointsInLine(int num, Point2F a, Point2F b, double minSpacingX, double minSpacingY) {
+        List<Point2F> points = new ArrayList<>();
         switch (num) {
             case -1:
                 break;
@@ -164,17 +161,17 @@ public class GradientAndArcCalculator {
                 break;
             default:
                 // distance / num spaces
-                Point2D step = b.minus(a).times(1.0F / (num + 1));
+                Point2F step = b.minus(a).times(1.0F / (num + 1));
                 if (step.getX() < 0) {
-                    step.setX(Math.min(-minSpacingX, step.x));
+                    step.setX((float) Math.min(-minSpacingX, step.x));
                 } else {
-                    step.setX(Math.max(minSpacingX, step.x));
+                    step.setX((float) Math.max(minSpacingX, step.x));
                 }
 
                 if (step.getY() < 0) {
-                    step.setY(Math.min(-minSpacingY, step.y));
+                    step.setY((float) Math.min(-minSpacingY, step.y));
                 } else {
-                    step.setY(Math.max(minSpacingY, step.y));
+                    step.setY((float) Math.max(minSpacingY, step.y));
                 }
 
                 for (int i = 0; i < num; i++) {

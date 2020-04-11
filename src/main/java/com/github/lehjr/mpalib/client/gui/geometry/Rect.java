@@ -163,7 +163,7 @@ public class Rect implements IRect {
 
     @Override
     public float finalWidth() {
-        return whFinal.getY();
+        return whFinal.getX();
     }
 
     @Override
@@ -213,8 +213,8 @@ public class Rect implements IRect {
 
     @Override
     public IRect setHeight(float value) {
-        wh.y = value;
-        whFinal.y = value;
+        wh.setY(value);
+        whFinal.setY(value);
         return this;
     }
 

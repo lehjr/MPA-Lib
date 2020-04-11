@@ -77,9 +77,9 @@ public interface IModularItem extends IItemHandler, IItemHandlerModifiable, IIte
 
     void tick(PlayerEntity player);
 
-    default String formatInfo(String string, double value) {
+    default String formatInfo(String string, float value) {
         return string + '\t' + StringUtils.formatNumberShort(value);
     }
 
-    boolean setModuleTweakDouble(ResourceLocation moduleName, String key, double value);
+    boolean setModuleTweakFloat(ResourceLocation moduleName, String key, float value);
 }

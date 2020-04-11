@@ -44,8 +44,8 @@ import javax.annotation.Nonnull;
 public class HeatUtils {
     public static final DamageSource overheatDamage = new OverheatDamage();
 
-    public static double getPlayerHeat(PlayerEntity player) {
-        double heat = 0;
+    public static float getPlayerHeat(PlayerEntity player) {
+        float heat = 0;
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
             heat += getItemHeat(player.getItemStackFromSlot(slot));
         }
@@ -55,20 +55,20 @@ public class HeatUtils {
     /**
      * Should only be called server side
      */
-    public static double getPlayerMaxHeat(PlayerEntity player) {
-        double maxHeat = 0;
+    public static float getPlayerMaxHeat(PlayerEntity player) {
+        float maxHeat = 0;
         for (ItemStack stack : ItemUtils.getModularItemsEquipped(player)) {
             maxHeat += getItemMaxHeat(stack);
         }
         return maxHeat;
     }
 
-    public static double coolPlayer(PlayerEntity player, double coolJoules) {
+    public static float coolPlayer(PlayerEntity player, float coolJoules) {
         if (player.world.isRemote /*|| player.abilities.isCreativeMode */) {
             return 0;
         }
 
-        double coolingLeft = coolJoules;
+        float coolingLeft = coolJoules;
         for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
             ItemStack stack = player.inventory.getStackInSlot(i);
             if (player.isHandActive() && player.inventory.getCurrentItem() == stack) {
@@ -86,7 +86,7 @@ public class HeatUtils {
     /**
      * Should only be called server side
      */
-    public static double heatPlayer(PlayerEntity player, double heatJoules) {
+    public static float heatPlayer(PlayerEntity player, float heatJoules) {
         if (player.world.isRemote /*|| player.abilities.isCreativeMode */) {
             return 0;
         }
@@ -100,11 +100,11 @@ public class HeatUtils {
             items.remove(player.inventory.getCurrentItem());
         }
 
-        double heatLeftToGive = heatJoules;
+        float heatLeftToGive = heatJoules;
         // heat player equipped items up to max heat
         for (ItemStack stack : items) {
-            double currHeat = getItemHeat(stack);
-            double maxHeat = getItemMaxHeat(stack);
+            float currHeat = getItemHeat(stack);
+            float maxHeat = getItemMaxHeat(stack);
             if (currHeat + heatLeftToGive < maxHeat) {
                 heatItem(stack, heatLeftToGive);
                 return heatJoules;
@@ -114,27 +114,27 @@ public class HeatUtils {
         }
 
         // apply remaining heat evenly accross the items
-        double heatPerStack = heatLeftToGive / items.size();
+        float heatPerStack = heatLeftToGive / items.size();
         for (ItemStack stack : items) {
             heatLeftToGive -= heatItem(stack, heatPerStack);
         }
         return heatJoules - heatLeftToGive;
     }
 
-    public static double getItemMaxHeat(@Nonnull ItemStack stack) {
-        return stack.getCapability(HeatCapability.HEAT).map(h->h.getMaxHeatStored()).orElse(0D);
+    public static float getItemMaxHeat(@Nonnull ItemStack stack) {
+        return stack.getCapability(HeatCapability.HEAT).map(h->h.getMaxHeatStored()).orElse(0F);
     }
 
-    public static double getItemHeat(@Nonnull ItemStack stack) {
-        return stack.getCapability(HeatCapability.HEAT).map(h->h.getHeatStored()).orElse(0D);
+    public static float getItemHeat(@Nonnull ItemStack stack) {
+        return stack.getCapability(HeatCapability.HEAT).map(h->h.getHeatStored()).orElse(0F);
     }
 
-    public static double heatItem(@Nonnull ItemStack stack, double value) {
-        return stack.getCapability(HeatCapability.HEAT, null).map(h->h.receiveHeat(value, false)).orElse(0D);
+    public static float heatItem(@Nonnull ItemStack stack, float value) {
+        return stack.getCapability(HeatCapability.HEAT, null).map(h->h.receiveHeat(value, false)).orElse(0F);
     }
 
-    public static double coolItem(@Nonnull ItemStack stack, double value) {
-        return stack.getCapability(HeatCapability.HEAT, null).map(h->h.extractHeat(value, false)).orElse(0D);
+    public static float coolItem(@Nonnull ItemStack stack, float value) {
+        return stack.getCapability(HeatCapability.HEAT, null).map(h->h.extractHeat(value, false)).orElse(0F);
     }
 
     protected static final class OverheatDamage extends DamageSource {

@@ -27,6 +27,7 @@
 package com.github.lehjr.mpalib.math;
 
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
+import com.mojang.blaze3d.systems.RenderSystem;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -111,6 +112,10 @@ public class Colour {
         return val;
     }
 
+    public void doGL() {
+        RenderSystem.color4f(r, g, b, a);
+    }
+
     /**
      * Returns a colour with RGB set to the same getValue ie. a shade of grey.
      */
@@ -189,10 +194,6 @@ public class Colour {
         int y = (int) (x * 255);
         String hexDigits = "0123456789ABCDEF";
         return hexDigits.charAt(y / 16) + "" + hexDigits.charAt(y % 16);
-    }
-
-    public Color awtColor() {
-        return new Color((float) r, (float) g, (float) b, (float) a);
     }
 
     @Override

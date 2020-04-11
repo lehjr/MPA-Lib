@@ -30,7 +30,7 @@ import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.network.packets.ModeChangeRequestPacket;
 import com.github.lehjr.mpalib.network.packets.PlayerUpdatePacket;
 import com.github.lehjr.mpalib.network.packets.ToggleRequestPacket;
-import com.github.lehjr.mpalib.network.packets.TweakRequestDoublePacket;
+import com.github.lehjr.mpalib.network.packets.TweakRequestFloatPacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -70,10 +70,10 @@ public class MPALibPackets {
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,
-                TweakRequestDoublePacket.class,
-                TweakRequestDoublePacket::encode,
-                TweakRequestDoublePacket::decode,
-                TweakRequestDoublePacket::handle);
+                TweakRequestFloatPacket.class,
+                TweakRequestFloatPacket::encode,
+                TweakRequestFloatPacket::decode,
+                TweakRequestFloatPacket::handle);
     }
 
     public SimpleChannel getWrapper() {

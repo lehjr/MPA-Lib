@@ -39,6 +39,7 @@ import java.nio.FloatBuffer;
 public class DrawableRect extends Rect {
     Colour backgroundColour;
     Colour borderColour;
+    Colour backgroundColour2 = null;
     float cornerradius = 3;
     float zLevel = 1;
     boolean shrinkBorder = true;
@@ -73,6 +74,11 @@ public class DrawableRect extends Rect {
         this.borderColour = borderColour;
     }
 
+    public DrawableRect setSecondBackgroundColour(Colour backgroundColour2In) {
+        backgroundColour2 = backgroundColour2In;
+        return this;
+    }
+
     /**
      * determine if the border should be smaller than the background rectangle (like tooltips)
      * @param shrinkBorder
@@ -84,7 +90,7 @@ public class DrawableRect extends Rect {
     @Override
     public DrawableRect copyOf() {
         return new DrawableRect(super.left(), super.top(), super.right(), super.bottom(),
-                (this.ul != this.ulFinal || this.wh != this.whFinal) , backgroundColour, borderColour);
+                (this.ul != this.ulFinal || this.wh != this.whFinal) , backgroundColour, borderColour).setBackgroundColour(backgroundColour2);
     }
 
     @Override
@@ -133,15 +139,23 @@ public class DrawableRect extends Rect {
         return this;
     }
 
+    public float getCornerradius() {
+        return cornerradius;
+    }
+
     public FloatBuffer preDraw(float shrinkBy) {
+        return preDraw(left() + shrinkBy, top() + shrinkBy, right() - shrinkBy, bottom() - shrinkBy);
+    }
+
+    public FloatBuffer preDraw(float left, float top, float right, float bottom) {
         FloatBuffer vertices;
             // top left corner
             FloatBuffer corner = GradientAndArcCalculator.getArcPoints(
                     (float) Math.PI,
                     (float)(3.0 * Math.PI / 2.0),
-                    cornerradius,
-                    left() + shrinkBy + cornerradius,
-                    top() + shrinkBy + cornerradius);
+                    getCornerradius(),
+                    left + getCornerradius(),
+                    top + getCornerradius());
 
             vertices = BufferUtils.createFloatBuffer(corner.limit() * 4);
             vertices.put(corner);
@@ -150,27 +164,27 @@ public class DrawableRect extends Rect {
             corner = GradientAndArcCalculator.getArcPoints(
                     (float)(3.0 * Math.PI / 2.0F),
                     (float)(2.0 * Math.PI),
-                    cornerradius,
-                    left() + shrinkBy + cornerradius,
-                    bottom() - shrinkBy - cornerradius);
+                    getCornerradius(),
+                    left + getCornerradius(),
+                    bottom - getCornerradius());
             vertices.put(corner);
 
             // bottom right corner
             corner = GradientAndArcCalculator.getArcPoints(
                     0,
                     (float) (Math.PI / 2.0),
-                    cornerradius,
-                    right() - shrinkBy - cornerradius,
-                    bottom() - shrinkBy - cornerradius);
+                    getCornerradius(),
+                    right - getCornerradius(),
+                    bottom - getCornerradius());
             vertices.put(corner);
 
             // top right corner
             corner = GradientAndArcCalculator.getArcPoints(
                     (float) (Math.PI / 2.0),
                     (float) Math.PI,
-                    cornerradius,
-                    right() - shrinkBy - cornerradius,
-                    top() + shrinkBy + cornerradius);
+                    getCornerradius(),
+                    right - getCornerradius(),
+                    top + getCornerradius());
             vertices.put(corner);
             vertices.flip();
 
@@ -179,6 +193,10 @@ public class DrawableRect extends Rect {
 
     public void drawBackground(FloatBuffer vertices) {
         drawBuffer(vertices, backgroundColour, GL11.GL_TRIANGLE_FAN);
+    }
+
+    public void drawBackground(FloatBuffer vertices, FloatBuffer colours) {
+        drawBuffer(vertices, colours, GL11.GL_TRIANGLE_FAN);
     }
 
     public void drawBorder(FloatBuffer vertices) {
@@ -206,10 +224,42 @@ public class DrawableRect extends Rect {
         RenderSystem.enableTexture();
     }
 
+    void drawBuffer(FloatBuffer vertices, FloatBuffer colours, int glMode) {
+        RenderSystem.disableTexture();
+        RenderSystem.enableBlend();
+        RenderSystem.disableAlphaTest();
+        RenderSystem.defaultBlendFunc();
+
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBuffer();
+        buffer.begin(glMode, DefaultVertexFormats.POSITION_COLOR);
+
+        while (vertices.hasRemaining() && colours.hasRemaining()) {
+            buffer.pos(vertices.get(), vertices.get(), zLevel).color(colours.get(), colours.get(), colours.get(), colours.get()).endVertex();
+        }
+        tessellator.draw();
+
+        RenderSystem.shadeModel(GL11.GL_FLAT);
+        RenderSystem.disableBlend();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.enableTexture();
+    }
+
+
+    // FIXME!!! still need to address gradient direction 
+
+
     public void draw(float zLevel) {
         this.zLevel = zLevel;
         FloatBuffer vertices = preDraw(0);
-        drawBackground(vertices);
+
+        if (backgroundColour2 != null) {
+            FloatBuffer colours = GradientAndArcCalculator.getColourGradient(backgroundColour,
+                    backgroundColour2, vertices.limit() * 4);
+            drawBackground(vertices, colours);
+        } else {
+            drawBackground(vertices);
+        }
 
         if (shrinkBorder) {
             vertices = preDraw(1);

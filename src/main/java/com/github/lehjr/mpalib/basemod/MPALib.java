@@ -6,24 +6,35 @@ import com.github.lehjr.mpalib.capabilities.player.CapabilityPlayerKeyStates;
 import com.github.lehjr.mpalib.capabilities.render.ModelSpecNBTCapability;
 import com.github.lehjr.mpalib.client.event.FOVUpdateEventHandler;
 import com.github.lehjr.mpalib.client.event.RenderGameOverlayEventHandler;
+import com.github.lehjr.mpalib.client.gui.GuiIcon;
+import com.github.lehjr.mpalib.client.gui.MPALibSpriteUploader;
+import com.github.lehjr.mpalib.client.render.IconUtils;
+import com.github.lehjr.mpalib.event.EventBusHelper;
 import com.github.lehjr.mpalib.network.MPALibPackets;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.SpriteUploader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.resources.IReloadableResourceManager;
+import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fml.event.lifecycle.*;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -41,9 +52,6 @@ public class MPALib {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MPALibConfig.COMMON_SPEC, MPALibConfig.setupConfigFile("mpalib-common.toml").getAbsolutePath());
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MPALibConfig.CLIENT_SPEC, MPALibConfig.setupConfigFile("mpalib-client-only.toml").getAbsolutePath());
 
-
-
-
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         // Register the enqueueIMC method for modloading
@@ -55,6 +63,23 @@ public class MPALib {
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+        DistExecutor.runWhenOn(Dist.CLIENT, ()->()-> clientStart(FMLJavaModLoadingContext.get().getModEventBus()));
+    }
+
+    // Ripped from JEI
+    private static void clientStart(IEventBus modEventBus) {
+        EventBusHelper.addListener(modEventBus, ColorHandlerEvent.Block.class, setupEvent -> {
+            MPALibSpriteUploader spriteUploader = new MPALibSpriteUploader(Minecraft.getInstance().textureManager);
+            GuiIcon icons = new GuiIcon(spriteUploader);
+            IResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
+            if (resourceManager instanceof IReloadableResourceManager) {
+                IReloadableResourceManager reloadableResourceManager = (IReloadableResourceManager) resourceManager;
+                reloadableResourceManager.addReloadListener(spriteUploader);
+            }
+            EventBusHelper.addLifecycleListener(modEventBus, FMLLoadCompleteEvent.class, loadCompleteEvent ->
+                    IconUtils.setIconInstance(icons));
+        });
     }
 
     private void setup(final FMLCommonSetupEvent event) {

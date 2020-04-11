@@ -91,7 +91,7 @@ public final class PlayerUtils {
         }
     }
 
-    public static double getPlayerCoolingBasedOnMaterial(@Nonnull PlayerEntity player) {
+    public static float getPlayerCoolingBasedOnMaterial(@Nonnull PlayerEntity player) {
         // cheaper method of checking if player is in lava. Described as "non-chunkloading copy of Entity.isInLava()"
 //        if (ModCompatibility.isEnderCoreLoaded()) {
 //            if (EnderCoreMethods.isInLavaSafe(player))
@@ -101,7 +101,7 @@ public final class PlayerUtils {
             return 0;
 //        }
 
-        double cool = ((2.0 - getBiome(player).getTemperature(new BlockPos((int) player.getPosX(), (int) player.getPosY(), (int) player.getPosZ())) / 2)); // Algorithm that returns a getValue from 0.0 -> 1.0. Biome temperature is from 0.0 -> 2.0
+        float cool = ((2.0F - getBiome(player).getTemperature(new BlockPos((int) player.getPosX(), (int) player.getPosY(), (int) player.getPosZ())) / 2)); // Algorithm that returns a getValue from 0.0 -> 1.0. Biome temperature is from 0.0 -> 2.0
 
         if (player.isInWater())
             cool += 0.5;

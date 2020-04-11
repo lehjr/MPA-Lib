@@ -39,6 +39,7 @@ import java.nio.FloatBuffer;
 public class DrawableRelativeRect extends RelativeRect {
     Colour backgroundColour;
     Colour borderColour;
+    Colour backgroundColour2 = null;
     float cornerradius = 3;
     float zLevel = 1;
     boolean shrinkBorder = true;
@@ -109,8 +110,17 @@ public class DrawableRelativeRect extends RelativeRect {
         return this;
     }
 
+    public float getCornerradius() {
+        return cornerradius;
+    }
+
     public DrawableRelativeRect setBackgroundColour(Colour backgroundColour) {
         this.backgroundColour = backgroundColour;
+        return this;
+    }
+
+    public DrawableRelativeRect setSecondBackgroundColour(Colour backgroundColour2In) {
+        backgroundColour2 = backgroundColour2In;
         return this;
     }
 
@@ -125,9 +135,9 @@ public class DrawableRelativeRect extends RelativeRect {
         FloatBuffer corner = GradientAndArcCalculator.getArcPoints(
                 (float) Math.PI,
                 (float)(3.0 * Math.PI / 2.0),
-                cornerradius,
-                left() + shrinkBy + cornerradius,
-                top() + shrinkBy + cornerradius);
+                getCornerradius(),
+                left() + shrinkBy + getCornerradius(),
+                top() + shrinkBy + getCornerradius());
 
         vertices = BufferUtils.createFloatBuffer(corner.limit() * 4);
         vertices.put(corner);
@@ -136,27 +146,27 @@ public class DrawableRelativeRect extends RelativeRect {
         corner = GradientAndArcCalculator.getArcPoints(
                 (float)(3.0 * Math.PI / 2.0F),
                 (float)(2.0 * Math.PI),
-                cornerradius,
-                left() + shrinkBy + cornerradius,
-                bottom() - shrinkBy - cornerradius);
+                getCornerradius(),
+                left() + shrinkBy + getCornerradius(),
+                bottom() - shrinkBy - getCornerradius());
         vertices.put(corner);
 
         // bottom right corner
         corner = GradientAndArcCalculator.getArcPoints(
                 0,
                 (float) (Math.PI / 2.0),
-                cornerradius,
-                right() - shrinkBy - cornerradius,
-                bottom() - shrinkBy - cornerradius);
+                getCornerradius(),
+                right() - shrinkBy - getCornerradius(),
+                bottom() - shrinkBy - getCornerradius());
         vertices.put(corner);
 
         // top right corner
         corner = GradientAndArcCalculator.getArcPoints(
                 (float) (Math.PI / 2.0),
                 (float) Math.PI,
-                cornerradius,
-                right() - shrinkBy - cornerradius,
-                top() + shrinkBy + cornerradius);
+                getCornerradius(),
+                right() - shrinkBy - getCornerradius(),
+                top() + shrinkBy + getCornerradius());
         vertices.put(corner);
         vertices.flip();
 
@@ -165,6 +175,10 @@ public class DrawableRelativeRect extends RelativeRect {
 
     public void drawBackground(FloatBuffer vertices) {
         drawBuffer(vertices, backgroundColour, GL11.GL_TRIANGLE_FAN);
+    }
+
+    public void drawBackground(FloatBuffer vertices, FloatBuffer colours) {
+        drawBuffer(vertices, colours, GL11.GL_TRIANGLE_FAN);
     }
 
     public void drawBorder(FloatBuffer vertices) {
@@ -176,7 +190,6 @@ public class DrawableRelativeRect extends RelativeRect {
         RenderSystem.enableBlend();
         RenderSystem.disableAlphaTest();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.shadeModel(GL11.GL_SMOOTH);
 
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
@@ -193,10 +206,42 @@ public class DrawableRelativeRect extends RelativeRect {
         RenderSystem.enableTexture();
     }
 
+    void drawBuffer(FloatBuffer vertices, FloatBuffer colours, int glMode) {
+        RenderSystem.disableTexture();
+        RenderSystem.enableBlend();
+        RenderSystem.disableAlphaTest();
+        RenderSystem.defaultBlendFunc();
+
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBuffer();
+        buffer.begin(glMode, DefaultVertexFormats.POSITION_COLOR);
+
+        while (vertices.hasRemaining() && colours.hasRemaining()) {
+            buffer.pos(vertices.get(), vertices.get(), zLevel).color(colours.get(), colours.get(), colours.get(), colours.get()).endVertex();
+        }
+        tessellator.draw();
+
+        RenderSystem.shadeModel(GL11.GL_FLAT);
+        RenderSystem.disableBlend();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.enableTexture();
+    }
+
+
+    // FIXME!!! still need to address gradient direction
+
+
     public void draw(float zLevel) {
         this.zLevel = zLevel;
         FloatBuffer vertices = preDraw(0);
-        drawBackground(vertices);
+
+        if (backgroundColour2 != null) {
+            FloatBuffer colours = GradientAndArcCalculator.getColourGradient(backgroundColour,
+                    backgroundColour2, vertices.limit() * 4);
+            drawBackground(vertices, colours);
+        } else {
+            drawBackground(vertices);
+        }
 
         if (shrinkBorder) {
             vertices = preDraw(1);
