@@ -26,10 +26,14 @@
 
 package com.github.lehjr.mpalib.capabilities.render.modelspec;
 
+import forge.OBJBakedCompositeModel;
+import net.minecraft.client.renderer.TransformationMatrix;
+import net.minecraft.client.renderer.model.IModelTransform;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.resources.I18n;
-import net.minecraftforge.client.model.obj.OBJModel;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -38,19 +42,19 @@ import java.util.Objects;
  * Ported to Java by lehjr on 11/8/16.
  */
 public class ModelSpec extends SpecBase {
-    private final OBJModel model;
-    private final OBJModel.ModelSettings modelState;
+    private final OBJBakedCompositeModel model;
+    private final IModelTransform modelTransforms;
 
-    public ModelSpec(final OBJModel model, final OBJModel.ModelSettings state, final String name, final boolean isDefault, final EnumSpecType specType) {
+    public ModelSpec(final OBJBakedCompositeModel model, final IModelTransform transforms, final String name, final boolean isDefault, final EnumSpecType specType) {
         super(name, isDefault, specType);
-        this.modelState = state;
+        this.modelTransforms = transforms;
         this.model = model;
     }
 
-//    public TransformationMatrix getTransform(ItemCameraTransforms.TransformType transformType) {
-//        Optional<TransformationMatrix> transformation = modelState.apply(Optional.of(transformType));
-//        return transformation.orElse(TransformationMatrix.identity());
-//    }
+    public TransformationMatrix getTransform(ItemCameraTransforms.TransformType transformType) {
+        TransformationMatrix transformation = modelTransforms.getPartTransformation(transformType);
+        return transformation;
+    }
 
     @Override
     public String getDisaplayName() {
@@ -66,7 +70,7 @@ public class ModelSpec extends SpecBase {
         return (name != null) ? name : "";
     }
 
-    public OBJModel getModel() {
+    public OBJBakedCompositeModel getModel() {
         return model;
     }
 
@@ -77,11 +81,11 @@ public class ModelSpec extends SpecBase {
         if (!super.equals(o)) return false;
         ModelSpec modelSpec = (ModelSpec) o;
         return Objects.equals(model, modelSpec.model) &&
-                Objects.equals(modelState, modelSpec.modelState);
+                Objects.equals(modelTransforms, modelSpec.modelTransforms);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), model, modelState);
+        return Objects.hash(super.hashCode(), model, modelTransforms);
     }
 }

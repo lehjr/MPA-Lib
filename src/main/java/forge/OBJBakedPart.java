@@ -1,0 +1,44 @@
+package forge;
+
+import com.github.lehjr.mpalib.client.model.helper.ModelHelper;
+import com.github.lehjr.mpalib.math.Colour;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.model.BakedQuad;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.util.Direction;
+import net.minecraftforge.client.model.BakedModelWrapper;
+import net.minecraftforge.client.model.data.IModelData;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import static forge.OBJBakedCompositeModel.*;
+
+public class OBJBakedPart extends BakedModelWrapper {
+    public OBJBakedPart(IBakedModel originalModel) {
+        super(originalModel);
+    }
+
+    @Nonnull
+    @Override
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
+        if (extraData == null) {
+            return this.getBakedModel().getQuads(state, side, rand, extraData);
+        } else {
+            // part is visibile
+            boolean visible = extraData.hasProperty(VISIBLE) ? extraData.getData(VISIBLE) : true;
+            if (visible) {
+                // glow is opposite ambient occlusion
+                boolean glow = (extraData.hasProperty(GLOW) ? extraData.getData(GLOW) : false);
+                // color applied to all quads in the part
+                Colour colour = extraData.hasProperty(COLOUR) ? new Colour(extraData.getData(COLOUR)) : Colour.WHITE;
+
+                return ModelHelper.getColoredQuadsWithGlow(this.getBakedModel().getQuads(state, side, rand, extraData), colour, glow);
+            }
+        }
+        return new ArrayList<>();
+    }
+}

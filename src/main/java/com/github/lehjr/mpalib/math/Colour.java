@@ -28,6 +28,7 @@ package com.github.lehjr.mpalib.math;
 
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.Vector4f;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -90,6 +91,10 @@ public class Colour {
         this.g = g / 255.0F;
         this.b = b / 255.0F;
         this.a = 1.0F;
+    }
+
+    public Vector4f getVec4F() {
+        return new Vector4f(r, g, b, a);
     }
 
     /**

@@ -26,20 +26,25 @@
 
 package com.github.lehjr.mpalib.client.model.helper;
 
+import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.github.lehjr.mpalib.math.Colour;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.TransformationMatrix;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.Vector4f;
-import net.minecraft.client.renderer.model.BakedQuad;
+import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.IModelConfiguration;
+import net.minecraftforge.client.model.obj.OBJLoader;
+import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
 import net.minecraftforge.client.model.pipeline.VertexTransformer;
 import net.minecraftforge.common.model.TransformationHelper;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Function;
 
@@ -101,38 +106,44 @@ public class ModelHelper {
 //        return model;
 //    }
 
-//    public static IModel getIModel(ResourceLocation location, int attempt) {
-//        IModel model;
-//        try {
-//            model = MPALibOBJLoader.INSTANCE.loadModel(location);
-//            model = ((MPALibOBJModel) model).process(ImmutableMap.of("flip-v", "true"));
-//        } catch (Exception e) {
-//            if (attempt < 6) {
-//                model = getIModel(location, attempt + 1);
-//                MPALibLogger.logError("Model loading failed on attempt #" + attempt + "  :( " + location.toString());
-//            } else {
-//                model = ModelLoaderRegistry.getMissingModel();
-//                MPALibLogger.logError("Failed to load model. " + e);
-//            }
-//        }
-//        return model;
-//    }
+    @Nullable
+    public static OBJModel getOBJModel(ResourceLocation location, int attempt) {
+        OBJModel model;
+        try {
+            model = OBJLoader.INSTANCE.loadModel(
+                    new OBJModel.ModelSettings(location, true, false, true, true, null));
+        } catch (Exception e) {
+            if (attempt < 6) {
+                model = getOBJModel(location, attempt + 1);
+                MPALibLogger.logError("Model loading failed on attempt #" + attempt + "  :( " + location.toString());
+            } else {
+                model = null;
+                MPALibLogger.logError("Failed to load model. " + e);
+            }
+        }
+        return model;
+    }
 
-    //FIXME!!
-
-//    @Nullable
-//    public static IBakedModel loadBakedModel(ResourceLocation resource, IModelState state, ModelBakery bakery) {
-//        IModel model = getIModel(resource, 0);
-//        if (model != null) {
-//            IBakedModel bakedModel = model.bake(
-//                    bakery,
-//                    ModelHelper.defaultTextureGetter(),
-//                    new BasicState(state, false),
-//                    DefaultVertexFormats.ITEM);
-//            return bakedModel;
-//        }
-//        return null;
-//    }
+    @Nullable
+    public static IBakedModel loadBakedModel(IModelConfiguration owner,
+                                             ModelBakery bakery,
+                                             Function<Material, TextureAtlasSprite> spriteGetter,
+                                             IModelTransform modelTransform,
+                                             ItemOverrideList overrides,
+                                             ResourceLocation modelLocation) {
+        OBJModel model = getOBJModel(modelLocation, 0);
+        if (model != null) {
+            IBakedModel bakedModel = model.bake(
+                    owner,
+                    bakery,
+                    spriteGetter,
+                    modelTransform,
+                    overrides,
+                    modelLocation);
+            return bakedModel;
+        }
+        return null;
+    }
 //
 //    public List<BakedQuad> getQuadsByGroups(IBakedModel bakedModelIn, final List<String> visibleGroups, TransformationMatrix transformation) {
 //        List<BakedQuad> quads = null;
@@ -239,14 +250,12 @@ public class ModelHelper {
         @Override
         public void put(int element, float... data) {
             VertexFormatElement.Usage usage = parent.getVertexFormat().getElements().get(element).getUsage();
-//            System.out.println("element: " + element);
-//            System.out.println("usage: " + usage.getDisplayName());
             // change color
             if (colour != null && usage == VertexFormatElement.Usage.COLOR && data.length >= 4) {
-                data[0] = (float) colour.r;
-                data[1] = (float) colour.g;
-                data[2] = (float) colour.b;
-                data[3] = (float) colour.a;
+                data[0] = colour.r;
+                data[1] = colour.g;
+                data[2] = colour.b;
+                data[3] = colour.a;
                 super.put(element, data);
                 // transform normals and position
             } else if (transform != null && usage == VertexFormatElement.Usage.POSITION && data.length >= 4) {
@@ -257,8 +266,9 @@ public class ModelHelper {
                 data[2] = pos.getZ();
                 data[3] = pos.getW();
                 parent.put(element, data);
-            } else
+            } else {
                 super.put(element, data);
+            }
         }
 
         @Override

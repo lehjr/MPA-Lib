@@ -27,15 +27,16 @@
 package com.github.lehjr.mpalib.capabilities.render.modelspec;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import forge.OBJBakedCompositeModel;
+import forge.OBJBakedPart;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.geometry.IModelGeometryPart;
 
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Ported to Java by lehjr on 11/8/16.
@@ -76,7 +77,7 @@ public class ModelPartSpec extends PartSpecBase {
         else nbt.putBoolean(MPALIbConstants.TAG_GLOW, g);
     }
 
-    public Optional<? extends IModelGeometryPart> getQuads() {
+    public OBJBakedPart getPart() {
         return ((ModelSpec) (this.spec)).getModel().getPart(this.partName);
     }
 

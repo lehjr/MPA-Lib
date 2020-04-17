@@ -29,9 +29,9 @@ package com.github.lehjr.mpalib.capabilities.render.modelspec;
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.map.MPALibRegistry;
 import com.github.lehjr.mpalib.string.StringUtils;
+import forge.OBJBakedCompositeModel;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.obj.OBJModel;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -60,8 +60,9 @@ public class ModelRegistry extends MPALibRegistry<SpecBase> {
 
     /**
      * TextureSpec does not have an IModelState so this is relatively safe
+     * @return
      */
-    public OBJModel loadBakedModel(ResourceLocation resource) {
+    public OBJBakedCompositeModel loadBakedModel(ResourceLocation resource) {
         String name = StringUtils.extractName(resource);
         SpecBase spec = get(name);
         return ((ModelSpec) (spec)).getModel();

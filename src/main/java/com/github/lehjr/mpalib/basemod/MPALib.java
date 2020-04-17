@@ -104,8 +104,13 @@ public class MPALib {
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         // do something that can only be done on the client
-        LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
+//        LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
+
+//        ModelLoaderRegistry.registerLoader(MPALibOBJLoader.INSTANCE); // crashes if called in mod constructor
+        MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
+        MinecraftForge.EVENT_BUS.register(new RenderGameOverlayEventHandler());
     }
+
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
         // some example code to dispatch IMC to another mod
@@ -140,12 +145,7 @@ public class MPALib {
         }
     }
 
-    private void setupClient(final FMLClientSetupEvent event) {
-        // TODO: only if needed
-//        ModelLoaderRegistry.registerLoader(MPALibOBJLoader.INSTANCE); // crashes if called in mod constructor
-        MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
-        MinecraftForge.EVENT_BUS.register(new RenderGameOverlayEventHandler());
-    }
+
 
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
