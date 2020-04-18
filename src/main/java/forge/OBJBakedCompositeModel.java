@@ -1,33 +1,22 @@
 package forge;
 
-import com.github.lehjr.mpalib.client.model.helper.ModelHelper;
-import com.github.lehjr.mpalib.math.Colour;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
-import net.minecraftforge.client.model.BakedModelWrapper;
 import net.minecraftforge.client.model.PerspectiveMapWrapper;
-import net.minecraftforge.client.model.data.EmptyModelData;
-import net.minecraftforge.client.model.data.IDynamicBakedModel;
-import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.client.model.data.ModelProperty;
+import net.minecraftforge.client.model.data.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class OBJBakedCompositeModel implements IDynamicBakedModel {
-    public static final ModelProperty<SubmodelModelData> SUBMODEL_DATA = new ModelProperty<>();
-    public static final ModelProperty<Integer> COLOUR = new ModelProperty<>();
-    public static final ModelProperty<Boolean> VISIBLE = new ModelProperty<>();
-    public static final ModelProperty<Boolean> GLOW = new ModelProperty<>();
+import static forge.OBJPartData.getOBJPartData;
 
+public class OBJBakedCompositeModel implements IDynamicBakedModel {
     private final ImmutableMap<String, OBJBakedPart> bakedParts; // store the quads for each part
-    private final ImmutableMap<String, Boolean> visibilityMap; // default visibility for parts
-    private final ImmutableMap<String, Boolean> ambientOcclusionMap; // try to use this for "glow"
 
     private final boolean isAmbientOcclusion;
     private final boolean isGui3d;
@@ -39,15 +28,11 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
                                   boolean isAmbientOcclusion,
                                   TextureAtlasSprite particle,
                                   ImmutableMap<String, OBJBakedPart> bakedParts, // store the quads for each part
-                                  ImmutableMap<String, Boolean> visibilityMap, // default visibility for parts
-                                  ImmutableMap<String, Boolean> ambientOcclusionMap, // try to use this for "glow"
                                   IModelTransform combinedTransform,
                                   ItemOverrideList overrides) {
         this.isGui3d = isGui3d;
         this.isAmbientOcclusion = isAmbientOcclusion;
         this.bakedParts = bakedParts;
-        this.visibilityMap = visibilityMap;
-        this.ambientOcclusionMap = ambientOcclusionMap;
         this.particle = particle;
         this.transforms = combinedTransform;
         this.overrides = overrides;
@@ -59,7 +44,7 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
         List<BakedQuad> quads = new ArrayList<>();
 
         for (Map.Entry<String, OBJBakedPart> entry : bakedParts.entrySet()) {
-            quads.addAll(entry.getValue().getQuads(state, side, rand, getSubmodelData(extraData, entry.getKey())));
+            quads.addAll(entry.getValue().getQuads(state, side, rand, getOBJPartData(extraData, entry.getKey())));
         }
         return quads;
     }
@@ -108,25 +93,5 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
     @Nullable
     public OBJBakedPart getPart(String name) {
         return bakedParts.get(name);
-    }
-
-    private IModelData getSubmodelData(IModelData extraData, String name) {
-        SubmodelModelData data = extraData.getData(SUBMODEL_DATA);
-        if (data == null) {
-            return EmptyModelData.INSTANCE;
-        }
-        return data.getSubmodelData(name);
-    }
-
-    public static class SubmodelModelData {
-        private final Map<String, IModelData> parts = new HashMap<>();
-
-        public IModelData getSubmodelData(String name) {
-            return parts.getOrDefault(name, EmptyModelData.INSTANCE);
-        }
-
-        public void putSubmodelData(String name, IModelData data) {
-            parts.put(name, data);
-        }
     }
 }

@@ -11,6 +11,7 @@ import com.github.lehjr.mpalib.client.gui.MPALibSpriteUploader;
 import com.github.lehjr.mpalib.client.render.IconUtils;
 import com.github.lehjr.mpalib.event.EventBusHelper;
 import com.github.lehjr.mpalib.network.MPALibPackets;
+import forge.MPAOBJLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
@@ -24,6 +25,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -69,6 +71,10 @@ public class MPALib {
 
     // Ripped from JEI
     private static void clientStart(IEventBus modEventBus) {
+        if (Minecraft.getInstance() != null) {
+            ModelLoaderRegistry.registerLoader(new ResourceLocation(MPALIbConstants.MOD_ID, "obj"), MPAOBJLoader.INSTANCE); // crashes if called in mod constructor
+        }
+
         EventBusHelper.addListener(modEventBus, ColorHandlerEvent.Block.class, setupEvent -> {
             MPALibSpriteUploader spriteUploader = new MPALibSpriteUploader(Minecraft.getInstance().textureManager);
             GuiIcon icons = new GuiIcon(spriteUploader);

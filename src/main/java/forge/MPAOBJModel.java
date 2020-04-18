@@ -89,8 +89,6 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
     public IBakedModel bake(IModelConfiguration owner, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ItemOverrideList overrides, ResourceLocation modelLocation) {
         // Default implementation
         TextureAtlasSprite particle = spriteGetter.apply(owner.resolveTexture("particle"));
-        ImmutableMap.Builder<String, Boolean> visibilityMap = ImmutableMap.builder(); // default visibility for parts
-        ImmutableMap.Builder<String, Boolean> ambientOcclusionMap = ImmutableMap.builder(); // try to use this for "glow"
         ImmutableMap.Builder<String, OBJBakedPart> bakedParts = ImmutableMap.builder(); // store the quads for each part
 
         getParts().stream().forEach(part -> {
@@ -99,8 +97,6 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
 
 
             bakedParts.put(part.name(), new OBJBakedPart(builder.build())); // fixme
-            visibilityMap.put(part.name(), owner.getPartVisibility(part));
-            ambientOcclusionMap.put(part.name(), owner.getPartVisibility(part));
         });
 
         return new OBJBakedCompositeModel(
@@ -108,8 +104,6 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
                 owner.useSmoothLighting(),
                 particle,
                 bakedParts.build(),
-                visibilityMap.build(),
-                ambientOcclusionMap.build(),
                 owner.getCombinedTransform(),
                 overrides);
     }

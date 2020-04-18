@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static forge.OBJBakedCompositeModel.*;
+import static forge.OBJPartData.*;
 
 public class OBJBakedPart extends BakedModelWrapper {
     public OBJBakedPart(IBakedModel originalModel) {
@@ -36,7 +36,7 @@ public class OBJBakedPart extends BakedModelWrapper {
                 // color applied to all quads in the part
                 Colour colour = extraData.hasProperty(COLOUR) ? new Colour(extraData.getData(COLOUR)) : Colour.WHITE;
 
-                return ModelHelper.getColoredQuadsWithGlow(this.getBakedModel().getQuads(state, side, rand, extraData), colour, glow);
+                return ModelHelper.getColoredQuadsWithGlow(originalModel.getQuads(state, side, rand, extraData), colour, glow);
             }
         }
         return new ArrayList<>();
