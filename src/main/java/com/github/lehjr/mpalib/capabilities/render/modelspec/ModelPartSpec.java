@@ -58,7 +58,7 @@ public class ModelPartSpec extends PartSpecBase {
     public ITextComponent getDisaplayName() {
         return new TranslationTextComponent(new StringBuilder("model.")
                 .append(this.spec.getOwnName())
-                .append("")
+                .append(".")
                 .append(this.partName)
                 .append(".partName")
                 .toString());

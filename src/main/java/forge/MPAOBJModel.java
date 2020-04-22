@@ -20,6 +20,7 @@
 package forge;
 
 import com.google.common.collect.*;
+import com.mojang.datafixers.util.Either;
 import joptsimple.internal.Strings;
 import net.minecraft.client.renderer.TransformationMatrix;
 import net.minecraft.client.renderer.Vector3f;
@@ -86,7 +87,75 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
      * @return
      */
     @Override
-    public IBakedModel bake(IModelConfiguration owner, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ItemOverrideList overrides, ResourceLocation modelLocation) {
+    public OBJBakedCompositeModel bake(IModelConfiguration owner,
+                                       ModelBakery bakery, // model loader get instance from bake event
+                                       Function<Material, TextureAtlasSprite> spriteGetter, // get from model loader
+                                       IModelTransform modelTransform,
+                                       ItemOverrideList overrides,
+                                       ResourceLocation modelLocation) {
+/**
+ gets called from here:
+ ModelLoaderRegistry.bakeHelper();
+ all model textures seem to come back to the block atlas texture (atlas location: minecraft:textures/atlas/blocks.png)
+
+
+
+
+
+
+
+
+ BlockModelConfiguration implements IModelConfiguration
+
+
+ both item and blocks still use a block model loaded from model loader or bakery or whereever. .
+
+
+ Block model seems to just be a wraper to hold a configuration
+
+
+
+
+
+
+ for Lux Capacitor entity, maybe others as well, see ModelBakery#LoadModel():
+
+ if ("builtin/entity".equals(s)) {
+ lvt_5_2_ = MODEL_ENTITY;
+ return lvt_5_2_;
+ }
+
+
+
+
+ */
+
+
+        if (owner.getOwnerModel() != null) {
+
+            System.out.println("model owner.getOwnerModel() class: " + owner.getOwnerModel().getClass()); // BlockModel
+
+            if (owner.getOwnerModel() instanceof BlockModel) {
+                System.out.println("model owner.getOwnerModel()).getParentLocation(): " + ((BlockModel) owner.getOwnerModel()).getParentLocation());
+                System.out.println("model owner.getOwnerModel()).name: " + ((BlockModel) owner.getOwnerModel()).name);
+                System.out.println("model owner.getOwnerModel()).getElements(): " + ((BlockModel) owner.getOwnerModel()).getElements());
+
+                Map<String, Either<Material, String>> textures = ((BlockModel) owner.getOwnerModel()).textures;
+                if (textures.isEmpty()) {
+                    System.out.println("model ((BlockModel) owner.getOwnerModel()).textures): is EMPTY");
+
+                } else {
+                    for (String key : textures.keySet()) {
+                        System.out.println("model ((BlockModel) owner.getOwnerModel()).textures key: " + key);
+                        System.out.println("texture string: " + textures.get(key).right().orElse("not present"));
+                        System.out.println("material texture location: " + textures.get(key).left().map(material -> material.getTextureLocation().toString()).orElse("not present"));
+                        System.out.println("material atlas location: " + textures.get(key).left().map(material -> material.getAtlasLocation().toString()).orElse("not present"));
+                    }
+                }
+            }
+        }
+
+
         // Default implementation
         TextureAtlasSprite particle = spriteGetter.apply(owner.resolveTexture("particle"));
         ImmutableMap.Builder<String, OBJBakedPart> bakedParts = ImmutableMap.builder(); // store the quads for each part
@@ -607,8 +676,13 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
         @Nullable
         public final String materialLibraryOverrideLocation;
 
-        public ModelSettings(@Nonnull ResourceLocation modelLocation, boolean detectCullableFaces, boolean diffuseLighting, boolean flipV, boolean ambientToFullbright,
-                             @Nullable String materialLibraryOverrideLocation) {
+        public ModelSettings(
+                @Nonnull ResourceLocation modelLocation,
+                boolean detectCullableFaces,
+                boolean diffuseLighting,
+                boolean flipV,
+                boolean ambientToFullbright,
+                @Nullable String materialLibraryOverrideLocation) {
             this.modelLocation = modelLocation;
             this.detectCullableFaces = detectCullableFaces;
             this.diffuseLighting = diffuseLighting;

@@ -27,9 +27,10 @@
 package com.github.lehjr.mpalib.basemod;
 
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public final class MPALibLogger {
-    public static final org.apache.logging.log4j.Logger logger = LogManager.getLogger("lehjr");
+    public static final Logger logger = LogManager.getLogger("lehjr");
 
     public static void logDebug(String string) {
         boolean debugging = true;
@@ -43,6 +44,10 @@ public final class MPALibLogger {
 
     public static void logError(String string) {
         logger.warn(string);
+    }
+
+    public static Logger getLogger() {
+        return logger;
     }
 
     public static void logException(String string, Throwable exception) {

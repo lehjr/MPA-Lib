@@ -22,6 +22,7 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
     private final boolean isGui3d;
     private final TextureAtlasSprite particle;
     private final ItemOverrideList overrides;
+
     private final IModelTransform transforms;
 
     public OBJBakedCompositeModel(boolean isGui3d,
@@ -47,6 +48,10 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
             quads.addAll(entry.getValue().getQuads(state, side, rand, getOBJPartData(extraData, entry.getKey())));
         }
         return quads;
+    }
+
+    public IModelTransform getTransforms() {
+        return transforms;
     }
 
     @Override

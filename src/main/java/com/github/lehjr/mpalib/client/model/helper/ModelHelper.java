@@ -29,6 +29,9 @@ package com.github.lehjr.mpalib.client.model.helper;
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.github.lehjr.mpalib.math.Colour;
 import com.google.common.collect.ImmutableList;
+import forge.MPAOBJLoader;
+import forge.MPAOBJModel;
+import forge.OBJBakedCompositeModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.TransformationMatrix;
 import net.minecraft.client.renderer.Vector3f;
@@ -38,8 +41,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelConfiguration;
-import net.minecraftforge.client.model.obj.OBJLoader;
-import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
 import net.minecraftforge.client.model.pipeline.VertexTransformer;
 import net.minecraftforge.common.model.TransformationHelper;
@@ -94,24 +95,12 @@ public class ModelHelper {
         return Minecraft.getInstance().getAtlasSpriteGetter(location);
     }
 
-//    public static IModel getModel(ResourceLocation resource) {
-//        IModel model = null;
-//        try {
-//            model = OBJLoader.INSTANCE.loadModel(resource);
-//            model = ((MPALibOBJModel) model).process(ImmutableMap.of("flip-v", "true"));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            MPALibLogger.logError("Model loading failed :( " + resource);
-//        }
-//        return model;
-//    }
-
     @Nullable
-    public static OBJModel getOBJModel(ResourceLocation location, int attempt) {
-        OBJModel model;
+    public static MPAOBJModel getOBJModel(ResourceLocation location, int attempt) {
+        MPAOBJModel model;
         try {
-            model = OBJLoader.INSTANCE.loadModel(
-                    new OBJModel.ModelSettings(location, true, false, true, true, null));
+            model = MPAOBJLoader.INSTANCE.loadModel(
+                    new MPAOBJModel.ModelSettings(location, true, false, true, true, null));
         } catch (Exception e) {
             if (attempt < 6) {
                 model = getOBJModel(location, attempt + 1);
@@ -125,15 +114,26 @@ public class ModelHelper {
     }
 
     @Nullable
-    public static IBakedModel loadBakedModel(IModelConfiguration owner,
-                                             ModelBakery bakery,
-                                             Function<Material, TextureAtlasSprite> spriteGetter,
-                                             IModelTransform modelTransform,
-                                             ItemOverrideList overrides,
-                                             ResourceLocation modelLocation) {
-        OBJModel model = getOBJModel(modelLocation, 0);
+    public static OBJBakedCompositeModel loadBakedModel(IModelConfiguration owner,
+                                                        ModelBakery bakery,
+                                                        Function<Material, TextureAtlasSprite> spriteGetter,
+                                                        IModelTransform modelTransform,
+                                                        ItemOverrideList overrides,
+                                                        ResourceLocation modelLocation) {
+        MPAOBJModel model = getOBJModel(modelLocation, 0);
+
+
+
+
+
+
+
+
+
+
+
         if (model != null) {
-            IBakedModel bakedModel = model.bake(
+            OBJBakedCompositeModel bakedModel = model.bake(
                     owner,
                     bakery,
                     spriteGetter,
@@ -144,49 +144,6 @@ public class ModelHelper {
         }
         return null;
     }
-//
-//    public List<BakedQuad> getQuadsByGroups(IBakedModel bakedModelIn, final List<String> visibleGroups, TransformationMatrix transformation) {
-//        List<BakedQuad> quads = null;
-//
-//        if (bakedModelIn instanceof OBJModel) {
-//            try {
-//                MPALibOBJModel obj = ((MPALibOBJModel.MPALIbOBJBakedModel) bakedModelIn).getModel();
-//
-//                // ModelState for handling visibility of each group.
-//                IModelState modelState = part -> {
-//                    if (part.isPresent()) {
-//                        UnmodifiableIterator<String> parts = Models.getParts(part.get());
-//
-//                        if (parts.hasNext()) {
-//                            String name = parts.next();
-//
-//                            if (!parts.hasNext() && visibleGroups.contains(name)) {
-//                                // Return Absent for NOT invisible group.
-//                                return Optional.empty();
-//                            } else {
-//                                // Return Present for invisible group.
-//                                return Optional.of(transformation);
-//                            }
-//                        }
-//                    }
-//                    return Optional.empty();
-//                };
-//
-//                // Bake model of visible groups.
-//                IBakedModel bakedModel = obj.bake(null, ModelLoader.defaultTextureGetter(), new BasicState(modelState, false), DefaultVertexFormats.ITEM);
-//
-//                quads = bakedModel.getQuads(null, null, new Random());
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        if (quads != null) {
-//            return quads;
-//        } else {
-//            return Collections.emptyList();
-//        }
-//    }
 
     /*
      * Here we can color the quads or change the transform using the setup below.
@@ -231,8 +188,6 @@ public class ModelHelper {
         Colour colour;
         Boolean applyDiffuse;
         TransformationMatrix transform;
-
-        // TODO: see what info is missing
 
         public QuadTransformer(Colour colour, TextureAtlasSprite texture, boolean applyDiffuse) {
             super(new BakedQuadBuilder(texture));
