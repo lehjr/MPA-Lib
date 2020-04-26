@@ -33,7 +33,6 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.resources.I18n;
 
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Author: MachineMuse (Claire Semple)

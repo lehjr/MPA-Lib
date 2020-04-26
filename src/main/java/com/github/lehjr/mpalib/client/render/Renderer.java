@@ -27,25 +27,19 @@
 package com.github.lehjr.mpalib.client.render;
 
 import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
-import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.gui.geometry.SwirlyCircle;
 import com.github.lehjr.mpalib.math.Colour;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.model.ModelManager;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-
-import static com.github.lehjr.mpalib.basemod.MPALIbConstants.LIGHTNING_TEXTURE;
 
 /**
  * Contains a bunch of random OpenGL-related functions, accessed statically.

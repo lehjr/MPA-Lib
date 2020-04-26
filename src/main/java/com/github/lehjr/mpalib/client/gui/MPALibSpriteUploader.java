@@ -1,12 +1,9 @@
 package com.github.lehjr.mpalib.client.gui;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.SpriteUploader;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Collections;

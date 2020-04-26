@@ -28,7 +28,6 @@ package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.PowerModuleCapability;
-import com.github.lehjr.mpalib.client.gui.GuiIcon;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.render.IconUtils;
 import com.github.lehjr.mpalib.client.render.RenderState;
@@ -39,7 +38,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.client.gui.GuiUtils;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -126,7 +124,7 @@ public class ClickableModule extends Clickable {
             Renderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getModule());
             if (!allowed) {
                 RenderSystem.pushMatrix();
-                RenderSystem.translatef(0, 0,310);
+                RenderSystem.translatef(0, 0, 250);
                 RenderState.glowOn();
                 String string = StringUtils.wrapMultipleFormatTags("X", StringUtils.FormatCodes.Bold, StringUtils.FormatCodes.DarkRed);
                 Renderer.drawString(string, getPosition().getX() + 3, getPosition().getY() + 1);
@@ -134,7 +132,7 @@ public class ClickableModule extends Clickable {
                 RenderSystem.popMatrix();
             } else if (installed) {
                 RenderSystem.pushMatrix();
-                RenderSystem.translatef(0, 0,310);
+                RenderSystem.translatef(0, 0,250);
                 RenderState.glowOn();
                 IconUtils.getIcon().checkmark.draw(getPosition().getX() - offsetx + 1, getPosition().getY() - offsety + 1, checkmarkcolour.withAlpha(0.6F));
                 RenderState.glowOff();

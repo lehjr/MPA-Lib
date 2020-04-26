@@ -27,9 +27,7 @@
 package com.github.lehjr.mpalib.capabilities.render.modelspec;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
-import forge.OBJBakedCompositeModel;
 import forge.OBJBakedPart;
-import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;

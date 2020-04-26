@@ -22,13 +22,14 @@ package forge;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
-import net.minecraftforge.client.model.obj.LineReader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelLoader;
+import net.minecraftforge.client.model.obj.LineReader;
+import net.minecraftforge.client.model.obj.MaterialLibrary;
 
 import javax.annotation.Nullable;
 import java.io.IOException;

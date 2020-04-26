@@ -31,7 +31,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.Vector4f;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.util.Objects;
 
 /**

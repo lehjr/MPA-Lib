@@ -4,53 +4,22 @@ import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Either;
-import net.minecraft.client.renderer.model.*;
+import net.minecraft.client.renderer.model.IModelTransform;
+import net.minecraft.client.renderer.model.IUnbakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.MissingTextureSprite;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraftforge.client.model.IModelConfiguration;
-import net.minecraftforge.client.model.ModelLoader;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
+/**
+ * This is just the bare minimum needed to bake an OBJ model not attached to a block or item.
+ */
 public class OBJModelConfiguration implements IModelConfiguration {
-
-                    /*
-        System.out.println("model configuration class: " + owner.getClass());
-        System.out.println("model name: " + owner.getModelName());
-        System.out.println("model isShadedInGui(): " + owner.isShadedInGui());
-        System.out.println("model isSideLit(): " + owner.isSideLit());
-        System.out.println("model getOwnerModel().getDependencies()): " + owner.getOwnerModel().getDependencies());
-
-owner.getOwnerModel() class: class net.minecraft.client.renderer.model.BlockModel
-owner.getOwnerModel()).getParentLocation(): minecraft:block/block
-owner.getOwnerModel()).name: modularpowerarmor:block/luxcapacitor
-model owner.getOwnerModel()).getElements(): []
-
-[22:04:32] [Render thread/INFO] [STDOUT/]: [forge.MPAOBJModel:bake:91]: model owner.getOwnerModel() class: class net.minecraft.client.renderer.model.BlockModel
-[22:04:32] [Render thread/INFO] [STDOUT/]: [forge.MPAOBJModel:bake:94]: model owner.getOwnerModel()).getParentLocation(): minecraft:block/block
-[22:04:32] [Render thread/INFO] [STDOUT/]: [forge.MPAOBJModel:bake:95]: model owner.getOwnerModel()).name: modularpowerarmor:block/luxcapacitor
-[22:04:32] [Render thread/INFO] [STDOUT/]: [forge.MPAOBJModel:bake:96]: model owner.getOwnerModel()).getElements(): []
-[22:04:32] [Render thread/INFO] [STDOUT/]: [forge.MPAOBJModel:bake:104]: model ((BlockModel) owner.getOwnerModel()).textures key: particle
-[22:04:32] [Render thread/INFO] [STDOUT/]: [forge.MPAOBJModel:bake:105]: texture string: not present
-[22:04:32] [Render thread/INFO] [STDOUT/]: [forge.MPAOBJModel:bake:106]: material texture location: modularpowerarmor:models/luxcapacitor
-[22:04:32] [Render thread/INFO] [STDOUT/]: [forge.MPAOBJModel:bake:107]: material atlas location: minecraft:textures/atlas/blocks.png
-[22:04:32] [Render thread/INFO] [STDOUT/]: [forge.MPAOBJModel:bake:91]: model owner.getOwnerModel() class: class net.minecraft.client.renderer.model.BlockModel
-[22:04:32] [Render thread/INFO] [STDOUT/]: [forge.MPAOBJModel:bake:94]: model owner.getOwnerModel()).getParentLocation(): minecraft:block/block
-[22:04:32] [Render thread/INFO] [STDOUT/]: [forge.MPAOBJModel:bake:95]: model owner.getOwnerModel()).name: modularpowerarmor:block/luxcapacitor
-[22:04:32] [Render thread/INFO] [STDOUT/]: [forge.MPAOBJModel:bake:96]: model owner.getOwnerModel()).getElements(): []
-[22:04:32] [Render thread/INFO] [STDOUT/]: [forge.MPAOBJModel:bake:104]: model ((BlockModel) owner.getOwnerModel()).textures key: particle
-[22:04:32] [Render thread/INFO] [STDOUT/]: [forge.MPAOBJModel:bake:105]: texture string: not present
-
-model configuration class: class net.minecraftforge.client.model.BlockModelConfiguration
-model name: modularpowerarmor:block/luxcapacitor
-model isShadedInGui(): true
-model isSideLit(): true
-model getOwnerModel().getDependencies()): [minecraft:block/block]
-         */
     IModelTransform combinedTransform;
     String modelLocation;
     public OBJModelConfiguration(String modelLocation, IModelTransform combinedTransform) {
@@ -121,13 +90,6 @@ model getOwnerModel().getDependencies()): [minecraft:block/block]
     }
 
     private Either<Material, String> findTexture(String nameIn) {
-//        for(BlockModel blockmodel = this; blockmodel != null; blockmodel = blockmodel.parent) {
-//            Either<Material, String> either = blockmodel.textures.get(nameIn);
-//            if (either != null) {
-//                return either;
-//            }
-//        }
-
         return Either.left(new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, MissingTextureSprite.getLocation()));
     }
 

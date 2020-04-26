@@ -7,11 +7,15 @@ import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
 import net.minecraftforge.client.model.PerspectiveMapWrapper;
-import net.minecraftforge.client.model.data.*;
+import net.minecraftforge.client.model.data.IDynamicBakedModel;
+import net.minecraftforge.client.model.data.IModelData;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import static forge.OBJPartData.getOBJPartData;
 
@@ -20,17 +24,21 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
 
     private final boolean isAmbientOcclusion;
     private final boolean isGui3d;
+    private final boolean diffuseLighting;
     private final TextureAtlasSprite particle;
     private final ItemOverrideList overrides;
 
     private final IModelTransform transforms;
 
-    public OBJBakedCompositeModel(boolean isGui3d,
+    public OBJBakedCompositeModel(
+                                boolean diffuseLighting,
+                                boolean isGui3d,
                                   boolean isAmbientOcclusion,
                                   TextureAtlasSprite particle,
                                   ImmutableMap<String, OBJBakedPart> bakedParts, // store the quads for each part
                                   IModelTransform combinedTransform,
                                   ItemOverrideList overrides) {
+        this.diffuseLighting = diffuseLighting;
         this.isGui3d = isGui3d;
         this.isAmbientOcclusion = isAmbientOcclusion;
         this.bakedParts = bakedParts;
@@ -64,10 +72,10 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
         return isGui3d;
     }
 
+    // difuseLight?
     @Override
     public boolean func_230044_c_() {
-        // TODO: Forge: Auto-generated method stub
-        return false;
+        return diffuseLighting;
     }
 
     @Override

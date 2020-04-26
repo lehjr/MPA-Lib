@@ -26,18 +26,12 @@
 
 package com.github.lehjr.mpalib.client.render;
 
-import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13C;
-
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-
-import static org.lwjgl.system.MemoryUtil.memAddress;
 
 /**
  * Author: MachineMuse (Claire Semple)

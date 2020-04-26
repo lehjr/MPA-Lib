@@ -27,16 +27,37 @@
 package com.github.lehjr.mpalib.client.gui.geometry;
 
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
+import java.util.Optional;
+
+import static net.minecraft.client.renderer.RenderType.makeType;
 
 public class DrawableCircle {
+    protected static final RenderState.WriteMaskState COLOR_WRITE = new RenderState.WriteMaskState(true, false);
+    protected static final RenderState.TransparencyState NO_TRANSPARENCY = new RenderState.TransparencyState("no_transparency", () -> {
+        RenderSystem.disableBlend();
+    }, () -> {
+    });
+    protected static final RenderState.ShadeModelState SHADE_DISABLED = new RenderState.ShadeModelState(false);
+    private static final RenderType PLASMA_BALL = makeType(
+            "plasma",
+            DefaultVertexFormats.POSITION_COLOR,
+            GL11.GL_TRIANGLE_FAN,
+256,
+            false,
+            true,
+            RenderType.State.getBuilder().writeMask(COLOR_WRITE).shadeModel(SHADE_DISABLED).transparency(NO_TRANSPARENCY).build(false));
+
     public static final float detail = 4;
     protected static FloatBuffer points;
     protected final FloatBuffer colour;
@@ -88,5 +109,23 @@ public class DrawableCircle {
         RenderSystem.enableTexture();
 
         RenderSystem.popMatrix();
+    }
+
+    public void draw(float radius, double x, double y, float z, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        float ratio = (System.currentTimeMillis() % 2000) / 2000.0F;
+       colour.rewind();
+        points.rewind();
+        matrixStackIn.push();
+        matrixStackIn.translate(x, y, 0);
+        matrixStackIn.scale(radius / detail, radius / detail, 1.0F);
+
+//        // FIXME??
+//        RenderSystem.rotatef(-ratio * 360.0f, 0, 0, 1);
+        matrixStackIn.rotate(Vector3f.ZP.rotation(-ratio * 360.0f));
+        IVertexBuilder vertBuffer = bufferIn.getBuffer(PLASMA_BALL);
+        while (points.hasRemaining() && colour.hasRemaining()) {
+            vertBuffer.pos(points.get(), points.get(), z).color(colour.get(), colour.get(), colour.get(), colour.get()).endVertex();
+        }
+        matrixStackIn.pop();
     }
 }

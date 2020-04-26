@@ -20,7 +20,6 @@
 package forge;
 
 import com.google.common.collect.*;
-import com.mojang.datafixers.util.Either;
 import joptsimple.internal.Strings;
 import net.minecraft.client.renderer.TransformationMatrix;
 import net.minecraft.client.renderer.Vector3f;
@@ -38,6 +37,7 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.geometry.IModelGeometryPart;
 import net.minecraftforge.client.model.geometry.IMultipartModelGeometry;
 import net.minecraftforge.client.model.obj.LineReader;
+import net.minecraftforge.client.model.obj.MaterialLibrary;
 import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
 import net.minecraftforge.client.model.pipeline.IVertexConsumer;
 import org.apache.commons.lang3.tuple.Pair;
@@ -76,8 +76,6 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
     public final String materialLibraryOverrideLocation;
 
     /**
-     * TODO: return some kind of composite model
-     *
      * @param owner
      * @param bakery
      * @param spriteGetter
@@ -93,68 +91,6 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
                                        IModelTransform modelTransform,
                                        ItemOverrideList overrides,
                                        ResourceLocation modelLocation) {
-/**
- gets called from here:
- ModelLoaderRegistry.bakeHelper();
- all model textures seem to come back to the block atlas texture (atlas location: minecraft:textures/atlas/blocks.png)
-
-
-
-
-
-
-
-
- BlockModelConfiguration implements IModelConfiguration
-
-
- both item and blocks still use a block model loaded from model loader or bakery or whereever. .
-
-
- Block model seems to just be a wraper to hold a configuration
-
-
-
-
-
-
- for Lux Capacitor entity, maybe others as well, see ModelBakery#LoadModel():
-
- if ("builtin/entity".equals(s)) {
- lvt_5_2_ = MODEL_ENTITY;
- return lvt_5_2_;
- }
-
-
-
-
- */
-
-
-        if (owner.getOwnerModel() != null) {
-
-            System.out.println("model owner.getOwnerModel() class: " + owner.getOwnerModel().getClass()); // BlockModel
-
-            if (owner.getOwnerModel() instanceof BlockModel) {
-                System.out.println("model owner.getOwnerModel()).getParentLocation(): " + ((BlockModel) owner.getOwnerModel()).getParentLocation());
-                System.out.println("model owner.getOwnerModel()).name: " + ((BlockModel) owner.getOwnerModel()).name);
-                System.out.println("model owner.getOwnerModel()).getElements(): " + ((BlockModel) owner.getOwnerModel()).getElements());
-
-                Map<String, Either<Material, String>> textures = ((BlockModel) owner.getOwnerModel()).textures;
-                if (textures.isEmpty()) {
-                    System.out.println("model ((BlockModel) owner.getOwnerModel()).textures): is EMPTY");
-
-                } else {
-                    for (String key : textures.keySet()) {
-                        System.out.println("model ((BlockModel) owner.getOwnerModel()).textures key: " + key);
-                        System.out.println("texture string: " + textures.get(key).right().orElse("not present"));
-                        System.out.println("material texture location: " + textures.get(key).left().map(material -> material.getTextureLocation().toString()).orElse("not present"));
-                        System.out.println("material atlas location: " + textures.get(key).left().map(material -> material.getAtlasLocation().toString()).orElse("not present"));
-                    }
-                }
-            }
-        }
-
 
         // Default implementation
         TextureAtlasSprite particle = spriteGetter.apply(owner.resolveTexture("particle"));
@@ -169,6 +105,7 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
         });
 
         return new OBJBakedCompositeModel(
+                this.diffuseLighting,
                 owner.isShadedInGui(),
                 owner.useSmoothLighting(),
                 particle,
@@ -647,8 +584,9 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
         public Collection<Material> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
             Set<Material> combined = Sets.newHashSet();
             combined.addAll(super.getTextures(owner, modelGetter, missingTextureErrors));
-            for (IModelGeometryPart part : getParts())
+            for (IModelGeometryPart part : getParts()) {
                 combined.addAll(part.getTextures(owner, modelGetter, missingTextureErrors));
+            }
             return combined;
         }
     }

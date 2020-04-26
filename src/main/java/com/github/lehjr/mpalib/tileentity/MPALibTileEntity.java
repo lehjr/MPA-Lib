@@ -52,7 +52,7 @@ public class MPALibTileEntity extends TileEntity {
     @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.getPos(), 0, getUpdateTag()); // FIXME:  type parameter is a number??
+        return new SUpdateTileEntityPacket(this.getPos(), 0, getUpdateTag());
     }
 
     @Override
