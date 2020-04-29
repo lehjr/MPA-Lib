@@ -40,6 +40,9 @@ import java.util.Objects;
  * @author MachineMuse
  */
 public class Colour {
+    // 1/255 for faster math
+    static final float div255 = 0.003921569F;
+
     public static final Colour LIGHTBLUE = new Colour(0.5F, 0.5F, 1.0F, 1.0F);
     public static final Colour BLUE = new Colour(0.0F, 0.0F, 1.0F, 1.0F);
     public static final Colour DARKBLUE = new Colour(0.0F, 0.0F, 0.5F, 1.0F);
@@ -86,9 +89,9 @@ public class Colour {
     }
 
     public Colour(int r, int g, int b) {
-        this.r = r / 255.0F;
-        this.g = g / 255.0F;
-        this.b = b / 255.0F;
+        this.r = r * div255;
+        this.g = g * div255;
+        this.b = b * div255;
         this.a = 1.0F;
     }
 
@@ -100,10 +103,10 @@ public class Colour {
      * Takes colours in the integer format that Minecraft uses, and converts.
      */
     public Colour(int c) {
-        this.a = (c >> 24 & 0xFF) / 255.0F;
-        this.r = (c >> 16 & 0xFF) / 255.0F;
-        this.g = (c >> 8 & 0xFF) / 255.0F;
-        this.b = (c & 0xFF) / 255.0F;
+        this.a = (c >> 24 & 0xFF) * div255;
+        this.r = (c >> 16 & 0xFF) * div255;
+        this.g = (c >> 8 & 0xFF) * div255;
+        this.b = (c & 0xFF) * div255;
     }
 
     public static int getInt(float r, float g, float b, float a) {
@@ -128,10 +131,10 @@ public class Colour {
     }
 
     public static void doGLByInt(int c) {
-        float a = (c >> 24 & 255) / 255.0F;
-        float r = (c >> 16 & 255) / 255.0F;
-        float g = (c >> 8 & 255) / 255.0F;
-        float b = (c & 255) / 255.0F;
+        float a = (c >> 24 & 255) * div255;
+        float r = (c >> 16 & 255) * div255;
+        float g = (c >> 8 & 255) * div255;
+        float b = (c & 255) * div255;
         GL11.glColor4f(r, g, b, a);
     }
 

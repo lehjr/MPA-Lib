@@ -107,7 +107,7 @@ public class OBJModelConfiguration implements IModelConfiguration {
      */
     @Override
     public boolean isSideLit() {
-        return true;
+        return false;
     }
 
     /**

@@ -1,5 +1,6 @@
 package forge;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.block.BlockState;
@@ -50,12 +51,12 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
     @Nonnull
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
-        List<BakedQuad> quads = new ArrayList<>();
+        ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
 
         for (Map.Entry<String, OBJBakedPart> entry : bakedParts.entrySet()) {
-            quads.addAll(entry.getValue().getQuads(state, side, rand, getOBJPartData(extraData, entry.getKey())));
+            builder.addAll(entry.getValue().getQuads(state, side, rand, getOBJPartData(extraData, entry.getKey())));
         }
-        return quads;
+        return builder.build();
     }
 
     public IModelTransform getTransforms() {

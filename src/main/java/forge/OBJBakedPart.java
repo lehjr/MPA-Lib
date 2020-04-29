@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.util.Direction;
 import net.minecraftforge.client.model.BakedModelWrapper;
+import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
 
 import javax.annotation.Nonnull;
@@ -25,8 +26,8 @@ public class OBJBakedPart extends BakedModelWrapper {
     @Nonnull
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
-        if (extraData == null) {
-            return this.getBakedModel().getQuads(state, side, rand, extraData);
+        if (extraData == EmptyModelData.INSTANCE) {
+            return originalModel.getQuads(state, side, rand, extraData);
         } else {
             // part is visibile
             boolean visible = extraData.hasProperty(VISIBLE) ? extraData.getData(VISIBLE) : true;

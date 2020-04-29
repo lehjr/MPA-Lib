@@ -99,8 +99,6 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
         getParts().stream().forEach(part -> {
             IModelBuilder<?> builder = IModelBuilder.of(owner, overrides, particle);
             part.addQuads(owner, builder, bakery, spriteGetter, modelTransform, modelLocation);
-
-
             bakedParts.put(part.name(), new OBJBakedPart(builder.build())); // fixme
         });
 
