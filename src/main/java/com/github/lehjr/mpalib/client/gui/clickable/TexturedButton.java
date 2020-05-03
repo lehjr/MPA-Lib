@@ -26,26 +26,37 @@
 
 package com.github.lehjr.mpalib.client.gui.clickable;
 
+import com.github.lehjr.mpalib.client.gui.GuiIcon;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.gui.geometry.Rect;
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldVertexBufferUploader;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class TexturedButton extends Button {
-    float textureSize;
     ResourceLocation textureLocation;
     Float textureX;
     Float textureY;
+    float textureWidth;
+    float textureHeight;
 
     public TexturedButton(float left, float top, float right, float bottom, boolean growFromMiddle,
                           Colour backgroundColourEnabled,
                           Colour backgroundColourDisabled,
                           Colour borderColourEnabled,
                           Colour borderColourDisabled,
-                          float textureSize,
+                          float textureWidth,
+                          float textureHeight,
                           ResourceLocation textureLocation) {
         super(left, top, right, bottom, growFromMiddle, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
-        this.textureSize = textureSize;
+        this.textureWidth = textureWidth;
+        this.textureHeight = textureHeight;
         this.textureLocation = textureLocation;
     }
 
@@ -54,11 +65,13 @@ public class TexturedButton extends Button {
                           Colour backgroundColourDisabled,
                           Colour borderColourEnabled,
                           Colour borderColourDisabled,
-                          float textureSize,
+                          float textureWidth,
+                          float textureHeight,
                           ResourceLocation textureLocation) {
         super(left, top, right, bottom, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
-        this.textureSize = textureSize;
-        this.textureLocation = textureLocation;;
+        this.textureWidth = textureWidth;
+        this.textureHeight = textureHeight;
+        this.textureLocation = textureLocation;
     }
 
     public TexturedButton(Point2F ul, Point2F br,
@@ -66,10 +79,12 @@ public class TexturedButton extends Button {
                           Colour backgroundColourDisabled,
                           Colour borderColourEnabled,
                           Colour borderColourDisabled,
-                          float textureSize,
+                          float textureWidth,
+                          float textureHeight,
                           ResourceLocation textureLocation) {
         super(ul, br, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
-        this.textureSize = textureSize;
+        this.textureWidth = textureWidth;
+        this.textureHeight = textureHeight;
         this.textureLocation = textureLocation;
     }
 
@@ -78,10 +93,12 @@ public class TexturedButton extends Button {
                           Colour backgroundColourDisabled,
                           Colour borderColourEnabled,
                           Colour borderColourDisabled,
-                          float textureSize,
+                          float textureWidth,
+                          float textureHeight,
                           ResourceLocation textureLocation) {
         super(ref, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
-        this.textureSize = textureSize;
+        this.textureWidth = textureWidth;
+        this.textureHeight = textureHeight;
         this.textureLocation = textureLocation;
     }
 
@@ -104,11 +121,23 @@ public class TexturedButton extends Button {
             color = Colour.RED.withAlpha(0.6F);
         }
 
-        System.out.println("fixME!!!!");
+        Minecraft minecraft = Minecraft.getInstance();
+        minecraft.getTextureManager().bindTexture(this.textureLocation);
+        RenderSystem.disableDepthTest();
 
-//        new GuiIcons.GuiIcon(textureSize, textureLocation,
-//                textureX != null ? this.centerx() + textureX : this.centerx(),
-//                textureY != null ? this.centery() + textureY : this.centery(),
-//                color, null, null, null, null);
+        GuiIcon.blit(
+                finalLeft(),
+                finalRight(),
+                finalTop(),
+                finalBottom(),
+                zLevel,
+                finalWidth(),
+                finalHeight(),
+                textureX == null ? 0 : textureX,
+                textureY == null ? 0 : textureY,
+                textureWidth,
+                textureHeight,
+                color);
+        RenderSystem.enableDepthTest();
     }
 }

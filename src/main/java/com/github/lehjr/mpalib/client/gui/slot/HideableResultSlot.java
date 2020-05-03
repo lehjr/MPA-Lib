@@ -8,13 +8,14 @@ import net.minecraft.inventory.container.CraftingResultSlot;
 
 public class HideableResultSlot extends CraftingResultSlot implements IHideableSlot {
     boolean isEnabled = false;
-    public int xPos;
-    public int yPos;
 
     public HideableResultSlot(PlayerEntity playerEntity, CraftingInventory craftingInventory, IInventory inventory, int slotIndex, int xPosition, int yPosition) {
         super(playerEntity, craftingInventory, inventory, slotIndex, xPosition, yPosition);
-        this.xPos = xPosition;
-        this.yPos = yPosition;
+    }
+
+    public HideableResultSlot(PlayerEntity playerEntity, CraftingInventory craftingInventory, IInventory inventory, int slotIndex, int xPosition, int yPosition, boolean isEnabled) {
+        super(playerEntity, craftingInventory, inventory, slotIndex, xPosition, yPosition);
+        this.isEnabled = isEnabled;
     }
 
     @Override

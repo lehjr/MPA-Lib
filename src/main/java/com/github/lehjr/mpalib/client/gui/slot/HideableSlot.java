@@ -6,13 +6,14 @@ import net.minecraft.inventory.container.Slot;
 
 public class HideableSlot extends Slot implements IHideableSlot {
     boolean isEnabled = false;
-    public int xPos;
-    public int yPos;
 
     public HideableSlot(IInventory iInventory, int slotIndex, int xPosition, int yPosition) {
         super(iInventory, slotIndex, xPosition, yPosition);
-        this.xPos = xPosition;
-        this.yPos = yPosition;
+    }
+
+    public HideableSlot(IInventory iInventory, int slotIndex, int xPosition, int yPosition, boolean enabled) {
+        super(iInventory, slotIndex, xPosition, yPosition);
+        this.isEnabled = enabled;
     }
 
     @Override

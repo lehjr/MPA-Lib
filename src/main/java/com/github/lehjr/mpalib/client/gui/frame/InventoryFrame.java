@@ -74,8 +74,8 @@ public class InventoryFrame extends ScrollableFrame {
                     } else if (slot instanceof IHideableSlot) {
                         ((IHideableSlot) slot).setPosition(position);
                     } else {
-                        System.out.println("fixme: slot positions are final!!!");
-                        System.out.println("slot class:" + slot.getClass());
+                        slot.xPos = (int) position.getX();
+                        slot.yPos = (int) position.getY();
                     }
                     i++;
                 }
@@ -123,10 +123,10 @@ public class InventoryFrame extends ScrollableFrame {
 
             if (this.tiles != null && !this.tiles.isEmpty()) {
                 for (DrawableTile tile : tiles) {
-                    tile.draw(zLevel);
+                    // add slight offset so the lines show up (this is why the param was added)
+                    tile.draw(zLevel+ 1);
                 }
             }
-
             border.drawBorder(buffer);
         }
 

@@ -34,7 +34,6 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public class PlayerUpdatePacket {
-    int playerID;
     boolean downKeyState;
     boolean jumpKeyState;
 
@@ -43,9 +42,7 @@ public class PlayerUpdatePacket {
         this.jumpKeyState = jumpkeyState;
     }
 
-
     public static void encode(PlayerUpdatePacket msg, PacketBuffer packetBuffer) {
-        packetBuffer.writeInt(msg.playerID);
         packetBuffer.writeBoolean(msg.downKeyState);
         packetBuffer.writeBoolean(msg.jumpKeyState);
     }

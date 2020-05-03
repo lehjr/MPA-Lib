@@ -7,14 +7,16 @@ import net.minecraftforge.items.SlotItemHandler;
 public class HideableSlotItemHandler extends SlotItemHandler implements IHideableSlot {
     boolean isEnabled = false;
     protected int parentSlot = -1;
-    public int xPos;
-    public int yPos;
 
     public HideableSlotItemHandler(IItemHandler itemHandler, int parent, int index, int xPosition, int yPosition) {
         super(itemHandler, index, xPosition, yPosition);
         this.parentSlot = parent;
-        this.xPos = xPosition;
-        this.yPos = yPosition;
+    }
+
+    public HideableSlotItemHandler(IItemHandler itemHandler, int parent, int index, int xPosition, int yPosition, boolean isEnabled) {
+        super(itemHandler, index, xPosition, yPosition);
+        this.parentSlot = parent;
+        this.isEnabled = isEnabled;
     }
 
     public int getParentSlot(){

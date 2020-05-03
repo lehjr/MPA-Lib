@@ -201,6 +201,9 @@ public class UniversalSlot extends Slot implements IClickable {
 
     @Override
     public void move(float x, float y) {
+        // FIXME: move should set how much to move by rather than absolute value of position
+
+        System.out.println("FIXME... behaviour change coming!!");
         this.position.setX(x);
         this.position.setY(y);
     }

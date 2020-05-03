@@ -14,6 +14,10 @@ public class SoundDictionary {
     public static SoundEvent SOUND_EVENT_GUI_SELECT = initSoundSound("gui_select");
     public static SoundEvent SOUND_EVENT_BOOP = initSoundSound("boop");
 
+    static {
+        new SoundDictionary();
+    }
+
     @SubscribeEvent
     public static void registerSoundEvent(RegistryEvent.Register<SoundEvent> event) {
         event.getRegistry().registerAll(
