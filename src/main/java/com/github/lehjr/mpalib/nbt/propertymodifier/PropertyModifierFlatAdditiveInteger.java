@@ -37,8 +37,8 @@ public class PropertyModifierFlatAdditiveInteger implements IPropertyModifierInt
         this.valueAdded = valueAdded;
     }
 
-    public PropertyModifierFlatAdditiveInteger(double valueAdded, int roundTo, int offset) {
-        this.valueAdded = (int) Math.round(Double.valueOf(roundWithOffset(valueAdded, roundTo, offset)));
+    public PropertyModifierFlatAdditiveInteger(float valueAdded, int roundTo, int offset) {
+        this.valueAdded = (int) Math.round(Float.valueOf(roundWithOffset(valueAdded, roundTo, offset)));
     }
 
     /**
@@ -50,10 +50,10 @@ public class PropertyModifierFlatAdditiveInteger implements IPropertyModifierInt
     @Override
     public Integer applyModifier(CompoundNBT moduleTag, Integer value) {
         long rounded = roundWithOffset(value, roundTo, offset);
-        return this.valueAdded + (int) Math.round(Double.valueOf(rounded));
+        return this.valueAdded + (int) Math.round(Float.valueOf(rounded));
     }
 
-    public long roundWithOffset(double input, int roundTo, int offset) {
+    public long roundWithOffset(float input, int roundTo, int offset) {
         return Math.round((input + offset) / roundTo) * roundTo - offset;
     }
 }

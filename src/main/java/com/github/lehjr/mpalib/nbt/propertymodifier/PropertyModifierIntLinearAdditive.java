@@ -41,7 +41,7 @@ public class PropertyModifierIntLinearAdditive extends PropertyModifierLinearAdd
 
     @Override
     public Float applyModifier(CompoundNBT moduleTag, Float value) {
-        long result = (long) (value + multiplier * NBTUtils.getDoubleOrZero(moduleTag, tradeoffName));
+        long result = (long) (value + multiplier * NBTUtils.getFloatOrZero(moduleTag, tradeoffName));
         return Float.valueOf(roundWithOffset(result, roundTo, offset));
     }
 

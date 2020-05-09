@@ -19,8 +19,6 @@ public class RangedSlider extends Clickable {
     DrawableRect insideRect;
     DrawableRect outsideRect;
 
-    public int id;
-
     /**
      * Is this slider control being dragged.
      */
@@ -36,17 +34,16 @@ public class RangedSlider extends Clickable {
     @Nullable
     public ISlider parent = null;
 
-    public RangedSlider(int id, Point2F position, float width, String label, float minVal, float maxVal, float currentVal) {
-        this(id, position, width, label, minVal, maxVal, currentVal, null);
+    public RangedSlider(Point2F position, float width, String label, float minVal, float maxVal, float currentVal) {
+        this(position, width, label, minVal, maxVal, currentVal, null);
     }
 
-    public RangedSlider(int id, Point2F position, String label, float minVal, float maxVal, float currentVal, ISlider par) {
-        this(id, position, 150, label, minVal, maxVal, currentVal, par);
+    public RangedSlider(Point2F position, String label, float minVal, float maxVal, float currentVal, ISlider par) {
+        this(position, 150, label, minVal, maxVal, currentVal, par);
     }
 
-    public RangedSlider(int id, Point2F position, float width, String label, float minVal, float maxVal, float currentVal, @Nullable ISlider iSlider) {
+    public RangedSlider(Point2F position, float width, String label, float minVal, float maxVal, float currentVal, @Nullable ISlider iSlider) {
         this.width = width;
-        this.id = id;
         this.position = position;
         this.label = label;
         createNewRects();
@@ -86,10 +83,6 @@ public class RangedSlider extends Clickable {
         if (siderStart != sliderValue && parent != null) {
             parent.onChangeSliderValue(this);
         }
-    }
-
-    public int id() {
-        return this.id;
     }
 
     public void setLabel(String label) {
