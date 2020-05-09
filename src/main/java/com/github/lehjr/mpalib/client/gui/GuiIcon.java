@@ -106,53 +106,23 @@ public class GuiIcon {
             float posTop = yOffset + maskTop;
             float width = textureWidth - maskRight - maskLeft;
             float height = textureHeight - maskBottom - maskTop;
+
+            float posRight = posLeft + width;
+            float posBottom = posTop + height;
+
             float uSize = icon.getMaxU() - icon.getMinU();
             float vSize = icon.getMaxV() - icon.getMinV();
-
             float minU = icon.getMinU() + uSize * (maskLeft / textureWidth);
             float minV = icon.getMinV() + vSize * (maskTop / textureHeight);
             float maxU = icon.getMaxU() - uSize * (maskRight / textureWidth);
             float maxV = icon.getMaxV() - vSize * (maskBottom / textureHeight);
 
-//            RenderSystem.enableBlend();
-//            RenderSystem.disableAlphaTest();
-//            RenderSystem.defaultBlendFunc();
-//            RenderSystem.shadeModel(GL11.GL_SMOOTH);
-
-
-            RenderSystem.disableDepthTest();
-
-
-//            colour.doGL();
-
-//            Tessellator tessellator = Tessellator.getInstance();
-
-            innerBlit(posLeft, posLeft + width, posTop, posTop + height, zLevel, minU, maxU, minV, maxV, colour);
-
-//            BufferBuilder bufferBuilder = tessellator.getBuffer();
-//            bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-//
-//            // bottom left
-//            bufferBuilder.pos(posLeft, posTop + height, zLevel)
-//                    .tex(minU, maxV).endVertex();
-//
-//            // bottom right
-//            bufferBuilder.pos(posLeft + width, posTop + height, zLevel)
-//                    .tex(maxU, maxV).endVertex();
-//
-//            // top right
-//            bufferBuilder.pos(posLeft + width, posTop, zLevel)
-//                    .tex(maxU, minV).endVertex();
-//
-//            // top left
-//            bufferBuilder.pos(posLeft, posTop, zLevel)
-//                    .tex(minU, minV) .endVertex();
-//            tessellator.draw();
-
-//            RenderSystem.shadeModel(GL11.GL_FLAT);
-//            RenderSystem.disableBlend();
-//            RenderSystem.enableAlphaTest();
-
+            RenderSystem.enableBlend();
+            RenderSystem.disableAlphaTest();
+            RenderSystem.defaultBlendFunc();
+            innerBlit(posLeft, posRight, posTop, posBottom, zLevel, minU, maxU, minV, maxV, colour);
+            RenderSystem.disableBlend();
+            RenderSystem.enableAlphaTest();
             RenderSystem.enableDepthTest();
         }
 
@@ -176,140 +146,116 @@ public class GuiIcon {
     }
 
     /**
-     * Renders an 8x8 stand alone icon
      *
      * @param location resource location of the Icon
-     * @param posLeft the left most position of the drawing rectangle
-     * @param posTop the top most position of the drawing rectangle
-     * @param width the width of the rectangle
-     * @param height the height of the rectangle
+     * @param left the left most position of the drawing rectangle
+     * @param top the top most position of the drawing rectangle
+     * @param bottom bottom most position of the drawing rectangle
+     * @param zLevel depth to draw at
      */
-    public static void renderIcon8(ResourceLocation location, float posLeft, float posTop, float width, float height) {
-        renderTexture(location, posLeft, posTop, width, height, 0, 0, 8, 8);
-    }
-
-    /**
-     *
-     * @param location resource location of the Icon
-     * @param posLeft the left most position of the drawing rectangle
-     * @param posTop the top most position of the drawing rectangle
-     * @param width the width of the rectangle
-     * @param height the height of the rectangle
-     * @param colour the Colour to apply to the texture
-     */
-    public static void renderIcon8(ResourceLocation location, float posLeft, float posTop, float width, float height, Colour colour) {
-        renderTextureWithColour(location, posLeft, posTop, width, height, 0, 0, 8, 8, colour);
+    public static void renderIcon8(ResourceLocation location, float left, float top, float right, float bottom, float zLevel) {
+        renderIcon8(location, left, top, right, bottom, zLevel, Colour.WHITE);
     }
 
     /**
      *
      * @param location resource location of the Icon
-     * @param posLeft the left most position of the drawing rectangle
-     * @param posTop the top most position of the drawing rectangle
-     * @param width the width of the rectangle
-     * @param height the height of the rectangle
+     * @param left the left most position of the drawing rectangle
+     * @param top the top most position of the drawing rectangle
+     * @param bottom bottom most position of the drawing rectangle
+     * @param zLevel depth to draw at
+     * @param colour color to apply to the texture
      */
-    public static void renderIcon16(ResourceLocation location, float posLeft, float posTop, float width, float height) {
-        renderTexture(location, posLeft, posTop, width, height, 0, 0, 16, 16);
+    public static void renderIcon8(ResourceLocation location, float left, float top, float right, float bottom, float zLevel, Colour colour) {
+        renderTextureWithColour(location, left, right, top, bottom, zLevel, 8, 8, 0, 0, 8, 8, colour);
     }
 
     /**
      *
      * @param location resource location of the Icon
-     * @param posLeft the left most position of the drawing rectangle
-     * @param posTop the top most position of the drawing rectangle
-     * @param width the width of the rectangle
-     * @param height the height of the rectangle
-     * @param colour the Colour to apply to the texture
+     * @param left the left most position of the drawing rectangle
+     * @param top the top most position of the drawing rectangle
+     * @param bottom bottom most position of the drawing rectangle
+     * @param zLevel depth to draw at
      */
-    public static void renderIcon16(ResourceLocation location, float posLeft, float posTop, float width, float height, Colour colour) {
-        renderTextureWithColour(location, posLeft, posTop, width, height, 0, 0, 16, 16, colour);
+    public static void renderIcon16(ResourceLocation location, float left, float top, float right, float bottom, float zLevel) {
+        renderIcon16(location, left, top, right, bottom, zLevel, Colour.WHITE);
     }
 
     /**
-     * Actually render the texture
-     * @param posLeft the left most position of the drawing rectangle
-     * @param posTop the top most position of the drawing rectangle
-     * @param textStartX the leftmost point of the texture on the sheet (usually 0 for an icon)
-     * @param textStartY the topmost point of the texture on the sheet (usually 0 for an icon)
-     * @param width the width of the rectangle
-     * @param height the height of the rectangle
-     * @param textureWidth the width of the texture (often 8 or 16 for icons)
-     * @param textureHeight the height of the texture (often 8 or 16 for icons)
+     *
+     * @param location resource location of the Icon
+     * @param left the left most position of the drawing rectangle
+     * @param top the top most position of the drawing rectangle
+     * @param bottom bottom most position of the drawing rectangle
+     * @param zLevel depth to draw at
+     * @param colour color to apply to the texture
      */
-    public static void renderTexture(ResourceLocation location, float posLeft, float posTop, float width, float height, float textStartX, float textStartY, float textureWidth, float textureHeight) {
-        renderTextureWithColour(location, posLeft, posTop, width, height, textStartX, textStartY, textureWidth, textureHeight, Colour.WHITE);
+    public static void renderIcon16(ResourceLocation location, float left, float top, float right, float bottom, float zLevel, Colour colour) {
+        renderTextureWithColour(location, left, right, top, bottom, zLevel, 16, 16, 0, 0, 16, 16, colour);
     }
 
     /**
-     * Actually render the texture
-     * @param posLeft the left most position of the drawing rectangle
-     * @param posTop the top most position of the drawing rectangle
-     * @param textStartX the leftmost point of the texture on the sheet (usually 0 for an icon)
-     * @param textStartY the topmost point of the texture on the sheet (usually 0 for an icon)
-     * @param width the width of the rectangle
-     * @param height the height of the rectangle
+     *
+     * @param location resource location of the Icon
+     * @param left the left most position of the drawing rectangle
+     * @param right the right most position of the drawing rectangle
+     * @param top the top most position of the drawing rectangle
+     * @param bottom the bottom most position of the drawing rectangle
+     * @param zLevel depth at which to draw (usually Minecraft.getInstance().currentScreen.getBlitLevel())
+     * @param iconWidth actual width of the icon to draw
+     * @param iconHeight actual height of the icon to draw
+     * @param texStartX the leftmost point of the texture on the sheet (usually 0 for an icon)
+     * @param texStartY the topmost point of the texture on the sheet (usually 0 for an icon)
      * @param textureWidth the width of the texture (often 8 or 16 for icons)
      * @param textureHeight the height of the texture (often 8 or 16 for icons)
      * @param colour the Colour to apply to the texture
      */
-    public static void renderTextureWithColour(ResourceLocation location, float posLeft, float posTop, float width, float height, float textStartX, float textStartY, float textureWidth, float textureHeight, Colour colour) {
+    public static void renderTextureWithColour(ResourceLocation location,
+                                               float left, float right, float top, float bottom, float zLevel, float iconWidth, float iconHeight, float texStartX, float texStartY, float textureWidth, float textureHeight, Colour colour) {
         Minecraft minecraft = Minecraft.getInstance();
         minecraft.getTextureManager().bindTexture(location);
-        float zLevel = minecraft.currentScreen.getBlitOffset();
-        RenderSystem.disableDepthTest();
-        blit(posLeft, posTop, zLevel, textStartX, textStartY, width, height,  textureWidth, textureHeight, colour);
+        RenderSystem.enableBlend();
+        RenderSystem.disableAlphaTest();
+        RenderSystem.defaultBlendFunc();
+        innerBlit(left, right, top, bottom, zLevel, iconWidth, iconHeight, texStartX, texStartY, textureWidth, textureHeight, colour);
+        RenderSystem.disableBlend();
+        RenderSystem.enableAlphaTest();
         RenderSystem.enableDepthTest();
     }
 
     /**
-     * Basically like vanilla's version but with floats and a colour parameter
-     * Only does the inner texture rendering
      *
-     * @param posLeft the left most position of the drawing rectangle
-     * @param posTop the top most position of the drawing rectangle
-     * @param zLevel the depth position of the drawing rectangle
-     * @param textStartX the leftmost point of the texture on the sheet (usually 0 for an icon)
-     * @param textStartY the topmost point of the texture on the sheet (usually 0 for an icon)
-     * @param width the width of the rectangle
-     * @param height the height of the rectangle
-     * @param textureWidth the width of the texture (often 8 or 16 for icons)
-     * @param textureHeight the height of the texture (often 8 or 16 for icons)
-     * @param colour the Colour to apply to the texture
+     * @param left the left most position of the drawing rectangle
+     * @param right the right most position of the drawing rectangle
+     * @param top the top most position of the drawing rectangle
+     * @param bottom the bottom most position of the drawing rectangle
+     * @param zLevel depth to render at
+     * @param iconWidth width of the portion of the texture to display
+     * @param iconHeight iconHeight of the portion of texture to display
+     * @param texStartX location of the left of the texture on the sheet
+     * @param texStartY location of the top of the texture on the sheet
+     * @param textureWidth total texture sheet width
+     * @param textureHeight total texture sheet iconHeight
+     * @param colour colour to apply to the texture
      */
-    public static void blit(float posLeft, float posTop, float zLevel, float textStartX, float textStartY, float width, float height, float textureWidth, float textureHeight, Colour colour) {
-        blit(posLeft, posLeft + width, posTop, posTop + height, zLevel, width, height, textStartX, textStartY, textureHeight, textureWidth, colour);
+    private static void innerBlit(float left, float right, float top, float bottom, float zLevel, float iconWidth, float iconHeight, float texStartX, float texStartY, float textureWidth, float textureHeight, Colour colour) {
+        innerBlit(left, right, top, bottom, zLevel,
+                (texStartX + 0.0F) / textureWidth,
+                (texStartX + iconWidth) / textureWidth,
+                (texStartY + 0.0F) / textureHeight,
+                (texStartY + iconHeight) / textureHeight,
+                colour);
     }
 
     /**
      * Basically like vanilla's version but with floats and a colour parameter
      * Only does the inner texture rendering
      *
-     * @param posLeft the left most position of the drawing rectangle
-     * @param posRight the right most position of the drawing rectangle
-     * @param posTop the top most position of the drawing rectangle
-     * @param posBottom the bottom most position of the drawing rectangle
-     * @param zLevel the depth position of the drawing rectangle
-     * @param width the width of the rectangle
-     * @param height the height of the rectangle
-     * @param textStartX the leftmost point of the texture on the sheet (usually 0 for an icon)
-     * @param textStartY the topmost point of the texture on the sheet (usually 0 for an icon)
-     * @param textureWidth the width of the texture (often 8 or 16 for icons)
-     * @param textureHeight the height of the texture (often 8 or 16 for icons)
-     * @param colour the Colour to apply to the texture
-     */
-    public static void blit(float posLeft, float posRight, float posTop, float posBottom, float zLevel, float width, float height, float textStartX, float textStartY, float textureWidth, float textureHeight, Colour colour) {
-        innerBlit(posLeft, posRight, posTop, posBottom, zLevel, textStartX / textureWidth, (textStartX + width) / textureWidth, textStartY / textureHeight, (textStartY + height) / textureHeight, colour);
-    }
-
-    /**
-     * Basically like vanilla's version but with floats and a colour parameter
-     * Only does the inner texture rendering
-     *
-     * @param posLeft the left most position of the drawing rectangle
-     * @param posRight the right most position of the drawing rectangle
-     * @param posTop the top most position of the drawing rectangle
-     * @param posBottom the bottom most position of the drawing rectangle
+     * @param left the left most position of the drawing rectangle
+     * @param right the right most position of the drawing rectangle
+     * @param top the top most position of the drawing rectangle
+     * @param bottom the bottom most position of the drawing rectangle
      * @param zLevel the depth position of the drawing rectangle
      * Note: UV positions are scaled (0.0 - 1.0)
      * @param minU the left most UV mapped position
@@ -318,31 +264,21 @@ public class GuiIcon {
      * @param maxV the bottom most UV mapped position
      * @param colour the Colour to apply to the texture
      */
-    public static void innerBlit(float posLeft, float posRight, float posTop, float posBottom, float zLevel, float minU, float maxU, float minV, float maxV, Colour colour) {
-        BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
-        if (colour != Colour.WHITE) {
-            bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
-            // bottom left
-            bufferbuilder.pos(posLeft, posBottom, zLevel).color(colour.r, colour.b, colour.g, colour.a).tex(minU, maxV).endVertex();
-            // bottom right
-            bufferbuilder.pos(posRight, posBottom, zLevel).color(colour.r, colour.b, colour.g, colour.a).tex(maxU, maxV).endVertex();
-            // top right
-            bufferbuilder.pos(posRight, posTop, zLevel).color(colour.r, colour.b, colour.g, colour.a).tex(maxU, minV).endVertex();
-            // top left
-            bufferbuilder.pos(posLeft, posTop, zLevel).color(colour.r, colour.b, colour.g, colour.a).tex(minU, minV).endVertex();
-        } else {
-            bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-            // bottom left
-            bufferbuilder.pos(posLeft, posBottom, zLevel).tex(minU, maxV).endVertex();
-            // bottom right
-            bufferbuilder.pos(posRight, posBottom, zLevel).tex(maxU, maxV).endVertex();
-            // top right
-            bufferbuilder.pos(posRight, posTop, zLevel).tex(maxU, minV).endVertex();
-            // top left
-            bufferbuilder.pos(posLeft, posTop, zLevel).tex(minU, minV).endVertex();
-        }
-        bufferbuilder.finishDrawing();
-        RenderSystem.enableAlphaTest();
-        WorldVertexBufferUploader.draw(bufferbuilder);
+    public static void innerBlit(float left, float right, float top, float bottom, float zLevel, float minU, float maxU, float minV, float maxV, Colour colour) {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+
+        colour.doGL();
+        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        // bottom left
+        bufferBuilder.pos(left, bottom, zLevel).tex(minU, maxV).endVertex();
+        // bottom right
+        bufferBuilder.pos(right, bottom, zLevel).tex(maxU, maxV).endVertex();
+        // top right
+        bufferBuilder.pos(right, top, zLevel).tex(maxU, minV).endVertex();
+        // top left
+        bufferBuilder.pos(left, top, zLevel).tex(minU, minV).endVertex();
+
+        tessellator.draw();
     }
 }

@@ -30,21 +30,16 @@ import com.github.lehjr.mpalib.client.gui.GuiIcon;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.gui.geometry.Rect;
 import com.github.lehjr.mpalib.math.Colour;
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldVertexBufferUploader;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 public class TexturedButton extends Button {
     ResourceLocation textureLocation;
-    Float textureX;
-    Float textureY;
+    float texStartX;
+    float texStartY;
     float textureWidth;
     float textureHeight;
+    float iconWidth;
+    float iconHeight;
 
     public TexturedButton(float left, float top, float right, float bottom, boolean growFromMiddle,
                           Colour backgroundColourEnabled,
@@ -55,9 +50,11 @@ public class TexturedButton extends Button {
                           float textureHeight,
                           ResourceLocation textureLocation) {
         super(left, top, right, bottom, growFromMiddle, backgroundColourEnabled, backgroundColourDisabled, borderColourEnabled, borderColourDisabled);
-        this.textureWidth = textureWidth;
-        this.textureHeight = textureHeight;
+        this.textureWidth = this.iconWidth = textureWidth;
+        this.textureHeight = this.iconHeight = textureHeight;
         this.textureLocation = textureLocation;
+        this.texStartX = 0;
+        this.texStartY = 0;
     }
 
     public TexturedButton(float left, float top, float right, float bottom,
@@ -72,6 +69,8 @@ public class TexturedButton extends Button {
         this.textureWidth = textureWidth;
         this.textureHeight = textureHeight;
         this.textureLocation = textureLocation;
+        this.texStartX = 0;
+        this.texStartY = 0;
     }
 
     public TexturedButton(Point2F ul, Point2F br,
@@ -86,6 +85,8 @@ public class TexturedButton extends Button {
         this.textureWidth = textureWidth;
         this.textureHeight = textureHeight;
         this.textureLocation = textureLocation;
+        this.texStartX = 0;
+        this.texStartY = 0;
     }
 
     public TexturedButton(Rect ref,
@@ -100,16 +101,29 @@ public class TexturedButton extends Button {
         this.textureWidth = textureWidth;
         this.textureHeight = textureHeight;
         this.textureLocation = textureLocation;
+        this.texStartX = 0;
+        this.texStartY = 0;
     }
 
-    public void setTextureOffsetX(float xOffset) {
-        textureX = xOffset;
+    public TexturedButton setTextureStartX(float xOffset) {
+        this.texStartX = xOffset;
+        return this;
     }
 
-    public void setTextureOffsetY(float yOffset) {
-        textureY = yOffset;
+    public TexturedButton setTextureStartY(float yOffset) {
+        this.texStartY = yOffset;
+        return this;
     }
 
+    public TexturedButton setIconWidth(float iconWidth) {
+        this.iconWidth = iconWidth;
+        return this;
+    }
+
+    public TexturedButton setIconHeight(float iconHeight) {
+        this.iconHeight = iconHeight;
+        return this;
+    }
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
@@ -121,23 +135,8 @@ public class TexturedButton extends Button {
             color = Colour.RED.withAlpha(0.6F);
         }
 
-        Minecraft minecraft = Minecraft.getInstance();
-        minecraft.getTextureManager().bindTexture(this.textureLocation);
-        RenderSystem.disableDepthTest();
+        GuiIcon.renderTextureWithColour(this.textureLocation, left(), right(), top(), bottom(), zLevel,
+        iconWidth, iconHeight, texStartX, texStartY, textureWidth, textureHeight, color);
 
-        GuiIcon.blit(
-                finalLeft(),
-                finalRight(),
-                finalTop(),
-                finalBottom(),
-                zLevel,
-                finalWidth(),
-                finalHeight(),
-                textureX == null ? 0 : textureX,
-                textureY == null ? 0 : textureY,
-                textureWidth,
-                textureHeight,
-                color);
-        RenderSystem.enableDepthTest();
     }
 }
