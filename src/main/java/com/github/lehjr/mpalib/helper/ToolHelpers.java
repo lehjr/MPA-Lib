@@ -27,9 +27,12 @@
 package com.github.lehjr.mpalib.helper;
 
 import net.minecraft.block.*;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.ToolItem;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -47,11 +50,13 @@ public class ToolHelpers {
     public static boolean isToolEffective(IBlockReader world, BlockPos pos, @Nonnull ItemStack emulatedTool) {
         BlockState state = world.getBlockState(pos);
 
-        if (state.getBlockHardness(world, pos) == -1.0F) // unbreakable
+        if (Float.compare(state.getBlockHardness(world, pos), -1.0F) < 0 ) {// unbreakable
             return false;
+        }
 
-        if (emulatedTool.getItem().canHarvestBlock(state))
+        if (emulatedTool.getItem().canHarvestBlock(state)) {
             return true;
+        }
 
         ToolType harvestTool = state.getBlock().getHarvestTool(state);
         if (harvestTool != null) {
@@ -61,16 +66,12 @@ public class ToolHelpers {
                         emulatedTool.getItem().getHarvestLevel(emulatedTool, harvestTool, null, null) >= state.getBlock().getHarvestLevel(state)))
                     return true;
             }
+        } else {
+            // 1.0F is the neutral destroy speed
+            if (Float.compare(emulatedTool.getDestroySpeed(state), 1.0F) >= 0) { // float math not reliable
+                return true;
+            }
         }
-//        else {
-//            Item.ToolMaterial material;
-//            if (emulatedTool.getItemStack() instanceof ItemTool)
-//                material = Item.ToolMaterial.valueOf(((ItemTool) emulatedTool.getItemStack()).getToolMaterialName());
-//            else
-//                material = Item.ToolMaterial.IRON;
-//            if (emulatedTool.getDestroySpeed(state) >= material.getEfficiency())
-//                return true;
-//        }
         return false;
     }
 
