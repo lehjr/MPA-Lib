@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.client.event;
 
-import com.github.lehjr.mpalib.basemod.MPALibConfig;
+import com.github.lehjr.mpalib.config.MPALibSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.resources.I18n;
@@ -53,13 +53,13 @@ public class FOVUpdateEventHandler {
     public FOVUpdateEventHandler() {
         ClientRegistry.registerKeyBinding(fovToggleKey);
     }
-    public static KeyBinding fovToggleKey = new KeyBinding("keybind.fovfixtoggle", GLFW.GLFW_KEY_UNKNOWN, "Numina");
+    public static KeyBinding fovToggleKey = new KeyBinding("keybind.fovfixtoggle", GLFW.GLFW_KEY_UNKNOWN, "MPALib");
 
-    public boolean fovIsActive = MPALibConfig.FOV_FIX_DEAULT_STATE.get();
+    public boolean fovIsActive = MPALibSettings.fovFixDefaultState();
 
     @SubscribeEvent
     public void onFOVUpdate(FOVUpdateEvent e) {
-        if (MPALibConfig.USE_FOV_FIX.get()) {
+        if (MPALibSettings.useFovFix()) {
             ClientPlayerEntity player = Minecraft.getInstance().player;
             if (fovToggleKey.isPressed()) {
                 fovIsActive = !fovIsActive;
@@ -68,11 +68,11 @@ public class FOVUpdateEventHandler {
                 else
                     player.sendMessage(new StringTextComponent(I18n.format("fovfixtoggle.disabled")));
             }
-        }
 
-        if (MPALibConfig.USE_FOV_FIX.get() && fovIsActive) {
-            IAttributeInstance attributeinstance = e.getEntity().getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-            e.setNewfov((float) (e.getNewfov() / ((attributeinstance.getValue() / e.getEntity().abilities.getWalkSpeed() + 1.0) / 2.0)));
+            if (fovIsActive) {
+                IAttributeInstance attributeinstance = e.getEntity().getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+                e.setNewfov((float) (e.getNewfov() / ((attributeinstance.getValue() / e.getEntity().abilities.getWalkSpeed() + 1.0) / 2.0)));
+            }
         }
     }
 }

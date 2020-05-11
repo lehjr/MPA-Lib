@@ -10,6 +10,7 @@ import com.github.lehjr.mpalib.client.event.RenderGameOverlayEventHandler;
 import com.github.lehjr.mpalib.client.gui.GuiIcon;
 import com.github.lehjr.mpalib.client.gui.MPALibSpriteUploader;
 import com.github.lehjr.mpalib.client.render.IconUtils;
+import com.github.lehjr.mpalib.config.MPALibSettings;
 import com.github.lehjr.mpalib.event.EventBusHelper;
 import com.github.lehjr.mpalib.network.MPALibPackets;
 import forge.MPAOBJLoader;
@@ -49,15 +50,14 @@ public class MPALib {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public MPALib() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MPALibConfig.COMMON_SPEC, MPALibConfig.setupConfigFile("mpalib-common.toml").getAbsolutePath());
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MPALibConfig.CLIENT_SPEC, MPALibConfig.setupConfigFile("mpalib-client-only.toml").getAbsolutePath());
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MPALibSettings.CLIENT_SPEC, MPALibSettings.setupConfigFile("mpalib-client-only.toml", MPALIbConstants.MOD_ID).getAbsolutePath());
+        // TODO:
+//        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MPALibConfig.COMMON_SPEC, MPALibConfig.setupConfigFile("mpalib-common.toml").getAbsolutePath());
+//        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MPALibConfig.SERVER_SPEC, "/lehjr/mpalib/mpalib-server.toml");
 
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-//        // Register the enqueueIMC method for modloading
-//        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-//        // Register the processIMC method for modloading
-//        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+
         // Register the doClientStuff method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
@@ -105,59 +105,12 @@ public class MPALib {
 
         // Player
         CapabilityPlayerKeyStates.register();
-
-
-        //
-
-//        // some preinit code
-//        LOGGER.info("HELLO FROM PREINIT");
-//        LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
-        // do something that can only be done on the client
-//        LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
-
-//        ModelLoaderRegistry.registerLoader(MPALibOBJLoader.INSTANCE); // crashes if called in mod constructor
         MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
         MinecraftForge.EVENT_BUS.register(new RenderGameOverlayEventHandler());
     }
-
-
-//    private void enqueueIMC(final InterModEnqueueEvent event) {
-//        // some example code to dispatch IMC to another mod
-//        InterModComms.sendTo("examplemod", "helloworld", () -> {
-//            LOGGER.info("Hello world from the MDK");
-//            return "Hello world";
-//        });
-//    }
-//
-//    private void processIMC(final InterModProcessEvent event) {
-//        // some example code to receive and process InterModComms from other mods
-//        LOGGER.info("Got IMC {}", event.getIMCStream().
-//                map(m -> m.getMessageSupplier().get()).
-//                collect(Collectors.toList()));
-//    }
-//
-//    // You can use SubscribeEvent and let the Event Bus discover methods to call
-//    @SubscribeEvent
-//    public void onServerStarting(FMLServerStartingEvent event) {
-//        // do something when the server starts
-//        LOGGER.info("HELLO from server starting");
-//    }
-//
-//    // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
-//    // Event bus for receiving Registry Events)
-//    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-//    public static class RegistryEvents {
-//        @SubscribeEvent
-//        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
-//            // register a new block here
-//            LOGGER.info("HELLO from Register Block");
-//        }
-//    }
-
-
 
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event) {

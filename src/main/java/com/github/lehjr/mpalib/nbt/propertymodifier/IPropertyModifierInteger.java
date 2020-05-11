@@ -24,7 +24,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.mpalib.nbt.propertymodifier;//package net.machinemuse.numina.api.nbt;
+package com.github.lehjr.mpalib.nbt.propertymodifier;
 
 import net.minecraft.nbt.CompoundNBT;
 

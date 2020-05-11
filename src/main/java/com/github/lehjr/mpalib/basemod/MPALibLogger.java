@@ -26,6 +26,7 @@
 
 package com.github.lehjr.mpalib.basemod;
 
+import com.github.lehjr.mpalib.config.MPALibSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,8 +36,9 @@ public final class MPALibLogger {
     public static void logDebug(String string) {
         boolean debugging = true;
         try {
-            if (!MPALibConfig.DEBUGGING_INFO.get())
+            if (!MPALibSettings.enableDebugging()) {
                 debugging = false;
+            }
         } catch (Exception ignored) {
         }
         if (debugging) logger.info(string);

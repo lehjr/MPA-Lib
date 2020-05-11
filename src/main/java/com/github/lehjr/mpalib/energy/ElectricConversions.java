@@ -26,8 +26,6 @@
 
 package com.github.lehjr.mpalib.energy;
 
-import com.github.lehjr.mpalib.basemod.MPALibConfig;
-
 /**
  * Author: MachineMuse (Claire Semple)
  * Created: 4:51 AM, 4/28/13
@@ -35,38 +33,26 @@ import com.github.lehjr.mpalib.basemod.MPALibConfig;
  * Ported to Java by lehjr on 11/4/16.
  */
 public class ElectricConversions {
-    /**
-     * Industrialcraft 2 --------------------------------------------------------------------------
-     */
-    public static final String IC2_TIER = "IC2 Tier";
-
-    public static double museEnergyToEU(final double museEnergy) {
-        return museEnergy / MPALibConfig.IC2_EU_TO_RF_RATIO;
-    }
-
-    public static int museEnergyFromEU(final double eu) {
-        return (int) Math.round(eu * MPALibConfig.IC2_EU_TO_RF_RATIO);
-    }
-
-    /**
-     * Mekanism ------------------------------------------------------------------------------------
-     */
-    public static double museEnergyToMek(final double museEnergy) { // no current conversion rate
-        return Math.ceil(museEnergy / MPALibConfig.MEK_J_TO_RF_RATIO);
-    }
-
-    public static int museEnergyFromMek(final double mj) { // no current conversion rate
-        return (int) Math.round(mj * MPALibConfig.MEK_J_TO_RF_RATIO);
-    }
-
-    /**
-     * Applied Energistics 2 ----------------------------------------------------------------------
-     */
-    public static double museEnergyFromAE(final double ae) {
-        return ae * MPALibConfig.AE_TO_RF_RATIO;
-    }
-
-    public static double museEnergyToAE(final double museEnergy) {
-        return museEnergy / MPALibConfig.AE_TO_RF_RATIO;
-    }
+//    /**
+//     * Industrialcraft 2 --------------------------------------------------------------------------
+//     */
+//    public static final String IC2_TIER = "IC2 Tier";
+//
+//    public static double museEnergyToEU(final double museEnergy) {
+//        return museEnergy / MPALibConfig.IC2_EU_TO_RF_RATIO;
+//    }
+//
+//    public static int museEnergyFromEU(final double eu) {
+//        return (int) Math.round(eu * MPALibConfig.IC2_EU_TO_RF_RATIO);
+//    }
+//    /**
+//     * Applied Energistics 2 ----------------------------------------------------------------------
+//     */
+//    public static double museEnergyFromAE(final double ae) {
+//        return ae * MPALibConfig.AE_TO_RF_RATIO;
+//    }
+//
+//    public static double museEnergyToAE(final double museEnergy) {
+//        return museEnergy / MPALibConfig.AE_TO_RF_RATIO;
+//    }
 }

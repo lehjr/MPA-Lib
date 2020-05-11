@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.client.sound;
 
-import com.github.lehjr.mpalib.basemod.MPALibConfig;
+import com.github.lehjr.mpalib.config.MPALibSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.audio.SoundHandler;
@@ -54,7 +54,7 @@ public class Musique {
     }
 
     public static void playClientSound(SoundEvent soundEvt, float volumeIn) {
-        if (MPALibConfig.USE_SOUNDS.get()) {
+        if (MPALibSettings.useSounds()) {
             mcsound().play(SimpleSound.master(soundEvt, volumeIn));
         }
     }
@@ -70,7 +70,7 @@ public class Musique {
     public static void playerSound(PlayerEntity player, SoundEvent soundEvt, SoundCategory categoryIn, float volume, Float pitch, Boolean continuous) {
         pitch = (pitch != null) ? pitch : 1.0F;
         continuous = (continuous != null) ? continuous : true;
-        if (MPALibConfig.USE_SOUNDS.get() && soundEvt != null) {
+        if (MPALibSettings.useSounds() && soundEvt != null) {
             String soundID = makeSoundString(player, soundEvt);
             MovingSoundPlayer sound = soundMap.get(soundID);
 
@@ -90,7 +90,7 @@ public class Musique {
     }
 
     public static void stopPlayerSound(PlayerEntity player, SoundEvent soundEvt) {
-        if (MPALibConfig.USE_SOUNDS.get()) {
+        if (MPALibSettings.useSounds()) {
             String soundID = makeSoundString(player, soundEvt);
             MovingSoundPlayer sound = soundMap.get(soundID);
             if (sound != null) {
