@@ -19,7 +19,6 @@ public class MPALibSettings {
 //    public static final CommonConfig SERVER_CONFIG;
 //    public static final ForgeConfigSpec SERVER_SPEC;
 
-
     static {
         {
             final Pair<ClientConfig, ForgeConfigSpec> clientSpecPair = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
@@ -61,6 +60,12 @@ public class MPALibSettings {
 
     /** Common/Server Settings -------------------------------------------------------------------- */
     // TODO
+
+
+    /** Helpers ----------------------------------------------------------------------------------- */
+    public static File getConfigFolder(String modId) {
+        return FMLPaths.CONFIGDIR.get().resolve("lehjr").resolve(modId).toFile();
+    }
 
     public static File setupConfigFile(String fileName, String modId) {
         // MPALIbConstants.MOD_ID
