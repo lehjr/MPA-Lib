@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.capabilities.module.toggleable;
 
-import com.github.lehjr.mpalib.capabilities.IConfig;
+import com.github.lehjr.mpalib.capabilities.module.powermodule.IConfig;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleTarget;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.PowerModule;
@@ -38,13 +38,14 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import javax.annotation.Nonnull;
+import java.util.concurrent.Callable;
 
 public class ToggleableModule extends PowerModule implements IToggleableModule, INBTSerializable<ByteNBT> {
     Boolean online;
     static final String TAG_ONLINE = "Active";
     static boolean defBool;
-    public ToggleableModule(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, IConfig config, boolean defToggleVal) {
-        super(module, category, target, config);
+    public ToggleableModule(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> moduleConfigGetterIn, boolean defToggleVal) {
+        super(module, category, target, moduleConfigGetterIn);
         defBool = defToggleVal;
     }
 

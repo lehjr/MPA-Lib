@@ -24,7 +24,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.mpalib.capabilities;
+package com.github.lehjr.mpalib.capabilities.module.powermodule;
 
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import net.minecraft.item.ItemStack;

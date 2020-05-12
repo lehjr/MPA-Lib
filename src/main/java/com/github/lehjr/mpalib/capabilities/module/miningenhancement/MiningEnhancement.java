@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.capabilities.module.miningenhancement;
 
-import com.github.lehjr.mpalib.capabilities.IConfig;
+import com.github.lehjr.mpalib.capabilities.module.powermodule.IConfig;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleTarget;
 import com.github.lehjr.mpalib.capabilities.module.rightclick.RightClickModule;
@@ -35,10 +35,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nonnull;
+import java.util.concurrent.Callable;
 
 public class MiningEnhancement extends RightClickModule implements IMiningEnhancementModule {
-    public MiningEnhancement(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, IConfig config) {
-        super(module, category, target, config);
+    public MiningEnhancement(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> moduleConfigGetterIn) {
+        super(module, category, target, moduleConfigGetterIn);
     }
 
     @Override

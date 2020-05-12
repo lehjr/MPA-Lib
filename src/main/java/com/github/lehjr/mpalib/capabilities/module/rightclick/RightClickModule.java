@@ -26,16 +26,17 @@
 
 package com.github.lehjr.mpalib.capabilities.module.rightclick;
 
-import com.github.lehjr.mpalib.capabilities.IConfig;
+import com.github.lehjr.mpalib.capabilities.module.powermodule.IConfig;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleTarget;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.PowerModule;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.util.concurrent.Callable;
 
 public class RightClickModule extends PowerModule implements IRightClickModule {
-    public RightClickModule(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, IConfig config) {
-        super(module, category, target, config);
+    public RightClickModule(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> moduleConfigGetterIn) {
+        super(module, category, target, moduleConfigGetterIn);
     }
 }

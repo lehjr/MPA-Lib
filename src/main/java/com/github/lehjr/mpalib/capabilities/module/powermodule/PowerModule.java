@@ -27,9 +27,10 @@
 package com.github.lehjr.mpalib.capabilities.module.powermodule;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
-import com.github.lehjr.mpalib.capabilities.IConfig;
 import com.github.lehjr.mpalib.nbt.NBTUtils;
 import com.github.lehjr.mpalib.nbt.propertymodifier.*;
+import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -37,10 +38,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
 
 public class PowerModule implements IPowerModule {
     protected static Map<String, String> units;
@@ -49,16 +49,17 @@ public class PowerModule implements IPowerModule {
     protected final EnumModuleTarget target;
     protected Map<String, List<IPropertyModifierFloat>> propertyModifiers;
     protected Map<String, List<IPropertyModifierInteger>> propertyBaseIntegers;
-    IConfig config;
+    Callable<IConfig> moduleConfigGetter;
 
-    public PowerModule(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, IConfig config) {
+    public PowerModule(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target,
+                       Callable<IConfig> moduleConfigGetterIn) {
         propertyModifiers = new HashMap<>();
         propertyBaseIntegers = new HashMap<>();
         units = new HashMap<>();
         this.module = module;
         this.category = category;
         this.target = target;
-        this.config = config;
+        this.moduleConfigGetter = moduleConfigGetterIn;
     }
 
     @Override
@@ -88,13 +89,26 @@ public class PowerModule implements IPowerModule {
         return unit == null ? "" : unit;
     }
 
+    Optional<IConfig> getConfig() {
+        try {
+            return Optional.ofNullable(moduleConfigGetter.call());
+        } catch (Exception e) {
+            // not initialized yet
+            // TODO: debug message?
+//            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     /** Float ------------------------------------------------------------------------------------- */
     /**
      * Adds a base key and multiplierValue to the map based on the config setting.
      */
     @Override
     public void addTradeoffPropertyFloat(String tradeoffName, String propertyName, float multiplier) {
-        float propFromConfig = config.getTradeoffPropertyFloatOrDefault(category, module, tradeoffName, propertyName, multiplier);
+        float propFromConfig = getConfig().map(config->
+                config.getTradeoffPropertyFloatOrDefault(category, module, tradeoffName, propertyName, multiplier)).orElse(multiplier);
         addPropertyModifier(propertyName, new PropertyModifierLinearAdditiveFloat(tradeoffName, propFromConfig));
     }
 
@@ -139,7 +153,9 @@ public class PowerModule implements IPowerModule {
      */
     @Override
     public void addBasePropertyFloat(String propertyName, float baseVal) {
-        float propFromConfig = config.getBasePropertyFloatOrDefault(category, module, propertyName, baseVal);
+        float propFromConfig =
+                getConfig().map(config->
+                        config.getBasePropertyFloatOrDefault(category, module, propertyName, baseVal)).orElse(baseVal);
         addPropertyModifier(propertyName, new PropertyModifierFlatAdditiveFloat(propFromConfig));
     }
 
@@ -187,13 +203,15 @@ public class PowerModule implements IPowerModule {
     // This is the only one of these that will give an integer using the double system
     public void addIntTradeoffProperty(String tradeoffName, String propertyName, int multiplier, String unit, int roundTo, int offset) {
         units.put(propertyName, unit);
-        int propFromConfig = config.getTradeoffPropertyIntegerOrDefault(category, module, tradeoffName, propertyName, multiplier);
+        int propFromConfig = getConfig().map(config->
+                config.getTradeoffPropertyIntegerOrDefault(category, module, tradeoffName, propertyName, multiplier)).orElse(multiplier);
         addPropertyModifier(propertyName, new PropertyModifierIntLinearAdditive(tradeoffName, propFromConfig, roundTo, offset));
     }
 
     @Override
     public void addBasePropertyInteger(String propertyName, int baseVal) {
-        int propFromConfig = config.getBasePropertIntegerOrDefault(category, module, propertyName, baseVal);
+        int propFromConfig = getConfig().map(config->
+                config.getBasePropertIntegerOrDefault(category, module, propertyName, baseVal)).orElse(baseVal);
         addPropertyModifierInteger(propertyName, new PropertyModifierFlatAdditiveInteger(propFromConfig));
     }
 
@@ -231,6 +249,6 @@ public class PowerModule implements IPowerModule {
 
     @Override
     public boolean isAllowed() {
-        return config.isModuleAllowed(category, module);
+        return getConfig().map(config-> config.isModuleAllowed(category, module)).orElse(true);
     }
 }

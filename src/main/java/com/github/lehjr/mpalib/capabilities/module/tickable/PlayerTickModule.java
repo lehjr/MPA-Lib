@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.capabilities.module.tickable;
 
-import com.github.lehjr.mpalib.capabilities.IConfig;
+import com.github.lehjr.mpalib.capabilities.module.powermodule.IConfig;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleTarget;
 import com.github.lehjr.mpalib.capabilities.module.toggleable.ToggleableModule;
@@ -34,10 +34,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.util.concurrent.Callable;
 
 public class PlayerTickModule extends ToggleableModule implements IPlayerTickModule {
-    public PlayerTickModule(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, IConfig config, boolean defBool) {
-        super(module, category, target, config, defBool);
+    public PlayerTickModule(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target, Callable<IConfig> moduleConfigGetterIn, boolean defBool) {
+        super(module, category, target, moduleConfigGetterIn, defBool);
     }
 
     @Override
