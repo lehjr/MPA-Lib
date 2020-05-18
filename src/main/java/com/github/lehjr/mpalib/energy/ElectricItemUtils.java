@@ -28,6 +28,8 @@ package com.github.lehjr.mpalib.energy;
 
 import com.github.lehjr.mpalib.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.mpalib.energy.adapter.IElectricAdapter;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -40,8 +42,8 @@ public class ElectricItemUtils {
     /**
      * applies a given charge to the emulated tool. Used for simulating a used charge from the tool as it would normally be used
      */
-    public static int chargeEmulatedToolFromPlayerEnergy(PlayerEntity player, @Nonnull ItemStack emulatedTool) {
-        if (player.world.isRemote) {
+    public static int chargeEmulatedToolFromPlayerEnergy(LivingEntity entity, @Nonnull ItemStack emulatedTool) {
+        if (entity.world.isRemote) {
             return 0;
         }
 
@@ -58,27 +60,27 @@ public class ElectricItemUtils {
         }
 
         int chargeAmount;
-        int playerEnergy = getPlayerEnergy(player);
+        int playerEnergy = getPlayerEnergy(entity);
         if (playerEnergy > (maxCharge - charge)) {
             adapter.receiveEnergy(maxCharge - charge, false);
-            chargeAmount = drainPlayerEnergy(player, maxCharge - charge);
+            chargeAmount = drainPlayerEnergy(entity, maxCharge - charge);
         } else {
             adapter.receiveEnergy(playerEnergy, false);
-            chargeAmount = drainPlayerEnergy(player, playerEnergy);
+            chargeAmount = drainPlayerEnergy(entity, playerEnergy);
         }
         return chargeAmount;
     }
 
     /**
-     * returns the sum of the energy of the player's equipped items
+     * returns the sum of the energy of the entity's equipped items
      *
-     * Note here we filter out foreign items so the player available/ usableenergy isn't wrong
+     * Note here we filter out foreign items so the entity available/ usableenergy isn't wrong
      */
-    public static int getPlayerEnergy(PlayerEntity player) {
+    public static int getPlayerEnergy(LivingEntity entity) {
         int avail = 0;
 
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-            IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(player.getItemStackFromSlot(slot), true);
+            IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(entity.getItemStackFromSlot(slot), true);
             if (adapter == null) {
                 continue;
             }
@@ -88,14 +90,14 @@ public class ElectricItemUtils {
     }
 
     /**
-     * returns the total possible amount of energy the player's equipped items can hold
+     * returns the total possible amount of energy the entity's equipped items can hold
      *
-     * Note here we filter out foreign items so the player available/ usableenergy isn't wrong
+     * Note here we filter out foreign items so the entity available/ usableenergy isn't wrong
      */
-    public static int getMaxPlayerEnergy(PlayerEntity player) {
+    public static int getMaxPlayerEnergy(LivingEntity entity) {
         int avail = 0;
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-            IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(player.getItemStackFromSlot(slot), true);
+            IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(entity.getItemStackFromSlot(slot), true);
             if (adapter == null) {
                 continue;
             }
@@ -105,12 +107,12 @@ public class ElectricItemUtils {
     }
 
     /**
-     * returns the total amount of energy drained from the player's equipped items
+     * returns the total amount of energy drained from the entity's equipped items
      *
      * Note that charging held items while in use causes issues so they are skipped
      */
-    public static int drainPlayerEnergy(PlayerEntity player, int drainAmount) {
-        if (player.world.isRemote || player.abilities.isCreativeMode) {
+    public static int drainPlayerEnergy(LivingEntity entity, int drainAmount) {
+        if (entity.world.isRemote || (entity instanceof PlayerEntity && ((PlayerEntity) entity).abilities.isCreativeMode)) {
             return 0;
         }
         int drainleft = drainAmount;
@@ -118,13 +120,13 @@ public class ElectricItemUtils {
 
             // FIXME: do we still have to filter out items in use with the ~canContinueUsing method being set to true?
 //            if (slot.getSlotType() == EquipmentSlotType.Group.HAND) {
-//                if (slot == EquipmentSlotType.MAINHAND && player.getActiveHand() == Hand.MAIN_HAND) {
+//                if (slot == EquipmentSlotType.MAINHAND && entity.getActiveHand() == Hand.MAIN_HAND) {
 //                    continue;
-//                } else if  (slot == EquipmentSlotType.OFFHAND && player.getActiveHand() == Hand.OFF_HAND) {
+//                } else if  (slot == EquipmentSlotType.OFFHAND && entity.getActiveHand() == Hand.OFF_HAND) {
 //                    continue;
 //                }
 //            }
-            ItemStack stack = player.getItemStackFromSlot(slot);
+            ItemStack stack = entity.getItemStackFromSlot(slot);
             // check if the tool is a modular item. If not, skip it.
             if (!stack.isEmpty() && stack.getItem() instanceof ToolItem) {
                 if (stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler ->
@@ -133,7 +135,7 @@ public class ElectricItemUtils {
                 }
             }
 
-            IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(player.getItemStackFromSlot(slot), true);
+            IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(entity.getItemStackFromSlot(slot), true);
             if (adapter == null) {
                 continue;
             }
@@ -148,22 +150,22 @@ public class ElectricItemUtils {
     }
 
     /**
-     * returns the total amount of energy given to a player's equipped items
+     * returns the total amount of energy given to a entity's equipped items
      *
      * Note that charging held items while in use causes issues so they are skipped
      */
-    public static int givePlayerEnergy(PlayerEntity player, int rfToGive) {
+    public static int givePlayerEnergy(LivingEntity entity, int rfToGive) {
         int rfLeft = rfToGive;
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
 //            if (slot.getSlotType() == EquipmentSlotType.Group.HAND) {
-//                if (slot == EquipmentSlotType.MAINHAND && player.getActiveHand() == Hand.MAIN_HAND) {
+//                if (slot == EquipmentSlotType.MAINHAND && entity.getActiveHand() == Hand.MAIN_HAND) {
 //                    continue;
-//                } else if  (slot == EquipmentSlotType.OFFHAND && player.getActiveHand() == Hand.OFF_HAND) {
+//                } else if  (slot == EquipmentSlotType.OFFHAND && entity.getActiveHand() == Hand.OFF_HAND) {
 //                    continue;
 //                }
 //            }
 
-            IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(player.getItemStackFromSlot(slot), false);
+            IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(entity.getItemStackFromSlot(slot), false);
             if (adapter == null)
                 continue;
 

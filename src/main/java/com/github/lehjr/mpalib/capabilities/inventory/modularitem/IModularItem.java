@@ -61,7 +61,7 @@ public interface IModularItem extends IItemHandler, IItemHandlerModifiable, IIte
     void toggleModule(ResourceLocation moduleName, boolean online);
 
     @Nullable
-    Pair getRangeForCategory(EnumModuleCategory category);
+    Pair<Integer, Integer> getRangeForCategory(EnumModuleCategory category);
 
     List<ResourceLocation> getInstalledModuleNames();
 
