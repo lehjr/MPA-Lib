@@ -29,23 +29,23 @@ package com.github.lehjr.mpalib.nbt.propertymodifier;
 import com.github.lehjr.mpalib.nbt.NBTUtils;
 import net.minecraft.nbt.CompoundNBT;
 
-public class PropertyModifierIntLinearAdditive extends PropertyModifierLinearAdditiveFloat {
+public class PropertyModifierIntLinearAdditive extends PropertyModifierLinearAdditiveDouble {
     protected int roundTo = 1;
     protected int offset = 0;
 
-    public PropertyModifierIntLinearAdditive(String tradeoffName, float multiplier, int roundTo, int offset) {
+    public PropertyModifierIntLinearAdditive(String tradeoffName, double multiplier, int roundTo, int offset) {
         super(tradeoffName, multiplier);
         this.roundTo = roundTo;
         this.offset = offset;
     }
 
     @Override
-    public Float applyModifier(CompoundNBT moduleTag, Float value) {
-        long result = (long) (value + multiplier * NBTUtils.getFloatOrZero(moduleTag, tradeoffName));
-        return Float.valueOf(roundWithOffset(result, roundTo, offset));
+    public Double applyModifier(CompoundNBT moduleTag, Double value) {
+        long result = (long) (value + multiplier * NBTUtils.getDoubleOrZero(moduleTag, tradeoffName));
+        return Double.valueOf(roundWithOffset(result, roundTo, offset));
     }
 
-    public long roundWithOffset(float input, int roundTo, int offset) {
+    public long roundWithOffset(double input, int roundTo, int offset) {
         return Math.round((input + offset) / roundTo) * roundTo - offset;
     }
 }

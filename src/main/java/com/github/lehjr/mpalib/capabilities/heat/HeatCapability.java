@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.capabilities.heat;
 
-import net.minecraft.nbt.FloatNBT;
+import net.minecraft.nbt.DoubleNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -38,6 +38,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
  */
 public class HeatCapability {
     public static final String CURRENT_HEAT = "curHeat";
+    public static final String MAXIMUM_HEAT = "maxHeat";
 
     @CapabilityInject(IHeatStorage.class)
     public static Capability<IHeatStorage> HEAT = null;
@@ -46,14 +47,14 @@ public class HeatCapability {
         CapabilityManager.INSTANCE.register(IHeatStorage.class, new Capability.IStorage<IHeatStorage>() {
                     @Override
                     public INBT writeNBT(Capability<IHeatStorage> capability, IHeatStorage instance, Direction side) {
-                        return FloatNBT.valueOf(instance.getHeatStored());
+                        return DoubleNBT.valueOf(instance.getHeatStored());
                     }
 
                     @Override
                     public void readNBT(Capability<IHeatStorage> capability, IHeatStorage instance, Direction side, INBT nbt) {
                         if (!(instance instanceof HeatStorage))
                             throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
-                        ((HeatStorage) instance).heat = ((FloatNBT) nbt).getFloat();
+                        ((HeatStorage) instance).heat = ((DoubleNBT) nbt).getDouble();
                     }
                 },
                 () -> new HeatStorage(1000));

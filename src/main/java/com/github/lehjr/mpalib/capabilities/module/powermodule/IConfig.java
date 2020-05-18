@@ -26,24 +26,23 @@
 
 package com.github.lehjr.mpalib.capabilities.module.powermodule;
 
-import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
 public interface IConfig {
-    float getBasePropertyFloatOrDefault(
+    double getBasePropertyDoubleOrDefault(
             EnumModuleCategory category,
             @Nonnull ItemStack module,
             String propertyName,
-            float baseVal);
+            double baseVal);
 
-    float getTradeoffPropertyFloatOrDefault(
+    double getTradeoffPropertyDoubleOrDefault(
             EnumModuleCategory category,
             @Nonnull ItemStack module,
             String tradeoffName,
             String propertyName,
-            float multiplier);
+            double multiplier);
 
     int getBasePropertIntegerOrDefault(
             EnumModuleCategory category,

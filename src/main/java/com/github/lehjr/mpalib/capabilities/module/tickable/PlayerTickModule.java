@@ -26,9 +26,9 @@
 
 package com.github.lehjr.mpalib.capabilities.module.tickable;
 
-import com.github.lehjr.mpalib.capabilities.module.powermodule.IConfig;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.capabilities.module.powermodule.EnumModuleTarget;
+import com.github.lehjr.mpalib.capabilities.module.powermodule.IConfig;
 import com.github.lehjr.mpalib.capabilities.module.toggleable.ToggleableModule;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

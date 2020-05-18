@@ -47,7 +47,14 @@ public final class MathUtils {
     }
 
     public static float clampFloat(float value, float min, float max) {
-        return value < min ? min : (value > max ? max : value);
+        /**
+         * Float#compare(f1, f2);
+         * F1 < F2 = -1
+         * F1 > F2 = 1
+         * F1 == F2 = 0;
+         */
+        // return value < min ? min : (value > max ? max : value);
+        return Float.compare(value, min) == -1 ? min : (Float.compare(value, max) == 1 ? max : value );
     }
 
     public static double sumsq(double x, double y, double z) {

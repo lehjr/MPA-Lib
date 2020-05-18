@@ -107,7 +107,13 @@ public class NBTUtils {
      */
     public static void setFloatOrRemove(CompoundNBT itemProperties, String string, float value) {
         if (itemProperties != null) {
-            if (value == 0) {
+            /**
+             * Float#compare(f1, f2);
+             * F1 < F2 = -1
+             * F1 > F2 = 1
+             * F1 == F2 = 0;
+             */
+            if (Float.compare(value, 0F) == 0) {
                 itemProperties.remove(string);
             } else {
                 itemProperties.putFloat(string, value);

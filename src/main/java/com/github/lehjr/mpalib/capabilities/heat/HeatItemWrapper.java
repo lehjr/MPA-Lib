@@ -26,9 +26,10 @@
 
 package com.github.lehjr.mpalib.capabilities.heat;
 
+import com.github.lehjr.mpalib.capabilities.module.powermodule.IPowerModule;
 import com.github.lehjr.mpalib.nbt.NBTUtils;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.FloatNBT;
+import net.minecraft.nbt.DoubleNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -38,19 +39,23 @@ import net.minecraftforge.common.util.LazyOptional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class MuseHeatItemWrapper extends HeatStorage implements ICapabilityProvider, IHeatWrapper, INBTSerializable<FloatNBT> {
+public class HeatItemWrapper extends HeatStorage implements ICapabilityProvider, IHeatWrapper, INBTSerializable<DoubleNBT> {
     ItemStack container;
     private final LazyOptional<IHeatStorage> holder = LazyOptional.of(() -> this);
 
-    public MuseHeatItemWrapper(@Nonnull ItemStack container, float capacity) {
+    public HeatItemWrapper(@Nonnull ItemStack container, double baseMax, LazyOptional<IPowerModule> moduleCap) {
+        this(container, baseMax + moduleCap.map(cap->cap.applyPropertyModifiers(HeatCapability.MAXIMUM_HEAT)).orElse(0D));
+    }
+
+    public HeatItemWrapper(@Nonnull ItemStack container, double capacity) {
         this(container, capacity, capacity, capacity);
     }
 
-    public MuseHeatItemWrapper(@Nonnull ItemStack container, float capacity, float maxTransfer) {
+    public HeatItemWrapper(@Nonnull ItemStack container, double capacity, double maxTransfer) {
         this(container, capacity, maxTransfer, maxTransfer);
     }
 
-    public MuseHeatItemWrapper(@Nonnull ItemStack container, float capacity, float maxReceive, float maxExtract) {
+    public HeatItemWrapper(@Nonnull ItemStack container, double capacity, double maxReceive, double maxExtract) {
         super(capacity, maxReceive, maxExtract, 0);
         this.container = container;
     }
@@ -58,38 +63,38 @@ public class MuseHeatItemWrapper extends HeatStorage implements ICapabilityProvi
     /** IItemStackContainerUpdate ----------------------------------------------------------------- */
     @Override
     public void updateFromNBT() {
-        heat = Math.min(capacity, NBTUtils.getModularItemFloatOrZero(container, HeatCapability.CURRENT_HEAT));
+        heat = Math.min(capacity, NBTUtils.getModularItemDoubleOrZero(container, HeatCapability.CURRENT_HEAT));
     }
     @Override
-    public float receiveHeat(float heatProvided, boolean simulate) {
-        final float heatReceived = super.receiveHeat(heatProvided, simulate);
-        if (!simulate && heatReceived != 0) {
-            NBTUtils.setModularItemFloatOrRemove(container, HeatCapability.CURRENT_HEAT, heat);
+    public double receiveHeat(double heatProvided, boolean simulate) {
+        final double heatReceived = super.receiveHeat(heatProvided, simulate);
+        if (!simulate && heatReceived > 0) {
+            NBTUtils.setModularItemDoubleOrRemove(container, HeatCapability.CURRENT_HEAT, heat);
         }
         return heatReceived;
     }
 
     @Override
-    public float extractHeat(float heatRequested, boolean simulate) {
-        final float heatExtracted = super.extractHeat(heatRequested, simulate);
+    public double extractHeat(double heatRequested, boolean simulate) {
+        final double heatExtracted = super.extractHeat(heatRequested, simulate);
         if (!simulate && heatExtracted > 0) {
-            NBTUtils.setModularItemFloatOrRemove(container, HeatCapability.CURRENT_HEAT, heat);
+            NBTUtils.setModularItemDoubleOrRemove(container, HeatCapability.CURRENT_HEAT, heat);
         }
         return heatExtracted;
     }
 
     /** INBTSerializable -------------------------------------------------------------------------- */
     @Override
-    public FloatNBT serializeNBT() {
-        return FloatNBT.valueOf(heat);
+    public DoubleNBT serializeNBT() {
+        return DoubleNBT.valueOf(heat);
     }
 
     @Override
-    public void deserializeNBT(final FloatNBT nbt) {
-        heat = nbt.getFloat();
+    public void deserializeNBT(final DoubleNBT nbt) {
+        heat = nbt.getDouble();
     }
 
-    /** INBTSerializable<NBTTagFloat> ------------------------------------------------------------ */
+    /** INBTSerializable<NBTTagDouble> ------------------------------------------------------------ */
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {

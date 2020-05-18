@@ -37,7 +37,7 @@ public interface IHeatStorage {
      * @param simulate   If TRUE, the insertion will only be simulated.
      * @return Amount of heat that was (or would have been, if simulated) accepted by the storage.
      */
-    float receiveHeat(float maxReceive, boolean simulate);
+    double receiveHeat(double maxReceive, boolean simulate);
 
     /**
      * Removes heat from the storage. Returns quantity of heat that was removed.
@@ -46,17 +46,17 @@ public interface IHeatStorage {
      * @param simulate   If TRUE, the extraction will only be simulated.
      * @return Amount of heat that was (or would have been, if simulated) extracted from the storage.
      */
-    float extractHeat(float maxExtract, boolean simulate);
+    double extractHeat(double maxExtract, boolean simulate);
 
     /**
      * Returns the amount of heat currently stored.
      */
-    float getHeatStored();
+    double getHeatStored();
 
     /**
      * Returns the maximum amount of heat that can be stored.
      */
-    float getMaxHeatStored();
+    double getMaxHeatStored();
 
     /**
      * Returns if this storage can have heat extracted.

@@ -44,7 +44,7 @@ import net.minecraft.client.resources.I18n;
  */
 public class ClickableSlider extends Clickable {
     final int cornersize = 3;
-    private float valueInternal = 0;
+    private double valueInternal = 0;
     Point2F pos;
     float width;
     private String id;
@@ -75,7 +75,7 @@ public class ClickableSlider extends Clickable {
     @Override
     public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
         Renderer.drawCenteredString(I18n.format(label), position.getX(), position.getY());
-        this.insideRect.setRight(position.getX() + width * (getValue() - 0.5F) + cornersize);
+        this.insideRect.setRight(position.getX() + width * ((float)getValue() - 0.5F) + cornersize);
         this.outsideRect.draw(zLevel);
         this.insideRect.draw(zLevel);
     }
@@ -111,15 +111,15 @@ public class ClickableSlider extends Clickable {
         // TODO: this
     }
 
-    public float getValue() {
+    public double getValue() {
         return valueInternal;
     }
 
-    public void setValue(float v) {
+    public void setValue(double v) {
         valueInternal = v;
     }
 
-    public void setValueByX(float x) {
-        valueInternal = MathUtils.clampFloat((x - pos.getX()) / width + 0.5F, 0, 1);
+    public void setValueByX(double x) {
+        valueInternal = MathUtils.clampDouble((x - pos.getX()) / width + 0.5F, 0, 1);
     }
 }

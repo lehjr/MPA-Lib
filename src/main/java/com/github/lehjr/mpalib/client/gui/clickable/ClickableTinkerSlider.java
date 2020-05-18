@@ -41,13 +41,13 @@ public class ClickableTinkerSlider extends ClickableSlider {
     }
 
     @Override
-    public float getValue() {
-        return (moduleTag.contains(this.id())) ? moduleTag.getFloat(id()) : 0;
+    public double getValue() {
+        return (moduleTag.contains(this.id())) ? moduleTag.getDouble(id()) : 0;
     }
 
     @Override
-    public void setValueByX(float x) {
+    public void setValueByX(double x) {
         super.setValueByX(x);
-        moduleTag.putFloat(id(), super.getValue());
+        moduleTag.putDouble(id(), super.getValue());
     }
 }

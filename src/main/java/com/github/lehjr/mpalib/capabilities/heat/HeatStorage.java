@@ -27,27 +27,27 @@
 package com.github.lehjr.mpalib.capabilities.heat;
 
 /**
- * Based on Forge Energy and CoHF RF, but using floats and max heat value is only a safety threshold, not a cap
+ * Based on Forge Energy and CoHF RF, but using doubles and max heat value is only a safety threshold, not a cap
  */
 public class HeatStorage implements IHeatStorage {
-    protected float heat;
-    protected float capacity; // this is just a safety boundary, not an absolute cap
-    protected float maxReceive;
-    protected float maxExtract;
+    protected double heat;
+    protected double capacity; // this is just a safety boundary, not an absolute cap
+    protected double maxReceive;
+    protected double maxExtract;
 
-    public HeatStorage(float capacity) {
+    public HeatStorage(double capacity) {
         this(capacity, capacity, capacity, 0);
     }
 
-    public HeatStorage(float capacity, float maxTransfer) {
+    public HeatStorage(double capacity, double maxTransfer) {
         this(capacity, maxTransfer, maxTransfer, 0);
     }
 
-    public HeatStorage(float capacity, float maxReceive, float maxExtract) {
+    public HeatStorage(double capacity, double maxReceive, double maxExtract) {
         this(capacity, maxReceive, maxExtract, 0);
     }
 
-    public HeatStorage(float capacity, float maxReceive, float maxExtract, float heat) {
+    public HeatStorage(double capacity, double maxReceive, double maxExtract, double heat) {
         this.capacity = capacity;
         this.maxReceive = maxReceive;
         this.maxExtract = maxExtract;
@@ -55,23 +55,24 @@ public class HeatStorage implements IHeatStorage {
     }
 
     @Override
-    public float receiveHeat(float maxReceive, boolean simulate) {
-        if (!canReceive())
+    public double receiveHeat(double maxReceive, boolean simulate) {
+        if (!canReceive()) {
             return 0;
+        }
 
-        float heatReceived = maxReceive;
+        double heatReceived = Math.min(capacity - heat, Math.min(this.maxReceive, maxReceive));
         if (!simulate)
             heat += heatReceived;
         return heatReceived;
     }
 
     @Override
-    public float extractHeat(float maxExtract, boolean simulate) {
+    public double extractHeat(double maxExtract, boolean simulate) {
         if (!canExtract()) {
             return 0;
         }
 
-        float heatExtracted = Math.min(heat, maxExtract);
+        double heatExtracted = Math.min(heat, maxExtract);
         if (!simulate) {
             heat -= heatExtracted;
         }
@@ -79,12 +80,12 @@ public class HeatStorage implements IHeatStorage {
     }
 
     @Override
-    public float getHeatStored() {
+    public double getHeatStored() {
         return heat;
     }
 
     @Override
-    public float getMaxHeatStored() {
+    public double getMaxHeatStored() {
         return capacity;
     }
 
@@ -95,6 +96,6 @@ public class HeatStorage implements IHeatStorage {
 
     @Override
     public boolean canReceive() {
-        return true;
+        return this.maxReceive > 0;
     }
 }

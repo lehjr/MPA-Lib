@@ -16,36 +16,36 @@ public class EventBusHelper {
 		return MinecraftForge.EVENT_BUS;
 	}
 
-	public static <T extends Event> void addListener(Class<T> eventType, Consumer<T> listener) {
-		IEventBus eventBus = getInstance();
-		eventBus.addListener(EventPriority.NORMAL, false, eventType, listener);
-	}
+//	public static <T extends Event> void addListener(Class<T> eventType, Consumer<T> listener) {
+//		IEventBus eventBus = getInstance();
+//		eventBus.addListener(EventPriority.NORMAL, false, eventType, listener);
+//	}
 
 	public static <T extends Event> void addListener(IEventBus eventBus, Class<T> eventType, Consumer<T> listener) {
 		eventBus.addListener(EventPriority.NORMAL, false, eventType, listener);
 	}
 
-	public static <T extends Event> void removeListener(Consumer<T> listener) {
-		IEventBus eventBus = getInstance();
-		eventBus.unregister(listener);
-	}
+//	public static <T extends Event> void removeListener(Consumer<T> listener) {
+//		IEventBus eventBus = getInstance();
+//		eventBus.unregister(listener);
+//	}
 
 	public static <T extends ModLifecycleEvent> void addLifecycleListener(IEventBus eventBus, Class<T> eventType, Consumer<T> listener) {
 		eventBus.addListener(EventPriority.NORMAL, false, eventType, listener);
 	}
 
-	public static void register(Object object) {
-		IEventBus eventBus = getInstance();
-		eventBus.register(object);
-	}
-
-	public static void unregister(Object object) {
-		IEventBus eventBus = getInstance();
-		eventBus.unregister(object);
-	}
-
-	public static void post(Event event) {
-		IEventBus eventBus = getInstance();
-		eventBus.post(event);
-	}
+//	public static void register(Object object) {
+//		IEventBus eventBus = getInstance();
+//		eventBus.register(object);
+//	}
+//
+//	public static void unregister(Object object) {
+//		IEventBus eventBus = getInstance();
+//		eventBus.unregister(object);
+//	}
+//
+//	public static void post(Event event) {
+//		IEventBus eventBus = getInstance();
+//		eventBus.post(event);
+//	}
 }

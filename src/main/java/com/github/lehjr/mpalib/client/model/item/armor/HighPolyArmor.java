@@ -43,7 +43,6 @@ public class HighPolyArmor extends BipedModel {
         this.visibleSection = equipmentSlot;
     }
 
-    // packed overlay is for texture UV's ... see OverlayTexture.getPackedUV
     @Override
     protected Iterable<ModelRenderer> getHeadParts() {
         return super.getHeadParts();
@@ -54,53 +53,11 @@ public class HighPolyArmor extends BipedModel {
         return super.getBodyParts();
     }
 
+    // packed overlay is for texture UV's ... see OverlayTexture.getPackedUV
     @Override
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-//        super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-
-        if (this.isChild) {
-            System.out.println("this is child");
-
-//            matrixStackIn.push();
-//            if (this.isChildHeadScaled) {
-////                float f = 1.5F / this.childHeadScale;
-////                matrixStackIn.scale(f, f, f);
-//
-//
-//            }
-//
-//            matrixStackIn.translate(0.0D, (double)(this.childHeadOffsetY / 16.0F), (double)(this.childHeadOffsetZ / 16.0F));
-//
-//
-//
-//
-//            getHeadParts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
-//            matrixStackIn.pop();
-//            matrixStackIn.push();
-//            float f1 = 1.0F / this.childBodyScale;
-//            matrixStackIn.scale(f1, f1, f1);
-//            matrixStackIn.translate(0.0D, (double)(this.childBodyOffsetY / 16.0F), 0.0D);
-//            this.getBodyParts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
-//            matrixStackIn.pop();
-        } else {
-//            matrixStackIn.push();
-//            matrixStackIn.rotate(TransformationHelper.quatFromXYZ(new Vector3f(180, 0, 0), true));
-//            matrixStackIn.translate(0, -16, 0);
             this.getHeadParts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
-//            matrixStackIn.pop();
-
-//            matrixStackIn.push();
-//            matrixStackIn.rotate(TransformationHelper.quatFromXYZ(new Vector3f(180, 0, 0), true));
-//
-//            matrixStackIn.scale(0.0625F, 0.0625F, 0.0625F);
-//            matrixStackIn.translate(0, -24, 0);
-
             this.getBodyParts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
-
-
-//            matrixStackIn.pop();
-
-        }
     }
 
     public void init() {

@@ -36,52 +36,52 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.function.Supplier;
 
-public class TweakRequestFloatPacket {
+public class TweakRequestDoublePacket {
     protected int itemSlot;
     protected ResourceLocation moduleName;
     protected String tweakName;
-    protected float tweakValue;
+    protected double tweakValue;
 
-    public TweakRequestFloatPacket() {
+    public TweakRequestDoublePacket() {
 
     }
 
-    public TweakRequestFloatPacket(int itemSlot, ResourceLocation moduleRegName, String tweakName, float tweakValue) {
+    public TweakRequestDoublePacket(int itemSlot, ResourceLocation moduleRegName, String tweakName, double tweakValue) {
         this.itemSlot = itemSlot;
         this.moduleName = moduleRegName;
         this.tweakName = tweakName;
         this.tweakValue = tweakValue;
     }
 
-    public static void encode(TweakRequestFloatPacket msg, PacketBuffer packetBuffer) {
+    public static void encode(TweakRequestDoublePacket msg, PacketBuffer packetBuffer) {
         packetBuffer.writeInt(msg.itemSlot);
         packetBuffer.writeResourceLocation(msg.moduleName);
         packetBuffer.writeString(msg.tweakName);
-        packetBuffer.writeFloat(msg.tweakValue);
+        packetBuffer.writeDouble(msg.tweakValue);
     }
 
-    public static TweakRequestFloatPacket decode(PacketBuffer packetBuffer) {
-        return new TweakRequestFloatPacket(
+    public static TweakRequestDoublePacket decode(PacketBuffer packetBuffer) {
+        return new TweakRequestDoublePacket(
                 packetBuffer.readInt(),
                 packetBuffer.readResourceLocation(),
                 packetBuffer.readString(500),
-                packetBuffer.readFloat());
+                packetBuffer.readDouble());
     }
 
-    public static void handle(TweakRequestFloatPacket message, Supplier<NetworkEvent.Context> ctx) {
+    public static void handle(TweakRequestDoublePacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             final ServerPlayerEntity player = ctx.get().getSender();
 
             int itemSlot = message.itemSlot;
             ResourceLocation moduleName = message.moduleName;
             String tweakName = message.tweakName;
-            float tweakValue = message.tweakValue;
+            double tweakValue = message.tweakValue;
 
             if (moduleName != null && tweakName != null) {
                 ItemStack stack = player.inventory.getStackInSlot(itemSlot);
                 stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
                     if (iItemHandler instanceof IModularItem) {
-                        ((IModularItem) iItemHandler).setModuleTweakFloat(moduleName, tweakName, tweakValue);
+                        ((IModularItem) iItemHandler).setModuleTweakDouble(moduleName, tweakName, tweakValue);
                     }
                 });
             }

@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.capabilities.module.powermodule;
 
-import com.github.lehjr.mpalib.nbt.propertymodifier.IPropertyModifierFloat;
+import com.github.lehjr.mpalib.nbt.propertymodifier.IPropertyModifierDouble;
 import com.github.lehjr.mpalib.nbt.propertymodifier.IPropertyModifierInteger;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -51,21 +51,21 @@ public interface IPowerModule {
     @OnlyIn(Dist.CLIENT)
     String getUnit(String propertyName);
 
-    void addTradeoffPropertyFloat(String tradeoffName, String propertyName, float multiplier);
+    void addTradeoffPropertyDouble(String tradeoffName, String propertyName, double multiplier);
 
-    void addPropertyModifier(String propertyName, IPropertyModifierFloat modifier);
+    void addPropertyModifier(String propertyName, IPropertyModifierDouble modifier);
 
-    void addTradeoffPropertyFloat(String tradeoffName, String propertyName, float multiplier, String unit);
+    void addTradeoffPropertyDouble(String tradeoffName, String propertyName, double multiplier, String unit);
 
-    void addBasePropertyFloat(String propertyName, float baseVal);
+    void addBasePropertyDouble(String propertyName, double baseVal);
 
-    void addBasePropertyFloat(String propertyName, float baseVal, String unit);
+    void addBasePropertyDouble(String propertyName, double baseVal, String unit);
 
-    float applyPropertyModifiers(String propertyName);
+    double applyPropertyModifiers(String propertyName);
 
-    float applyPropertyModifiers(String propertyName, CompoundNBT moduleTag);
+    double applyPropertyModifiers(String propertyName, CompoundNBT moduleTag);
 
-    Map<String, List<IPropertyModifierFloat>> getPropertyModifiers();
+    Map<String, List<IPropertyModifierDouble>> getPropertyModifiers();
 
     void addIntTradeoffProperty(String tradeoffName, String propertyName, int multiplier, String unit, int roundTo, int offset);
 
@@ -75,7 +75,7 @@ public interface IPowerModule {
 
     void addPropertyModifierInteger(String propertyName, IPropertyModifierInteger modifier);
 
-    // For use with integer base values only. Does not play well with floats.
+    // For use with integer base values only. Does not play well with doubless.
     int applyPropertyModifierBaseInt(String propertyName);
 
     Map<String, List<IPropertyModifierInteger>> getPropertyModifierBaseInt();

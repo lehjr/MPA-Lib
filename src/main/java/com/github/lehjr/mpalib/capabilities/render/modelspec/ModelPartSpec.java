@@ -27,29 +27,14 @@
 package com.github.lehjr.mpalib.capabilities.render.modelspec;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
-import com.github.lehjr.mpalib.client.model.helper.ModelHelper;
-import com.github.lehjr.mpalib.math.Colour;
-import com.google.common.collect.ImmutableList;
 import forge.OBJBakedPart;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.TransformationMatrix;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.IModelTransform;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.data.EmptyModelData;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 /**
  * Ported to Java by lehjr on 11/8/16.
