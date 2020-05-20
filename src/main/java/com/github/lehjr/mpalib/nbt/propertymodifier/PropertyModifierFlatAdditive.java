@@ -2,10 +2,10 @@ package com.github.lehjr.mpalib.nbt.propertymodifier;
 
 import net.minecraft.nbt.CompoundNBT;
 
-public class PropertyModifierFlatAdditiveDouble implements IPropertyModifierDouble {
+public class PropertyModifierFlatAdditive implements IPropertyModifier {
     public double valueAdded;
 
-    public PropertyModifierFlatAdditiveDouble(double valueAdded) {
+    public PropertyModifierFlatAdditive(double valueAdded) {
         this.valueAdded = valueAdded;
     }
 
@@ -15,7 +15,7 @@ public class PropertyModifierFlatAdditiveDouble implements IPropertyModifierDoub
      * @return getValue + this.valueAdded
      */
     @Override
-    public Double applyModifier(CompoundNBT moduleTag, Double value) {
+    public double applyModifier(CompoundNBT moduleTag, double value) {
         return value + this.valueAdded;
     }
 }

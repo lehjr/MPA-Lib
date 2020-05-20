@@ -44,19 +44,12 @@ public interface IConfig {
             String propertyName,
             double multiplier);
 
-    int getBasePropertIntegerOrDefault(
-            EnumModuleCategory category,
-            @Nonnull ItemStack module,
-            String propertyName,
-            int baseVal);
-
     int getTradeoffPropertyIntegerOrDefault(
             EnumModuleCategory category,
             @Nonnull ItemStack module,
             String tradeoffName,
             String propertyName,
             int multiplier);
-
 
     boolean isModuleAllowed(EnumModuleCategory category, @Nonnull ItemStack module);
 }

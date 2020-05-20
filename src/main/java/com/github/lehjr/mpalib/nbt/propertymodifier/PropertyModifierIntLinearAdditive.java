@@ -29,7 +29,7 @@ package com.github.lehjr.mpalib.nbt.propertymodifier;
 import com.github.lehjr.mpalib.nbt.NBTUtils;
 import net.minecraft.nbt.CompoundNBT;
 
-public class PropertyModifierIntLinearAdditive extends PropertyModifierLinearAdditiveDouble {
+public class PropertyModifierIntLinearAdditive extends PropertyModifierLinearAdditive {
     protected int roundTo = 1;
     protected int offset = 0;
 
@@ -40,7 +40,7 @@ public class PropertyModifierIntLinearAdditive extends PropertyModifierLinearAdd
     }
 
     @Override
-    public Double applyModifier(CompoundNBT moduleTag, Double value) {
+    public double applyModifier(CompoundNBT moduleTag, double value) {
         long result = (long) (value + multiplier * NBTUtils.getDoubleOrZero(moduleTag, tradeoffName));
         return Double.valueOf(roundWithOffset(result, roundTo, offset));
     }

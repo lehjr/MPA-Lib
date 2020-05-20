@@ -44,14 +44,12 @@ public class PowerModule implements IPowerModule {
     protected ItemStack module;
     protected final EnumModuleCategory category;
     protected final EnumModuleTarget target;
-    protected Map<String, List<IPropertyModifierDouble>> propertyModifiers;
-    protected Map<String, List<IPropertyModifierInteger>> propertyBaseIntegers;
+    protected Map<String, List<IPropertyModifier>> propertyModifiers;
     Callable<IConfig> moduleConfigGetter;
 
     public PowerModule(@Nonnull ItemStack module, EnumModuleCategory category, EnumModuleTarget target,
                        Callable<IConfig> moduleConfigGetterIn) {
         propertyModifiers = new HashMap<>();
-        propertyBaseIntegers = new HashMap<>();
         units = new HashMap<>();
         this.module = module;
         this.category = category;
@@ -103,15 +101,15 @@ public class PowerModule implements IPowerModule {
      * Adds a base key and multiplierValue to the map based on the config setting.
      */
     @Override
-    public void addTradeoffPropertyDouble(String tradeoffName, String propertyName, double multiplier) {
+    public void addTradeoffProperty(String tradeoffName, String propertyName, double multiplier) {
         double propFromConfig = getConfig().map(config->
                 config.getTradeoffPropertyDoubleOrDefault(category, module, tradeoffName, propertyName, multiplier)).orElse(multiplier);
-        addPropertyModifier(propertyName, new PropertyModifierLinearAdditiveDouble(tradeoffName, propFromConfig));
+        addPropertyModifier(propertyName, new PropertyModifierLinearAdditive(tradeoffName, propFromConfig));
     }
 
     @Override
-    public void addPropertyModifier(String propertyName, IPropertyModifierDouble modifier) {
-        List<IPropertyModifierDouble> modifiers = propertyModifiers.get(propertyName);
+    public void addPropertyModifier(String propertyName, IPropertyModifier modifier) {
+        List<IPropertyModifier> modifiers = propertyModifiers.get(propertyName);
         if (modifiers == null) {
             modifiers = new LinkedList();
         }
@@ -124,9 +122,9 @@ public class PowerModule implements IPowerModule {
      * Also adds a [ propertyName, unitOfMeasureLabel ] k-v pair to a map used for displyaing a label
      */
     @Override
-    public void addTradeoffPropertyDouble(String tradeoffName, String propertyName, double multiplier, String unit) {
+    public void addTradeoffProperty(String tradeoffName, String propertyName, double multiplier, String unit) {
         units.put(propertyName, unit);
-        addTradeoffPropertyDouble(tradeoffName, propertyName, multiplier);
+        addTradeoffProperty(tradeoffName, propertyName, multiplier);
     }
 
     public void addSimpleTradeoffDouble(IPowerModule module,
@@ -139,21 +137,21 @@ public class PowerModule implements IPowerModule {
                                         String secondUnits,
                                         double secondPropertyBase,
                                         double secondPropertyMultiplier) {
-        this.addBasePropertyDouble(firstPropertyName, firstPropertyBase, firstUnits);
-        this.addTradeoffPropertyDouble(tradeoffName, firstPropertyName, firstPropertyMultiplier);
-        this.addBasePropertyDouble(secondPropertyName, secondPropertyBase, secondUnits);
-        this.addTradeoffPropertyDouble(tradeoffName, secondPropertyName, secondPropertyMultiplier);
+        this.addBaseProperty(firstPropertyName, firstPropertyBase, firstUnits);
+        this.addTradeoffProperty(tradeoffName, firstPropertyName, firstPropertyMultiplier);
+        this.addBaseProperty(secondPropertyName, secondPropertyBase, secondUnits);
+        this.addTradeoffProperty(tradeoffName, secondPropertyName, secondPropertyMultiplier);
     }
 
     /**
      * Adds a base key and getValue to the map based on the config setting.
      */
     @Override
-    public void addBasePropertyDouble(String propertyName, double baseVal) {
+    public void addBaseProperty(String propertyName, double baseVal) {
         double propFromConfig =
                 getConfig().map(config->
                         config.getBasePropertyDoubleOrDefault(category, module, propertyName, baseVal)).orElse(baseVal);
-        addPropertyModifier(propertyName, new PropertyModifierFlatAdditiveDouble(propFromConfig));
+        addPropertyModifier(propertyName, new PropertyModifierFlatAdditive(propFromConfig));
     }
 
     /**
@@ -161,9 +159,9 @@ public class PowerModule implements IPowerModule {
      * Also adds a [ propertyName, unitOfMeasureLabel ] k-v pair to a map used for displyaing a label
      */
     @Override
-    public void addBasePropertyDouble(String propertyName, double baseVal, String unit) {
+    public void addBaseProperty(String propertyName, double baseVal, String unit) {
         units.put(propertyName, unit);
-        addBasePropertyDouble(propertyName, baseVal);
+        addBaseProperty(propertyName, baseVal);
     }
 
     @Override
@@ -175,21 +173,16 @@ public class PowerModule implements IPowerModule {
     public double applyPropertyModifiers(String propertyName, CompoundNBT moduleTag) {
         double propertyValue = 0;
         if (propertyModifiers.containsKey(propertyName)) {
-            Iterable<IPropertyModifierDouble> propertyModifiersIterable = propertyModifiers.get(propertyName);
+            Iterable<IPropertyModifier> propertyModifiersIterable = propertyModifiers.get(propertyName);
             for (IPropertyModifier modifier : propertyModifiersIterable) {
-                propertyValue = ((IPropertyModifierDouble) modifier).applyModifier(moduleTag, propertyValue);
+                propertyValue = ((IPropertyModifier) modifier).applyModifier(moduleTag, propertyValue);
             }
         }
         return propertyValue;
     }
 
-    /*
-        TODO: method of getting min/max values with names and labels. a 1.0D value on the NBT should yield a max val,
-         while 0 will yield a min val
-    */
-
     @Override
-    public Map<String, List<IPropertyModifierDouble>> getPropertyModifiers() {
+    public Map<String, List<IPropertyModifier>> getPropertyModifiers() {
         return propertyModifiers;
     }
 
@@ -203,45 +196,6 @@ public class PowerModule implements IPowerModule {
         int propFromConfig = getConfig().map(config->
                 config.getTradeoffPropertyIntegerOrDefault(category, module, tradeoffName, propertyName, multiplier)).orElse(multiplier);
         addPropertyModifier(propertyName, new PropertyModifierIntLinearAdditive(tradeoffName, propFromConfig, roundTo, offset));
-    }
-
-    @Override
-    public void addBasePropertyInteger(String propertyName, int baseVal) {
-        int propFromConfig = getConfig().map(config->
-                config.getBasePropertIntegerOrDefault(category, module, propertyName, baseVal)).orElse(baseVal);
-        addPropertyModifierInteger(propertyName, new PropertyModifierFlatAdditiveInteger(propFromConfig));
-    }
-
-    @Override
-    public void addBasePropertyInteger(String propertyName, int baseVal, String unit) {
-        units.put(propertyName, unit);
-        addBasePropertyInteger(propertyName, baseVal);
-    }
-
-    @Override
-    public void addPropertyModifierInteger(String propertyName, IPropertyModifierInteger modifier) {
-        List<IPropertyModifierInteger> modifiers = propertyBaseIntegers.get(propertyName);
-        if (modifiers == null) {
-            modifiers = new LinkedList();
-        }
-        modifiers.add(modifier);
-        propertyBaseIntegers.put(propertyName, modifiers);
-    }
-
-    @Override
-    public int applyPropertyModifierBaseInt(String propertyName) {
-        int propertyValue = 0;
-        Iterable<IPropertyModifierInteger> propertyModifiersIterable = propertyBaseIntegers.get(propertyName);
-        CompoundNBT moduleTag = NBTUtils.getModuleTag(getModuleStack());
-        for (IPropertyModifier modifier : propertyModifiersIterable) {
-            propertyValue = ((IPropertyModifierInteger) modifier).applyModifier(moduleTag, propertyValue);
-        }
-        return propertyValue;
-    }
-
-    @Override
-    public Map<String, List<IPropertyModifierInteger>> getPropertyModifierBaseInt() {
-        return propertyBaseIntegers;
     }
 
     @Override

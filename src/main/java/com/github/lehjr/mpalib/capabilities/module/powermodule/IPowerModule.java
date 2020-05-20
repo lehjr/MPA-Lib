@@ -26,8 +26,7 @@
 
 package com.github.lehjr.mpalib.capabilities.module.powermodule;
 
-import com.github.lehjr.mpalib.nbt.propertymodifier.IPropertyModifierDouble;
-import com.github.lehjr.mpalib.nbt.propertymodifier.IPropertyModifierInteger;
+import com.github.lehjr.mpalib.nbt.propertymodifier.IPropertyModifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
@@ -51,34 +50,23 @@ public interface IPowerModule {
     @OnlyIn(Dist.CLIENT)
     String getUnit(String propertyName);
 
-    void addTradeoffPropertyDouble(String tradeoffName, String propertyName, double multiplier);
+    void addTradeoffProperty(String tradeoffName, String propertyName, double multiplier);
 
-    void addPropertyModifier(String propertyName, IPropertyModifierDouble modifier);
+    void addPropertyModifier(String propertyName, IPropertyModifier modifier);
 
-    void addTradeoffPropertyDouble(String tradeoffName, String propertyName, double multiplier, String unit);
+    void addTradeoffProperty(String tradeoffName, String propertyName, double multiplier, String unit);
 
-    void addBasePropertyDouble(String propertyName, double baseVal);
+    void addBaseProperty(String propertyName, double baseVal);
 
-    void addBasePropertyDouble(String propertyName, double baseVal, String unit);
+    void addBaseProperty(String propertyName, double baseVal, String unit);
 
     double applyPropertyModifiers(String propertyName);
 
     double applyPropertyModifiers(String propertyName, CompoundNBT moduleTag);
 
-    Map<String, List<IPropertyModifierDouble>> getPropertyModifiers();
+    Map<String, List<IPropertyModifier>> getPropertyModifiers();
 
     void addIntTradeoffProperty(String tradeoffName, String propertyName, int multiplier, String unit, int roundTo, int offset);
-
-    void addBasePropertyInteger(String propertyName, int baseVal);
-
-    void addBasePropertyInteger(String propertyName, int baseVal, String unit);
-
-    void addPropertyModifierInteger(String propertyName, IPropertyModifierInteger modifier);
-
-    // For use with integer base values only. Does not play well with doubless.
-    int applyPropertyModifierBaseInt(String propertyName);
-
-    Map<String, List<IPropertyModifierInteger>> getPropertyModifierBaseInt();
 
     boolean isAllowed();
 }
