@@ -127,8 +127,7 @@ public class PowerModule implements IPowerModule {
         addTradeoffProperty(tradeoffName, propertyName, multiplier);
     }
 
-    public void addSimpleTradeoff(IPowerModule module,
-                                  String tradeoffName,
+    public void addSimpleTradeoff(String tradeoffName,
                                   String firstPropertyName,
                                   String firstUnits,
                                   double firstPropertyBase,
