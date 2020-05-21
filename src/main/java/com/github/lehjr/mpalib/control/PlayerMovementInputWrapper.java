@@ -87,21 +87,21 @@ public class PlayerMovementInputWrapper {
     }
 
     static PlayerMovementInput fromClient(PlayerEntity player) {
-//        boolean jumpKey = false;
+        boolean jumpKey = false;
         boolean downKey = false;
 
         ClientPlayerEntity clientPlayer = (ClientPlayerEntity) player;
 
         LazyOptional<IPlayerKeyStates> playerCap = getCapability(player);
         if (playerCap.isPresent()) {
-//            jumpKey = playerCap.map(m -> m.getJumpKeyState()).orElse(false);
+            jumpKey = playerCap.map(m -> m.getJumpKeyState()).orElse(false);
             downKey = playerCap.map(m -> m.getDownKeyState()).orElse(false);
         }
 
         return new PlayerMovementInput(
                 clientPlayer.movementInput.moveStrafe,
                 clientPlayer.movementInput.moveForward,
-                clientPlayer.movementInput.jump,
+                jumpKey,
                 downKey,
         clientPlayer.isCrouching());
     }
