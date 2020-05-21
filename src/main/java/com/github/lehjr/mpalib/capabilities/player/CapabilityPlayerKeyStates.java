@@ -77,6 +77,6 @@ public class CapabilityPlayerKeyStates implements ICapabilitySerializable<Compou
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        return PLAYER_KEYSTATES.orEmpty(cap, LazyOptional.of(()-> new PlayerKeyStateStorage()));
+        return PLAYER_KEYSTATES.orEmpty(cap, LazyOptional.of(()-> instance));
     }
 }
