@@ -78,7 +78,7 @@ public class KeyBindingHelper {
             if (getKeyBindingMap() != null)
                 hash.removeKey(hash.lookupActive(keyCode));
         } catch (Exception ignored) {
-
+            ignored.printStackTrace();
         }
     }
 
@@ -87,7 +87,7 @@ public class KeyBindingHelper {
             if (getKeyBindingMap() != null)
                 hash.removeKey(key);
         } catch (Exception ignored) {
-
+            ignored.printStackTrace();
         }
     }
 }

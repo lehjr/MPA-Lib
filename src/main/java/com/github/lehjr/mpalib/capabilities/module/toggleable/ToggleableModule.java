@@ -49,11 +49,7 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
         defBool = defToggleVal;
     }
 
-//    @Override
-//    public void updateFromNBT() {
-//        online = MuseNBTUtils.getModuleBooleanOrSetDefault(module, TAG_ONLINE, defBool);
-//    }
-
+    @Override
     public void updateFromNBT() {
         final CompoundNBT nbt = NBTUtils.getModuleTag(module);
         if (nbt != null && nbt.contains(TAG_ONLINE, Constants.NBT.TAG_BYTE)) {
@@ -82,8 +78,9 @@ public class ToggleableModule extends PowerModule implements IToggleableModule, 
 
     @Override
     public boolean isModuleOnline() {
-        if (online == null)
+        if (online == null) {
             updateFromNBT();
+        }
         return online;
     }
 }

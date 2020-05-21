@@ -208,11 +208,14 @@ public abstract class Renderer {
         RenderSystem.enableBlend();
         RenderSystem.disableAlphaTest();
         RenderSystem.defaultBlendFunc();
+        RenderSystem.shadeModel(GL11.GL_SMOOTH);
 
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
         buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-        RenderSystem.lineWidth(3.0F);
+
+
+//        RenderSystem.lineWidth(3.0F);
 
         buffer.pos(midpoint.getX(), midpoint.getY(), zLevel + 10)
                 .color(gradientColour.r, gradientColour.g, gradientColour.b, gradientRatio)
@@ -232,9 +235,9 @@ public abstract class Renderer {
         tessellator.draw();
 
         RenderSystem.shadeModel(GL11.GL_FLAT);
-        RenderSystem.disableBlend();
-        RenderSystem.enableAlphaTest();
-        RenderSystem.enableTexture();
+//        RenderSystem.disableBlend();
+//        RenderSystem.enableAlphaTest();
+//        RenderSystem.enableTexture();
     }
 
     public static void drawLightning(double x1, double y1, double z1, double x2, double y2, double z2, Colour colour) {
