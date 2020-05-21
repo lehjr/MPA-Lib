@@ -127,16 +127,16 @@ public class PowerModule implements IPowerModule {
         addTradeoffProperty(tradeoffName, propertyName, multiplier);
     }
 
-    public void addSimpleTradeoffDouble(IPowerModule module,
-                                        String tradeoffName,
-                                        String firstPropertyName,
-                                        String firstUnits,
-                                        double firstPropertyBase,
-                                        double firstPropertyMultiplier,
-                                        String secondPropertyName,
-                                        String secondUnits,
-                                        double secondPropertyBase,
-                                        double secondPropertyMultiplier) {
+    public void addSimpleTradeoff(IPowerModule module,
+                                  String tradeoffName,
+                                  String firstPropertyName,
+                                  String firstUnits,
+                                  double firstPropertyBase,
+                                  double firstPropertyMultiplier,
+                                  String secondPropertyName,
+                                  String secondUnits,
+                                  double secondPropertyBase,
+                                  double secondPropertyMultiplier) {
         this.addBaseProperty(firstPropertyName, firstPropertyBase, firstUnits);
         this.addTradeoffProperty(tradeoffName, firstPropertyName, firstPropertyMultiplier);
         this.addBaseProperty(secondPropertyName, secondPropertyBase, secondUnits);
