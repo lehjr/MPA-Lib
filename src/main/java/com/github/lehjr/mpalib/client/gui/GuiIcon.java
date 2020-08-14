@@ -28,14 +28,17 @@ package com.github.lehjr.mpalib.client.gui;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -87,11 +90,11 @@ public class GuiIcon {
             this.height = height;
         }
 
-        public void draw(float x, float y, Colour colour) {
-            draw(x, y, 0, 0, 0, 0, colour);
+        public void draw(MatrixStack matrixStack, float x, float y, Colour colour) {
+            draw(matrixStack, x, y, 0, 0, 0, 0, colour);
         }
 
-        public void draw(float xOffset, float yOffset, float maskTop, float maskBottom, float maskLeft, float maskRight, Colour colour) {
+        public void draw(MatrixStack matrixStack, float xOffset, float yOffset, float maskTop, float maskBottom, float maskLeft, float maskRight, Colour colour) {
             float textureWidth = this.width;
             float textureHeight = this.height;
 
@@ -119,9 +122,9 @@ public class GuiIcon {
             RenderSystem.enableBlend();
             RenderSystem.disableAlphaTest();
             RenderSystem.defaultBlendFunc();
-            innerBlit(posLeft, posRight, posTop, posBottom, zLevel, minU, maxU, minV, maxV, colour);
+            innerBlit(matrixStack.getLast().getMatrix(), posLeft, posRight, posTop, posBottom, zLevel, minU, maxU, minV, maxV, colour);
             RenderSystem.disableBlend();
-            RenderSystem.enableAlphaTest();
+//            RenderSystem.enableAlphaTest();
             RenderSystem.enableDepthTest();
         }
 
@@ -152,8 +155,8 @@ public class GuiIcon {
      * @param bottom bottom most position of the drawing rectangle
      * @param zLevel depth to draw at
      */
-    public static void renderIcon8(ResourceLocation location, float left, float top, float right, float bottom, float zLevel) {
-        renderIcon8(location, left, top, right, bottom, zLevel, Colour.WHITE);
+    public static void renderIcon8(ResourceLocation location, MatrixStack matrixStack, float left, float top, float right, float bottom, float zLevel) {
+        renderIcon8(location, matrixStack, left, top, right, bottom, zLevel, Colour.WHITE);
     }
 
     /**
@@ -165,8 +168,8 @@ public class GuiIcon {
      * @param zLevel depth to draw at
      * @param colour color to apply to the texture
      */
-    public static void renderIcon8(ResourceLocation location, float left, float top, float right, float bottom, float zLevel, Colour colour) {
-        renderTextureWithColour(location, left, right, top, bottom, zLevel, 8, 8, 0, 0, 8, 8, colour);
+    public static void renderIcon8(ResourceLocation location, MatrixStack matrixStack, float left, float top, float right, float bottom, float zLevel, Colour colour) {
+        renderTextureWithColour(location, matrixStack, left, right, top, bottom, zLevel, 8, 8, 0, 0, 8, 8, colour);
     }
 
     /**
@@ -177,8 +180,8 @@ public class GuiIcon {
      * @param bottom bottom most position of the drawing rectangle
      * @param zLevel depth to draw at
      */
-    public static void renderIcon16(ResourceLocation location, float left, float top, float right, float bottom, float zLevel) {
-        renderIcon16(location, left, top, right, bottom, zLevel, Colour.WHITE);
+    public static void renderIcon16(ResourceLocation location, MatrixStack matrixStack, float left, float top, float right, float bottom, float zLevel) {
+        renderIcon16(location, matrixStack, left, top, right, bottom, zLevel, Colour.WHITE);
     }
 
     /**
@@ -190,8 +193,8 @@ public class GuiIcon {
      * @param zLevel depth to draw at
      * @param colour color to apply to the texture
      */
-    public static void renderIcon16(ResourceLocation location, float left, float top, float right, float bottom, float zLevel, Colour colour) {
-        renderTextureWithColour(location, left, right, top, bottom, zLevel, 16, 16, 0, 0, 16, 16, colour);
+    public static void renderIcon16(ResourceLocation location, MatrixStack matrixStack, float left, float top, float right, float bottom, float zLevel, Colour colour) {
+        renderTextureWithColour(location, matrixStack, left, right, top, bottom, zLevel, 16, 16, 0, 0, 16, 16, colour);
     }
 
     /**
@@ -210,16 +213,16 @@ public class GuiIcon {
      * @param textureHeight the height of the texture (often 8 or 16 for icons)
      * @param colour the Colour to apply to the texture
      */
-    public static void renderTextureWithColour(ResourceLocation location,
+    public static void renderTextureWithColour(ResourceLocation location, MatrixStack matrixStack,
                                                float left, float right, float top, float bottom, float zLevel, float iconWidth, float iconHeight, float texStartX, float texStartY, float textureWidth, float textureHeight, Colour colour) {
         Minecraft minecraft = Minecraft.getInstance();
         minecraft.getTextureManager().bindTexture(location);
         RenderSystem.enableBlend();
         RenderSystem.disableAlphaTest();
         RenderSystem.defaultBlendFunc();
-        innerBlit(left, right, top, bottom, zLevel, iconWidth, iconHeight, texStartX, texStartY, textureWidth, textureHeight, colour);
+        innerBlit(matrixStack, left, right, top, bottom, zLevel, iconWidth, iconHeight, texStartX, texStartY, textureWidth, textureHeight, colour);
         RenderSystem.disableBlend();
-        RenderSystem.enableAlphaTest();
+//        RenderSystem.enableAlphaTest();
         RenderSystem.enableDepthTest();
     }
 
@@ -238,8 +241,8 @@ public class GuiIcon {
      * @param textureHeight total texture sheet iconHeight
      * @param colour colour to apply to the texture
      */
-    private static void innerBlit(float left, float right, float top, float bottom, float zLevel, float iconWidth, float iconHeight, float texStartX, float texStartY, float textureWidth, float textureHeight, Colour colour) {
-        innerBlit(left, right, top, bottom, zLevel,
+    private static void innerBlit(MatrixStack matrixStack, float left, float right, float top, float bottom, float zLevel, float iconWidth, float iconHeight, float texStartX, float texStartY, float textureWidth, float textureHeight, Colour colour) {
+        innerBlit(matrixStack.getLast().getMatrix(), left, right, top, bottom, zLevel,
                 (texStartX + 0.0F) / textureWidth,
                 (texStartX + iconWidth) / textureWidth,
                 (texStartY + 0.0F) / textureHeight,
@@ -263,21 +266,61 @@ public class GuiIcon {
      * @param maxV the bottom most UV mapped position
      * @param colour the Colour to apply to the texture
      */
-    public static void innerBlit(float left, float right, float top, float bottom, float zLevel, float minU, float maxU, float minV, float maxV, Colour colour) {
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferBuilder = tessellator.getBuffer();
+//    public static void innerBlit(float left, float right, float top, float bottom, float zLevel, float minU, float maxU, float minV, float maxV, Colour colour) {
+//        Tessellator tessellator = Tessellator.getInstance();
+//        BufferBuilder bufferBuilder = tessellator.getBuffer();
+//
+//        colour.doGL();
+//        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//        // bottom left
+//        bufferBuilder.pos(left, bottom, zLevel).tex(minU, maxV).endVertex();
+//        // bottom right
+//        bufferBuilder.pos(right, bottom, zLevel).tex(maxU, maxV).endVertex();
+//        // top right
+//        bufferBuilder.pos(right, top, zLevel).tex(maxU, minV).endVertex();
+//        // top left
+//        bufferBuilder.pos(left, top, zLevel).tex(minU, minV).endVertex();
+//
+//        tessellator.draw();
+//    }
+
+    /**
+     * Basically like vanilla's version but with floats and a colour parameter
+     * Only does the inner texture rendering
+     *
+     * @param matrix4f
+     * @param left the left most position of the drawing rectangle
+     * @param right the right most position of the drawing rectangle
+     * @param top the top most position of the drawing rectangle
+     * @param bottom the bottom most position of the drawing rectangle
+     * @param zLevel the depth position of the drawing rectangle
+     * Note: UV positions are scaled (0.0 - 1.0)
+     * @param minU the left most UV mapped position
+     * @param maxU the right most UV mapped position
+     * @param minV the top most UV mapped position
+     * @param maxV the bottom most UV mapped position
+     * @param colour the Colour to apply to the texture
+     */
+    private static void innerBlit(Matrix4f matrix4f, float left, float right, float top, float bottom, float zLevel, float minU, float maxU, float minV, float maxV, Colour colour) {
+        BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
 
         colour.doGL();
-        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        // bottom left
-        bufferBuilder.pos(left, bottom, zLevel).tex(minU, maxV).endVertex();
-        // bottom right
-        bufferBuilder.pos(right, bottom, zLevel).tex(maxU, maxV).endVertex();
-        // top right
-        bufferBuilder.pos(right, top, zLevel).tex(maxU, minV).endVertex();
-        // top left
-        bufferBuilder.pos(left, top, zLevel).tex(minU, minV).endVertex();
+        bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-        tessellator.draw();
+        // bottom left
+        bufferbuilder.pos(matrix4f, left, bottom, zLevel).tex(minU, maxV).endVertex();
+
+        // bottom right
+        bufferbuilder.pos(matrix4f, right, bottom, zLevel).tex(maxU, maxV).endVertex();
+
+        // top right
+        bufferbuilder.pos(matrix4f, right, top, zLevel).tex(maxU, minV).endVertex();
+
+        // top left
+        bufferbuilder.pos(matrix4f, left, top, zLevel).tex(minU, minV).endVertex();
+
+        bufferbuilder.finishDrawing();
+        RenderSystem.enableAlphaTest();
+        WorldVertexBufferUploader.draw(bufferbuilder);
     }
 }

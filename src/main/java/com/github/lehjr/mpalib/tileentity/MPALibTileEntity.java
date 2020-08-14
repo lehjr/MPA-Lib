@@ -44,8 +44,8 @@ public class MPALibTileEntity extends TileEntity {
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        read(pkt.getNbtCompound());
         BlockState state = getWorld().getBlockState(getPos());
+        read(state, pkt.getNbtCompound());
         getWorld().notifyBlockUpdate(getPos(), state, state, 3);
     }
 
@@ -83,10 +83,11 @@ public class MPALibTileEntity extends TileEntity {
 
     @Nonnull
     public ItemStack getItemStack(CompoundNBT nbt, String name) {
-        if (nbt.contains(name))
+        if (nbt.contains(name)) {
             return ItemStack.read(nbt.getCompound(name));
-        else
+        } else {
             return ItemStack.EMPTY;
+        }
     }
 
     public void writeItemStack(CompoundNBT nbt, String name, @Nonnull ItemStack stack) {

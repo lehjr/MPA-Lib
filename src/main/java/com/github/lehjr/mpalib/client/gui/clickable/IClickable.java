@@ -27,6 +27,7 @@
 package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.text.ITextComponent;
@@ -36,7 +37,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.List;
 
 public interface IClickable {
-    void render(int mouseX, int mouseY, float partialTicks, float zLevel);
+    void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel);
 
     default void move(float x, float y) {
         this.move(new Point2F(x, y));

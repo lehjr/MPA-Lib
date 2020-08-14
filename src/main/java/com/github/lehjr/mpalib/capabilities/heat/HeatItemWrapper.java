@@ -40,36 +40,36 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class HeatItemWrapper extends HeatStorage implements ICapabilityProvider, IHeatWrapper, INBTSerializable<DoubleNBT> {
-    ItemStack container;
+    ItemStack stack;
     private final LazyOptional<IHeatStorage> holder = LazyOptional.of(() -> this);
 
-    public HeatItemWrapper(@Nonnull ItemStack container, double baseMax, LazyOptional<IPowerModule> moduleCap) {
-        this(container, baseMax + moduleCap.map(cap->cap.applyPropertyModifiers(HeatCapability.MAXIMUM_HEAT)).orElse(0D));
+    public HeatItemWrapper(@Nonnull ItemStack stack, double baseMax, LazyOptional<IPowerModule> moduleCap) {
+        this(stack, baseMax + moduleCap.map(cap->cap.applyPropertyModifiers(HeatCapability.MAXIMUM_HEAT)).orElse(0D));
     }
 
-    public HeatItemWrapper(@Nonnull ItemStack container, double capacity) {
-        this(container, capacity, capacity, capacity);
+    public HeatItemWrapper(@Nonnull ItemStack stack, double capacity) {
+        this(stack, capacity, capacity, capacity);
     }
 
-    public HeatItemWrapper(@Nonnull ItemStack container, double capacity, double maxTransfer) {
-        this(container, capacity, maxTransfer, maxTransfer);
+    public HeatItemWrapper(@Nonnull ItemStack stack, double capacity, double maxTransfer) {
+        this(stack, capacity, maxTransfer, maxTransfer);
     }
 
-    public HeatItemWrapper(@Nonnull ItemStack container, double capacity, double maxReceive, double maxExtract) {
+    public HeatItemWrapper(@Nonnull ItemStack stack, double capacity, double maxReceive, double maxExtract) {
         super(capacity, maxReceive, maxExtract, 0);
-        this.container = container;
+        this.stack = stack;
     }
 
     /** IItemStackContainerUpdate ----------------------------------------------------------------- */
     @Override
     public void updateFromNBT() {
-        heat = Math.min(capacity, NBTUtils.getModularItemDoubleOrZero(container, HeatCapability.CURRENT_HEAT));
+        heat = Math.min(capacity, NBTUtils.getModularItemDoubleOrZero(stack, HeatCapability.CURRENT_HEAT));
     }
     @Override
     public double receiveHeat(double heatProvided, boolean simulate) {
         final double heatReceived = super.receiveHeat(heatProvided, simulate);
         if (!simulate && heatReceived > 0) {
-            NBTUtils.setModularItemDoubleOrRemove(container, HeatCapability.CURRENT_HEAT, heat);
+            NBTUtils.setModularItemDoubleOrRemove(stack, HeatCapability.CURRENT_HEAT, heat);
         }
         return heatReceived;
     }
@@ -78,7 +78,7 @@ public class HeatItemWrapper extends HeatStorage implements ICapabilityProvider,
     public double extractHeat(double heatRequested, boolean simulate) {
         final double heatExtracted = super.extractHeat(heatRequested, simulate);
         if (!simulate && heatExtracted > 0) {
-            NBTUtils.setModularItemDoubleOrRemove(container, HeatCapability.CURRENT_HEAT, heat);
+            NBTUtils.setModularItemDoubleOrRemove(stack, HeatCapability.CURRENT_HEAT, heat);
         }
         return heatExtracted;
     }

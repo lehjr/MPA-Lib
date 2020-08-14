@@ -27,6 +27,7 @@
 package com.github.lehjr.mpalib.client.gui;
 
 import com.github.lehjr.mpalib.client.gui.frame.IGuiFrame;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;
 
@@ -80,19 +81,23 @@ public class ContainerlessGui extends Screen {
     }
 
     @Override
-    public void renderBackground() {
-        super.renderBackground();
+    public void renderBackground(MatrixStack matrixStack, int p_238651_2_) {
+        super.renderBackground(matrixStack, p_238651_2_);
         this.drawRectangularBackground(); // The window rectangle
     }
+
+
 
     /**
      * Called every frame, draws the screen!
      */
+
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground();
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+//        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        this.renderBackground(matrixStack, 0);
         update(mouseX, mouseY);
-        renderFrames(mouseX, mouseY, partialTicks);
+        renderFrames(matrixStack, mouseX, mouseY, partialTicks);
     }
 
     public void update(double x, double y) {
@@ -101,9 +106,9 @@ public class ContainerlessGui extends Screen {
         }
     }
 
-    public void renderFrames(int mouseX, int mouseY, float partialTicks) {
+    public void renderFrames(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         for (IGuiFrame frame : frames) {
-            frame.render(mouseX, mouseY, partialTicks);
+            frame.render(matrixStack, mouseX, mouseY, partialTicks);
         }
     }
 
@@ -249,15 +254,10 @@ public class ContainerlessGui extends Screen {
         return false;
     }
 
-    public void drawToolTip(int mouseX, int mouseY) {
+    public void drawToolTip(MatrixStack matrixStack, int mouseX, int mouseY) {
         List<ITextComponent> tooltip = getToolTip(mouseX, mouseY);
         if (tooltip != null) {
-            tooltip.forEach(ITextComponent::getFormattedText);
-            List<String> toolTip2 = new ArrayList<>();
-            for (ITextComponent component : tooltip) {
-                toolTip2.add(component.getFormattedText());
-            }
-            renderTooltip(toolTip2, mouseX,mouseY);
+            renderTooltip(matrixStack,tooltip, mouseX,mouseY);
         }
     }
 

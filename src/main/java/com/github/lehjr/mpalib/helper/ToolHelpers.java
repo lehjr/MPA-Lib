@@ -33,7 +33,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IShearable;
+import net.minecraftforge.common.IForgeShearable;
 import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nonnull;
@@ -78,7 +78,7 @@ public class ToolHelpers {
 
         if (block == null || world.isAirBlock(pos) || block == Blocks.BEDROCK)
             return false;
-        if ((block instanceof IShearable || block instanceof FlowerBlock || block instanceof BushBlock || block instanceof LeavesBlock)
+        if ((block instanceof IForgeShearable || block instanceof FlowerBlock || block instanceof BushBlock || block instanceof LeavesBlock)
                 && block.canHarvestBlock(state, world, pos, player) || block == Blocks.SNOW || block == Blocks.SNOW_BLOCK) {
             block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), new ItemStack(Items.IRON_SHOVEL));
             world.removeBlock(pos, false);

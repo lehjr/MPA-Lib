@@ -30,6 +30,7 @@ import com.github.lehjr.mpalib.client.gui.geometry.DrawableArrow;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.gui.geometry.RelativeRect;
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
@@ -69,10 +70,10 @@ public class ClickableArrow extends DrawableArrow implements IClickable {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         if (isVisible) {
             super.setBackgroundColour(hitBox(mouseX, mouseY) ? this.backgroundColourHighlighted : this.backgroundColourNotHighlighted);
-            this.draw(zLevel);
+            this.draw(matrixStack, zLevel);
         }
     }
 

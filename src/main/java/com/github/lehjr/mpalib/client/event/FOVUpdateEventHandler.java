@@ -31,8 +31,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -63,14 +63,15 @@ public class FOVUpdateEventHandler {
             ClientPlayerEntity player = Minecraft.getInstance().player;
             if (fovToggleKey.isPressed()) {
                 fovIsActive = !fovIsActive;
-                if (fovIsActive)
-                    player.sendMessage(new StringTextComponent(I18n.format("fovfixtoggle.enabled")));
-                else
-                    player.sendMessage(new StringTextComponent(I18n.format("fovfixtoggle.disabled")));
+                if (fovIsActive) {
+                    player.sendMessage(new StringTextComponent(I18n.format("fovfixtoggle.enabled")), player.getUniqueID());
+                } else {
+                    player.sendMessage(new StringTextComponent(I18n.format("fovfixtoggle.disabled")), player.getUniqueID());
+                }
             }
 
             if (fovIsActive) {
-                IAttributeInstance attributeinstance = e.getEntity().getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+                ModifiableAttributeInstance attributeinstance = e.getEntity().getAttribute(Attributes.MOVEMENT_SPEED);
                 e.setNewfov((float) (e.getNewfov() / ((attributeinstance.getValue() / e.getEntity().abilities.getWalkSpeed() + 1.0) / 2.0)));
             }
         }

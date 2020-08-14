@@ -34,6 +34,7 @@ import com.github.lehjr.mpalib.client.render.IconUtils;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.string.StringUtils;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -78,14 +79,14 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         if (!getStack().isEmpty()) {
             Renderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getStack());
             if (!allowed) {
                 String string = StringUtils.wrapFormatTags("x", StringUtils.FormatCodes.DarkRed);
-                Renderer.drawString(string, getPosition().getX() + 3, getPosition().getY() + 1);
+                Renderer.drawString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
             } else if (installed) {
-                IconUtils.getIcon().checkmark.draw(getPosition().getX() - offsetx + 1, getPosition().getY() - offsety + 1, checkmarkcolour);
+                IconUtils.getIcon().checkmark.draw(matrixStack, getPosition().getX() - offsetx + 1, getPosition().getY() - offsety + 1, checkmarkcolour);
             }
         }
     }

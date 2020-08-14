@@ -5,6 +5,7 @@ import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.gui.slot.IHideableSlot;
 import com.github.lehjr.mpalib.client.gui.slot.UniversalSlot;
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
@@ -117,17 +118,17 @@ public class InventoryFrame extends ScrollableFrame {
         }
 
         @Override
-        public void render(int mouseX, int mouseY, float partialTicks) {
+        public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
             FloatBuffer buffer = border.preDraw(zLevel);
-            border.drawBackground(buffer);
+            border.drawBackground(matrixStack, buffer);
 
             if (this.tiles != null && !this.tiles.isEmpty()) {
                 for (DrawableTile tile : tiles) {
                     // add slight offset so the lines show up (this is why the param was added)
-                    tile.draw(zLevel+ 1);
+                    tile.draw(matrixStack,zLevel+ 1);
                 }
             }
-            border.drawBorder(buffer);
+            border.drawBorder(matrixStack, buffer);
         }
 
         @Override

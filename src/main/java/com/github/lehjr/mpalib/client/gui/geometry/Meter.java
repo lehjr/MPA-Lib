@@ -2,7 +2,7 @@ package com.github.lehjr.mpalib.client.gui.geometry;
 
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.math.MathUtils;
-import org.lwjgl.opengl.GL11;
+import com.mojang.blaze3d.matrix.MatrixStack;
 
 import java.nio.FloatBuffer;
 
@@ -35,10 +35,10 @@ public class Meter extends DrawableRect {
 
     float value = 0;
 
-    public void draw(float x, float y, float zLevel, float valueIn) {
+    public void draw(MatrixStack matrixStack, float x, float y, float zLevel, float valueIn) {
         this.setUL(x, y);
         this.value = MathUtils.clampFloat(valueIn, 0, 1);
-        this.draw(zLevel);
+        this.draw(matrixStack, zLevel);
     }
 
     FloatBuffer getMeterVertices() {
@@ -46,25 +46,27 @@ public class Meter extends DrawableRect {
         return preDraw(this.finalLeft() +1, this.finalTop() + 1, right, this.finalBottom() -1);
     }
 
-    public void draw(float zLevel) {
-        this.zLevel = zLevel;
+    public void draw(MatrixStack matrixStack,float zLevel) {
+        System.out.println("fixme!!!");
 
-        // background
-        FloatBuffer backgroundVertices = this.preDraw(0.0F);
-        FloatBuffer backgroundColours = GradientAndArcCalculator.getColourGradient(this.backgroundColour, this.backgroundColour2, backgroundVertices.limit() * 4);
-        this.drawBackground(backgroundVertices, backgroundColours);
-
-        // meter
-        FloatBuffer meterVertices = this.getMeterVertices();
-        this.drawBuffer(meterVertices, meterColour, GL11.GL_TRIANGLE_FAN);
-
-        // frame
-        if (this.shrinkBorder) {
-            backgroundVertices = this.preDraw(1.0F);
-        } else {
-            backgroundVertices.rewind();
-        }
-
-        this.drawBorder(backgroundVertices);
+//        this.zLevel = zLevel;
+//
+//        // background
+//        FloatBuffer backgroundVertices = this.preDraw(0.0F);
+//        FloatBuffer backgroundColours = GradientAndArcCalculator.getColourGradient(this.backgroundColour, this.backgroundColour2, backgroundVertices.limit() * 4);
+//        this.drawBackground(backgroundVertices, backgroundColours);
+//
+//        // meter
+//        FloatBuffer meterVertices = this.getMeterVertices();
+//        this.drawBuffer(meterVertices, meterColour, GL11.GL_TRIANGLE_FAN);
+//
+//        // frame
+//        if (this.shrinkBorder) {
+//            backgroundVertices = this.preDraw(1.0F);
+//        } else {
+//            backgroundVertices.rewind();
+//        }
+//
+//        this.drawBorder(backgroundVertices);
     }
 }

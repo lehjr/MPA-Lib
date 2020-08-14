@@ -27,6 +27,7 @@
 package com.github.lehjr.mpalib.client.gui.geometry;
 
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
@@ -191,19 +192,19 @@ public class DrawableRect extends Rect {
         return vertices;
     }
 
-    public void drawBackground(FloatBuffer vertices) {
-        drawBuffer(vertices, backgroundColour, GL11.GL_TRIANGLE_FAN);
+    public void drawBackground(MatrixStack matrixStack, FloatBuffer vertices) {
+        drawBuffer(matrixStack, vertices, backgroundColour, GL11.GL_TRIANGLE_FAN);
     }
 
-    public void drawBackground(FloatBuffer vertices, FloatBuffer colours) {
-        drawBuffer(vertices, colours, GL11.GL_TRIANGLE_FAN);
+    public void drawBackground(MatrixStack matrixStack, FloatBuffer vertices, FloatBuffer colours) {
+        drawBuffer(matrixStack, vertices, colours, GL11.GL_TRIANGLE_FAN);
     }
 
-    public void drawBorder(FloatBuffer vertices) {
-        drawBuffer(vertices, borderColour, GL11.GL_LINE_LOOP);
+    public void drawBorder(MatrixStack matrixStack, FloatBuffer vertices) {
+        drawBuffer(matrixStack, vertices, borderColour, GL11.GL_LINE_LOOP);
     }
 
-    void drawBuffer(FloatBuffer vertices, Colour colour, int glMode) {
+    void drawBuffer(MatrixStack matrixStack, FloatBuffer vertices, Colour colour, int glMode) {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.disableAlphaTest();
@@ -224,7 +225,7 @@ public class DrawableRect extends Rect {
         RenderSystem.enableTexture();
     }
 
-    void drawBuffer(FloatBuffer vertices, FloatBuffer colours, int glMode) {
+    void drawBuffer(MatrixStack matrixStack, FloatBuffer vertices, FloatBuffer colours, int glMode) {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.disableAlphaTest();
@@ -249,16 +250,16 @@ public class DrawableRect extends Rect {
     // FIXME!!! still need to address gradient direction 
 
 
-    public void draw(float zLevel) {
+    public void draw(MatrixStack matrixStack, float zLevel) {
         this.zLevel = zLevel;
         FloatBuffer vertices = preDraw(0);
 
         if (backgroundColour2 != null) {
             FloatBuffer colours = GradientAndArcCalculator.getColourGradient(backgroundColour,
                     backgroundColour2, vertices.limit() * 4);
-            drawBackground(vertices, colours);
+            drawBackground(matrixStack, vertices, colours);
         } else {
-            drawBackground(vertices);
+            drawBackground(matrixStack, vertices);
         }
 
         if (shrinkBorder) {
@@ -266,6 +267,6 @@ public class DrawableRect extends Rect {
         } else {
             vertices.rewind();
         }
-        drawBorder(vertices);
+        drawBorder(matrixStack, vertices);
     }
 }

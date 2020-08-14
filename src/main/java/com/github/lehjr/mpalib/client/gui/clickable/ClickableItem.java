@@ -29,7 +29,7 @@ package com.github.lehjr.mpalib.client.gui.clickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerInventory;
@@ -61,15 +61,15 @@ public class ClickableItem extends Clickable {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         Renderer.drawItemAt(
                 getPosition().getX() - offsetx,
                 getPosition().getY() - offsety, getStack());
         if (inventorySlot > 35 || itemHandler.getCurrentItem() == getStack()) {
-            RenderSystem.pushMatrix();
-            RenderSystem.translatef(0,0,310);
-            Renderer.drawString("e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARKGREEN);
-            RenderSystem.popMatrix();
+            matrixStack.push();
+            matrixStack.translate(0,0,310);
+            Renderer.drawString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARKGREEN);
+            matrixStack.pop();
         }
     }
 

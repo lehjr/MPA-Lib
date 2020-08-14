@@ -27,10 +27,10 @@
 package com.github.lehjr.mpalib.capabilities.render.modelspec;
 
 import forge.OBJBakedCompositeModel;
-import net.minecraft.client.renderer.TransformationMatrix;
 import net.minecraft.client.renderer.model.IModelTransform;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.math.vector.TransformationMatrix;
 
 import java.util.Objects;
 

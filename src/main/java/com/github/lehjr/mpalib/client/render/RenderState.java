@@ -39,6 +39,7 @@ import org.lwjgl.opengl.GL13C;
  * <p>
  * Ported to Java by lehjr on 10/23/16.
  */
+@Deprecated
 public final class RenderState {
 
 //    /**

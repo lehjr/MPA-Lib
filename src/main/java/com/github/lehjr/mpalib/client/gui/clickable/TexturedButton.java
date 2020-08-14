@@ -30,6 +30,7 @@ import com.github.lehjr.mpalib.client.gui.GuiIcon;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.gui.geometry.Rect;
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.ResourceLocation;
 
 public class TexturedButton extends Button {
@@ -126,8 +127,8 @@ public class TexturedButton extends Button {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
-        super.render(mouseX, mouseY, partialTicks, zLevel);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+        super.render(matrixStack, mouseX, mouseY, partialTicks, zLevel);
         Colour color;
         if(this.isVisible && this.isEnabled) {
             color = this.hitBox(mouseX, mouseY) ? Colour.LIGHTBLUE.withAlpha(0.6F) : Colour.WHITE;
@@ -135,7 +136,7 @@ public class TexturedButton extends Button {
             color = Colour.RED.withAlpha(0.6F);
         }
 
-        GuiIcon.renderTextureWithColour(this.textureLocation, left(), right(), top(), bottom(), zLevel,
+        GuiIcon.renderTextureWithColour(this.textureLocation, matrixStack, left(), right(), top(), bottom(), zLevel,
         iconWidth, iconHeight, texStartX, texStartY, textureWidth, textureHeight, color);
 
     }

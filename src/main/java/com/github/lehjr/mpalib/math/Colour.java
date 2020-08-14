@@ -28,7 +28,7 @@ package com.github.lehjr.mpalib.math;
 
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.renderer.Vector4f;
+import net.minecraft.util.math.vector.Vector4f;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Objects;

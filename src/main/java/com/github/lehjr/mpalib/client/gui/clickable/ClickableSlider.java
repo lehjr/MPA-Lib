@@ -31,6 +31,7 @@ import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.math.MathUtils;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.resources.I18n;
 
 /**
@@ -73,11 +74,11 @@ public class ClickableSlider extends Clickable {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
-        Renderer.drawCenteredString(I18n.format(label), position.getX(), position.getY());
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+        Renderer.drawCenteredString(matrixStack, I18n.format(label), position.getX(), position.getY());
         this.insideRect.setRight(position.getX() + width * ((float)getValue() - 0.5F) + cornersize);
-        this.outsideRect.draw(zLevel);
-        this.insideRect.draw(zLevel);
+        this.outsideRect.draw(matrixStack, zLevel);
+        this.insideRect.draw(matrixStack, zLevel);
     }
 
     @Override

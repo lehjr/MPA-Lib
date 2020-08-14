@@ -63,4 +63,12 @@ public class MPALIbConstants {
     public static final String TAG_COLOUR_INDEX = "colourindex";
 
     public static final String MODULE_TRADEOFF_PREFIX = "module.tradeoff.";
+
+    // RegistryNames
+    public static final String AMOR_WORKSTATION__REGNAME = "armor_workstation";
+
+    public static final String ARMOR_WORKSTATION__ENTITY_TYPE_REGNAME =AMOR_WORKSTATION__REGNAME + "_entity";
+
+
+
 }

@@ -30,6 +30,7 @@ import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.gui.geometry.Rect;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 
 public class LabledButton extends Button {
     String label;
@@ -83,8 +84,8 @@ public class LabledButton extends Button {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
-        super.render(mouseX, mouseY, partialTicks, zLevel);
-        Renderer.drawCenteredString(this.label, centerx(), centery() - 4);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+        super.render(matrixStack, mouseX, mouseY, partialTicks, zLevel);
+        Renderer.drawCenteredString(matrixStack, this.label, centerx(), centery() - 4);
     }
 }

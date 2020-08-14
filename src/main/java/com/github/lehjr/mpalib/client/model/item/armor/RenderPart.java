@@ -10,7 +10,6 @@ import com.github.lehjr.mpalib.nbt.NBTTagAccessor;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.Model;
@@ -18,7 +17,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.vector.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.model.TransformationHelper;
@@ -151,7 +150,7 @@ public class RenderPart extends ModelRenderer {
                        int lightmapCoordIn,
                        int overlayCoords, float red, float green, float blue, float alpha) {
         int[] aint = bakedQuad.getVertexData();
-        Vec3i faceNormal = bakedQuad.getFace().getDirectionVec();
+        Vector3i faceNormal = bakedQuad.getFace().getDirectionVec();
         Vector3f normal = new Vector3f((float) faceNormal.getX(), (float) faceNormal.getY(), (float) faceNormal.getZ());
         Matrix4f matrix4f = matrixEntry.getMatrix();// same as TexturedQuad renderer
         normal.transform(matrixEntry.getNormal()); // normals different here

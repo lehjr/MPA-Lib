@@ -30,6 +30,7 @@ import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
@@ -50,8 +51,8 @@ public class ClickableButton extends Clickable {
         this.label = label;
         this.position = position;
 
-        if (label.getFormattedText().contains("\n")) {
-            String[] x = label.getFormattedText().split("\n");
+        if (label.getString().contains("\n")) {
+            String[] x = label.getString().split("\n");
 
             int longestIndex = 0;
             for (int i = 0; i < x.length; i++) {
@@ -60,7 +61,7 @@ public class ClickableButton extends Clickable {
             }
             this.radius = new Point2F((float) (Renderer.getStringWidth(x[longestIndex]) / 2F + 2F), 6 * x.length);
         } else {
-            this.radius = new Point2F((float) (Renderer.getStringWidth(label.getFormattedText()) / 2F + 2F), 6);
+            this.radius = new Point2F((float) (Renderer.getStringWidth(label.getString()) / 2F + 2F), 6);
         }
 
         this.rect = new DrawableRect(
@@ -82,9 +83,9 @@ public class ClickableButton extends Clickable {
      * @param partialTicks
      */
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
-        renderButton(mouseX, mouseY, partialTicks, zLevel);
-        renderText(mouseX, mouseY, partialTicks);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
+        renderButton(matrixStack, mouseX, mouseY, partialTicks, zLevel);
+        renderText(matrixStack, mouseX, mouseY, partialTicks);
     }
 
     /**
@@ -95,7 +96,7 @@ public class ClickableButton extends Clickable {
      * @param mouseY
      * @param partialTicks
      */
-    public void renderButton(int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         if (isVisible) {
             this.rect.setLeft(position.getX() - radius.getX());
             this.rect.setTop(position.getY() - radius.getY());
@@ -103,7 +104,7 @@ public class ClickableButton extends Clickable {
             this.rect.setBottom(position.getY() + radius.getY());
             this.rect.setBorderColour(isEnabled() ? enabledBorder : disabledBorder);
             this.rect.setBackgroundColour(isEnabled() ? enabledBackground : disabledBackground);
-            this.rect.draw(zLevel);
+            this.rect.draw(matrixStack, zLevel);
         }
     }
 
@@ -114,15 +115,15 @@ public class ClickableButton extends Clickable {
      * @param mouseY
      * @param partialTicks
      */
-    public void renderText(int mouseX, int mouseY, float partialTicks) {
+    public void renderText(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (isVisible) {
-            if (label.getFormattedText().contains("\n")) {
-                String[] s = label.getFormattedText().split("\n");
+            if (label.getString().contains("\n")) {
+                String[] s = label.getString().split("\n");
                 for (int i = 0; i < s.length; i++) {
-                    Renderer.drawCenteredString(s[i], position.getX(), position.getY() - (4 * s.length) + (i * 8));
+                    Renderer.drawCenteredString(matrixStack, s[i], position.getX(), position.getY() - (4 * s.length) + (i * 8));
                 }
             } else {
-                Renderer.drawCenteredString(this.label.getFormattedText(), position.getX(), position.getY() - 4);
+                Renderer.drawCenteredString(matrixStack, this.label.getString(), position.getX(), position.getY() - 4);
             }
         }
     }

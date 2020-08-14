@@ -28,6 +28,7 @@ package com.github.lehjr.mpalib.client.gui.hud.meters;
 
 import com.github.lehjr.mpalib.client.gui.geometry.Meter;
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 
 public class HeatMeter {
     public final Meter meter;
@@ -40,7 +41,7 @@ public class HeatMeter {
         meter = new Meter(Colour.RED.withAlpha(0.5F));
     }
 
-    public void draw(float xpos, float ypos, float value) {
-        meter.draw(xpos, ypos, 0, value);
+    public void draw(MatrixStack matrixStack, float xpos, float ypos, float value) {
+        meter.draw(matrixStack, xpos, ypos, 0, value);
     }
 }

@@ -7,7 +7,7 @@ import com.mojang.datafixers.util.Either;
 import net.minecraft.client.renderer.model.IModelTransform;
 import net.minecraft.client.renderer.model.IUnbakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.MissingTextureSprite;
 import net.minecraftforge.client.model.IModelConfiguration;
@@ -61,7 +61,7 @@ public class OBJModelConfiguration implements IModelConfiguration {
      * @return The location of the texture, or the missing texture if not found.
      */
     @Override
-    public Material resolveTexture(String nameIn) {
+    public RenderMaterial resolveTexture(String nameIn) {
         if (startsWithHash(nameIn)) {
             nameIn = nameIn.substring(1);
         }
@@ -69,8 +69,8 @@ public class OBJModelConfiguration implements IModelConfiguration {
         List<String> list = Lists.newArrayList();
 
         while(true) {
-            Either<Material, String> either = this.findTexture(nameIn);
-            Optional<Material> optional = either.left();
+            Either<RenderMaterial, String> either = this.findTexture(nameIn);
+            Optional<RenderMaterial> optional = either.left();
             if (optional.isPresent()) {
                 return optional.get();
             }
@@ -78,7 +78,7 @@ public class OBJModelConfiguration implements IModelConfiguration {
             nameIn = either.right().get();
             if (list.contains(nameIn)) {
                 MPALibLogger.getLogger().warn("Unable to resolve texture due to reference chain {}->{} in {}", Joiner.on("->").join(list), nameIn, this.modelLocation);
-                return new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, MissingTextureSprite.getLocation());
+                return new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, MissingTextureSprite.getLocation());
             }
 
             list.add(nameIn);
@@ -89,8 +89,8 @@ public class OBJModelConfiguration implements IModelConfiguration {
         return strIn.charAt(0) == '#';
     }
 
-    private Either<Material, String> findTexture(String nameIn) {
-        return Either.left(new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, MissingTextureSprite.getLocation()));
+    private Either<RenderMaterial, String> findTexture(String nameIn) {
+        return Either.left(new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, MissingTextureSprite.getLocation()));
     }
 
 

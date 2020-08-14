@@ -27,11 +27,7 @@
 package com.github.lehjr.mpalib.client.gui.geometry;
 
 import com.github.lehjr.mpalib.math.Colour;
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import org.lwjgl.opengl.GL11;
+import com.mojang.blaze3d.matrix.MatrixStack;
 
 import java.nio.FloatBuffer;
 
@@ -49,34 +45,36 @@ public class SwirlyCircle {
         colour = GradientAndArcCalculator.getColourGradient(c1, c2, points.limit() / 2);
     }
 
-    public void draw(double radius, double x, double y, float zLevel) {
-        float ratio = (System.currentTimeMillis() % 2000) / 2000.0F;
-        colour.rewind();
-        points.rewind();
-        RenderSystem.pushMatrix();
-        RenderSystem.translated(x, y, 0);
-        RenderSystem.scaled(radius / detail, radius / detail, 1.0);
-        RenderSystem.rotatef((float) (-ratio * 360.0), 0, 0, 1);
+    public void draw(MatrixStack matrixStack, double radius, double x, double y, float zLevel) {
+        System.out.println("FIXME");
 
-        RenderSystem.disableTexture();
-        RenderSystem.enableBlend();
-        RenderSystem.disableAlphaTest();
-        RenderSystem.defaultBlendFunc();
-
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-        buffer.begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION_COLOR);
-
-        while (points.hasRemaining() && colour.hasRemaining()) {
-            buffer.pos(points.get(), points.get(), zLevel).color(colour.get(), colour.get(), colour.get(), colour.get()).endVertex();
-        }
-        tessellator.draw();
-
-        RenderSystem.shadeModel(GL11.GL_FLAT);
-        RenderSystem.disableBlend();
-        RenderSystem.enableAlphaTest();
-        RenderSystem.enableTexture();
-
-        RenderSystem.popMatrix();
+//        float ratio = (System.currentTimeMillis() % 2000) / 2000.0F;
+//        colour.rewind();
+//        points.rewind();
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translated(x, y, 0);
+//        RenderSystem.scaled(radius / detail, radius / detail, 1.0);
+//        RenderSystem.rotatef((float) (-ratio * 360.0), 0, 0, 1);
+//
+//        RenderSystem.disableTexture();
+//        RenderSystem.enableBlend();
+//        RenderSystem.disableAlphaTest();
+//        RenderSystem.defaultBlendFunc();
+//
+//        Tessellator tessellator = Tessellator.getInstance();
+//        BufferBuilder buffer = tessellator.getBuffer();
+//        buffer.begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION_COLOR);
+//
+//        while (points.hasRemaining() && colour.hasRemaining()) {
+//            buffer.pos(points.get(), points.get(), zLevel).color(colour.get(), colour.get(), colour.get(), colour.get()).endVertex();
+//        }
+//        tessellator.draw();
+//
+//        RenderSystem.shadeModel(GL11.GL_FLAT);
+//        RenderSystem.disableBlend();
+//        RenderSystem.enableAlphaTest();
+//        RenderSystem.enableTexture();
+//
+//        RenderSystem.popMatrix();
     }
 }

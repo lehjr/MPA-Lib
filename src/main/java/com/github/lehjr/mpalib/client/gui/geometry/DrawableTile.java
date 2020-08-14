@@ -27,10 +27,7 @@
 package com.github.lehjr.mpalib.client.gui.geometry;
 
 import com.github.lehjr.mpalib.math.Colour;
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import org.lwjgl.opengl.GL11;
 
 public class DrawableTile extends RelativeRect {
@@ -123,39 +120,49 @@ public class DrawableTile extends RelativeRect {
         return this;
     }
 
-    void draw(Colour colour, int glMode, float shrinkBy) {
-        RenderSystem.disableTexture();
-        RenderSystem.enableBlend();
-        RenderSystem.disableAlphaTest();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+    void draw(MatrixStack matrixStack, Colour colour, int glMode, float shrinkBy) {
+        System.out.println("FIXME!!!");
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-        buffer.begin(glMode, DefaultVertexFormats.POSITION_COLOR);
-        buffer.pos(right() - shrinkBy, top() + shrinkBy, zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
-        buffer.pos(left() + shrinkBy, top() + shrinkBy, zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
-        buffer.pos(left() + shrinkBy, bottom() - shrinkBy, zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
-        buffer.pos(right() - shrinkBy, bottom() - shrinkBy, zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
-        tessellator.draw();
+//        RenderSystem.disableTexture();
+//        RenderSystem.enableBlend();
+//        RenderSystem.disableAlphaTest();
+//        RenderSystem.defaultBlendFunc();
+//        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+//
+//        Tessellator tessellator = Tessellator.getInstance();
+//        BufferBuilder buffer = tessellator.getBuffer();
+//        buffer.begin(glMode, DefaultVertexFormats.POSITION_COLOR);
+//        buffer.pos(right() - shrinkBy, top() + shrinkBy, zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+//        buffer.pos(left() + shrinkBy, top() + shrinkBy, zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+//        buffer.pos(left() + shrinkBy, bottom() - shrinkBy, zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+//        buffer.pos(right() - shrinkBy, bottom() - shrinkBy, zLevel).color(colour.r, colour.g, colour.b, colour.a).endVertex();
+//        tessellator.draw();
+//
+//        RenderSystem.shadeModel(GL11.GL_FLAT);
+//        RenderSystem.disableBlend();
+//        RenderSystem.enableAlphaTest();
+//        RenderSystem.enableTexture();
 
-        RenderSystem.shadeModel(GL11.GL_FLAT);
-        RenderSystem.disableBlend();
-        RenderSystem.enableAlphaTest();
-        RenderSystem.enableTexture();
+
+
+
+
+
+
+
     }
 
-    public void drawBackground() {
-        draw(backgroundColour, GL11.GL_QUADS, 0);
+    public void drawBackground(MatrixStack matrixStack) {
+        draw(matrixStack, backgroundColour, GL11.GL_QUADS, 0);
     }
 
-    public void drawBorder(float shrinkBy) {
-        draw(borderColour, GL11.GL_LINE_LOOP, shrinkBy);
+    public void drawBorder(MatrixStack matrixStack, float shrinkBy) {
+        draw(matrixStack, borderColour, GL11.GL_LINE_LOOP, shrinkBy);
     }
 
-    public void draw(float zLevel) {
+    public void draw(MatrixStack matrixStack, float zLevel) {
         this.zLevel = zLevel;
-        drawBackground();
-        drawBorder(shrinkBorder ? 1 : 0);
+        drawBackground(matrixStack);
+        drawBorder(matrixStack, shrinkBorder ? 1 : 0);
     }
 }

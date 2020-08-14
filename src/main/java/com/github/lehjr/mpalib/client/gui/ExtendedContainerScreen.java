@@ -3,6 +3,7 @@ package com.github.lehjr.mpalib.client.gui;
 import com.github.lehjr.mpalib.client.gui.frame.IGuiFrame;
 import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -56,18 +57,42 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        this.drawRectangularBackground(); // The window rectangle
+    public void renderBackground(MatrixStack p_230446_1_) {
+        super.renderBackground(p_230446_1_);
     }
+
+    @Override
+    public void renderBackground(MatrixStack p_238651_1_, int p_238651_2_) {
+        super.renderBackground(p_238651_1_, p_238651_2_);
+    }
+
+    // FIXME!!!!
+//    @Override
+//    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+//        this.drawRectangularBackground(); // The window rectangle
+//    }
 
     /**
      * Called every frame, draws the screen!
      */
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         update(mouseX, mouseY);
-        renderFrames(mouseX, mouseY, partialTicks);
-        super.render(mouseX, mouseY, partialTicks);
+        renderFrames(matrixStack, mouseX, mouseY, partialTicks);
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+    }
+
+
+    /**
+     * No idea what this is yet
+     * @param p_230450_1_
+     * @param p_230450_2_
+     * @param p_230450_3_
+     * @param p_230450_4_
+     */
+    @Override
+    protected void func_230450_a_(MatrixStack p_230450_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
+        System.out.println("fixme!!!");
     }
 
     public void update(double x, double y) {
@@ -76,9 +101,9 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
         }
     }
 
-    public void renderFrames(int mouseX, int mouseY, float partialTicks) {
+    public void renderFrames(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         for (IGuiFrame frame : frames) {
-            frame.render(mouseX, mouseY, partialTicks);
+            frame.render(matrixStack, mouseX, mouseY, partialTicks);
         }
     }
 
@@ -124,15 +149,10 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
         return false;
     }
 
-    public void drawToolTip(int mouseX, int mouseY) {
+    public void drawToolTip(MatrixStack matrixStack, int mouseX, int mouseY) {
         List<ITextComponent> tooltip = getToolTip(mouseX, mouseY);
         if (tooltip != null) {
-            tooltip.forEach(ITextComponent::getFormattedText);
-            List<String> toolTip2 = new ArrayList<>();
-            for (ITextComponent component : tooltip) {
-                toolTip2.add(component.getFormattedText());
-            }
-            renderTooltip(toolTip2, mouseX,mouseY);
+            renderTooltip(matrixStack,tooltip, mouseX,mouseY);
         }
     }
 

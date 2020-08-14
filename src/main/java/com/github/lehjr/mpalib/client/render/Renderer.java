@@ -30,6 +30,7 @@ import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.gui.geometry.SwirlyCircle;
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -60,15 +61,18 @@ public abstract class Renderer {
     /**
      * Does the rotating green circle around the selection, e.g. in GUI.
      *
+     *
+     * @param matrixStack
      * @param xoffset
      * @param yoffset
      * @param radius
+     * @param zLevel
      */
-    public static void drawCircleAround(double xoffset, double yoffset, double radius, float zLevel) {
+    public static void drawCircleAround(MatrixStack matrixStack, double xoffset, double yoffset, double radius, float zLevel) {
         if (selectionCircle == null) {
             selectionCircle = new SwirlyCircle(new Colour(0.0f, 1.0f, 0.0f, 0.0f), new Colour(0.8f, 1.0f, 0.8f, 1.0f));
         }
-        selectionCircle.draw(radius, xoffset, yoffset, zLevel);
+        selectionCircle.draw(matrixStack, radius, xoffset, yoffset, zLevel);
     }
 
 
@@ -106,33 +110,33 @@ public abstract class Renderer {
         }
     }
 
-    public static void drawString(String s, double x, double y) {
-        drawString(s, x, y, Colour.WHITE);
+    public static void drawString(MatrixStack matrixStack, String s, double x, double y) {
+        drawString(matrixStack, s, x, y, Colour.WHITE);
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string at the specified coords
      */
-    public static void drawString(String s, double x, double y, Colour c) {
-        getFontRenderer().drawStringWithShadow(s, (int) x, (int) y, c.getInt());
+    public static void drawString(MatrixStack matrixStack, String s, double x, double y, Colour c) {
+        getFontRenderer().drawStringWithShadow(matrixStack, s, (int) x, (int) y, c.getInt());
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
-    public static void drawCenteredString(String s, double x, double y) {
-        drawString(s, x - getStringWidth(s) / 2, y);
+    public static void drawCenteredString(MatrixStack matrixStack, String s, double x, double y) {
+        drawString(matrixStack, s, x - getStringWidth(s) / 2, y);
     }
 
     /**
      * Does the necessary openGL calls and calls the Minecraft font renderer to draw a string such that the xcoord is halfway through the string
      */
-    public static void drawRightAlignedString(String s, double x, double y) {
-        drawString(s, x - getStringWidth(s), y);
+    public static void drawRightAlignedString(MatrixStack matrixStack, String s, double x, double y) {
+        drawString(matrixStack, s, x - getStringWidth(s), y);
     }
 
-    public static void drawLeftAlignedStringString(String s, double x, double y) {
-        drawString(s, x, y);
+    public static void drawLeftAlignedStringString(MatrixStack matrixStack, String s, double x, double y) {
+        drawString(matrixStack, s, x, y);
     }
 
 
@@ -144,7 +148,7 @@ public abstract class Renderer {
         return stringWidth;
     }
 
-    public static void drawStringsJustified(List<String> words, double x1, double x2, double y) {
+    public static void drawStringsJustified(MatrixStack matrixStack, List<String> words, double x1, double x2, double y) {
         int totalwidth = 0;
         for (String word : words) {
             totalwidth += getStringWidth(word);
@@ -154,7 +158,7 @@ public abstract class Renderer {
 
         double currentwidth = 0;
         for (String word : words) {
-            Renderer.drawString(word, x1 + currentwidth, y);
+            Renderer.drawString(matrixStack, word, x1 + currentwidth, y);
             currentwidth += getStringWidth(word) + spacing;
         }
     }

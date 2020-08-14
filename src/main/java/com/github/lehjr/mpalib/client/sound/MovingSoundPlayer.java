@@ -38,7 +38,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * Ported to Java by lehjr on 10/22/16.
  */
 @OnlyIn(Dist.CLIENT)
-@Deprecated
 public class MovingSoundPlayer extends TickableSound {
     private static PlayerEntity player;
 
@@ -97,6 +96,6 @@ public class MovingSoundPlayer extends TickableSound {
     }
 
     public void stopPlaying() {
-        super.donePlaying = true;
+        this.func_239509_o_();
     }
 }

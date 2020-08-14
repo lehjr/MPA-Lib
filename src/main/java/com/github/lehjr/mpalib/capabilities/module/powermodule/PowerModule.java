@@ -28,7 +28,10 @@ package com.github.lehjr.mpalib.capabilities.module.powermodule;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.nbt.NBTUtils;
-import com.github.lehjr.mpalib.nbt.propertymodifier.*;
+import com.github.lehjr.mpalib.nbt.propertymodifier.IPropertyModifier;
+import com.github.lehjr.mpalib.nbt.propertymodifier.PropertyModifierFlatAdditive;
+import com.github.lehjr.mpalib.nbt.propertymodifier.PropertyModifierIntLinearAdditive;
+import com.github.lehjr.mpalib.nbt.propertymodifier.PropertyModifierLinearAdditive;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;

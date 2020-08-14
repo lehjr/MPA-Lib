@@ -11,12 +11,14 @@ import com.github.lehjr.mpalib.client.gui.GuiIcon;
 import com.github.lehjr.mpalib.client.gui.MPALibSpriteUploader;
 import com.github.lehjr.mpalib.client.render.IconUtils;
 import com.github.lehjr.mpalib.config.MPALibSettings;
+import com.github.lehjr.mpalib.entity.MPAArmorStandEntity;
 import com.github.lehjr.mpalib.event.EventBusHelper;
 import com.github.lehjr.mpalib.event.PlayerUpdateHandler;
 import com.github.lehjr.mpalib.network.MPALibPackets;
 import forge.MPAOBJLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.resources.IResourceManager;
@@ -28,6 +30,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -51,16 +54,25 @@ public class MPALib {
 //        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MPALibConfig.COMMON_SPEC, MPALibConfig.setupConfigFile("mpalib-common.toml").getAbsolutePath());
 //        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MPALibConfig.SERVER_SPEC, "/lehjr/mpalib/mpalib-server.toml");
 
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+
         // Register the setup method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        modEventBus.addListener(this::setup);
 
         // Register the doClientStuff method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+        modEventBus.addListener(this::doClientStuff);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
-        DistExecutor.runWhenOn(Dist.CLIENT, ()->()-> clientStart(FMLJavaModLoadingContext.get().getModEventBus()));
+
+        ModObjects.ITEMS.register(modEventBus);
+        ModObjects.BLOCKS.register(modEventBus);
+        ModObjects.TILE_TYPES.register(modEventBus);
+        ModObjects.ENTITY_TYPES.register(modEventBus);
+
+        DistExecutor.runWhenOn(Dist.CLIENT, ()->()-> clientStart(modEventBus));
     }
 
     // Ripped from JEI
@@ -103,6 +115,10 @@ public class MPALib {
         CapabilityPlayerKeyStates.register();
 
         MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
+
+        DeferredWorkQueue.runLater(() -> {
+            GlobalEntityTypeAttributes.put(ModObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get(), MPAArmorStandEntity.setCustomAttributes().func_233813_a_());//.create());
+        });
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {

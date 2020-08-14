@@ -1,20 +1,16 @@
 package com.github.lehjr.mpalib.client.event;
 
-import com.github.lehjr.mpalib.client.model.item.armor.MPAArmorLayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
-import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -39,13 +35,15 @@ public class ArmorLayerSetup {
     }
 
     private static <T extends LivingEntity, M extends BipedModel<T>, A extends BipedModel<T>> void addCustomArmorLayer(LivingRenderer<T, M> renderer) {
-        for (LayerRenderer<T, M> layerRenderer : new ArrayList<>(renderer.layerRenderers)) {
-            //Only allow an exact match, so we don't add to modded entities that only have a modded extended armor layer
-            if (layerRenderer.getClass() == BipedArmorLayer.class) {
-                BipedArmorLayer<T, M, A> bipedArmorLayer = (BipedArmorLayer<T, M, A>) layerRenderer;
-                renderer.addLayer(new MPAArmorLayer<>(renderer, bipedArmorLayer.modelLeggings, bipedArmorLayer.modelArmor));
-                break;
-            }
-        }
+        System.out.println("FIXME!!!!");
+
+        //        for (LayerRenderer<T, M> layerRenderer : new ArrayList<>(renderer.layerRenderers)) {
+//            //Only allow an exact match, so we don't add to modded entities that only have a modded extended armor layer
+//            if (layerRenderer.getClass() == BipedArmorLayer.class) {
+//                BipedArmorLayer<T, M, A> bipedArmorLayer = (BipedArmorLayer<T, M, A>) layerRenderer;
+//                renderer.addLayer(new MPAArmorLayer<>(renderer, bipedArmorLayer.modelLeggings, bipedArmorLayer.modelArmor));
+//                break;
+//            }
+//        }
     }
 }

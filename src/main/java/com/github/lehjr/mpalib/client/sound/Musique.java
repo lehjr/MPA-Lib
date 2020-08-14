@@ -45,7 +45,6 @@ import java.util.HashMap;
  * Ported to Java by lehjr on 10/22/16.
  */
 @OnlyIn(Dist.CLIENT)
-@Deprecated
 public class Musique {
     private static HashMap<String, MovingSoundPlayer> soundMap = new HashMap<>();
 

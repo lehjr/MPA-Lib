@@ -32,6 +32,7 @@ import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.math.MathUtils;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
@@ -90,16 +91,16 @@ public class ScrollableFrame implements IGuiFrame {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         if (isVisible()) {
-            preRender(mouseX, mouseY, partialTicks);
+            preRender(matrixStack, mouseX, mouseY, partialTicks);
             postRender(mouseX, mouseY, partialTicks);
         }
     }
 
-    public void preRender(int mouseX, int mouseY, float partialTicks)  {
+    public void preRender(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)  {
         if (isVisible()) {
-            border.draw(zLevel);
+            border.draw(matrixStack, zLevel);
 
             RenderSystem.disableTexture();
             RenderSystem.enableBlend();
@@ -134,6 +135,9 @@ public class ScrollableFrame implements IGuiFrame {
             RenderState.scissorsOn(border.left(), border.top() + 4, border.width(), border.height() - 8); // get rid of margins
         }
     }
+
+
+
 
 
     public void postRender(int mouseX, int mouseY, float partialTicks) {

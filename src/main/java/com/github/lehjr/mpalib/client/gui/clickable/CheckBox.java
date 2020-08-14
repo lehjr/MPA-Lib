@@ -3,8 +3,10 @@ package com.github.lehjr.mpalib.client.gui.clickable;
 import com.github.lehjr.mpalib.client.gui.geometry.DrawableTile;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.render.Renderer;
-import com.github.lehjr.mpalib.client.sound.Musique;
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 
@@ -25,13 +27,13 @@ public class CheckBox extends Clickable {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         if(this.isVisible) {
-            tile.draw(zLevel);
+            tile.draw(matrixStack, zLevel);
             if (isChecked) {
-                Renderer.drawString("x", tile.centerx() - 2, tile.centery() - 5, Colour.WHITE);
+                Renderer.drawString(matrixStack, "x", tile.centerx() - 2, tile.centery() - 5, Colour.WHITE);
             }
-            Renderer.drawString(label, tile.centerx() + 8, tile.centery() - 4, Colour.WHITE);
+            Renderer.drawString(matrixStack, label, tile.centerx() + 8, tile.centery() - 4, Colour.WHITE);
         }
     }
 
@@ -66,7 +68,7 @@ public class CheckBox extends Clickable {
     @Override
     public void onPressed() {
         if (this.isVisible() && this.isEnabled()) {
-            Musique.playClientSound(SoundEvents.UI_BUTTON_CLICK, 1);
+            Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             this.isChecked = !this.isChecked;
         }
         super.onPressed();

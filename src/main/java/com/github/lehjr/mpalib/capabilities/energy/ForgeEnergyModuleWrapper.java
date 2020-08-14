@@ -40,20 +40,17 @@ import javax.annotation.Nonnull;
  */
 public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWrapper, INBTSerializable<IntNBT> {
     private static final String TAG_ENERGY = "energy";
-    protected ItemStack container;
+    protected ItemStack stack;
 
-    public ForgeEnergyModuleWrapper(@Nonnull ItemStack container, int maxEnergy, int maxTransfer) {
+    public ForgeEnergyModuleWrapper(@Nonnull ItemStack stack, int maxEnergy, int maxTransfer) {
         super(maxEnergy, maxTransfer);
-        this.container = container;
+        this.stack = stack;
     }
 
     /** IItemStackContainerUpdate ----------------------------------------------------------------- */
     @Override
-//    public void updateFromNBT() {
-//        energy = Math.min(capacity, MuseNBTUtils.getModuleIntOrZero(container, TAG_ENERGY));
-//    }
     public void updateFromNBT() {
-        final CompoundNBT nbt = NBTUtils.getModuleTag(container);
+        final CompoundNBT nbt = NBTUtils.getModuleTag(stack);
         if (nbt != null && nbt.contains(TAG_ENERGY, net.minecraftforge.common.util.Constants.NBT.TAG_INT)) {
             deserializeNBT((IntNBT) nbt.get(TAG_ENERGY));
         }
@@ -64,7 +61,7 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
     public int receiveEnergy(final int maxReceive, final boolean simulate) {
         final int energyReceived = super.receiveEnergy(maxReceive, simulate);
         if (!simulate && energyReceived != 0) {
-            NBTUtils.setModuleIntOrRemove(container, TAG_ENERGY, energy);
+            NBTUtils.setModuleIntOrRemove(stack, TAG_ENERGY, energy);
         }
 
         return energyReceived;
@@ -74,7 +71,7 @@ public class ForgeEnergyModuleWrapper extends EnergyStorage implements IEnergyWr
     public int extractEnergy(final int maxExtract, final boolean simulate) {
         final int energyExtracted = super.extractEnergy(maxExtract, simulate);
         if (!simulate && energyExtracted != 0) {
-            NBTUtils.setModuleIntOrRemove(container, TAG_ENERGY, energy);
+            NBTUtils.setModuleIntOrRemove(stack, TAG_ENERGY, energy);
         }
 
         return energyExtracted;

@@ -5,6 +5,7 @@ import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.math.MathUtils;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.resources.I18n;
 
 import javax.annotation.Nullable;
@@ -60,15 +61,15 @@ public class RangedSlider extends Clickable {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         if (this.isVisible) {
             if (label != null) {
-                Renderer.drawCenteredString(I18n.format(label), position.getX(), position.getY());
+                Renderer.drawCenteredString(matrixStack, I18n.format(label), position.getX(), position.getY());
             }
 
-            this.outsideRect.draw(zLevel);
+            this.outsideRect.draw(matrixStack, zLevel);
             this.insideRect.setPosition(new Point2F(this.position.getX() + this.width * (this.sliderValue - 0.5F), this.outsideRect.centery()));
-            this.insideRect.draw(zLevel);
+            this.insideRect.draw(matrixStack, zLevel);
         }
     }
 

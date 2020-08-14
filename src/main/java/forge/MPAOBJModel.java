@@ -21,16 +21,16 @@ package forge;
 
 import com.google.common.collect.*;
 import joptsimple.internal.Strings;
-import net.minecraft.client.renderer.TransformationMatrix;
-import net.minecraft.client.renderer.Vector3f;
-import net.minecraft.client.renderer.Vector4f;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.vector.TransformationMatrix;
+import net.minecraft.util.math.vector.Vector2f;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.vector.Vector4f;
 import net.minecraftforge.client.model.IModelBuilder;
 import net.minecraftforge.client.model.IModelConfiguration;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -51,17 +51,17 @@ import java.util.stream.Collectors;
 
 public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
     private static final Vector4f COLOR_WHITE = new Vector4f(1, 1, 1, 1);
-    private static final Vec2f[] DEFAULT_COORDS = {
-            new Vec2f(0, 0),
-            new Vec2f(0, 1),
-            new Vec2f(1, 1),
-            new Vec2f(1, 0),
+    private static final Vector2f[] DEFAULT_COORDS = {
+            new Vector2f(0, 0),
+            new Vector2f(0, 1),
+            new Vector2f(1, 1),
+            new Vector2f(1, 0),
     };
 
     private final Map<String, ModelGroup> parts = Maps.newHashMap();
 
     private final List<Vector3f> positions = Lists.newArrayList();
-    private final List<Vec2f> texCoords = Lists.newArrayList();
+    private final List<Vector2f> texCoords = Lists.newArrayList();
     private final List<Vector3f> normals = Lists.newArrayList();
     private final List<Vector4f> colors = Lists.newArrayList();
 
@@ -87,7 +87,7 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
     @Override
     public OBJBakedCompositeModel bake(IModelConfiguration owner,
                                        ModelBakery bakery, // model loader get instance from bake event
-                                       Function<Material, TextureAtlasSprite> spriteGetter, // get from model loader
+                                       Function<RenderMaterial, TextureAtlasSprite> spriteGetter, // get from model loader
                                        IModelTransform modelTransform,
                                        ItemOverrideList overrides,
                                        ResourceLocation modelLocation) {
@@ -113,14 +113,14 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
     }
 
     @Override
-    public void addQuads(IModelConfiguration owner, IModelBuilder<?> modelBuilder, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ResourceLocation modelLocation) {
+    public void addQuads(IModelConfiguration owner, IModelBuilder<?> modelBuilder, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ResourceLocation modelLocation) {
         getParts().stream().filter(part -> owner.getPartVisibility(part))
                 .forEach(part -> part.addQuads(owner, modelBuilder, bakery, spriteGetter, modelTransform, modelLocation));
     }
 
     @Override
-    public Collection<Material> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
-        Set<Material> combined = Sets.newHashSet();
+    public Collection<RenderMaterial> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
+        Set<RenderMaterial> combined = Sets.newHashSet();
         for (IModelGeometryPart part : getParts()) {
             combined.addAll(part.getTextures(owner, modelGetter, missingTextureErrors));
         }
@@ -320,14 +320,14 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
         }
     }
 
-    public static Vec2f parseVector2(String[] line) {
+    public static Vector2f parseVector2(String[] line) {
         switch (line.length) {
             case 1:
-                return new Vec2f(0, 0);
+                return new Vector2f(0, 0);
             case 2:
-                return new Vec2f(Float.parseFloat(line[1]), 0);
+                return new Vector2f(Float.parseFloat(line[1]), 0);
             default:
-                return new Vec2f(Float.parseFloat(line[1]), Float.parseFloat(line[2]));
+                return new Vector2f(Float.parseFloat(line[1]), Float.parseFloat(line[2]));
         }
     }
 
@@ -395,10 +395,10 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
 
         builder.setQuadTint(tintIndex);
 
-        Vec2f uv2 = new Vec2f(0, 0);
+        Vector2f uv2 = new Vector2f(0, 0);
         if (ambientToFullbright) {
             int fakeLight = (int) ((ambientColor.getX() + ambientColor.getY() + ambientColor.getZ()) * 15 / 3.0f);
-            uv2 = new Vec2f((fakeLight << 4) / 32767.0f, (fakeLight << 4) / 32767.0f);
+            uv2 = new Vector2f((fakeLight << 4) / 32767.0f, (fakeLight << 4) / 32767.0f);
             builder.setApplyDiffuseLighting(fakeLight == 0);
         }
 
@@ -410,7 +410,7 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
             int[] index = indices[Math.min(i, indices.length - 1)];
             Vector3f pos0 = positions.get(index[0]);
             Vector4f position = new Vector4f(pos0);
-            Vec2f texCoord = index.length >= 2 && texCoords.size() > 0 ? texCoords.get(index[1]) : DEFAULT_COORDS[i];
+            Vector2f texCoord = index.length >= 2 && texCoords.size() > 0 ? texCoords.get(index[1]) : DEFAULT_COORDS[i];
             Vector3f norm0 = !needsNormalRecalculation && index.length >= 3 && normals.size() > 0 ? normals.get(index[2]) : faceNormal;
             Vector3f normal = norm0;
             Vector4f color = index.length >= 4 && colors.size() > 0 ? colors.get(index[3]) : COLOR_WHITE;
@@ -481,7 +481,7 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
         return Pair.of(builder.build(), cull);
     }
 
-    private void putVertexData(IVertexConsumer consumer, Vector4f position0, Vec2f texCoord0, Vector3f normal0, Vector4f color0, Vec2f uv2, TextureAtlasSprite texture) {
+    private void putVertexData(IVertexConsumer consumer, Vector4f position0, Vector2f texCoord0, Vector3f normal0, Vector4f color0, Vector2f uv2, TextureAtlasSprite texture) {
         ImmutableList<VertexFormatElement> elements = consumer.getVertexFormat().getElements();
         for (int j = 0; j < elements.size(); j++) {
             VertexFormatElement e = elements.get(j);
@@ -534,7 +534,7 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
 
         // apparently all of these is for one part
         @Override
-        public void addQuads(IModelConfiguration owner, IModelBuilder<?> modelBuilder, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ResourceLocation modelLocation) {
+        public void addQuads(IModelConfiguration owner, IModelBuilder<?> modelBuilder, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ResourceLocation modelLocation) {
             for (ModelMesh mesh : meshes) {
                 MaterialLibrary.Material mat = mesh.mat;
                 if (mat == null)
@@ -555,7 +555,7 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
         }
 
         @Override
-        public Collection<Material> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
+        public Collection<RenderMaterial> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
             return meshes.stream().map(mesh -> ModelLoaderRegistry.resolveTexture(mesh.mat.diffuseColorMap, owner)).collect(Collectors.toSet());
         }
     }
@@ -572,15 +572,15 @@ public class MPAOBJModel implements IMultipartModelGeometry<MPAOBJModel> {
         }
 
         @Override
-        public void addQuads(IModelConfiguration owner, IModelBuilder<?> modelBuilder, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ResourceLocation modelLocation) {
+        public void addQuads(IModelConfiguration owner, IModelBuilder<?> modelBuilder, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ResourceLocation modelLocation) {
             super.addQuads(owner, modelBuilder, bakery, spriteGetter, modelTransform, modelLocation);
             getParts().stream().filter(part -> owner.getPartVisibility(part))
                     .forEach(part -> part.addQuads(owner, modelBuilder, bakery, spriteGetter, modelTransform, modelLocation));
         }
 
         @Override
-        public Collection<Material> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
-            Set<Material> combined = Sets.newHashSet();
+        public Collection<RenderMaterial> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
+            Set<RenderMaterial> combined = Sets.newHashSet();
             combined.addAll(super.getTextures(owner, modelGetter, missingTextureErrors));
             for (IModelGeometryPart part : getParts()) {
                 combined.addAll(part.getTextures(owner, modelGetter, missingTextureErrors));

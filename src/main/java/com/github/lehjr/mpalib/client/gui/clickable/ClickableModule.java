@@ -34,6 +34,7 @@ import com.github.lehjr.mpalib.client.render.RenderState;
 import com.github.lehjr.mpalib.client.render.Renderer;
 import com.github.lehjr.mpalib.math.Colour;
 import com.github.lehjr.mpalib.string.StringUtils;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
@@ -119,7 +120,7 @@ public class ClickableModule extends Clickable {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         if (!getModule().isEmpty()) {
             Renderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getModule());
             if (!allowed) {
@@ -127,14 +128,14 @@ public class ClickableModule extends Clickable {
                 RenderSystem.translatef(0, 0, 250);
                 RenderState.glowOn();
                 String string = StringUtils.wrapMultipleFormatTags("X", StringUtils.FormatCodes.Bold, StringUtils.FormatCodes.DarkRed);
-                Renderer.drawString(string, getPosition().getX() + 3, getPosition().getY() + 1);
+                Renderer.drawString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
                 RenderState.glowOff();
                 RenderSystem.popMatrix();
             } else if (installed) {
                 RenderSystem.pushMatrix();
                 RenderSystem.translatef(0, 0,250);
                 RenderState.glowOn();
-                IconUtils.getIcon().checkmark.draw(getPosition().getX() - offsetx + 1, getPosition().getY() - offsety + 1, checkmarkcolour.withAlpha(0.6F));
+                IconUtils.getIcon().checkmark.draw(matrixStack, getPosition().getX() - offsetx + 1, getPosition().getY() - offsety + 1, checkmarkcolour.withAlpha(0.6F));
                 RenderState.glowOff();
                 RenderSystem.popMatrix();
             }

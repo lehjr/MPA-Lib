@@ -30,6 +30,7 @@ import com.github.lehjr.mpalib.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.gui.geometry.Rect;
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
@@ -106,7 +107,7 @@ public class Button extends DrawableRect implements IClickable {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         if (isVisible) {
             if (isEnabled()) {
                 if (hitBox(mouseX, mouseY)) {
@@ -123,7 +124,7 @@ public class Button extends DrawableRect implements IClickable {
                 super.setBackgroundColour(backgroundColourDisabled);
                 super.setBorderColour(this.borderColourDisabled);
             }
-            super.draw(zLevel);
+            super.draw(matrixStack, zLevel);
         }
     }
 

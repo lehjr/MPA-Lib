@@ -112,11 +112,11 @@ public final class PlayerUtils {
 
         // check for rain and if player is in the rain
         // check if rain can happen in the biome the player is in
-        if (player.world.getBiome(player.getPosition()).getPrecipitation() != Biome.RainType.NONE
+        if (player.world.getBiome(player./*getPosition()*/func_233580_cy_()).getPrecipitation() != Biome.RainType.NONE
                 // check if raining in the world
                 && player.world.isRaining()
                 // check if the player can see the sky
-                && player.world.canBlockSeeSky(player.getPosition().add(0, 1, 0))) {
+                && player.world.canBlockSeeSky(player./*getPosition()*/ func_233580_cy_().add(0, 1, 0))) {
             cool += 0.2;
         }
 
@@ -124,6 +124,6 @@ public final class PlayerUtils {
     }
 
     public static Biome getBiome(PlayerEntity player) {
-        return player.world.getBiome(player.getPosition());
+        return player.world.getBiome(player./*getPosition()*/func_233580_cy_());
     }
 }

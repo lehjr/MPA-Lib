@@ -28,6 +28,7 @@ package com.github.lehjr.mpalib.client.gui.frame;
 
 import com.github.lehjr.mpalib.client.gui.geometry.IRect;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
@@ -81,11 +82,12 @@ public interface IGuiFrame extends IRect {
     /**
      * Render elements of this frame. Ordering is important.
      *
+     * @param matrixStack
      * @param mouseX
      * @param mouseY
      * @param partialTicks
      */
-    void render(int mouseX, int mouseY, float partialTicks);
+    void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks);
 
     /**
      * @param x mouseX

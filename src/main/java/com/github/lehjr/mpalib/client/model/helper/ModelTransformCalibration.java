@@ -27,7 +27,7 @@
 package com.github.lehjr.mpalib.client.model.helper;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.TransformationMatrix;
+import net.minecraft.util.math.vector.TransformationMatrix;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.glfw.GLFW;

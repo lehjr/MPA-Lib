@@ -33,13 +33,13 @@ import forge.MPAOBJLoader;
 import forge.MPAOBJModel;
 import forge.OBJBakedCompositeModel;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.TransformationMatrix;
-import net.minecraft.client.renderer.Vector3f;
-import net.minecraft.client.renderer.Vector4f;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.TransformationMatrix;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.vector.Vector4f;
 import net.minecraftforge.client.model.IModelConfiguration;
 import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
 import net.minecraftforge.client.model.pipeline.VertexTransformer;
@@ -116,21 +116,11 @@ public class ModelHelper {
     @Nullable
     public static OBJBakedCompositeModel loadBakedModel(IModelConfiguration owner,
                                                         ModelBakery bakery,
-                                                        Function<Material, TextureAtlasSprite> spriteGetter,
+                                                        Function<RenderMaterial, TextureAtlasSprite> spriteGetter,
                                                         IModelTransform modelTransform,
                                                         ItemOverrideList overrides,
                                                         ResourceLocation modelLocation) {
         MPAOBJModel model = getOBJModel(modelLocation, 0);
-
-
-
-
-
-
-
-
-
-
 
         if (model != null) {
             OBJBakedCompositeModel bakedModel = model.bake(
@@ -172,7 +162,7 @@ public class ModelHelper {
     public static List<BakedQuad> getColoredQuads(List<BakedQuad> quadList, Colour color) {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
         for (BakedQuad quad : quadList) {
-            builder.add(colorQuad(color, quad, quad.shouldApplyDiffuseLighting()));
+            builder.add(colorQuad(color, quad, quad.func_239287_f_() /*.shouldApplyDiffuseLighting()*/));
         }
         return builder.build();
     }

@@ -28,6 +28,7 @@ package com.github.lehjr.mpalib.client.gui.clickable;
 
 import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
 import com.github.lehjr.mpalib.client.render.Renderer;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
@@ -68,18 +69,18 @@ public class ClickableLabel implements IClickable {
 
     // fixme: don't think this is actually working as intended
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         switch (mode) {
             case LEFT:
-                Renderer.drawLeftAlignedStringString(this.label, position.getX(), position.getY() - 4);
+                Renderer.drawLeftAlignedStringString(matrixStack, this.label, position.getX(), position.getY() - 4);
                 break;
 
             case CENTERED:
-                Renderer.drawCenteredString(this.label, position.getX(), position.getY() - 4);
+                Renderer.drawCenteredString(matrixStack, this.label, position.getX(), position.getY() - 4);
                 break;
 
             case RIGHT:
-                Renderer.drawRightAlignedString(this.label, position.getX(), position.getY() - 4);
+                Renderer.drawRightAlignedString(matrixStack, this.label, position.getX(), position.getY() - 4);
                 break;
         }
     }

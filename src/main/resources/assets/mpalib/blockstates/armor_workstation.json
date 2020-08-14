@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "waterlogged=false": { "model": "mpalib:block/armorstand" },
+    "waterlogged=true": { "model": "mpalib:block/armorstand" }
+  }
+}

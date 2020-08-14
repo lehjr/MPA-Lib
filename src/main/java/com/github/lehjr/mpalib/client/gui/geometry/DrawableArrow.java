@@ -27,6 +27,7 @@
 package com.github.lehjr.mpalib.client.gui.geometry;
 
 import com.github.lehjr.mpalib.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
@@ -262,7 +263,7 @@ public class DrawableArrow extends RelativeRect {
         return buffer;
     }
 
-    void drawBackground() {
+    void drawBackground(MatrixStack matrixStack) {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.disableAlphaTest();
@@ -300,7 +301,7 @@ public class DrawableArrow extends RelativeRect {
         RenderSystem.enableTexture();
     }
 
-    void drawBorder() {
+    void drawBorder(MatrixStack matrixStack) {
         FloatBuffer vertices = BufferUtils.createFloatBuffer(6 + (drawShaft ? 8 : 0));
         if (drawShaft) {
             vertices.put(arrowShaftVerticesPt1(shrinkBorder ? 1 : 0));
@@ -338,15 +339,15 @@ public class DrawableArrow extends RelativeRect {
     }
 
     float zLevel;
-    public void draw(float zLevel) {
+    public void draw(MatrixStack matrixStack, float zLevel) {
         this.zLevel = zLevel;
 
 
-        drawBackground();
-        drawBorder();
+        drawBackground(matrixStack);
+        drawBorder(matrixStack);
     }
 
-    public ArrowDirection getFacing() {
+    public ArrowDirection getFacing(MatrixStack matrixStack) {
         return facing;
     }
 

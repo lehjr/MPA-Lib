@@ -28,6 +28,7 @@ package com.github.lehjr.mpalib.client.gui.slot;
 
 import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
@@ -185,12 +186,14 @@ public class UniversalSlot extends Slot implements IClickable {
     /**
      * Not implemented here due to being handled elsewhere
      *
+     * @param matrixStack
      * @param mouseX
      * @param mouseY
      * @param partialTicks
+     * @param zLevel
      */
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, float zLevel) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
 
     }
 
