@@ -257,7 +257,8 @@ public class ContainerlessGui extends Screen {
     public void drawToolTip(MatrixStack matrixStack, int mouseX, int mouseY) {
         List<ITextComponent> tooltip = getToolTip(mouseX, mouseY);
         if (tooltip != null) {
-            renderTooltip(matrixStack,tooltip, mouseX,mouseY);
+            /*renderTooltip*/
+            func_243308_b(matrixStack,tooltip, mouseX,mouseY);
         }
     }
 

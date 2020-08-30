@@ -16,12 +16,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Rotations;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -40,6 +42,8 @@ public class MPAArmorStandEntity extends LivingEntity {
     private static final Rotations DEFAULT_RIGHTARM_ROTATION = new Rotations(-15.0F, 0.0F, 10.0F);
     private static final Rotations DEFAULT_LEFTLEG_ROTATION = new Rotations(-1.0F, 0.0F, -1.0F);
     private static final Rotations DEFAULT_RIGHTLEG_ROTATION = new Rotations(1.0F, 0.0F, 1.0F);
+    private static final BlockPos DEFAULT_TILE_BLOCK_POS = BlockPos.ZERO;
+
     public static final DataParameter<Byte> STATUS = EntityDataManager.createKey(MPAArmorStandEntity.class, DataSerializers.BYTE);
     public static final DataParameter<Rotations> HEAD_ROTATION = EntityDataManager.createKey(MPAArmorStandEntity.class, DataSerializers.ROTATIONS);
     public static final DataParameter<Rotations> BODY_ROTATION = EntityDataManager.createKey(MPAArmorStandEntity.class, DataSerializers.ROTATIONS);
@@ -47,9 +51,10 @@ public class MPAArmorStandEntity extends LivingEntity {
     public static final DataParameter<Rotations> RIGHT_ARM_ROTATION = EntityDataManager.createKey(MPAArmorStandEntity.class, DataSerializers.ROTATIONS);
     public static final DataParameter<Rotations> LEFT_LEG_ROTATION = EntityDataManager.createKey(MPAArmorStandEntity.class, DataSerializers.ROTATIONS);
     public static final DataParameter<Rotations> RIGHT_LEG_ROTATION = EntityDataManager.createKey(MPAArmorStandEntity.class, DataSerializers.ROTATIONS);
-    private static final Predicate<Entity> IS_RIDEABLE_MINECART = (entity) -> {
-        return entity instanceof AbstractMinecartEntity && ((AbstractMinecartEntity)entity).canBeRidden();
-    };
+    public static final DataParameter<BlockPos> TILE_BLOCK_POS = EntityDataManager.createKey(MPAArmorStandEntity.class, DataSerializers.BLOCK_POS);
+
+    private static final Predicate<Entity> IS_RIDEABLE_MINECART = (entity) ->
+            entity instanceof AbstractMinecartEntity && ((AbstractMinecartEntity)entity).canBeRidden();
     private final NonNullList<ItemStack> handItems = NonNullList.withSize(2, ItemStack.EMPTY);
     private final NonNullList<ItemStack> armorItems = NonNullList.withSize(4, ItemStack.EMPTY);
     private boolean canInteract;
@@ -62,6 +67,7 @@ public class MPAArmorStandEntity extends LivingEntity {
     private Rotations rightArmRotation = DEFAULT_RIGHTARM_ROTATION;
     private Rotations leftLegRotation = DEFAULT_LEFTLEG_ROTATION;
     private Rotations rightLegRotation = DEFAULT_RIGHTLEG_ROTATION;
+    private BlockPos tileBlockPos = DEFAULT_TILE_BLOCK_POS;
 
     public MPAArmorStandEntity(EntityType<? extends MPAArmorStandEntity> entityType, World world) {
         super(entityType, world);
@@ -103,6 +109,7 @@ public class MPAArmorStandEntity extends LivingEntity {
         this.dataManager.register(RIGHT_ARM_ROTATION, DEFAULT_RIGHTARM_ROTATION);
         this.dataManager.register(LEFT_LEG_ROTATION, DEFAULT_LEFTLEG_ROTATION);
         this.dataManager.register(RIGHT_LEG_ROTATION, DEFAULT_RIGHTLEG_ROTATION);
+        this.dataManager.register(TILE_BLOCK_POS, DEFAULT_TILE_BLOCK_POS);
     }
 
     public Iterable<ItemStack> getHeldEquipment() {
@@ -195,6 +202,11 @@ public class MPAArmorStandEntity extends LivingEntity {
             listnbt1.add(compoundnbt1);
         }
 
+        if (tileBlockPos != DEFAULT_TILE_BLOCK_POS) {
+            CompoundNBT nbt = NBTUtil.writeBlockPos(tileBlockPos);
+            compound.put("tilePos", nbt);
+        }
+
         compound.put("HandItems", listnbt1);
         compound.putBoolean("Invisible", this.isInvisible());
         compound.putBoolean("Small", this.isSmall());
@@ -228,6 +240,11 @@ public class MPAArmorStandEntity extends LivingEntity {
             for(int j = 0; j < this.handItems.size(); ++j) {
                 this.handItems.set(j, ItemStack.read(listnbt1.getCompound(j)));
             }
+        }
+
+        if (compound.contains("tilePos")) {
+            CompoundNBT nbt = compound.getCompound("tilePos");
+            this.dataManager.set(TILE_BLOCK_POS, NBTUtil.readBlockPos(nbt));
         }
 
         this.setInvisible(compound.getBoolean("Invisible"));
@@ -696,6 +713,15 @@ public class MPAArmorStandEntity extends LivingEntity {
         return p_184797_1_;
     }
 
+    /**
+     * Sets the position of the associated tile entity and block
+     * @param pos
+     */
+    public void setBlockTilePos(BlockPos pos) {
+        this.tileBlockPos = pos;
+        this.dataManager.set(TILE_BLOCK_POS, pos);
+    }
+
     public void setHeadRotation(Rotations vec) {
         this.headRotation = vec;
         this.dataManager.set(HEAD_ROTATION, vec);
@@ -795,7 +821,7 @@ public class MPAArmorStandEntity extends LivingEntity {
      * Called when a lightning bolt hits the entity.
      */
     @Override
-    public void onStruckByLightning(LightningBoltEntity lightningBolt) {
+    public void /*onStruckByLightning*/ func_241841_a(ServerWorld p_241841_1_, LightningBoltEntity lightningBolt) {
     }
 
     /**

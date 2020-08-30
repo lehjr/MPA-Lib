@@ -71,6 +71,7 @@ public class MPALib {
         ModObjects.BLOCKS.register(modEventBus);
         ModObjects.TILE_TYPES.register(modEventBus);
         ModObjects.ENTITY_TYPES.register(modEventBus);
+        ModObjects.CONTAINER_TYPES.register(modEventBus);
 
         DistExecutor.runWhenOn(Dist.CLIENT, ()->()-> clientStart(modEventBus));
     }

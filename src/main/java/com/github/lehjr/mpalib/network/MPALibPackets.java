@@ -27,10 +27,7 @@
 package com.github.lehjr.mpalib.network;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
-import com.github.lehjr.mpalib.network.packets.ModeChangeRequestPacket;
-import com.github.lehjr.mpalib.network.packets.PlayerUpdatePacket;
-import com.github.lehjr.mpalib.network.packets.ToggleRequestPacket;
-import com.github.lehjr.mpalib.network.packets.TweakRequestDoublePacket;
+import com.github.lehjr.mpalib.network.packets.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -60,6 +57,20 @@ public class MPALibPackets {
                 ToggleRequestPacket::encode,
                 ToggleRequestPacket::decode,
                 ToggleRequestPacket::handle);
+
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                CreativeInstallModuleRequestPacket.class,
+                CreativeInstallModuleRequestPacket::encode,
+                CreativeInstallModuleRequestPacket::decode,
+                CreativeInstallModuleRequestPacket::handle);
+
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
+                MoveModuleFromSlotToSlotPacket.class,
+                MoveModuleFromSlotToSlotPacket::encode,
+                MoveModuleFromSlotToSlotPacket::decode,
+                MoveModuleFromSlotToSlotPacket::handle);
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,

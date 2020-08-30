@@ -32,7 +32,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.DesertBiome;
+import net.minecraft.world.biome.BiomeRegistry;
+import net.minecraft.world.biome.Biomes;
 
 import javax.annotation.Nonnull;
 
@@ -106,7 +107,7 @@ public final class PlayerUtils {
             cool += 0.5;
 
         // If nighttime and in the desert, increase cooling
-        if (!player.world.isDaytime() && getBiome(player) instanceof DesertBiome) {
+        if (!player.world.isDaytime() && getBiome(player).getCategory() == Biome.Category.DESERT) {
             cool += 0.8;
         }
 
