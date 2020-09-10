@@ -118,7 +118,7 @@ public class MPALib {
         MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
 
         DeferredWorkQueue.runLater(() -> {
-            GlobalEntityTypeAttributes.put(ModObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get(), MPAArmorStandEntity.setCustomAttributes().func_233813_a_());//.create());
+            GlobalEntityTypeAttributes.put(ModObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get(), MPAArmorStandEntity.setCustomAttributes().create());
         });
     }
 

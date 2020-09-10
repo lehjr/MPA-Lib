@@ -6,7 +6,6 @@ import com.github.lehjr.mpalib.tileentity.MPAArmorStandBaseTileEntity;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,8 +40,8 @@ public class MPAArmorStandItem extends BlockItem {
      * This is a mix of vanilla code from BlockItem and ArmorStandItem so the block and
      * entity are spawned together
      */
-    @Override
-    public ActionResultType tryPlace(BlockItemUseContext context) {
+//    @Override
+    public ActionResultType tryPlace1(BlockItemUseContext context) {
         Direction direction = context.getFace();
 
         if (!context.canPlace() || direction == Direction.DOWN) {
@@ -61,7 +60,7 @@ public class MPAArmorStandItem extends BlockItem {
 
         World world = blockitemusecontext.getWorld();
         BlockPos blockpos = blockitemusecontext.getPos();
-        Vector3d vector3d = Vector3d.func_237492_c_(blockpos);
+        Vector3d vector3d = Vector3d.copyCenteredHorizontally(blockpos);
         AxisAlignedBB axisalignedbb = EntityType.ARMOR_STAND.getSize().func_242285_a(vector3d.getX(), vector3d.getY(), vector3d.getZ());
         if (world.func_234865_b_(null, axisalignedbb, (entity) -> true) && world.getEntitiesWithinAABBExcludingEntity(null, axisalignedbb).isEmpty()) {
             if (!this.placeBlock(blockitemusecontext, blockstate)) {
@@ -70,13 +69,8 @@ public class MPAArmorStandItem extends BlockItem {
 
             ItemStack itemstack = blockitemusecontext.getItem();
             BlockState blockstate1 = world.getBlockState(blockpos);
-            TileEntity tileEntity = world.getTileEntity(blockpos);
             PlayerEntity player = blockitemusecontext.getPlayer();
             Block block = blockstate1.getBlock();
-            if (tileEntity == null) {
-                world.setTileEntity(blockpos, new MPAArmorStandBaseTileEntity());
-            }
-
             if (block == blockstate.getBlock()) {
                 blockstate1 = this.func_219985_a(blockpos, world, itemstack, blockstate1);
                 this.onBlockPlaced(blockpos, world, player, itemstack, blockstate1);
@@ -94,9 +88,11 @@ public class MPAArmorStandItem extends BlockItem {
                     armorstandentity.setLocationAndAngles(armorstandentity.getPosX(), armorstandentity.getPosY(), armorstandentity.getPosZ(), f, 0.0F);
                     this.applyRandomRotations(armorstandentity, world.rand);
 
+                    TileEntity tileEntity = world.getTileEntity(blockpos);
                     // sets the UUID for this entity instance in TileEntity so the coprrect entity instance can be interacted with
                     if (tileEntity instanceof MPAArmorStandBaseTileEntity) {
                         ((MPAArmorStandBaseTileEntity) tileEntity).setUUID(armorstandentity.getUniqueID());
+                        armorstandentity.setBlockTilePos(blockpos);
                     }
                     world.playSound(null, armorstandentity.getPosX(), armorstandentity.getPosY(), armorstandentity.getPosZ(), SoundEvents.ENTITY_ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
                 }

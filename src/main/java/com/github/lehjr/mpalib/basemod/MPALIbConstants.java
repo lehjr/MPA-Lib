@@ -70,5 +70,5 @@ public class MPALIbConstants {
     public static final String ARMOR_WORKSTATION__ENTITY_TYPE_REGNAME =AMOR_WORKSTATION__REGNAME + "_entity";
 
 
-
+    public static final ResourceLocation TEXTURE_ARMOR_STAND = new ResourceLocation(MPALIbConstants.MOD_ID, "textures/models/armorstand2.png");
 }

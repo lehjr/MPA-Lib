@@ -7,21 +7,18 @@ import com.github.lehjr.mpalib.tileentity.MPAArmorStandBaseTileEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -32,7 +29,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nullable;
 
@@ -54,10 +50,10 @@ public class MPAArmorStandBaseBlock extends Block implements IWaterLoggable {
 
     public MPAArmorStandBaseBlock() {
         super(Block.Properties.create(Material.IRON)
-                .hardnessAndResistance(3.5F, 4.0F)
+                .hardnessAndResistance(0.5F, 4.0F)
                 .sound(SoundType.ANVIL)
                 .harvestLevel(0)
-                .harvestTool(ToolType.PICKAXE)
+//                .harvestTool(ToolType.PICKAXE)
                 .setRequiresTool());
         setDefaultState(this.stateContainer.getBaseState().with(BlockStateProperties.WATERLOGGED, false));
     }
@@ -126,12 +122,6 @@ public class MPAArmorStandBaseBlock extends Block implements IWaterLoggable {
         return 1;
     }
 
-    @Nullable
-    @Override
-    public ToolType getHarvestTool(BlockState state) {
-        return null;
-    }
-
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED);
@@ -149,10 +139,12 @@ public class MPAArmorStandBaseBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        // use this to enable the original tinker table model
-//        return BlockRenderType.ENTITYBLOCK_ANIMATED;
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
 
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
     }
 

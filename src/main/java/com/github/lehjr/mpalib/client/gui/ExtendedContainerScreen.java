@@ -82,16 +82,8 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
         super.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
-
-    /**
-     * No idea what this is yet
-     * @param p_230450_1_
-     * @param p_230450_2_
-     * @param p_230450_3_
-     * @param p_230450_4_
-     */
     @Override
-    protected void func_230450_a_(MatrixStack p_230450_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
         System.out.println("fixme!!!");
     }
 

@@ -53,7 +53,7 @@ public class ModObjects {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, MPALIbConstants.MOD_ID);
 
     public static final RegistryObject<EntityType<MPAArmorStandEntity>> ARMOR_WORKSTATION__ENTITY_TYPE = ENTITY_TYPES.register(MPALIbConstants.ARMOR_WORKSTATION__ENTITY_TYPE_REGNAME,
-            () -> EntityType.Builder.create(MPAArmorStandEntity::new, EntityClassification.CREATURE)
+            () -> EntityType.Builder.<MPAArmorStandEntity>create(MPAArmorStandEntity::new, EntityClassification.CREATURE)
                     .size(0.5F, 1.975F) // Hitbox Size
                     .build(new ResourceLocation(MPALIbConstants.MOD_ID, MPALIbConstants.ARMOR_WORKSTATION__ENTITY_TYPE_REGNAME).toString()));
 
