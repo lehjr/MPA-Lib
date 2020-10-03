@@ -23,7 +23,7 @@ public class MPAArmorStationItemRenderer extends ItemStackTileEntityRenderer {
         // push and pop needed here?  does this scale setting need to be here?
         matrixStack.push();
         matrixStack.scale(1.0F, -1.0F, -1.0F);
-        IVertexBuilder ivertexbuilder1 = ItemRenderer.func_239391_c_(renderTypeBuffer,  this.model.getRenderType(MPALIbConstants.TEXTURE_ARMOR_STAND), false, itemStack.hasEffect());
+        IVertexBuilder ivertexbuilder1 = ItemRenderer.getEntityGlintVertexBuilder(renderTypeBuffer,  this.model.getRenderType(MPALIbConstants.TEXTURE_ARMOR_STAND), false, itemStack.hasEffect());
         this.model.render(matrixStack, ivertexbuilder1, packedLightIn, packedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
         matrixStack.pop();
     }

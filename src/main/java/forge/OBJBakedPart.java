@@ -1,7 +1,7 @@
 package forge;
 
-import com.github.lehjr.mpalib.client.model.helper.ModelHelper;
-import com.github.lehjr.mpalib.math.Colour;
+import com.github.lehjr.mpalib.util.client.model.helper.ModelHelper;
+import com.github.lehjr.mpalib.util.math.Colour;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;

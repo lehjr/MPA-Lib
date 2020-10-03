@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.network.packets;
 
-import com.github.lehjr.mpalib.capabilities.inventory.modularitem.IModularItem;
+import com.github.lehjr.mpalib.util.capabilities.inventory.modularitem.IModularItem;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;

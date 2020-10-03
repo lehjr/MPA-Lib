@@ -65,12 +65,12 @@ public class MPALibPackets {
                 CreativeInstallModuleRequestPacket::decode,
                 CreativeInstallModuleRequestPacket::handle);
 
-        CHANNEL_INSTANCE.registerMessage(
-                i++,
-                MoveModuleFromSlotToSlotPacket.class,
-                MoveModuleFromSlotToSlotPacket::encode,
-                MoveModuleFromSlotToSlotPacket::decode,
-                MoveModuleFromSlotToSlotPacket::handle);
+//        CHANNEL_INSTANCE.registerMessage(
+//                i++,
+//                MoveModuleFromSlotToSlotPacket.class,
+//                MoveModuleFromSlotToSlotPacket::encode,
+//                MoveModuleFromSlotToSlotPacket::decode,
+//                MoveModuleFromSlotToSlotPacket::handle);
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,

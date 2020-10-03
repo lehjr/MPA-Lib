@@ -72,10 +72,9 @@ public class OBJBakedCompositeModel implements IDynamicBakedModel {
         return isGui3d;
     }
 
-    // difuseLight?
     @Override
-    public boolean func_230044_c_() {
-        return diffuseLighting;
+    public boolean isSideLit() {
+        return false;//diffuseLighting; ?
     }
 
     @Override

@@ -1,12 +1,12 @@
 package com.github.lehjr.mpalib.client.model.item.armor;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
-import com.github.lehjr.mpalib.capabilities.render.modelspec.ModelPartSpec;
-import com.github.lehjr.mpalib.capabilities.render.modelspec.ModelRegistry;
-import com.github.lehjr.mpalib.capabilities.render.modelspec.ModelSpec;
-import com.github.lehjr.mpalib.capabilities.render.modelspec.PartSpecBase;
-import com.github.lehjr.mpalib.math.Colour;
-import com.github.lehjr.mpalib.nbt.NBTTagAccessor;
+import com.github.lehjr.mpalib.util.capabilities.render.modelspec.ModelPartSpec;
+import com.github.lehjr.mpalib.util.capabilities.render.modelspec.ModelRegistry;
+import com.github.lehjr.mpalib.util.capabilities.render.modelspec.ModelSpec;
+import com.github.lehjr.mpalib.util.capabilities.render.modelspec.PartSpecBase;
+import com.github.lehjr.mpalib.util.math.Colour;
+import com.github.lehjr.mpalib.util.nbt.NBTTagAccessor;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

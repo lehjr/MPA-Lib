@@ -26,10 +26,10 @@
 
 package com.github.lehjr.mpalib.client.render;
 
-import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
-import com.github.lehjr.mpalib.client.gui.geometry.Point2F;
-import com.github.lehjr.mpalib.client.gui.geometry.SwirlyCircle;
-import com.github.lehjr.mpalib.math.Colour;
+import com.github.lehjr.mpalib.util.client.gui.clickable.IClickable;
+import com.github.lehjr.mpalib.util.client.gui.geometry.Point2D;
+import com.github.lehjr.mpalib.util.client.gui.geometry.SwirlyCircle;
+import com.github.lehjr.mpalib.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -197,9 +197,9 @@ public abstract class Renderer {
         // period = 2
         // seconds
         float gradientRatio = 1.0F - ((varia + 1000) % 1000) / 1000.0F;
-        Point2F midpoint = (firstClickable.getPosition().minus(secondClickable.getPosition()).times((float)Math.abs(varia / 1000.0))
+        Point2D midpoint = (firstClickable.getPosition().minus(secondClickable.getPosition()).times((float)Math.abs(varia / 1000.0))
                 .plus(secondClickable.getPosition()));
-        Point2F firstpoint, secondpoint;
+        Point2D firstpoint, secondpoint;
         if (varia < 0) {
             firstpoint = secondClickable.getPosition();
             secondpoint = firstClickable.getPosition();

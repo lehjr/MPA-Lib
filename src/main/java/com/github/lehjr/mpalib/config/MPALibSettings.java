@@ -1,23 +1,21 @@
 package com.github.lehjr.mpalib.config;
 
+import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.util.capabilities.module.powermodule.IConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.Optional;
 
 public class MPALibSettings {
     public static final ClientConfig CLIENT_CONFIG;
     public static final ForgeConfigSpec CLIENT_SPEC;
-//
-//    public static final CommonConfig COMMON_CONFIG;
-//    public static final ForgeConfigSpec COMMON_SPEC;
-//
-//    public static final CommonConfig SERVER_CONFIG;
-//    public static final ForgeConfigSpec SERVER_SPEC;
+
+    public static final CommonConfig COMMON_CONFIG;
+    public static final ForgeConfigSpec COMMON_SPEC;
+
+    public static final CommonConfig SERVER_CONFIG;
+    public static final ForgeConfigSpec SERVER_SPEC;
 
     static {
         {
@@ -25,16 +23,16 @@ public class MPALibSettings {
             CLIENT_SPEC = clientSpecPair.getRight();
             CLIENT_CONFIG = clientSpecPair.getLeft();
         }
-//        {
-//            final Pair<CommonConfig, ForgeConfigSpec> commpnSpecPair = new ForgeConfigSpec.Builder().configure(CommonConfig::new);
-//            COMMON_SPEC = commpnSpecPair.getRight();
-//            COMMON_CONFIG = commpnSpecPair.getLeft();
-//        }
-//        {
-//            final Pair<CommonConfig, ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder().configure(CommonConfig::new);
-//            SERVER_SPEC = serverSpecPair.getRight();
-//            SERVER_CONFIG = serverSpecPair.getLeft();
-//        }
+        {
+            final Pair<CommonConfig, ForgeConfigSpec> commonSpecPair = new ForgeConfigSpec.Builder().configure(CommonConfig::new);
+            COMMON_SPEC = commonSpecPair.getRight();
+            COMMON_CONFIG = commonSpecPair.getLeft();
+        }
+        {
+            final Pair<CommonConfig, ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder().configure(CommonConfig::new);
+            SERVER_SPEC = serverSpecPair.getRight();
+            SERVER_CONFIG = serverSpecPair.getLeft();
+        }
     }
 
     /** Client settings --------------------------------------------------------------------------- */
@@ -59,23 +57,24 @@ public class MPALibSettings {
     }
 
     /** Common/Server Settings -------------------------------------------------------------------- */
-    // TODO
-
-
-    /** Helpers ----------------------------------------------------------------------------------- */
-    public static File getConfigFolder(String modId) {
-        return FMLPaths.CONFIGDIR.get().resolve("lehjr").resolve(modId).toFile();
+    public static int chargingBaseMaxPower() {
+        return getActiveConfig().map(config-> config.ARMOR_STAND_MAX_POWER.get()).orElse(10000);
     }
 
-    public static File setupConfigFile(String fileName, String modId) {
-        // MPALIbConstants.MOD_ID
-        Path configFile = FMLPaths.CONFIGDIR.get().resolve("lehjr").resolve(modId).resolve(fileName);
-        File cfgFile = configFile.toFile();
-        try {
-            Files.createDirectories(configFile.getParent());
-        } catch (IOException e) {
-            e.printStackTrace();
+    static Optional<CommonConfig> getActiveConfig() {
+        return Optional.ofNullable(SERVER_SPEC.isLoaded() ? SERVER_CONFIG : COMMON_SPEC.isLoaded() ? COMMON_CONFIG : null);
+    }
+
+    /** Modules ----------------------------------------------------------------------------------- */
+    private static volatile ModuleConfig moduleConfig;
+    public static IConfig getModuleConfig() {
+        if (moduleConfig == null) {
+            synchronized (ModuleConfig.class) {
+                if (moduleConfig == null) {
+                    moduleConfig = new ModuleConfig(MPALIbConstants.MOD_ID);
+                }
+            }
         }
-        return cfgFile;
+        return moduleConfig;
     }
 }

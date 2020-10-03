@@ -1,6 +1,7 @@
 package com.github.lehjr.mpalib.container;
 
 import com.github.lehjr.mpalib.basemod.ModObjects;
+import com.github.lehjr.mpalib.util.container.MPALibRecipeBookContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;

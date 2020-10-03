@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.client.event;
 
-import com.github.lehjr.mpalib.capabilities.inventory.modechanging.IModeChangingItem;
+import com.github.lehjr.mpalib.util.capabilities.inventory.modechanging.IModeChangingItem;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;

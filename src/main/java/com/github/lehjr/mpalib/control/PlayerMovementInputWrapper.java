@@ -26,8 +26,8 @@
 
 package com.github.lehjr.mpalib.control;
 
-import com.github.lehjr.mpalib.capabilities.player.CapabilityPlayerKeyStates;
-import com.github.lehjr.mpalib.capabilities.player.IPlayerKeyStates;
+import com.github.lehjr.mpalib.util.capabilities.player.CapabilityPlayerKeyStates;
+import com.github.lehjr.mpalib.util.capabilities.player.IPlayerKeyStates;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;

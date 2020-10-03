@@ -32,6 +32,13 @@ public class MPALIbConstants {
     // Mod
     public static final String MOD_ID = "mpalib";
 
+    // Tooltips
+    public static final String TOOLTIP_BATTERY_ENERGY = "tooltip.mpalib.battery.energy";
+
+    // Energy Storage -----------------------------------------------------------------------------
+    public static final String MAX_ENERGY = "maxEnergy";
+    public static final String MAX_TRAMSFER = "maxTransfer";
+
     // Misc
     public static final String RESOURCE_PREFIX = MOD_ID + ":";
     public static final String TEXTURE_PREFIX = RESOURCE_PREFIX + "textures/";
@@ -65,9 +72,15 @@ public class MPALIbConstants {
     public static final String MODULE_TRADEOFF_PREFIX = "module.tradeoff.";
 
     // RegistryNames
-    public static final String AMOR_WORKSTATION__REGNAME = "armor_workstation";
+    public static final String CHARGING_BASE_REGNAME = "charging_base";
+    public static final String ARMORSTAND_REGNAME = "armor_stand";
 
-    public static final String ARMOR_WORKSTATION__ENTITY_TYPE_REGNAME =AMOR_WORKSTATION__REGNAME + "_entity";
+    public static final String MODULE_BATTERY_BASIC__REGNAME = "battery_basic";
+    public static final String MODULE_BATTERY_ADVANCED__REGNAME = "battery_advanced";
+    public static final String MODULE_BATTERY_ELITE__REGNAME = "battery_elite";
+    public static final String MODULE_BATTERY_ULTIMATE__REGNAME = "battery_ultimate";
+
+    public static final String ARMOR_STAND__ENTITY_TYPE_REGNAME = ARMORSTAND_REGNAME + "_entity";
 
 
     public static final ResourceLocation TEXTURE_ARMOR_STAND = new ResourceLocation(MPALIbConstants.MOD_ID, "textures/models/armorstand2.png");

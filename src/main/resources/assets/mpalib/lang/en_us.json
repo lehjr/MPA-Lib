@@ -1,6 +1,20 @@
 {
   "keybind.fovfixtoggle": "Toggle FOV fix",
   "fovfixtoggle.enabled": "FOV Fix enabled",
-  "fovfixtoggle.disabled": "FOV Fix disabled"
+  "fovfixtoggle.disabled": "FOV Fix disabled",
+  "screen.mpalib.charging_base": "Charging Base",
+  "mpalib.energy": "Energy",
+
+  "_comment": "Energy Storage",
+  "tooltip.mpalib.battery.energy" : "%d/%d FE",
+
+  "item.mpalib.battery_basic": "Basic Battery",
+  "item.mpalib.battery_basic.desc": "Integrate a battery to allow the item to store energy.",
+  "item.mpalib.battery_advanced": "Advanced Battery",
+  "item.mpalib.battery_advanced.desc": "Integrate a more advanced battery to store more energy.",
+  "item.mpalib.battery_elite": "Elite Battery",
+  "item.mpalib.battery_elite.desc": "Integrate a the most advanced battery to store an extensive amount of energy.",
+  "item.mpalib.battery_ultimate": "Ultimate Battery",
+  "item.mpalib.battery_ultimate.desc": "Experimental high end power storage device, now with almost no chance of exploding (we think). Despite nasty rumors, it is not based on stolen alien technology."
 }
 

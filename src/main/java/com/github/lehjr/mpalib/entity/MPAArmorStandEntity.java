@@ -1,17 +1,39 @@
 package com.github.lehjr.mpalib.entity;
 
+import com.github.lehjr.mpalib.basemod.ModObjects;
+import com.github.lehjr.mpalib.client.sound.SoundDictionary;
+import com.github.lehjr.mpalib.container.ArmorStandContainer;
+import com.github.lehjr.mpalib.container.ChargingBaseContainer;
+import com.github.lehjr.mpalib.tileentity.ChargingBaseTileEntity;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.item.ArmorStandEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 /**
  * TODO: decide if keeping this or just using vanilla armor stand. This really doesn't do anything, ... YET?
@@ -19,12 +41,9 @@ import net.minecraft.world.World;
 
 
 public class MPAArmorStandEntity extends ArmorStandEntity {
-    private static final BlockPos DEFAULT_TILE_BLOCK_POS = BlockPos.ZERO;
-    public static final DataParameter<BlockPos> TILE_BLOCK_POS = EntityDataManager.createKey(MPAArmorStandEntity.class, DataSerializers.BLOCK_POS);
-    private BlockPos tileBlockPos = DEFAULT_TILE_BLOCK_POS;
-
     public MPAArmorStandEntity(EntityType<? extends MPAArmorStandEntity> entityType, World world) {
         super(entityType, world);
+//        this.setShowArms(true); // FIXME -- set up AT
     }
 
     public MPAArmorStandEntity(World worldIn, double posX, double posY, double posZ) {
@@ -36,54 +55,31 @@ public class MPAArmorStandEntity extends ArmorStandEntity {
         return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D);
     }
 
-
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(TILE_BLOCK_POS, DEFAULT_TILE_BLOCK_POS);
+    protected void breakArmorStand(DamageSource source) {
+        Block.spawnAsEntity(this.world, this.getPosition(), new ItemStack(ModObjects.ARMOR_STAND_ITEM.get()));
+        this.func_213816_g(source);
     }
 
     @Override
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
-        if (tileBlockPos != DEFAULT_TILE_BLOCK_POS) {
-            CompoundNBT nbt = NBTUtil.writeBlockPos(tileBlockPos);
-            compound.put("tilePos", nbt);
+    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
+        ItemStack itemstack = player.getHeldItem(hand);
+        if (!this.hasMarker() && itemstack.getItem() != Items.NAME_TAG) {
+            if (player.isSpectator()) {
+                return ActionResultType.SUCCESS;
+            } else if (player.world.isRemote) {
+                return ActionResultType.SUCCESS;
+            } else {
+                    player.playSound(SoundDictionary.SOUND_EVENT_GUI_SELECT, 1.0F, 1.0F);
+                    NetworkHooks.openGui((ServerPlayerEntity) player,
+                            new SimpleNamedContainerProvider((windowID, playerInventory, playerEntity) ->
+                                    new ArmorStandContainer(windowID, playerInventory, (ArmorStandEntity) getEntity()),
+                                    new TranslationTextComponent("screen.mpalib.armor_stand")),
+                            buf -> buf.writeInt(getEntityId()));
+                return ActionResultType.SUCCESS;
+            }
+        } else {
+            return ActionResultType.PASS;
         }
-    }
-
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-    @Override
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
-        // position of the tile entity and base plate block
-        if (compound.contains("tilePos")) {
-            CompoundNBT nbt = compound.getCompound("tilePos");
-            this.dataManager.set(TILE_BLOCK_POS, NBTUtil.readBlockPos(nbt));
-        }
-    }
-
-    /**
-     * Called to update the entity's position/logic.
-     */
-    @Override
-    public void tick() {
-        super.tick();
-        BlockPos tileLocation = this.dataManager.get(TILE_BLOCK_POS);
-        if (!this.tileBlockPos.equals(tileLocation)) {
-            this.setBlockTilePos(tileLocation);
-        }
-    }
-
-    /**
-     * Sets the position of the associated tile entity and block
-     *
-     * @param pos
-     */
-    public void setBlockTilePos(BlockPos pos) {
-        this.tileBlockPos = pos;
-        this.dataManager.set(TILE_BLOCK_POS, pos);
     }
 }

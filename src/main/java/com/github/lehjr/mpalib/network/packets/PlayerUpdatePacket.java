@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.network.packets;
 
-import com.github.lehjr.mpalib.capabilities.player.CapabilityPlayerKeyStates;
+import com.github.lehjr.mpalib.util.capabilities.player.CapabilityPlayerKeyStates;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;

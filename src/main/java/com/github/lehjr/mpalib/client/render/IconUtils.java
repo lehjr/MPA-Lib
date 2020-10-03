@@ -26,9 +26,9 @@
 
 package com.github.lehjr.mpalib.client.render;
 
-import com.github.lehjr.mpalib.client.gui.GuiIcon;
-import com.github.lehjr.mpalib.math.Colour;
-import com.github.lehjr.mpalib.math.MathUtils;
+import com.github.lehjr.mpalib.util.client.gui.GuiIcon;
+import com.github.lehjr.mpalib.util.math.Colour;
+import com.github.lehjr.mpalib.util.math.MathUtils;
 import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "waterlogged=false,powered=false": {
+      "model": "mpalib:block/charging_base"
+    },
+    "waterlogged=true,powered=false": {
+      "model": "mpalib:block/charging_base"
+    },
+    "waterlogged=false,powered=true": {
+      "model": "mpalib:block/charging_base_powered"
+    },
+    "waterlogged=true,powered=true": {
+      "model": "mpalib:block/charging_base_powered"
+    }
+  }
+}

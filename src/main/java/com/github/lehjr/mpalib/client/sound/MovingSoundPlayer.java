@@ -96,6 +96,6 @@ public class MovingSoundPlayer extends TickableSound {
     }
 
     public void stopPlaying() {
-        this.func_239509_o_();
+        this.finishPlaying();
     }
 }

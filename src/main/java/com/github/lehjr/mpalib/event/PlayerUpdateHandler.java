@@ -1,10 +1,10 @@
 package com.github.lehjr.mpalib.event;
 
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
-import com.github.lehjr.mpalib.capabilities.inventory.modechanging.IModeChangingItem;
-import com.github.lehjr.mpalib.capabilities.inventory.modularitem.IModularItem;
-import com.github.lehjr.mpalib.heat.HeatUtils;
-import com.github.lehjr.mpalib.player.PlayerUtils;
+import com.github.lehjr.mpalib.util.capabilities.inventory.modechanging.IModeChangingItem;
+import com.github.lehjr.mpalib.util.capabilities.inventory.modularitem.IModularItem;
+import com.github.lehjr.mpalib.util.heat.HeatUtils;
+import com.github.lehjr.mpalib.util.player.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
