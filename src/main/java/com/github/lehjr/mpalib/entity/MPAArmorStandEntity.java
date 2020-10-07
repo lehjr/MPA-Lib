@@ -43,7 +43,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class MPAArmorStandEntity extends ArmorStandEntity {
     public MPAArmorStandEntity(EntityType<? extends MPAArmorStandEntity> entityType, World world) {
         super(entityType, world);
-//        this.setShowArms(true); // FIXME -- set up AT
+        setShowArms(true);
     }
 
     public MPAArmorStandEntity(World worldIn, double posX, double posY, double posZ) {

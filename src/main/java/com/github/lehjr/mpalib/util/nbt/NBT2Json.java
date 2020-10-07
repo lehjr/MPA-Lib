@@ -52,8 +52,6 @@ public class NBT2Json {
 
                 case Constants.NBT.TAG_LIST: // 9
                     System.out.println("nbt List is broken: " + key + "<>" + nbt.get(key));
-
-
 //                    jsonObjectIn.addProperty(key, nbt.getList(key, 0)); // kind of list?
                     break;
 

@@ -1,9 +1,6 @@
 package com.github.lehjr.mpalib.basemod;
 
-import com.github.lehjr.mpalib.client.event.ArmorLayerSetup;
-import com.github.lehjr.mpalib.client.event.FOVUpdateEventHandler;
-import com.github.lehjr.mpalib.client.event.LogoutEventHandler;
-import com.github.lehjr.mpalib.client.event.RenderGameOverlayEventHandler;
+import com.github.lehjr.mpalib.client.event.*;
 import com.github.lehjr.mpalib.client.gui.ArmorStandGui;
 import com.github.lehjr.mpalib.client.gui.ChargingBaseGui;
 import com.github.lehjr.mpalib.client.render.IconUtils;
@@ -83,7 +80,6 @@ public class MPALib {
 
         // handles loading and reloading event
         modEventBus.addListener((ModConfig.ModConfigEvent event) -> {
-            System.out.println("config: " + event.getConfig().getFileName());
             new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
 
             final ModConfig config = event.getConfig();
@@ -145,6 +141,7 @@ public class MPALib {
         MinecraftForge.EVENT_BUS.register(new FOVUpdateEventHandler());
         MinecraftForge.EVENT_BUS.register(new RenderGameOverlayEventHandler());
         MinecraftForge.EVENT_BUS.register(new LogoutEventHandler());
+        MinecraftForge.EVENT_BUS.register(new ToolTipEvent());
 
         ScreenManager.registerFactory(ModObjects.CHARGING_BASE_CONTAINER_TYPE.get(), ChargingBaseGui::new);
         ScreenManager.registerFactory(ModObjects.ARMOR_STAND_CONTAINER_TYPE.get(), ArmorStandGui::new);
@@ -157,6 +154,4 @@ public class MPALib {
         }
         event.addCapability(new ResourceLocation(MPALIbConstants.MOD_ID, "player_keystates"), new CapabilityPlayerKeyStates());
     }
-
-
 }

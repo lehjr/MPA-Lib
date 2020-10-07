@@ -4,11 +4,18 @@ import com.github.lehjr.mpalib.util.client.gui.frame.IGuiFrame;
 import com.github.lehjr.mpalib.util.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +23,7 @@ import java.util.List;
 public class ExtendedContainerScreen<T extends Container> extends ContainerScreen<T> {
     protected long creationTime;
     protected DrawableRect tooltipRect;
-    protected List<IGuiFrame> frames;
+    private List<IGuiFrame> frames;
 
     public ExtendedContainerScreen(T screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
@@ -41,13 +48,6 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     }
 
     /**
-     * Draws the gradient-rectangle background you see in the TinkerTable gui.
-     */
-    public void drawRectangularBackground() {
-
-    }
-
-    /**
      * Adds a frame to this gui's draw list.
      *
      * @param frame
@@ -57,29 +57,9 @@ public class ExtendedContainerScreen<T extends Container> extends ContainerScree
     }
 
     @Override
-    public void renderBackground(MatrixStack matrixStack) {
-        super.renderBackground(matrixStack);
-    }
-
-    @Override
-    public void renderBackground(MatrixStack matrixStack, int vOffset) {
-        super.renderBackground(matrixStack, vOffset);
-    }
-
-    /**
-     * Called every frame, draws the screen!
-     */
-    @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        update(mouseX, mouseY);
-        renderFrames(matrixStack, mouseX, mouseY, partialTicks);
-    }
-
-    @Override
     public void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
-
+        update(x, y);
+        renderFrames(matrixStack, x, y, partialTicks);
     }
 
     public void update(double x, double y) {

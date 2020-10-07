@@ -6,6 +6,7 @@ import com.github.lehjr.mpalib.config.MPALibSettings;
 import com.github.lehjr.mpalib.util.capabilities.energy.ForgeEnergyModuleWrapper;
 import com.github.lehjr.mpalib.util.capabilities.energy.IEnergyWrapper;
 import com.github.lehjr.mpalib.util.capabilities.module.powermodule.*;
+import com.github.lehjr.mpalib.util.string.StringUtils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -45,11 +46,13 @@ public class Battery extends Item {
     public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<ITextComponent> tooltips, ITooltipFlag flagIn) {
         if (worldIn != null) {
             super.addInformation(itemStack, worldIn, tooltips, flagIn);
-            itemStack.getCapability(CapabilityEnergy.ENERGY).ifPresent(iEnergyStorage -> {
-                tooltips.add(new StringTextComponent(I18n.format(MPALIbConstants.TOOLTIP_BATTERY_ENERGY, iEnergyStorage.getEnergyStored(), iEnergyStorage.getMaxEnergyStored())));
-            });
 
-            // FIXME!!! wordwrap??
+            // FIXME: format energy amount strings
+            itemStack.getCapability(CapabilityEnergy.ENERGY).ifPresent(iEnergyStorage -> {
+                tooltips.add(new StringTextComponent(I18n.format(MPALIbConstants.TOOLTIP_BATTERY_ENERGY,
+                        StringUtils.formatNumberShort(iEnergyStorage.getEnergyStored()),
+                        StringUtils.formatNumberShort(iEnergyStorage.getMaxEnergyStored()))));
+            });
             tooltips.add(new TranslationTextComponent(getTranslationKey() +".desc"));
         }
     }

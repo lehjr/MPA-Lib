@@ -1,11 +1,12 @@
 package com.github.lehjr.mpalib.util.client.gui.frame;
 
-import com.github.lehjr.mpalib.util.client.gui.geometry.ItemSlotTile;
+import com.github.lehjr.mpalib.util.client.gui.geometry.DrawableTile;
 import com.github.lehjr.mpalib.util.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.util.client.gui.slot.IHideableSlot;
 import com.github.lehjr.mpalib.util.client.gui.slot.UniversalSlot;
 import com.github.lehjr.mpalib.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
@@ -22,7 +23,7 @@ public class InventoryFrame extends ScrollableFrame {
     public final int gridWidth;
     public final int gridHeight;
     List<Integer> slotIndexes;
-    List<ItemSlotTile> tiles;
+    List<DrawableTile> tiles;
     Point2D slot_ulShift = new Point2D(0, 0);
    boolean drawBackground = false;
     boolean drawBorder = false;
@@ -66,8 +67,7 @@ public class InventoryFrame extends ScrollableFrame {
                 if (i == slotIndexes.size()){
                     break outerLoop;
                 }
-                ItemSlotTile tile = new ItemSlotTile(ul, ul.plus(wh));
-                tiles.add(tile);
+                tiles.add(new DrawableTile(ul, ul.plus(wh)).setBorderShrinkValue(0.5F));
 
                 if (i > 0) {
                     if (col > 0) {
@@ -78,8 +78,8 @@ public class InventoryFrame extends ScrollableFrame {
                         this.tiles.get(i).setMeBelow(this.tiles.get(i - this.gridWidth));
                     }
                 }
-                Point2D position = tile.center().copy().minus(slot_ulShift);
 
+                Point2D position = this.tiles.get(i).center().copy().minus(slot_ulShift);
                 Slot slot = container.getSlot(slotIndexes.get(i));
                 if (slot instanceof UniversalSlot) {
                     ((UniversalSlot) slot).setPosition(position);
@@ -131,6 +131,7 @@ public class InventoryFrame extends ScrollableFrame {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(0);
+//        RenderSystem.disableDepthTest();
         if (drawBorder || drawBackground) {
             buffer = border.preDraw(3);
             border.setzLevel(zLevel);
@@ -139,7 +140,7 @@ public class InventoryFrame extends ScrollableFrame {
             border.drawBackground(matrixStack, buffer);
         }
         if (this.tiles != null && !this.tiles.isEmpty()) {
-            for (ItemSlotTile tile : tiles) {
+            for (DrawableTile tile : tiles) {
                 // add slight offset so the lines show up (this is why the param was added)
                 tile.draw(matrixStack,zLevel);
             }
@@ -147,6 +148,7 @@ public class InventoryFrame extends ScrollableFrame {
         if (drawBorder) {
             border.drawBorder(matrixStack, buffer); // fixme
         }
+//        RenderSystem.enableDepthTest();
     }
 
     @Override

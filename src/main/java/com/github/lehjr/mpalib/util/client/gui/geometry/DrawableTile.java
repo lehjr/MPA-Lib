@@ -35,82 +35,31 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
 public class DrawableTile extends RelativeRect {
-    Colour backgroundColour;
-    Colour borderColour;
-    float zLevel = 1;
-    boolean shrinkBorder = false;
+    Colour topBorderColour = new Colour(0.216F, 0.216F, 0.216F, 1F);
+    Colour bottomBorderColour = Colour.WHITE;
+    Colour backgroundColour = new Colour(0.545F, 0.545F, 0.545F, 1F);
+    float zLevel = 0;
+    float shrinkBoarderBy = 0;
 
-    public DrawableTile(double left, double top, double right, double bottom, boolean growFromMiddle,
-                        Colour backgroundColour,
-                        Colour borderColour) {
+    public DrawableTile(double left, double top, double right, double bottom, boolean growFromMiddle) {
         super(left, top, right, bottom, growFromMiddle);
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
     }
 
-    public DrawableTile(double left, double top, double right, double bottom,
-                        Colour backgroundColour,
-                        Colour borderColour) {
+    public DrawableTile(double left, double top, double right, double bottom) {
         super(left, top, right, bottom, false);
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
     }
 
-    public DrawableTile(Point2D ul, Point2D br,
-                        Colour backgroundColour,
-                        Colour borderColour) {
+    public DrawableTile(Point2D ul, Point2D br) {
         super(ul, br);
-        this.backgroundColour = backgroundColour;
-        this.borderColour = borderColour;
     }
 
-    /**
-     * determine if the border should be smaller than the background rectangle (like tooltips)
-     * @param shrinkBorder
-     */
-    public void setShrinkBorder(boolean shrinkBorder) {
-        this.shrinkBorder = shrinkBorder;
-    }
-
-    @Override
-    public DrawableTile copyOf() {
-        return new DrawableTile(super.left(), super.top(), super.right(), super.bottom(),
-                (this.ul != this.ulFinal || this.wh != this.whFinal), backgroundColour, borderColour);
-    }
-
-    @Override
-    public DrawableTile setLeft(double value) {
-        super.setLeft(value);
+    public DrawableTile setTopBorderColour(Colour topBorderColour) {
+        this.topBorderColour = topBorderColour;
         return this;
     }
 
-    @Override
-    public DrawableTile setRight(double value) {
-        super.setRight(value);
-        return this;
-    }
-
-    @Override
-    public DrawableTile setTop(double value) {
-        super.setTop(value);
-        return this;
-    }
-
-    @Override
-    public DrawableTile setBottom(double value) {
-        super.setBottom(value);
-        return this;
-    }
-
-    @Override
-    public DrawableTile setWidth(double value) {
-        super.setWidth(value);
-        return this;
-    }
-
-    @Override
-    public DrawableTile setHeight(double value) {
-        super.setHeight(value);
+    public DrawableTile setBottomBorderColour(Colour bottomBorderColour) {
+        this.bottomBorderColour = bottomBorderColour;
         return this;
     }
 
@@ -119,10 +68,59 @@ public class DrawableTile extends RelativeRect {
         return this;
     }
 
-    public DrawableTile setBorderColour(Colour outsideColour) {
-        this.borderColour = outsideColour;
+
+    public DrawableTile setBorderShrinkValue(float shrinkBy) {
+        this.shrinkBoarderBy = shrinkBy;
         return this;
     }
+
+
+    @Override
+    public DrawableTile copyOf() {
+        return new DrawableTile(super.left(), super.top(), super.right(), super.bottom(),
+                (this.ul != this.ulFinal || this.wh != this.whFinal))
+                .setBackgroundColour(backgroundColour)
+                .setTopBorderColour(topBorderColour)
+                .setBottomBorderColour(bottomBorderColour);
+    }
+
+//    @Override
+//    public DrawableTile setLeft(double value) {
+//        super.setLeft(value);
+//        return this;
+//    }
+//
+//    @Override
+//    public DrawableTile setRight(double value) {
+//        super.setRight(value);
+//        return this;
+//    }
+//
+//    @Override
+//    public DrawableTile setTop(double value) {
+//        super.setTop(value);
+//        return this;
+//    }
+//
+//    @Override
+//    public DrawableTile setBottom(double value) {
+//        super.setBottom(value);
+//        return this;
+//    }
+//
+//    @Override
+//    public DrawableTile setWidth(double value) {
+//        super.setWidth(value);
+//        return this;
+//    }
+//
+//    @Override
+//    public DrawableTile setHeight(double value) {
+//        super.setHeight(value);
+//        return this;
+//    }
+
+
 
     void draw(MatrixStack matrix4f, Colour colour, int glMode, double shrinkBy) {
         RenderSystem.disableTexture();
@@ -152,13 +150,55 @@ public class DrawableTile extends RelativeRect {
     }
 
     public void drawBorder(MatrixStack matrixStack, double shrinkBy) {
-        draw(matrixStack, borderColour, GL11.GL_LINE_LOOP, shrinkBy);
+        draw(matrixStack, topBorderColour, GL11.GL_LINE_LOOP, shrinkBy);
+    }
+
+    public void drawDualColourBorder(MatrixStack matrixStack, float shrinkBy) {
+        RenderSystem.disableTexture();
+        RenderSystem.enableBlend();
+        RenderSystem.disableAlphaTest();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBuffer();
+        buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+
+        RenderSystem.lineWidth(2.0F);
+
+        // top right -> top left
+        buffer.pos(matrixStack.getLast().getMatrix(), (float)(right() - shrinkBy), (float) (top() + shrinkBy), zLevel).color(topBorderColour.r, topBorderColour.g, topBorderColour.b, topBorderColour.a).endVertex();
+        buffer.pos(matrixStack.getLast().getMatrix(),(float)(left() + shrinkBy), (float) (top() + shrinkBy), zLevel).color(topBorderColour.r, topBorderColour.g, topBorderColour.b, topBorderColour.a).endVertex();
+
+        // top left -> bottom left
+        buffer.pos(matrixStack.getLast().getMatrix(),(float)(left() + shrinkBy), (float) (top() + shrinkBy), zLevel).color(topBorderColour.r, topBorderColour.g, topBorderColour.b, topBorderColour.a).endVertex();
+        buffer.pos(matrixStack.getLast().getMatrix(),(float)(left() + shrinkBy), (float) (bottom() - shrinkBy), zLevel).color(topBorderColour.r, topBorderColour.g, topBorderColour.b, topBorderColour.a).endVertex();
+
+        // bottom left -> bottom right
+        buffer.pos(matrixStack.getLast().getMatrix(),(float)(left() + shrinkBy), (float) (bottom() - shrinkBy), zLevel).color(bottomBorderColour.r, bottomBorderColour.g, bottomBorderColour.b, bottomBorderColour.a).endVertex();
+        buffer.pos(matrixStack.getLast().getMatrix(),(float)(right() - shrinkBy), (float) (bottom() - shrinkBy), zLevel).color(bottomBorderColour.r, bottomBorderColour.g, bottomBorderColour.b, bottomBorderColour.a).endVertex();
+
+        // bottom right -> top right
+        buffer.pos(matrixStack.getLast().getMatrix(),(float)(right() - shrinkBy), (float) (bottom() - shrinkBy), zLevel).color(bottomBorderColour.r, bottomBorderColour.g, bottomBorderColour.b, bottomBorderColour.a).endVertex();
+        buffer.pos(matrixStack.getLast().getMatrix(), (float)(right() - shrinkBy), (float) (top() + shrinkBy), zLevel).color(bottomBorderColour.r, bottomBorderColour.g, bottomBorderColour.b, bottomBorderColour.a).endVertex();
+
+        tessellator.draw();
+
+        RenderSystem.lineWidth(1);
+        RenderSystem.shadeModel(GL11.GL_FLAT);
+        RenderSystem.disableBlend();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.enableTexture();
     }
 
     public void draw(MatrixStack matrixStack, float zLevel) {
         this.zLevel = zLevel;
         drawBackground(matrixStack);
-        drawBorder(matrixStack, shrinkBorder ? 1 : 0);
+        if (topBorderColour == bottomBorderColour) {
+            drawBorder(matrixStack, shrinkBoarderBy);
+        } else {
+            drawDualColourBorder(matrixStack, shrinkBoarderBy);
+        }
     }
 
     @Override

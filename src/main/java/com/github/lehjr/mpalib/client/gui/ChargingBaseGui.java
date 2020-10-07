@@ -1,5 +1,6 @@
 package com.github.lehjr.mpalib.client.gui;
 
+import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.container.ChargingBaseContainer;
 import com.github.lehjr.mpalib.util.client.gui.ExtendedContainerScreen;
 import com.github.lehjr.mpalib.util.client.gui.frame.InventoryFrame;
@@ -7,12 +8,15 @@ import com.github.lehjr.mpalib.util.client.gui.geometry.DrawableRelativeRect;
 import com.github.lehjr.mpalib.util.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.util.client.gui.hud.meters.EnergyMeter;
 import com.github.lehjr.mpalib.util.math.Colour;
+import com.github.lehjr.mpalib.util.string.StringUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 import java.util.ArrayList;
 import java.util.stream.IntStream;
@@ -50,7 +54,7 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
                 1, 1, new ArrayList<Integer>(){{
             IntStream.range(0, 1).forEach(i-> add(i));
         }});
-        frames.add(batterySlot);
+        addFrame(batterySlot);
 
         // slot 1-9
         mainInventory = new InventoryFrame(container,
@@ -60,7 +64,7 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
                 9, 3, new ArrayList<Integer>(){{
             IntStream.range(1, 28).forEach(i-> add(i));
         }});
-        frames.add(mainInventory);
+        addFrame(mainInventory);
 
         // slot 28-37
         hotbar = new InventoryFrame(container,
@@ -70,7 +74,7 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
                 9, 1, new ArrayList<Integer>(){{
             IntStream.range(28, 37).forEach(i-> add(i));
         }});
-        frames.add(hotbar);
+        addFrame(hotbar);
 
         // add energy meter
     }
@@ -89,6 +93,7 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
                 backgroundRect.finalTop() + 30,
                 backgroundRect.centerx() + (slotWidth * 0.5),
                 backgroundRect.finalTop() + 30 + slotHeight);
+        batterySlot.setzLevel(1);
 
         hotbar.setUlShift(getUlOffset());
         hotbar.init(
@@ -96,6 +101,7 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
                 backgroundRect.finalBottom() - spacer - slotHeight,
                 backgroundRect.finalLeft() + spacer + 9 * slotWidth,
                 backgroundRect.finalBottom() - spacer);
+        hotbar.setzLevel(1);
 
 
         mainInventory.setUlShift(getUlOffset());
@@ -104,24 +110,20 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
                 backgroundRect.finalBottom() - spacer - slotHeight - 3.25F - 3 * slotHeight,
                 backgroundRect.finalLeft() + spacer + 9 * slotWidth,
                 backgroundRect.finalBottom() - spacer - slotHeight - 3.25F);
-    }
-
-    @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-//        renderBackground(matrixStack);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,
-                (float) (batterySlot.finalBottom() + spacer * 0.25),
-                container.getEnergyForMeter(),
-                getBlitOffset() + 2);
-        this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
+        mainInventory.setzLevel(1);
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
         this.font.func_243248_b(matrixStack,  new TranslationTextComponent("mpalib.energy").appendString(": "), 32F, 50F, 4210752);
-        String energyString = new StringBuilder().append(container.getEnergy()).append("/").append(container.getMaxEnergy()).append(" FE").toString();
+
+        String energyString = new StringBuilder()
+                .append(StringUtils.formatNumberShort(container.getEnergy()))
+                .append("/")
+                .append(StringUtils.formatNumberShort(container.getMaxEnergy()))
+                .append(" FE").toString();
+
         this.font.func_243248_b(matrixStack,
                 new StringTextComponent(energyString),
                 (float)((batterySlot.centerx() - font.getStringWidth(energyString) / 2) - guiLeft), // guiLeft here is important
@@ -130,6 +132,12 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
 
     @Override
     public void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
-        backgroundRect.draw(matrixStack, 1);
+        backgroundRect.draw(matrixStack, 0);
+        super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, x, y);
+        energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,
+                (float) (batterySlot.finalBottom() + spacer * 0.25),
+                container.getEnergyForMeter(),
+                getBlitOffset() + 2);
+        this.renderHoveredTooltip(matrixStack, x, y);
     }
 }

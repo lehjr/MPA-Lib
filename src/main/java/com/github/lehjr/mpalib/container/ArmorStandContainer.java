@@ -30,10 +30,12 @@ public class ArmorStandContainer extends Container {
                     PlayerContainer.EMPTY_ARMOR_SLOT_HELMET};
     private static final EquipmentSlotType[] VALID_EQUIPMENT_SLOTS = new EquipmentSlotType[]{EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET};
     private final PlayerEntity player;
+    private final ArmorStandEntity armorStandEntity;
 
     public ArmorStandContainer(int id, PlayerInventory playerInventory, final ArmorStandEntity armorStand) { // base class for MPAArmorStandEntity
         super(ARMOR_STAND_CONTAINER_TYPE.get(), id);
         this.player = playerInventory.player;
+        this.armorStandEntity = armorStand;
         armorStandInventory = new Inventory(
                 // These have high "inventory slot" numbers:
                 armorStand.getItemStackFromSlot(EquipmentSlotType.MAINHAND), // 98
@@ -90,7 +92,7 @@ public class ArmorStandContainer extends Container {
         }
 
         // ArmorStand OffHand (container slot 4)
-        this.addSlot(new Slot(armorStandInventory, 1, 97, 62) {
+        this.addSlot(new Slot(armorStandInventory, 1, 80, 8) {
             @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getBackground() {
                 return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
@@ -110,7 +112,7 @@ public class ArmorStandContainer extends Container {
         });
 
         // ArmorStand MainHand (container slot 5)
-        this.addSlot(new Slot(armorStandInventory, 0, 87, 62) {
+        this.addSlot(new Slot(armorStandInventory, 0, 80, 26) {
             @Override
             public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
                 armorStand.getItemStackFromSlot(EquipmentSlotType.MAINHAND);
@@ -171,12 +173,16 @@ public class ArmorStandContainer extends Container {
         }
 
         // Player Shield (container slot 46)
-        this.addSlot(new Slot(playerInventory, 40, 77, 62) {
+        this.addSlot(new Slot(playerInventory, 40, 80, 62) {
             @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getBackground() {
                 return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
             }
         });
+    }
+
+    public ArmorStandEntity getArmorStandEntity() {
+        return armorStandEntity;
     }
 
     /**
@@ -205,7 +211,7 @@ public class ArmorStandContainer extends Container {
 
             // from Armor Stand to Player Inventory
             if (index < 6) {
-                if (!this.mergeItemStack(itemstack1, 10, this.inventorySlots.size(), true)) {
+                if (!this.mergeItemStack(itemstack1, 9, 45, true)) {
                     return ItemStack.EMPTY;
                 }
 

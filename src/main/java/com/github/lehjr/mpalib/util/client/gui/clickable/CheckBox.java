@@ -20,7 +20,8 @@ public class CheckBox extends Clickable {
 
     public CheckBox(Point2D position, String displayString, boolean isChecked){
         Point2D ul = position.plus(4, 4);
-        this.tile = new DrawableTile(ul, ul.plus(8, 8), Colour.BLACK, Colour.DARK_GREY);
+        this.tile = new DrawableTile(ul, ul.plus(8, 8)).setBackgroundColour(Colour.BLACK)
+                .setTopBorderColour(Colour.DARK_GREY).setBottomBorderColour(Colour.DARK_GREY);
         this.label = displayString;
         this.isChecked = isChecked;
         this.enableAndShow();
