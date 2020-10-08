@@ -114,6 +114,20 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     }
 
     @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+
+        energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,
+                (float) (batterySlot.finalBottom() + spacer * 0.25),
+                container.getEnergyForMeter(),
+                getBlitOffset() + 2);
+
+
+        this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
+    }
+
+    @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
         this.font.func_243248_b(matrixStack,  new TranslationTextComponent("mpalib.energy").appendString(": "), 32F, 50F, 4210752);
@@ -134,10 +148,5 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     public void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
         backgroundRect.draw(matrixStack, 0);
         super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, x, y);
-        energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,
-                (float) (batterySlot.finalBottom() + spacer * 0.25),
-                container.getEnergyForMeter(),
-                getBlitOffset() + 2);
-        this.renderHoveredTooltip(matrixStack, x, y);
     }
 }
