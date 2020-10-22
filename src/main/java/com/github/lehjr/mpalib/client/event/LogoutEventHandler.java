@@ -8,11 +8,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class LogoutEventHandler {
     @SubscribeEvent
-    public void onPlayerLogout(ClientPlayerNetworkEvent.LoggedOutEvent event) {
-        // todo: add code to update module config?
-    }
-
-    @SubscribeEvent
     public void onPlayerLogout(ClientPlayerNetworkEvent.LoggedInEvent event) {
         IConfig moduleConfig = MPALibSettings.getModuleConfig();
         if (moduleConfig instanceof ModuleConfig) {

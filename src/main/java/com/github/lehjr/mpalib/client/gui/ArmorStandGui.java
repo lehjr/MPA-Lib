@@ -6,7 +6,6 @@ import com.github.lehjr.mpalib.util.client.gui.frame.InventoryFrame;
 import com.github.lehjr.mpalib.util.client.gui.geometry.DrawableRelativeRect;
 import com.github.lehjr.mpalib.util.client.gui.geometry.DrawableTile;
 import com.github.lehjr.mpalib.util.client.gui.geometry.Point2D;
-import com.github.lehjr.mpalib.util.client.gui.hud.meters.EnergyMeter;
 import com.github.lehjr.mpalib.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;

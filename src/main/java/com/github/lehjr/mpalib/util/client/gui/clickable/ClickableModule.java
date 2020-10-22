@@ -26,9 +26,9 @@
 
 package com.github.lehjr.mpalib.util.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.render.IconUtils;
-import com.github.lehjr.mpalib.client.render.RenderState;
-import com.github.lehjr.mpalib.client.render.Renderer;
+import com.github.lehjr.mpalib.util.client.render.IconUtils;
+import com.github.lehjr.mpalib.client.render.MPALibRenderState;
+import com.github.lehjr.mpalib.util.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.mpalib.util.client.gui.geometry.Point2D;
@@ -122,21 +122,21 @@ public class ClickableModule extends Clickable {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         if (!getModule().isEmpty()) {
-            Renderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getModule());
+            MPALibRenderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getModule());
             if (!allowed) {
                 RenderSystem.pushMatrix();
                 RenderSystem.translatef(0, 0, 250);
-                RenderState.glowOn();
+                MPALibRenderState.glowOn();
                 String string = StringUtils.wrapMultipleFormatTags("X", StringUtils.FormatCodes.Bold, StringUtils.FormatCodes.DarkRed);
-                Renderer.drawString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
-                RenderState.glowOff();
+                MPALibRenderer.drawString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
+                MPALibRenderState.glowOff();
                 RenderSystem.popMatrix();
             } else if (installed) {
                 RenderSystem.pushMatrix();
                 RenderSystem.translatef(0, 0,250);
-                RenderState.glowOn();
+                MPALibRenderState.glowOn();
                 IconUtils.getIcon().checkmark.draw(matrixStack, getPosition().getX() - offsetx + 1, getPosition().getY() - offsety + 1, checkmarkcolour.withAlpha(0.6F));
-                RenderState.glowOff();
+                MPALibRenderState.glowOff();
                 RenderSystem.popMatrix();
             }
         }

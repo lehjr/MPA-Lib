@@ -27,11 +27,15 @@
 package com.github.lehjr.mpalib.util.client.gui;
 
 import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.util.client.render.BillboardHelper;
+import com.github.lehjr.mpalib.client.render.MPALibRenderState;
 import com.github.lehjr.mpalib.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -48,6 +52,7 @@ import org.lwjgl.opengl.GL11;
  * Ported to Java by lehjr on 10/19/16.
  */
 public class GuiIcon {
+    private static final String iconPrefix = "gui";
     private final MPALibSpriteUploader spriteUploader;
 
     public final DrawableGuiIcon checkmark;
@@ -59,50 +64,69 @@ public class GuiIcon {
     public final DrawableGuiIcon minusSign;
     public final DrawableGuiIcon plusSign;
     public final DrawableGuiIcon glassTexture;
+    public final DrawableGuiIcon lightning;
 
     public GuiIcon(MPALibSpriteUploader spriteUploader) {
         this.spriteUploader = spriteUploader;
-        checkmark = registerSprite("checkmark", 16, 16);
-        transparentArmor = registerSprite("transparentarmor", 8, 8);
-        normalArmor = registerSprite("normalarmor", 8, 8);
-        glowArmor= registerSprite("glowarmor", 8, 8);
-        selectedArmorOverlay = registerSprite("armordisplayselect", 8, 8);
-        armorColourPatch = registerSprite("colourclicker", 8, 8);
-        minusSign = registerSprite("minussign", 8, 8);
-        plusSign= registerSprite("plussign", 8, 8);
-        glassTexture = registerSprite("glass", 1, 8);
+        checkmark = registerIcon("checkmark", 16, 16);
+        transparentArmor = registerIcon("transparentarmor", 8, 8);
+        normalArmor = registerIcon("normalarmor", 8, 8);
+        glowArmor= registerIcon("glowarmor", 8, 8);
+        selectedArmorOverlay = registerIcon("armordisplayselect", 8, 8);
+        armorColourPatch = registerIcon("colourclicker", 8, 8);
+        minusSign = registerIcon("minussign", 8, 8);
+        plusSign= registerIcon("plussign", 8, 8);
+        glassTexture = registerIcon("glass", 1, 8);
+        lightning = registerIcon("lightning", 800, 62);
     }
 
-    private DrawableGuiIcon registerSprite(String name, int width, int height) {
+    private DrawableGuiIcon registerIcon(String name, int width, int height) {
         ResourceLocation location = new ResourceLocation(MPALIbConstants.MOD_ID, name);
-        spriteUploader.registerSprite(location);
-        return new DrawableGuiIcon(location, width, height);
+        spriteUploader.registerIcon(location);
+        return new DrawableGuiIcon(location, width, height, iconPrefix);
     }
+
+    // Todo?
+//    private DrawableGuiIcon registerSprite(String name, int width, int height, String prefix) {
+//        ResourceLocation location = new ResourceLocation(MPALIbConstants.MOD_ID, name);
+//        spriteUploader.registerIcon(location);
+//        return new DrawableGuiIcon(location, width, height, prefix);
+//    }
 
     public class DrawableGuiIcon {
         final ResourceLocation location;
         private final int width;
         private final int height;
+        String prefix;
 
-        protected DrawableGuiIcon(ResourceLocation locationIn, int width, int height) {
+        protected DrawableGuiIcon(ResourceLocation locationIn, int width, int height, String prefix) {
             this.location = locationIn;
             this.width = width;
             this.height = height;
+            this.prefix = prefix;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public int getHeight() {
+            return height;
         }
 
         public void draw(MatrixStack matrixStack, double x, double y, Colour colour) {
             draw(matrixStack, x, y, 0, 0, 0, 0, colour);
         }
 
+
+
         public void draw(MatrixStack matrixStack, double xOffset, double yOffset, double maskTop, double maskBottom, double maskLeft, double maskRight, Colour colour) {
             double textureWidth = this.width;
             double textureHeight = this.height;
 
-            Minecraft minecraft = Minecraft.getInstance();
-            TextureManager textureManager = minecraft.getTextureManager();
-            textureManager.bindTexture(MPALIbConstants.LOCATION_MPALIB_GUI_TEXTURE_ATLAS);
+            bindTexture();
             TextureAtlasSprite icon = spriteUploader.getSprite(location);
-            float zLevel = minecraft.currentScreen.getBlitOffset();
+            float zLevel = getMinecraft().currentScreen.getBlitOffset();
 
             double posLeft = xOffset + maskLeft;
             double posTop = yOffset + maskTop;
@@ -137,7 +161,7 @@ public class GuiIcon {
             Minecraft minecraft = Minecraft.getInstance();
             TextureManager textureManager = minecraft.getTextureManager();
             textureManager.bindTexture(MPALIbConstants.LOCATION_MPALIB_GUI_TEXTURE_ATLAS);
-            TextureAtlasSprite icon = spriteUploader.getSprite(location);
+            TextureAtlasSprite icon = getSprite();
 
             if (icon != null) {
                 return "icon: " + icon.toString();
@@ -145,7 +169,45 @@ public class GuiIcon {
                 return "icon is null for location: " + location.toString();
             }
         }
+
+        public void drawLightning(IRenderTypeBuffer bufferIn, MatrixStack matrixStack, float x1, float y1, float z1, float x2, float y2, float z2, Colour colour) {
+            TextureAtlasSprite icon = getSprite();
+//            bindTexture();
+//            System.out.println("toString: " + toString());
+
+            drawLightningTextured(bufferIn.getBuffer(MPALibRenderState.LIGHTNING_TEST()),
+                    matrixStack.getLast().getMatrix(),
+                    x1,
+                    y1,
+                    z1,
+                    x2,
+                    y2,
+                    z2,
+                    colour,
+                    icon,
+                    this.width,
+                    this.height);
+        }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      *
@@ -322,5 +384,101 @@ public class GuiIcon {
         bufferbuilder.finishDrawing();
         RenderSystem.enableAlphaTest();
         WorldVertexBufferUploader.draw(bufferbuilder);
+    }
+
+    public void drawLightningTextured(IVertexBuilder bufferIn, Matrix4f matrix4f, float x1, float y1, float z1, float x2, float y2, float z2, Colour colour, TextureAtlasSprite icon, float textureWidth, float textureHeight) {
+        float minV = icon.getMinV();
+        float maxV = icon.getMaxV();
+        float uSize = icon.getMaxU() - icon.getMinU();
+
+        float tx = x2 - x1, ty = y2 - y1, tz = z2 - z1;
+        float ax, ay, az;
+        float bx, by, bz;
+        float cx = 0, cy = 0, cz = 0;
+        float jagfactor = 0.3F;
+        while (Math.abs(cx) < Math.abs(tx) && Math.abs(cy) < Math.abs(ty) && Math.abs(cz) < Math.abs(tz)) {
+            ax = x1 + cx;
+            ay = y1 + cy;
+            az = z1 + cz;
+            cx += Math.random() * tx * jagfactor - 0.1 * tx;
+            cy += Math.random() * ty * jagfactor - 0.1 * ty;
+            cz += Math.random() * tz * jagfactor - 0.1 * tz;
+            bx = x1 + cx;
+            by = y1 + cy;
+            bz = z1 + cz;
+
+            int index = getRandomNumber(0, 50);
+            float minU = icon.getMinU() + uSize * (index * 0.2F); // 1/50, there are 50 different lightning elements in the texture
+            float maxU = minU + uSize * 0.2F;
+
+            drawLightningBetweenPointsFast(bufferIn, matrix4f, ax, ay, az, bx, by, bz, colour, minU, maxU, minV, maxV);
+        }
+    }
+
+    void drawLightningBetweenPointsFast(IVertexBuilder bufferIn, Matrix4f matrix4f,
+                                               float x1, float y1, float z1, float x2, float y2, float z2,
+                                               Colour colour,
+                                        float minU, float maxU, float minV, float maxV) {
+        float px = (y1 - y2) * 0.125F;
+        float py = (x2 - x1) * 0.125F;
+
+//        // bottom left
+//        bufferIn.pos(matrix4f, x2 - px, y2 - py, z2) //  top left back?
+//                .color(colour.r, colour.g, colour.b, colour.a)
+//                .tex(minU, maxV) // left bottom
+//                .lightmap(0x00F000F0).endVertex();
+//
+//        bufferIn.pos(matrix4f, x2 + px, y2 + py, z2) // bottom right back
+//                .color(colour.r, colour.g, colour.b, colour.a)
+//                .tex(maxU, maxV) // right bottom
+//                .lightmap(0x00F000F0).endVertex();
+//
+//        bufferIn.pos(matrix4f, x1 + px, y1 + py, z1) // bottom right front
+//                .color(colour.r, colour.g, colour.b, colour.a)
+//                .tex(maxU, minV) // right top
+//                .lightmap(0x00F000F0).endVertex();
+//
+//        bufferIn.pos(matrix4f, x1 - px, y1 - py, z1) // top left front
+//                .color(colour.r, colour.g, colour.b, colour.a)
+//                .tex(minU, minV)
+//                .lightmap(0x00F000F0).endVertex();
+
+
+        bufferIn.pos(matrix4f, x1 - px, y1 - py, z1) // top left front
+                .color(colour.r, colour.g, colour.b, colour.a)
+                .tex(minU, minV)
+                .lightmap(0x00F000F0).endVertex();
+
+        bufferIn.pos(matrix4f, x1 + px, y1 + py, z1) // bottom right front
+                .color(colour.r, colour.g, colour.b, colour.a)
+                .tex(maxU, minV) // right top
+                .lightmap(0x00F000F0).endVertex();
+
+        bufferIn.pos(matrix4f, x2 - px, y2 - py, z2) //  top left back
+                .color(colour.r, colour.g, colour.b, colour.a)
+                .tex(minU, maxV) // left bottom
+                .lightmap(0x00F000F0).endVertex();
+
+        bufferIn.pos(matrix4f, x2 + px, y2 + py, z2) // bottom right back
+                .color(colour.r, colour.g, colour.b, colour.a)
+                .tex(maxU, maxV) // right bottom
+                .lightmap(0x00F000F0).endVertex();
+    }
+
+    Minecraft getMinecraft() {
+        return Minecraft.getInstance();
+    }
+
+    void bindTexture() {
+        TextureManager textureManager = getMinecraft().getTextureManager();
+        textureManager.bindTexture(MPALIbConstants.LOCATION_MPALIB_GUI_TEXTURE_ATLAS);
+    }
+
+    int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
+    public void unRotate() {
+        BillboardHelper.unRotate();
     }
 }

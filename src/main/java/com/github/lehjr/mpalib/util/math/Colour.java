@@ -28,6 +28,7 @@ package com.github.lehjr.mpalib.util.math;
 
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.util.math.vector.Vector4f;
 import org.lwjgl.opengl.GL11;
 
@@ -58,7 +59,7 @@ public class Colour {
     public static final Colour MAGENTA = new Colour(1F, 0F, 1F, 1F);
     public static final Colour CYAN = new Colour(0F, 1F, 1F, 1F); // AQUA_BLUE
     public static final Colour BLUE = new Colour(0.0F, 0.0F, 1F, 1F);
-    public static final Colour LIGHTBLUE = new Colour(0.5F, 0.5F, 1F, 1F);
+    public static final Colour LIGHT_BLUE = new Colour(0.5F, 0.5F, 1F, 1F);
     public static final Colour DARKBLUE = new Colour(0.0F, 0.0F, 0.5F, 1F);
     public static final Colour PURPLE = new Colour(0.6F, 0.1F, 0.9F, 1F);
 
@@ -97,6 +98,11 @@ public class Colour {
         this.b = b * div255;
         this.a = 1F;
     }
+
+    // TODO?
+//    public IVertexBuilder addToVertex(IVertexBuilder builderIn) {
+//        return builderIn.color((int)(r * 255.0F), (int)(g * 255.0F), (int)(b * 255.0F), (int)(a * 255.0F));
+//    }
 
     public Vector4f getVec4F() {
         return new Vector4f(r, g, b, a);
@@ -204,7 +210,7 @@ public class Colour {
 //        return Integer.toHexString(getInt()).toUpperCase();
     }
 
-    public String hexDigits(float x) {
+    public static String hexDigits(float x) {
         int y = (int) (x * 255);
         String hexDigits = "0123456789ABCDEF";
         return hexDigits.charAt(y / 16) + "" + hexDigits.charAt(y % 16);

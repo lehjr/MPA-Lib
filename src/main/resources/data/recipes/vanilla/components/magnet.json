@@ -1,0 +1,25 @@
+{
+  "conditions": [
+    {
+      "type": "mpalib:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "SSS",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "S": {
+      "item": "mpalib:component_solenoid"
+    }
+  },
+  "result": {
+    "item" : "mpalib:component_magnet"
+  }
+}

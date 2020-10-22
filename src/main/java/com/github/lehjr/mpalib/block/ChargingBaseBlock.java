@@ -18,6 +18,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -100,8 +101,6 @@ public class ChargingBaseBlock extends Block implements IWaterLoggable {
         }
         return ActionResultType.SUCCESS;
     }
-
-
 
     // temporary fix for armor stand spawned below the block
     @Override

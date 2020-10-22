@@ -29,7 +29,7 @@
 //import com.github.lehjr.mpalib.client.gui.clickable.IClickable;
 //import com.github.lehjr.mpalib.client.gui.geometry.Point2D;
 //import com.github.lehjr.mpalib.client.gui.geometry.SpiralPointToPoint2D;
-//import com.github.lehjr.mpalib.client.render.Renderer;
+//import com.github.lehjr.mpalib.client.render.MPALibRenderer;
 //import net.minecraft.client.Minecraft;
 //import net.minecraft.client.util.ITooltipFlag;
 //import net.minecraft.inventory.container.Slot;
@@ -70,7 +70,7 @@
 //        if(spiralPosition != null)
 //            move(spiralPosition);
 //
-//        Renderer.drawItemAt(
+//        MPALibRenderer.drawItemAt(
 //                getPosition().getX() - offsetx,
 //                getPosition().getY() - offsety, slot.getStack());
 //    }

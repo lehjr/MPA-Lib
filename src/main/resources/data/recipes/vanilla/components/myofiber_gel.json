@@ -1,0 +1,25 @@
+{
+  "conditions": [
+    {
+      "type": "mpalib:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " M ",
+    "IMI",
+    "IMI"
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:magma_cream"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item":"mpalib:component_myofiber_gel"
+  }
+}

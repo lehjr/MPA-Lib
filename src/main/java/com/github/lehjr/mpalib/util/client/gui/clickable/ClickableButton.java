@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.render.Renderer;
+import com.github.lehjr.mpalib.util.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.util.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.util.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.util.math.Colour;
@@ -59,9 +59,9 @@ public class ClickableButton extends Clickable {
                 if (x[i].length() > x[longestIndex].length())
                     longestIndex = i;
             }
-            this.radius = new Point2D((float) (Renderer.getStringWidth(x[longestIndex]) / 2F + 2F), 6 * x.length);
+            this.radius = new Point2D((float) (MPALibRenderer.getStringWidth(x[longestIndex]) / 2F + 2F), 6 * x.length);
         } else {
-            this.radius = new Point2D((float) (Renderer.getStringWidth(label.getString()) / 2F + 2F), 6);
+            this.radius = new Point2D((float) (MPALibRenderer.getStringWidth(label.getString()) / 2F + 2F), 6);
         }
 
         this.rect = new DrawableRect(
@@ -120,10 +120,10 @@ public class ClickableButton extends Clickable {
             if (label.getString().contains("\n")) {
                 String[] s = label.getString().split("\n");
                 for (int i = 0; i < s.length; i++) {
-                    Renderer.drawCenteredString(matrixStack, s[i], position.getX(), position.getY() - (4 * s.length) + (i * 8));
+                    MPALibRenderer.drawCenteredString(matrixStack, s[i], position.getX(), position.getY() - (4 * s.length) + (i * 8));
                 }
             } else {
-                Renderer.drawCenteredString(matrixStack, this.label.getString(), position.getX(), position.getY() - 4);
+                MPALibRenderer.drawCenteredString(matrixStack, this.label.getString(), position.getX(), position.getY() - 4);
             }
         }
     }

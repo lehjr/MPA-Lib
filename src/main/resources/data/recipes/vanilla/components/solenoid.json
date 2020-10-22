@@ -1,0 +1,25 @@
+{
+  "conditions": [
+    {
+      "type": "mpalib:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WIW",
+    "WIW",
+    "WIW"
+  ],
+  "key": {
+    "W": {
+      "item": "modularpowerarmor:component_wiring"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "mpalib:component_solenoid"
+  }
+}

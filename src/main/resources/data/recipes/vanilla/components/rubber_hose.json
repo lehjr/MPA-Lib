@@ -1,0 +1,25 @@
+{
+  "conditions": [
+    {
+      "type": "mpalib:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "G G",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "tag" : "minecraft:wool"
+    },
+    "G": {
+      "item": "glass"
+    }
+  },
+  "result": {
+    "item": "mpalib:component_rubber_hose"
+  }
+}

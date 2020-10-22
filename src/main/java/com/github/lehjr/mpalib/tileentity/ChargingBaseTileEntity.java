@@ -12,7 +12,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
@@ -81,26 +80,26 @@ public class ChargingBaseTileEntity extends MPALibTileEntity implements ITickabl
     }
 
     private void sendOutPower(LivingEntity entity) {
-        // TODO: sound? particle effects? beer run?
-
-        entity.getEquipmentAndArmor().forEach(itemStack -> {
-            if (energyWrapperStorage.getEnergyStored() > 0) {
-                boolean doContinue = itemStack.getCapability(CapabilityEnergy.ENERGY).map(iItemEnergyHandler -> {
-                            if (iItemEnergyHandler.canReceive()) {
-                                // get max energy item energy storage will recieve
-                                int sent = iItemEnergyHandler.receiveEnergy(energyWrapperStorage.getEnergyStored(), true);
-                                sent = iItemEnergyHandler.receiveEnergy(energyWrapperStorage.extractEnergy(sent, false), false);
-                                markDirty();
-                                return energyWrapperStorage.getEnergyStored() > 0;
-                            } else {
-                                return true;
+        energyWrapper.ifPresent(wrapper->{
+            entity.getEquipmentAndArmor().forEach(itemStack -> {
+                if (wrapper.getEnergyStored() > 0) {
+                    boolean doContinue = itemStack.getCapability(CapabilityEnergy.ENERGY).map(iItemEnergyHandler -> {
+                                if (iItemEnergyHandler.canReceive()) {
+                                    int received = iItemEnergyHandler.receiveEnergy(wrapper.getEnergyStored(), false);
+                                    energyWrapperStorage.extractEnergy(received, false);
+                                    wrapper.extractEnergy(received, false);
+                                    markDirty();
+                                    return wrapper.getEnergyStored() > 0;
+                                } else {
+                                    return true;
+                                }
                             }
-                        }
-                ).orElse(true);
-                if (!doContinue) {
-                    return;
+                    ).orElse(true);
+                    if (!doContinue) {
+                        return;
+                    }
                 }
-            }
+            });
         });
     }
 
@@ -177,11 +176,9 @@ public class ChargingBaseTileEntity extends MPALibTileEntity implements ITickabl
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return handler.cast();
         }
-
-        if (cap == CapabilityEnergy.ENERGY && side == Direction.DOWN) {
+        if (cap == CapabilityEnergy.ENERGY) {
             return energyWrapper.cast();
         }
-
         return super.getCapability(cap, side);
     }
 

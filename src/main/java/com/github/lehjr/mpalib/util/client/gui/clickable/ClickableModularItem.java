@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.render.Renderer;
+import com.github.lehjr.mpalib.util.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.util.client.gui.slot.ClickableItemSlot;
 import com.github.lehjr.mpalib.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -48,7 +48,7 @@ public class ClickableModularItem extends ClickableItemSlot {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         super.render(matrixStack, mouseX, mouseY, partialTicks, zLevel);
         if (this.slotNumber > 35 || this.slotNumber == Minecraft.getInstance().player.inventory.currentItem) {
-            Renderer.drawString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARK_GREEN);
+            MPALibRenderer.drawString(matrixStack, "e", getPosition().getX() + 3, getPosition().getY() + 1, Colour.DARK_GREEN);
         }
     }
 }

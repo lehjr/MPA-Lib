@@ -42,8 +42,7 @@ public class MPALIbConstants {
     // Misc
     public static final String RESOURCE_PREFIX = MOD_ID + ":";
     public static final String TEXTURE_PREFIX = RESOURCE_PREFIX + "textures/";
-    public static final ResourceLocation LIGHTNING_TEXTURE = new ResourceLocation(TEXTURE_PREFIX + "gui/lightning-medium.png");
-    public static final ResourceLocation GLASS_TEXTURE = new ResourceLocation(TEXTURE_PREFIX + "gui/glass.png");
+  public static final ResourceLocation GLASS_TEXTURE = new ResourceLocation(TEXTURE_PREFIX + "gui/glass.png");
     public static final ResourceLocation LOCATION_MPALIB_GUI_TEXTURE_ATLAS = new ResourceLocation(RESOURCE_PREFIX +"atlas/gui.png");
     public static final String BLANK_ARMOR_MODEL_PATH = TEXTURE_PREFIX + "item/armor/blankarmor.png";
 
@@ -82,6 +81,34 @@ public class MPALIbConstants {
 
     public static final String ARMOR_STAND__ENTITY_TYPE_REGNAME = ARMORSTAND_REGNAME + "_entity";
 
+    /**
+     * Components ---------------------------------------------------------------------------------
+     */
+    public static final String COMPONENT__WIRING__REGNAME = "component_wiring";
+    public static final String COMPONENT__SOLENOID__REGNAME = "component_solenoid";
+    public static final String COMPONENT__SERVO__REGNAME = "component_servo";
+    public static final String COMPONENT__GLIDER_WING__REGNAME = "component_glider_wing";
+    public static final String COMPONENT__ION_THRUSTER__REGNAME = "component_ion_thruster";
+    public static final String COMPONENT__PARACHUTE__REGNAME = "component_parachute";
+    public static final String COMPONENT__FIELD_EMITTER__REGNAME = "component_field_emitter";
+    public static final String COMPONENT__LASER_EMITTER__REGNAME = "component_laser_emitter";
+    public static final String COMPONENT__CARBON_MYOFIBER__REGNAME = "component_carbon_myofiber";
+    public static final String COMPONENT__CONTROL_CIRCUIT__REGNAME = "component_control_circuit";
+    public static final String COMPONENT__MYOFIBER_GEL__REGNAME = "component_myofiber_gel";
+    public static final String COMPONENT__ARTIFICIAL_MUSCLE__REGNAME = "component_artificial_muscle";
+    public static final String COMPONENT__SOLAR_PANEL__REGNAME = "component_solar_panel";
+    public static final String COMPONENT__MAGNET__REGNAME = "component_magnet";
+    public static final String COMPONENT__COMPUTER_CHIP__REGNAME = "component_computer_chip";
+    public static final String COMPONENT__RUBBER_HOSE__REGNAME = "component_rubber_hose";
 
+
+
+
+
+
+
+
+    public static final ResourceLocation TEXTURE_WHITE_SHORT = new ResourceLocation(MPALIbConstants.MOD_ID, "models/white");
+    public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation(MPALIbConstants.MOD_ID, "textures/models/white.png");
     public static final ResourceLocation TEXTURE_ARMOR_STAND = new ResourceLocation(MPALIbConstants.MOD_ID, "textures/models/armorstand2.png");
 }

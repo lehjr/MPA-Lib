@@ -1,6 +1,5 @@
 package com.github.lehjr.mpalib.client.gui;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
 import com.github.lehjr.mpalib.container.ChargingBaseContainer;
 import com.github.lehjr.mpalib.util.client.gui.ExtendedContainerScreen;
 import com.github.lehjr.mpalib.util.client.gui.frame.InventoryFrame;
@@ -11,12 +10,10 @@ import com.github.lehjr.mpalib.util.math.Colour;
 import com.github.lehjr.mpalib.util.string.StringUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 import java.util.ArrayList;
 import java.util.stream.IntStream;
@@ -114,20 +111,6 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-
-        energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,
-                (float) (batterySlot.finalBottom() + spacer * 0.25),
-                container.getEnergyForMeter(),
-                getBlitOffset() + 2);
-
-
-        this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
-    }
-
-    @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
         this.font.func_243248_b(matrixStack,  new TranslationTextComponent("mpalib.energy").appendString(": "), 32F, 50F, 4210752);
@@ -148,5 +131,10 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     public void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
         backgroundRect.draw(matrixStack, 0);
         super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, x, y);
+        energyMeter.draw(matrixStack, (float) batterySlot.centerx() - 16,
+                (float) (batterySlot.finalBottom() + spacer * 0.25),
+                container.getEnergyForMeter(),
+                getBlitOffset() + 2);
+        this.renderHoveredTooltip(matrixStack, x, y);
     }
 }

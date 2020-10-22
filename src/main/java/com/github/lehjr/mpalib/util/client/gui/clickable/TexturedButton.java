@@ -131,7 +131,7 @@ public class TexturedButton extends Button {
         super.render(matrixStack, mouseX, mouseY, partialTicks, zLevel);
         Colour color;
         if(this.isVisible && this.isEnabled) {
-            color = this.hitBox(mouseX, mouseY) ? Colour.LIGHTBLUE.withAlpha(0.6F) : Colour.WHITE;
+            color = this.hitBox(mouseX, mouseY) ? Colour.LIGHT_BLUE.withAlpha(0.6F) : Colour.WHITE;
         } else {
             color = Colour.RED.withAlpha(0.6F);
         }

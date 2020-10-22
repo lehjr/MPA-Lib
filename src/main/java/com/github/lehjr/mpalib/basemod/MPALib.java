@@ -3,7 +3,7 @@ package com.github.lehjr.mpalib.basemod;
 import com.github.lehjr.mpalib.client.event.*;
 import com.github.lehjr.mpalib.client.gui.ArmorStandGui;
 import com.github.lehjr.mpalib.client.gui.ChargingBaseGui;
-import com.github.lehjr.mpalib.client.render.IconUtils;
+import com.github.lehjr.mpalib.util.client.render.IconUtils;
 import com.github.lehjr.mpalib.config.ConfigHelper;
 import com.github.lehjr.mpalib.config.MPALibSettings;
 import com.github.lehjr.mpalib.entity.MPAArmorStandEntity;
@@ -44,7 +44,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(MPALIbConstants.MOD_ID)
 public class MPALib {
     // Directly reference a log4j logger.
@@ -52,7 +51,6 @@ public class MPALib {
 
     public MPALib() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MPALibSettings.CLIENT_SPEC, ConfigHelper.setupConfigFile("mpalib-client-only.toml", MPALIbConstants.MOD_ID).getAbsolutePath());
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MPALibSettings.COMMON_SPEC, ConfigHelper.setupConfigFile("mpalib-common.toml", MPALIbConstants.MOD_ID).getAbsolutePath());
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MPALibSettings.SERVER_SPEC); // note config file location for dedicated server is stored in the world config
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -76,16 +74,12 @@ public class MPALib {
 
         DistExecutor.runWhenOn(Dist.CLIENT, ()->()-> clientStart(modEventBus));
 
-
-
         // handles loading and reloading event
         modEventBus.addListener((ModConfig.ModConfigEvent event) -> {
             new RuntimeException("Got config " + event.getConfig() + " name " + event.getConfig().getModId() + ":" + event.getConfig().getFileName());
 
             final ModConfig config = event.getConfig();
-            if (config.getSpec() == MPALibSettings.COMMON_SPEC) {
-                MPALibSettings.getModuleConfig().setCommonConfig(config);
-            } else if (config.getSpec() == MPALibSettings.SERVER_SPEC) {
+            if (config.getSpec() == MPALibSettings.SERVER_SPEC) {
                 MPALibSettings.getModuleConfig().setServerConfig(config);
             }
         });
@@ -98,25 +92,25 @@ public class MPALib {
         }
 
         EventBusHelper.addListener(modEventBus, ColorHandlerEvent.Block.class, setupEvent -> {
-            MPALibSpriteUploader spriteUploader = new MPALibSpriteUploader(Minecraft.getInstance().textureManager);
-            GuiIcon icons = new GuiIcon(spriteUploader);
+            MPALibSpriteUploader iconUploader = new MPALibSpriteUploader(Minecraft.getInstance().textureManager, "gui");
+            GuiIcon icons = new GuiIcon(iconUploader);
             IResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
             if (resourceManager instanceof IReloadableResourceManager) {
                 IReloadableResourceManager reloadableResourceManager = (IReloadableResourceManager) resourceManager;
-                reloadableResourceManager.addReloadListener(spriteUploader);
+                reloadableResourceManager.addReloadListener(iconUploader);
             }
             EventBusHelper.addLifecycleListener(modEventBus, FMLLoadCompleteEvent.class, loadCompleteEvent ->
                     IconUtils.setIconInstance(icons));
         });
     }
 
-    @Mod.EventBusSubscriber(modid = MPALIbConstants.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class MyStaticClientOnlyEventHandler {
-        @SubscribeEvent
-        public static void loadComplete(FMLLoadCompleteEvent evt) {
-            ArmorLayerSetup.loadComplete(evt);
-        }
-    }
+//    @Mod.EventBusSubscriber(modid = MPALIbConstants.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+//    public static class MyStaticClientOnlyEventHandler {
+//        @SubscribeEvent
+//        public static void loadComplete(FMLLoadCompleteEvent evt) {
+//            ArmorLayerSetup.loadComplete(evt);
+//        }
+//    }
 
     private void setup(final FMLCommonSetupEvent event) {
         MPALibPackets.registerMPALibPackets();

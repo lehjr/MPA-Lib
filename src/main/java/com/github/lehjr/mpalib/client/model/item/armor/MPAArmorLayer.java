@@ -1,9 +1,8 @@
 //package com.github.lehjr.mpalib.client.model.item.armor;
 //
-//import com.github.lehjr.mpalib.capabilities.render.IArmorModelSpecNBT;
-//import com.github.lehjr.mpalib.capabilities.render.ModelSpecNBTCapability;
-//import com.github.lehjr.mpalib.capabilities.render.modelspec.EnumSpecType;
-//import com.github.lehjr.mpalib.math.Colour;
+//import com.github.lehjr.mpalib.util.capabilities.render.IArmorModelSpecNBT;
+//import com.github.lehjr.mpalib.util.capabilities.render.ModelSpecNBTCapability;
+//import com.github.lehjr.mpalib.util.capabilities.render.modelspec.EnumSpecType;
 //import com.mojang.blaze3d.matrix.MatrixStack;
 //import com.mojang.blaze3d.vertex.IVertexBuilder;
 //import net.minecraft.client.renderer.Atlases;
@@ -31,6 +30,11 @@
 //        super(entityRenderer, modelLeggings, modelArmor);
 //    }
 //
+//    @Override
+//    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+//        super.render(matrixStackIn, bufferIn, packedLightIn, entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+//    }
+//
 //    /**
 //     * From here, we can set the render type to be the same as what the item models use
 //     * @param matrixStackIn
@@ -54,6 +58,10 @@
 //
 //    }
 //*/
+//
+//
+//
+//
 //    private void func_241739_a_(@Nonnull MatrixStack matrixStackIn, @Nonnull IRenderTypeBuffer bufferIn, T entityLivingBaseIn, EquipmentSlotType  slotIn, int packedLightIn, A model) {
 //        ItemStack itemstack = entityLivingBaseIn.getItemStackFromSlot( slotIn);
 //        if (itemstack.getItem() instanceof ArmorItem) {
@@ -169,9 +177,16 @@
 //        }).orElse(super.getArmorResource(entity, stack, slot, type));
 //    }
 //
-////    @Nonnull
+//    @Override
+//    protected A getArmorModelHook(T entity, ItemStack itemStack, EquipmentSlotType slot, A model) {
+//        return super.getArmorModelHook(entity, itemStack, slot, model);
+//    }
+//
+//    //    @Nonnull
 ////    @Override
 ////    public A /*getModelFromSlot*/ func_241736_a_(EquipmentSlotType slot) {
 ////        return slot == EquipmentSlotType.LEGS ? this.modelLeggings : this.modelArmor;
 ////    }
+//
+//
 //}

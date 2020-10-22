@@ -6,7 +6,6 @@ import com.github.lehjr.mpalib.util.client.gui.slot.IHideableSlot;
 import com.github.lehjr.mpalib.util.client.gui.slot.UniversalSlot;
 import com.github.lehjr.mpalib.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;

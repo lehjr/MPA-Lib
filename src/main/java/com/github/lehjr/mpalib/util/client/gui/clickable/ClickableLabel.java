@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.render.Renderer;
+import com.github.lehjr.mpalib.util.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.util.client.gui.geometry.Point2D;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.ITextComponent;
@@ -72,15 +72,15 @@ public class ClickableLabel implements IClickable {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         switch (mode) {
             case LEFT:
-                Renderer.drawLeftAlignedStringString(matrixStack, this.label, position.getX(), position.getY() - 4);
+                MPALibRenderer.drawLeftAlignedStringString(matrixStack, this.label, position.getX(), position.getY() - 4);
                 break;
 
             case CENTERED:
-                Renderer.drawCenteredString(matrixStack, this.label, position.getX(), position.getY() - 4);
+                MPALibRenderer.drawCenteredString(matrixStack, this.label, position.getX(), position.getY() - 4);
                 break;
 
             case RIGHT:
-                Renderer.drawRightAlignedString(matrixStack, this.label, position.getX(), position.getY() - 4);
+                MPALibRenderer.drawRightAlignedString(matrixStack, this.label, position.getX(), position.getY() - 4);
                 break;
         }
     }
@@ -91,7 +91,7 @@ public class ClickableLabel implements IClickable {
             return false;
         }
 
-        Point2D radius = new Point2D((double) (Renderer.getStringWidth(label) / 2F + 2F), 6);
+        Point2D radius = new Point2D((double) (MPALibRenderer.getStringWidth(label) / 2F + 2F), 6);
         boolean hitx = Math.abs(position.getX() - x) < radius.getX();
         boolean hity = Math.abs(position.getY() - y) < radius.getY();
         return hitx && hity;

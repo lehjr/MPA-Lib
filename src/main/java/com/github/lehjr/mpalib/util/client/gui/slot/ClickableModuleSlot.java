@@ -26,8 +26,8 @@
 
 package com.github.lehjr.mpalib.util.client.gui.slot;
 
-import com.github.lehjr.mpalib.client.render.IconUtils;
-import com.github.lehjr.mpalib.client.render.Renderer;
+import com.github.lehjr.mpalib.util.client.render.IconUtils;
+import com.github.lehjr.mpalib.util.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.util.capabilities.module.powermodule.PowerModuleCapability;
 import com.github.lehjr.mpalib.util.client.gui.clickable.IClickable;
@@ -81,10 +81,10 @@ public class ClickableModuleSlot extends UniversalSlot implements IClickable {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         if (!getStack().isEmpty()) {
-            Renderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getStack());
+            MPALibRenderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getStack());
             if (!allowed) {
                 String string = StringUtils.wrapFormatTags("x", StringUtils.FormatCodes.DarkRed);
-                Renderer.drawString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
+                MPALibRenderer.drawString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
             } else if (installed) {
                 IconUtils.getIcon().checkmark.draw(matrixStack, getPosition().getX() - offsetx + 1, getPosition().getY() - offsety + 1, checkmarkcolour);
             }

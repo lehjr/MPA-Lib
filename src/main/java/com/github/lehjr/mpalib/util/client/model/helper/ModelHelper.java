@@ -32,6 +32,7 @@ import com.google.common.collect.ImmutableList;
 import forge.MPAOBJLoader;
 import forge.MPAOBJModel;
 import forge.OBJBakedCompositeModel;
+import forge.OBJModelConfiguration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -41,6 +42,7 @@ import net.minecraft.util.math.vector.TransformationMatrix;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector4f;
 import net.minecraftforge.client.model.IModelConfiguration;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
 import net.minecraftforge.client.model.pipeline.VertexTransformer;
 import net.minecraftforge.common.model.TransformationHelper;
@@ -72,22 +74,6 @@ public class ModelHelper {
         return get(transformX, transformY, transformZ, angleX, angleY, angleZ, scale, scale, scale);
     }
 
-//    /**
-//     * gets the texture from the texture map. Registers the texture if not already registered
-//     */
-//    private enum DefaultTextureGetter implements Function<ResourceLocation, TextureAtlasSprite> {
-//        INSTANCE;
-//
-//        @Override
-//        public TextureAtlasSprite apply(ResourceLocation location) {
-//            TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getSprite(location);
-//            if (sprite == MissingTextureSprite.func_217790_a()) {
-//                sprite = Minecraft.getInstance().getTextureMap().getSprite(location);
-//            }
-//            return sprite;
-//        }
-//    }
-
     /**
      * Get the default texture getter the models will be baked with.
      */
@@ -95,12 +81,16 @@ public class ModelHelper {
         return Minecraft.getInstance().getAtlasSpriteGetter(location);
     }
 
+    public static Function<RenderMaterial, TextureAtlasSprite> whiteTextureGetter() {
+        return (iHateNamingPointlessVariables)->ModelLoader.White.instance();
+    }
+
     @Nullable
     public static MPAOBJModel getOBJModel(ResourceLocation location, int attempt) {
         MPAOBJModel model;
         try {
             model = MPAOBJLoader.INSTANCE.loadModel(
-                    new MPAOBJModel.ModelSettings(location, true, false, true, true, null));
+                    new MPAOBJModel.ModelSettings(location, true, true, true, true, null));
         } catch (Exception e) {
             if (attempt < 6) {
                 model = getOBJModel(location, attempt + 1);
@@ -110,23 +100,20 @@ public class ModelHelper {
                 MPALibLogger.logError("Failed to load model. " + e);
             }
         }
+        System.out.println("got model");
         return model;
     }
 
     @Nullable
-    public static OBJBakedCompositeModel loadBakedModel(IModelConfiguration owner,
-                                                        ModelBakery bakery,
-                                                        Function<RenderMaterial, TextureAtlasSprite> spriteGetter,
-                                                        IModelTransform modelTransform,
+    public static OBJBakedCompositeModel loadBakedModel(IModelTransform modelTransform,
                                                         ItemOverrideList overrides,
                                                         ResourceLocation modelLocation) {
         MPAOBJModel model = getOBJModel(modelLocation, 0);
 
         if (model != null) {
-            OBJBakedCompositeModel bakedModel = model.bake(
-                    owner,
-                    bakery,
-                    spriteGetter,
+            OBJBakedCompositeModel bakedModel = model.bake(new OBJModelConfiguration(modelLocation),
+                    ModelLoader.instance(),
+                    ModelLoader.defaultTextureGetter(),
                     modelTransform,
                     overrides,
                     modelLocation);

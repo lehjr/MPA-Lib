@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.client.gui.slot;
 
-import com.github.lehjr.mpalib.client.render.Renderer;
+import com.github.lehjr.mpalib.util.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.util.client.gui.clickable.IClickable;
 import com.github.lehjr.mpalib.util.client.gui.geometry.Point2D;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -56,7 +56,7 @@ public class ClickableItemSlot extends UniversalSlot implements IClickable {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
-        Renderer.drawItemAt(
+        MPALibRenderer.drawItemAt(
                 getPosition().getX() - offsetx,
                 getPosition().getY() - offsety, getStack());
     }

@@ -26,6 +26,7 @@ public class OBJBakedPart extends BakedModelWrapper {
     @Nonnull
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
+        // no extra data
         if (extraData == EmptyModelData.INSTANCE) {
             return originalModel.getQuads(state, side, rand, extraData);
         } else {

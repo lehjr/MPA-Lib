@@ -31,9 +31,6 @@ public class TileEnergyWrapper implements IEnergyStorage {
         int batteryRecieved = getBatteryEnergyHandler().map(battery->battery.receiveEnergy(maxReceive, simulate)).orElse(0);
         int tileRecieved = tileEnergy.map(tile->tile.receiveEnergy(maxReceive - batteryRecieved, simulate)).orElse(0);
 
-        System.out.println("battery received: " + batteryRecieved);
-        System.out.println("tileRecieved received: " + tileRecieved);
-
         return batteryRecieved + tileRecieved;
     }
 

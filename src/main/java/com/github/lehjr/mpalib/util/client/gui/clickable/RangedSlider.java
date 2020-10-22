@@ -1,6 +1,6 @@
 package com.github.lehjr.mpalib.util.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.render.Renderer;
+import com.github.lehjr.mpalib.util.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.util.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.util.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.util.math.Colour;
@@ -55,8 +55,8 @@ public class RangedSlider extends Clickable {
     }
 
     void createNewRects() {
-        this.insideRect = new DrawableRect(position.getX() - width / 2.0F - cornersize, position.getY() + height * 0.5F, 0, position.getY() + height, Colour.ORANGE, Colour.LIGHTBLUE);
-        this.outsideRect = new DrawableRect(position.getX() - width / 2.0F - cornersize, position.getY() + height * 0.5F, position.getX() + width / 2.0F + cornersize, position.getY() + height, Colour.DARKBLUE, Colour.LIGHTBLUE);
+        this.insideRect = new DrawableRect(position.getX() - width / 2.0F - cornersize, position.getY() + height * 0.5F, 0, position.getY() + height, Colour.ORANGE, Colour.LIGHT_BLUE);
+        this.outsideRect = new DrawableRect(position.getX() - width / 2.0F - cornersize, position.getY() + height * 0.5F, position.getX() + width / 2.0F + cornersize, position.getY() + height, Colour.DARKBLUE, Colour.LIGHT_BLUE);
         this.insideRect.setWidth(6);
     }
 
@@ -64,7 +64,7 @@ public class RangedSlider extends Clickable {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         if (this.isVisible) {
             if (label != null) {
-                Renderer.drawCenteredString(matrixStack, I18n.format(label), position.getX(), position.getY());
+                MPALibRenderer.drawCenteredString(matrixStack, I18n.format(label), position.getX(), position.getY());
             }
 
             this.outsideRect.draw(matrixStack, zLevel);

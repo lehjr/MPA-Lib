@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.client.gui.frame;
 
-import com.github.lehjr.mpalib.client.render.RenderState;
+import com.github.lehjr.mpalib.client.render.MPALibRenderState;
 import com.github.lehjr.mpalib.util.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.util.client.gui.geometry.IRect;
 import com.github.lehjr.mpalib.util.client.gui.geometry.Point2D;
@@ -107,7 +107,7 @@ public class ScrollableFrame implements IGuiFrame {
             RenderSystem.disableAlphaTest();
             RenderSystem.defaultBlendFunc();
             RenderSystem.shadeModel(GL11.GL_SMOOTH);
-            RenderState.glowOn();
+            MPALibRenderState.glowOn();
 
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder buffer = tessellator.getBuffer();
@@ -115,16 +115,16 @@ public class ScrollableFrame implements IGuiFrame {
 
             // Can scroll down
             if (currentscrollpixels + border.height() < totalsize) {
-                buffer.pos(border.left() + border.width() / 2, border.bottom(), zLevel).color(Colour.LIGHTBLUE.r, Colour.LIGHTBLUE.b, Colour.LIGHTBLUE.b, Colour.LIGHTBLUE.a).endVertex();
-                buffer.pos(border.left() + border.width() / 2 + 2, border.bottom() - 4, zLevel).color(Colour.LIGHTBLUE.r, Colour.LIGHTBLUE.b, Colour.LIGHTBLUE.b, Colour.LIGHTBLUE.a).endVertex();
-                buffer.pos(border.left() + border.width() / 2 - 2, border.bottom() - 4, zLevel).color(Colour.LIGHTBLUE.r, Colour.LIGHTBLUE.b, Colour.LIGHTBLUE.b, Colour.LIGHTBLUE.a).endVertex();
+                buffer.pos(border.left() + border.width() / 2, border.bottom(), zLevel).color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a).endVertex();
+                buffer.pos(border.left() + border.width() / 2 + 2, border.bottom() - 4, zLevel).color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a).endVertex();
+                buffer.pos(border.left() + border.width() / 2 - 2, border.bottom() - 4, zLevel).color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a).endVertex();
             }
 
             // Can scroll up
             if (currentscrollpixels > 0) {
-                buffer.pos(border.left() + border.width() / 2, border.top(), zLevel).color(Colour.LIGHTBLUE.r, Colour.LIGHTBLUE.b, Colour.LIGHTBLUE.b, Colour.LIGHTBLUE.a).endVertex();
-                buffer.pos(border.left() + border.width() / 2 - 2, border.top() + 4, zLevel).color(Colour.LIGHTBLUE.r, Colour.LIGHTBLUE.b, Colour.LIGHTBLUE.b, Colour.LIGHTBLUE.a).endVertex();
-                buffer.pos(border.left() + border.width() / 2 + 2, border.top() + 4, zLevel).color(Colour.LIGHTBLUE.r, Colour.LIGHTBLUE.b, Colour.LIGHTBLUE.b, Colour.LIGHTBLUE.a).endVertex();
+                buffer.pos(border.left() + border.width() / 2, border.top(), zLevel).color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a).endVertex();
+                buffer.pos(border.left() + border.width() / 2 - 2, border.top() + 4, zLevel).color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a).endVertex();
+                buffer.pos(border.left() + border.width() / 2 + 2, border.top() + 4, zLevel).color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a).endVertex();
             }
             tessellator.draw();
 
@@ -132,7 +132,7 @@ public class ScrollableFrame implements IGuiFrame {
             RenderSystem.disableBlend();
             RenderSystem.enableAlphaTest();
             RenderSystem.enableTexture();
-            RenderState.scissorsOn(border.left(), border.top() + 4, border.width(), border.height() - 8); // get rid of margins
+            MPALibRenderState.scissorsOn(border.left(), border.top() + 4, border.width(), border.height() - 8); // get rid of margins
         }
     }
 
@@ -142,8 +142,8 @@ public class ScrollableFrame implements IGuiFrame {
 
     public void postRender(int mouseX, int mouseY, float partialTicks) {
         if (isVisible()) {
-            RenderState.scissorsOff();
-            RenderState.glowOff();
+            MPALibRenderState.scissorsOff();
+            MPALibRenderState.glowOff();
         }
     }
 

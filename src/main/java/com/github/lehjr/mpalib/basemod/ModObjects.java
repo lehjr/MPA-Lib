@@ -7,7 +7,9 @@ import com.github.lehjr.mpalib.container.ChargingBaseContainer;
 import com.github.lehjr.mpalib.container.CraftingContainer;
 import com.github.lehjr.mpalib.entity.MPAArmorStandEntity;
 import com.github.lehjr.mpalib.item.Battery;
+import com.github.lehjr.mpalib.item.ItemComponent;
 import com.github.lehjr.mpalib.item.MPAArmorStandItem;
+import com.github.lehjr.mpalib.item.PlasmaBallTest;
 import com.github.lehjr.mpalib.tileentity.ChargingBaseTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -31,7 +33,7 @@ public class ModObjects {
     public static final MPALibCreativeTab creativeTab = new MPALibCreativeTab();
 
     /**
-     * Blocks ------------------------------------------------------------------------------------
+     * Blocks -------------------------------------------------------------------------------------
      */
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MPALIbConstants.MOD_ID);
 
@@ -39,27 +41,83 @@ public class ModObjects {
             () -> new ChargingBaseBlock());
 
     /**
-     * Items -------------------------------------------------------------------------------------
+     * Items --------------------------------------------------------------------------------------
      */
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MPALIbConstants.MOD_ID);
 
-    // basic battery
+    // Components ---------------------------------------------------------------------------------
+    public static final RegistryObject<Item> WIRING = ITEMS.register(MPALIbConstants.COMPONENT__WIRING__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> SOLENOID = ITEMS.register(MPALIbConstants.COMPONENT__SOLENOID__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> SERVO = ITEMS.register(MPALIbConstants.COMPONENT__SERVO__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> GLIDER_WING = ITEMS.register(MPALIbConstants.COMPONENT__GLIDER_WING__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> ION_THRUSTER = ITEMS.register(MPALIbConstants.COMPONENT__ION_THRUSTER__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> PARACHUTE = ITEMS.register(MPALIbConstants.COMPONENT__PARACHUTE__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> FIELD_EMITTER = ITEMS.register(MPALIbConstants.COMPONENT__FIELD_EMITTER__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> LASER_EMITTER = ITEMS.register(MPALIbConstants.COMPONENT__LASER_EMITTER__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> CARBON_MYOFIBER = ITEMS.register(MPALIbConstants.COMPONENT__CARBON_MYOFIBER__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> CONTROL_CIRCUIT = ITEMS.register(MPALIbConstants.COMPONENT__CONTROL_CIRCUIT__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> MYOFIBER_GEL = ITEMS.register(MPALIbConstants.COMPONENT__MYOFIBER_GEL__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> ARTIFICIAL_MUSCLE = ITEMS.register(MPALIbConstants.COMPONENT__ARTIFICIAL_MUSCLE__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> SOLAR_PANEL = ITEMS.register(MPALIbConstants.COMPONENT__SOLAR_PANEL__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> MAGNET = ITEMS.register(MPALIbConstants.COMPONENT__MAGNET__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> COMPUTER_CHIP = ITEMS.register(MPALIbConstants.COMPONENT__COMPUTER_CHIP__REGNAME,
+            () -> new ItemComponent());
+
+    public static final RegistryObject<Item> RUBBER_HOSE = ITEMS.register(MPALIbConstants.COMPONENT__RUBBER_HOSE__REGNAME,
+            () -> new ItemComponent());
+
+    // TEST ITEM TO BE REMOVED
+    public static final RegistryObject<Item> PLASMA_BALL = ITEMS.register("plasma_ball",
+            () -> new PlasmaBallTest());
+
+
+
+
+
+    // Modules ------------------------------------------------------------------------------------
+    // Energy Storage
     public static final RegistryObject<Item> BASIC_BATTERY = ITEMS.register(MPALIbConstants.MODULE_BATTERY_BASIC__REGNAME,
             () -> new Battery(1000000, 1000000));
 
-    // advanced battery
     public static final RegistryObject<Item> ADVANCED_BATTERY = ITEMS.register(MPALIbConstants.MODULE_BATTERY_ADVANCED__REGNAME,
             () -> new Battery(5000000,5000000));
 
-    // elite battery
     public static final RegistryObject<Item> ELITE_BATTERY = ITEMS.register(MPALIbConstants.MODULE_BATTERY_ELITE__REGNAME,
             () -> new Battery(50000000,50000000));
 
-    // ultimate battery
     public static final RegistryObject<Item> ULTIMATE_BATTERY = ITEMS.register(MPALIbConstants.MODULE_BATTERY_ULTIMATE__REGNAME,
             () -> new Battery(100000000,100000000));
 
-    // charging base
+    // Block Items --------------------------------------------------------------------------------
+    // Charging base
     public static final RegistryObject<Item> CHARGING_BASE_ITEM = ITEMS.register(MPALIbConstants.CHARGING_BASE_REGNAME,
             () -> new BlockItem(CHARGING_BASE_BLOCK.get(),
                     new Item.Properties().group(ItemGroup.DECORATIONS)));
@@ -70,7 +128,7 @@ public class ModObjects {
 
 
     /**
-     * Tile Entity Types -------------------------------------------------------------------------
+     * Tile Entity Types --------------------------------------------------------------------------
      */
     public static final DeferredRegister<TileEntityType<?>> TILE_TYPES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, MPALIbConstants.MOD_ID);
 
@@ -79,7 +137,7 @@ public class ModObjects {
 
 
     /**
-     * Entity Types ------------------------------------------------------------------------------
+     * Entity Types -------------------------------------------------------------------------------
      */
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, MPALIbConstants.MOD_ID);
 
@@ -89,7 +147,7 @@ public class ModObjects {
                     .build(new ResourceLocation(MPALIbConstants.MOD_ID, MPALIbConstants.ARMOR_STAND__ENTITY_TYPE_REGNAME).toString()));
 
     /**
-     * Container Types ---------------------------------------------------------------------------
+     * Container Types ----------------------------------------------------------------------------
      */
     public static final DeferredRegister<ContainerType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, MPALIbConstants.MOD_ID);
 

@@ -11,10 +11,7 @@ public class MPALibSettings {
     public static final ClientConfig CLIENT_CONFIG;
     public static final ForgeConfigSpec CLIENT_SPEC;
 
-    public static final CommonConfig COMMON_CONFIG;
-    public static final ForgeConfigSpec COMMON_SPEC;
-
-    public static final CommonConfig SERVER_CONFIG;
+    public static final ServerConfig SERVER_CONFIG;
     public static final ForgeConfigSpec SERVER_SPEC;
 
     static {
@@ -24,12 +21,7 @@ public class MPALibSettings {
             CLIENT_CONFIG = clientSpecPair.getLeft();
         }
         {
-            final Pair<CommonConfig, ForgeConfigSpec> commonSpecPair = new ForgeConfigSpec.Builder().configure(CommonConfig::new);
-            COMMON_SPEC = commonSpecPair.getRight();
-            COMMON_CONFIG = commonSpecPair.getLeft();
-        }
-        {
-            final Pair<CommonConfig, ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder().configure(CommonConfig::new);
+            final Pair<ServerConfig, ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder().configure(ServerConfig::new);
             SERVER_SPEC = serverSpecPair.getRight();
             SERVER_CONFIG = serverSpecPair.getLeft();
         }
@@ -61,8 +53,8 @@ public class MPALibSettings {
         return getActiveConfig().map(config-> config.ARMOR_STAND_MAX_POWER.get()).orElse(10000);
     }
 
-    static Optional<CommonConfig> getActiveConfig() {
-        return Optional.ofNullable(SERVER_SPEC.isLoaded() ? SERVER_CONFIG : COMMON_SPEC.isLoaded() ? COMMON_CONFIG : null);
+    static Optional<ServerConfig> getActiveConfig() {
+        return Optional.ofNullable(SERVER_SPEC.isLoaded() ? SERVER_CONFIG : null);
     }
 
     /** Modules ----------------------------------------------------------------------------------- */

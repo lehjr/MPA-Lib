@@ -1,0 +1,25 @@
+{
+  "conditions": [
+    {
+      "type": "mpalib:flag",
+      "flag": "vanilla_recipes_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SES",
+    "ESE",
+    "SES"
+  ],
+  "key": {
+    "E": {
+      "item":"minecraft:ender_pearl"
+    },
+    "S": {
+      "tag":"forge:solenoid"
+    }
+  },
+  "result": {
+    "item": "mpalib:component_field_emitter"
+  }
+}

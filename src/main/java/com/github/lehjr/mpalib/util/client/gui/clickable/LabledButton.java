@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.render.Renderer;
+import com.github.lehjr.mpalib.util.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.util.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.util.client.gui.geometry.Rect;
 import com.github.lehjr.mpalib.util.math.Colour;
@@ -86,6 +86,6 @@ public class LabledButton extends Button {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         super.render(matrixStack, mouseX, mouseY, partialTicks, zLevel);
-        Renderer.drawCenteredString(matrixStack, this.label, centerx(), centery() - 4);
+        MPALibRenderer.drawCenteredString(matrixStack, this.label, centerx(), centery() - 4);
     }
 }

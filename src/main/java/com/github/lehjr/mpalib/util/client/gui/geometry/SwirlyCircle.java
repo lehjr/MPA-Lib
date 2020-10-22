@@ -52,8 +52,6 @@ public class SwirlyCircle {
     }
 
     public void draw(MatrixStack matrixStack, double radius, double x, double y, float zLevel) {
-        System.out.println("FIXME");
-
         float ratio = (System.currentTimeMillis() % 2000) / 2000.0F;
         colour.rewind();
         points.rewind();

@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.client.gui.clickable;
 
-import com.github.lehjr.mpalib.client.render.Renderer;
+import com.github.lehjr.mpalib.util.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.util.client.gui.geometry.DrawableRect;
 import com.github.lehjr.mpalib.util.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.util.math.Colour;
@@ -60,8 +60,8 @@ public class ClickableSlider extends Clickable {
         this.width = width;
         this.id = id;
         this.position = pos;
-        this.insideRect = new DrawableRect(position.getX() - width / 2.0F - cornersize, position.getY() + 8, 0, position.getY() + 16, Colour.ORANGE, Colour.LIGHTBLUE);
-        this.outsideRect = new DrawableRect(position.getX() - width / 2.0F - cornersize, position.getY() + 8, position.getX() + width / 2.0F + cornersize, position.getY() + 16, Colour.DARKBLUE, Colour.LIGHTBLUE);
+        this.insideRect = new DrawableRect(position.getX() - width / 2.0F - cornersize, position.getY() + 8, 0, position.getY() + 16, Colour.ORANGE, Colour.LIGHT_BLUE);
+        this.outsideRect = new DrawableRect(position.getX() - width / 2.0F - cornersize, position.getY() + 8, position.getX() + width / 2.0F + cornersize, position.getY() + 16, Colour.DARKBLUE, Colour.LIGHT_BLUE);
         this.label = label;
     }
 
@@ -75,7 +75,7 @@ public class ClickableSlider extends Clickable {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
-        Renderer.drawCenteredString(matrixStack, I18n.format(label), position.getX(), position.getY());
+        MPALibRenderer.drawCenteredString(matrixStack, I18n.format(label), position.getX(), position.getY());
         this.insideRect.setRight(position.getX() + width * ((float)getValue() - 0.5F) + cornersize);
         this.outsideRect.draw(matrixStack, zLevel);
         this.insideRect.draw(matrixStack, zLevel);

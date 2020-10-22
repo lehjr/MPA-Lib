@@ -13,10 +13,13 @@ import java.util.stream.Stream;
 
 public class MPALibSpriteUploader extends SpriteUploader {
     private final Set<ResourceLocation> registeredSprites = new HashSet<>();
-    private static final String prefix = "gui";
 
-    public MPALibSpriteUploader(TextureManager textureManager) {
+    public MPALibSpriteUploader(TextureManager textureManager, String prefix) {
         super(textureManager, MPALIbConstants.LOCATION_MPALIB_GUI_TEXTURE_ATLAS, prefix);
+    }
+
+    public void registerIcon(ResourceLocation location) {
+        registeredSprites.add(location);
     }
 
     public void registerSprite(ResourceLocation location) {

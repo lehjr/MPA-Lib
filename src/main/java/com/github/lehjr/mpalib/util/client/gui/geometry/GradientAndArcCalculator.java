@@ -27,6 +27,11 @@
 package com.github.lehjr.mpalib.util.client.gui.geometry;
 
 import com.github.lehjr.mpalib.util.math.Colour;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.util.math.vector.Matrix4f;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -40,6 +45,45 @@ import java.util.List;
  * Ported to Java by lehjr on 10/10/16.
  */
 public class GradientAndArcCalculator {
+
+    // based on code from: http://www.java2s.com/example/java/javax.media.opengl/draw-sphere-with-opengl.html
+    public static FloatBuffer getSphereVertices(int detail, float radius) {
+        int stacks = detail;
+        int slices =  detail;
+        FloatBuffer vertices = BufferUtils.createFloatBuffer(stacks * (slices << 1) * 6); // * 6 because 2 pairs of xyz per loop
+        float r0, r1, alpha0, alpha1, x0, x1, y0, y1, z0, z1, beta;
+        float stackStep = (float) (Math.PI / stacks);
+        float sliceStep = (float) (Math.PI / slices);
+        for (int i = 0; i < stacks; ++i) {
+            alpha0 = (float) (-Math.PI / 2 + (float)i * stackStep);
+            alpha1 = alpha0 + stackStep;
+            r0 = (float) (radius * Math.cos(alpha0));
+            r1 = (float) (radius * Math.cos(alpha1));
+
+            y0 = (float) (radius * Math.sin(alpha0));
+            y1 = (float) (radius * Math.sin(alpha1));
+
+            for (int j = 0; j < (slices << 1); ++j) {
+                beta = j * sliceStep;//  www.java2s.com
+                x0 = (float) (r0 * Math.cos(beta));
+                x1 = (float) (r1 * Math.cos(beta));
+
+                z0 = (float) (-r0 * Math.sin(beta));
+                z1 = (float) (-r1 * Math.sin(beta));
+
+                vertices.put(x0);
+                vertices.put(y0);
+                vertices.put(z0);
+
+                vertices.put(x1);
+                vertices.put(y1);
+                vertices.put(z1);
+            }
+        }
+        vertices.flip();
+        return vertices;
+    }
+
     /**
      * Efficient algorithm for drawing circles and arcs in pure opengl!
      *
@@ -191,13 +235,22 @@ public class GradientAndArcCalculator {
      */
     public static FloatBuffer getColourGradient(Colour c1, Colour c2, int numsegments) {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(numsegments * 4);
-        // declaring "i" as an int instead of double is what broke the swirly circle.
-        for (double i = 0; i < numsegments; i++) {
-            Colour c3 = c1.interpolate(c2, (float) (i / numsegments));
-            buffer.put(c3.r);
-            buffer.put(c3.g);
-            buffer.put(c3.b);
-            buffer.put(c3.a);
+        if (c1.equals(c2)) {
+            for (double i = 0; i < numsegments; i++) {
+                buffer.put(c1.r);
+                buffer.put(c1.g);
+                buffer.put(c1.b);
+                buffer.put(c1.a);
+            }
+        } else {
+            for (double i = 0; i < numsegments; i++) {
+                // declaring "i" as an int instead of double is what broke the swirly circle.
+                Colour c3 = c1.interpolate(c2, (float) (i / (double)numsegments));
+                buffer.put(c3.r);
+                buffer.put(c3.g);
+                buffer.put(c3.b);
+                buffer.put(c3.a);
+            }
         }
         buffer.flip();
         return buffer;

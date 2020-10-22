@@ -9,7 +9,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.math.BlockPos;
@@ -96,15 +95,15 @@ public class ChargingBaseContainer extends Container {
     }
 
     public int getEnergy() {
-        return tileEntity.getCapability(CapabilityEnergy.ENERGY, Direction.DOWN).map(IEnergyStorage::getEnergyStored).orElse(0);
+        return tileEntity.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getEnergyStored).orElse(0);
     }
 
     public int getMaxEnergy() {
-        return tileEntity.getCapability(CapabilityEnergy.ENERGY, Direction.DOWN).map(IEnergyStorage::getMaxEnergyStored).orElse(0);
+        return tileEntity.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getMaxEnergyStored).orElse(0);
     }
 
     public float getEnergyForMeter() {
-        return tileEntity.getCapability(CapabilityEnergy.ENERGY, Direction.DOWN).map(energy->(float)energy.getEnergyStored()/(float) energy.getMaxEnergyStored()).orElse(0F);
+        return tileEntity.getCapability(CapabilityEnergy.ENERGY).map(energy->(float)energy.getEnergyStored()/(float) energy.getMaxEnergyStored()).orElse(0F);
     }
 
     public int getTileEnergy() {
