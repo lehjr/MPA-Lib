@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.capabilities.module.powermodule;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.util.nbt.NBTUtils;
 import com.github.lehjr.mpalib.util.nbt.propertymodifier.IPropertyModifier;
 import com.github.lehjr.mpalib.util.nbt.propertymodifier.PropertyModifierFlatAdditive;
@@ -81,7 +81,7 @@ public class PowerModule implements IPowerModule {
     @Override
     public String getUnit(String propertyName) {
         String unit = units.get(propertyName);
-        if (unit != null && unit.startsWith(MPALIbConstants.MODULE_TRADEOFF_PREFIX))
+        if (unit != null && unit.startsWith(MPALibConstants.MODULE_TRADEOFF_PREFIX))
             unit = I18n.format(unit);
 
         return unit == null ? "" : unit;

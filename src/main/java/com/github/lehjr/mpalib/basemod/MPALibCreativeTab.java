@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 
 public class MPALibCreativeTab extends ItemGroup {
     public MPALibCreativeTab() {
-        super(MPALIbConstants.MOD_ID);
+        super(MPALibConstants.MOD_ID);
     }
 
     @Override

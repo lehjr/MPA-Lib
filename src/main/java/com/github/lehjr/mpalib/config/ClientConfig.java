@@ -1,6 +1,6 @@
 package com.github.lehjr.mpalib.config;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ClientConfig {
@@ -16,28 +16,28 @@ public class ClientConfig {
 
         USE_FOV_FIX = builder
                 .comment("Ignore speed boosts for field of view")
-                .translation(MPALIbConstants.CONFIG_USE_FOV_FIX)
+                .translation(MPALibConstants.CONFIG_USE_FOV_FIX)
                 .define("useFOVFix", true);
 
         USE_FOV_NORMALIZE = builder
                 .comment("Use FOV Fix to normalize FOV changes")
-                .translation(MPALIbConstants.CONFIG_USE_FOV_NORMALIZE)
+                .translation(MPALibConstants.CONFIG_USE_FOV_NORMALIZE)
                 .define("useFOVNormalize", true);
 
 
         FOV_FIX_DEAULT_STATE = builder
                 .comment("Default state of FOVfix on login (enabled = true, disabled = false)")
-                .translation(MPALIbConstants.CONFIG_FOV_FIX_DEAULT_STATE)
+                .translation(MPALibConstants.CONFIG_FOV_FIX_DEAULT_STATE)
                 .define("fovFixDefaultState", true);
 
         USE_SOUNDS = builder
                 .comment("Use sounds")
-                .translation(MPALIbConstants.CONFIG_USE_SOUNDS)
+                .translation(MPALibConstants.CONFIG_USE_SOUNDS)
                 .define("useSounds", true);
 
         DEBUGGING_INFO = builder
                 .comment("Debugging info")
-                .translation(MPALIbConstants.CONFIG_DEBUGGING_INFO)
+                .translation(MPALibConstants.CONFIG_DEBUGGING_INFO)
                 .define("useSounds", true);
 
         builder.pop().comment("Tiers per RF/FE").push("Tiers");

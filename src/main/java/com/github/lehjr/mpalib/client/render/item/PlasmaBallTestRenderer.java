@@ -1,6 +1,6 @@
 package com.github.lehjr.mpalib.client.render.item;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.util.client.model.helper.ModelHelper;
 import com.github.lehjr.mpalib.util.client.render.IconUtils;
 import com.github.lehjr.mpalib.util.math.Colour;
@@ -28,7 +28,7 @@ public class PlasmaBallTestRenderer  extends ItemStackTileEntityRenderer {
     static final Colour colour3 = new Colour(0.8F, 0.8F, 1F, 0.7F);
     static final Colour colour4 = new Colour(1F, 1F, 1F, 0.9F);
 
-    static final ResourceLocation modelLocation = new ResourceLocation(MPALIbConstants.MOD_ID, "models/item/test/sphere.obj");
+    static final ResourceLocation modelLocation = new ResourceLocation(MPALibConstants.MOD_ID, "models/item/test/sphere.obj");
     // NonNullLazy doesn't init until called
     public static final NonNullLazy<OBJBakedCompositeModel> modelSphere = NonNullLazy.of(() -> ModelHelper.loadBakedModel(ModelRotation.X0_Y0, null, modelLocation));
     protected final Random rand = new Random();
@@ -101,7 +101,7 @@ public class PlasmaBallTestRenderer  extends ItemStackTileEntityRenderer {
     }
 
     private RenderType getSphereRenderType() {
-        return RenderType.getEntityTranslucentCull(MPALIbConstants.TEXTURE_WHITE);
+        return RenderType.getEntityTranslucentCull(MPALibConstants.TEXTURE_WHITE);
     }
 
     void renderPlasmaBall(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, float scale, Colour colour) {

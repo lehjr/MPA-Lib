@@ -13,7 +13,7 @@ public class ConfigHelper {
     }
 
     public static File setupConfigFile(String fileName, String modId) {
-        // MPALIbConstants.MOD_ID
+        // MPALibConstants.MOD_ID
         Path configFile = FMLPaths.CONFIGDIR.get().resolve("lehjr").resolve(modId).resolve(fileName);
         File cfgFile = configFile.toFile();
         try {

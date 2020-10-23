@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.capabilities.render.modelspec;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 
@@ -65,12 +65,12 @@ public abstract class PartSpecBase {
     public abstract ITextComponent getDisaplayName();
 
     public int getColourIndex(CompoundNBT nbt) {
-        return nbt.contains(MPALIbConstants.TAG_COLOUR_INDEX) ? nbt.getInt(MPALIbConstants.TAG_COLOUR_INDEX) : this.defaultcolourindex;
+        return nbt.contains(MPALibConstants.TAG_COLOUR_INDEX) ? nbt.getInt(MPALibConstants.TAG_COLOUR_INDEX) : this.defaultcolourindex;
     }
 
     public void setColourIndex(CompoundNBT nbt, int c) {
-        if (c == this.defaultcolourindex) nbt.remove(MPALIbConstants.TAG_COLOUR_INDEX);
-        else nbt.putInt(MPALIbConstants.TAG_COLOUR_INDEX, c);
+        if (c == this.defaultcolourindex) nbt.remove(MPALibConstants.TAG_COLOUR_INDEX);
+        else nbt.putInt(MPALibConstants.TAG_COLOUR_INDEX, c);
     }
 
     public void setModel(CompoundNBT nbt, SpecBase model) {
@@ -79,11 +79,11 @@ public abstract class PartSpecBase {
     }
 
     public void setModel(CompoundNBT nbt, String modelname) {
-        nbt.putString(MPALIbConstants.TAG_MODEL, modelname);
+        nbt.putString(MPALibConstants.TAG_MODEL, modelname);
     }
 
     public void setPart(CompoundNBT nbt) {
-        nbt.putString(MPALIbConstants.TAG_PART, this.partName);
+        nbt.putString(MPALibConstants.TAG_PART, this.partName);
     }
 
     public CompoundNBT multiSet(CompoundNBT nbt, Integer colourIndex) {

@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.heat;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.util.capabilities.heat.HeatCapability;
 import com.google.common.util.concurrent.AtomicDouble;
 import net.minecraft.entity.LivingEntity;
@@ -175,7 +175,7 @@ public class HeatUtils {
 
     protected static final class OverheatDamage extends DamageSource {
         public OverheatDamage() {
-            super(MPALIbConstants.OVERHEAT_DAMAGE);
+            super(MPALibConstants.OVERHEAT_DAMAGE);
             this.setFireDamage();
             this.setDamageBypassesArmor();
         }

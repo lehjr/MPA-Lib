@@ -2,6 +2,12 @@
   "result": {
     "item": "mpalib:component_computer_chip"
   },
+  "conditions": [
+    {
+      "type": "mpalib:flag",
+      "flag": "vanilla_recipes_disabled"
+    }
+  ],
   "type": "minecraft:crafting_shaped",
   "mirrored": true,
   "pattern": [

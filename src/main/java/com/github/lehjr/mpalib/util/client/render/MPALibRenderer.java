@@ -181,7 +181,7 @@ public abstract class MPALibRenderer {
 //    public static void drawLightningTextured(IVertexBuilder bufferIn, Matrix4f matrix4f, float x1, float y1, float z1, float x2, float y2, float z2, Colour colour) {
 //        Minecraft minecraft = Minecraft.getInstance();
 //        TextureManager textureManager = minecraft.getTextureManager();
-//        textureManager.bindTexture(MPALIbConstants.LIGHTNING_TEXTURE);
+//        textureManager.bindTexture(MPALibConstants.LIGHTNING_TEXTURE);
 //
 ////        float tx = x2 - x1, ty = y2 - y1, tz = z2 - z1;
 ////        float ax, ay, az;

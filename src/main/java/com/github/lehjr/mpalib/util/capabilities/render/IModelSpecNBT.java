@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.capabilities.render;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.github.lehjr.mpalib.util.capabilities.render.modelspec.EnumSpecType;
 import com.github.lehjr.mpalib.util.capabilities.render.modelspec.ModelRegistry;
@@ -61,9 +61,9 @@ public interface IModelSpecNBT {
     default Colour getColorFromItemStack() {
         try {
             CompoundNBT renderTag = getRenderTag();
-            if (renderTag.contains(MPALIbConstants.NBT_TEXTURESPEC_TAG)) {
-                TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(MPALIbConstants.NBT_TEXTURESPEC_TAG));
-                CompoundNBT specTag = renderTag.getCompound(MPALIbConstants.NBT_TEXTURESPEC_TAG);
+            if (renderTag.contains(MPALibConstants.NBT_TEXTURESPEC_TAG)) {
+                TexturePartSpec partSpec = (TexturePartSpec) ModelRegistry.getInstance().getPart(renderTag.getCompound(MPALibConstants.NBT_TEXTURESPEC_TAG));
+                CompoundNBT specTag = renderTag.getCompound(MPALibConstants.NBT_TEXTURESPEC_TAG);
                 int index = partSpec.getColourIndex(specTag);
                 int[] colours = getColorArray();
                 if (colours.length > index)

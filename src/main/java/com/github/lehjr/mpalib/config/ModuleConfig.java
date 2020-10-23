@@ -1,6 +1,6 @@
 package com.github.lehjr.mpalib.config;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.util.capabilities.module.powermodule.IConfig;
 import net.minecraft.item.ItemStack;
@@ -43,9 +43,9 @@ public class ModuleConfig implements IConfig {
 
     boolean isInDevMode() {
         // fixme: find better way of doing this
-        ModList.get().getModContainerById(MPALIbConstants.MOD_ID).get().getModInfo().getModProperties();
+        ModList.get().getModContainerById(MPALibConstants.MOD_ID).get().getModInfo().getModProperties();
 
-        return ModList.get().getModContainerById(MPALIbConstants.MOD_ID).map(container ->container.getModInfo().getOwningFile().getFileProperties().isEmpty()).orElse(false);
+        return ModList.get().getModContainerById(MPALibConstants.MOD_ID).map(container ->container.getModInfo().getOwningFile().getFileProperties().isEmpty()).orElse(false);
     }
 
     /**

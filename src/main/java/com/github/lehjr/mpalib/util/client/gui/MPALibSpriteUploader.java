@@ -1,6 +1,6 @@
 package com.github.lehjr.mpalib.util.client.gui;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import net.minecraft.client.renderer.texture.SpriteUploader;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -15,7 +15,7 @@ public class MPALibSpriteUploader extends SpriteUploader {
     private final Set<ResourceLocation> registeredSprites = new HashSet<>();
 
     public MPALibSpriteUploader(TextureManager textureManager, String prefix) {
-        super(textureManager, MPALIbConstants.LOCATION_MPALIB_GUI_TEXTURE_ATLAS, prefix);
+        super(textureManager, MPALibConstants.LOCATION_MPALIB_GUI_TEXTURE_ATLAS, prefix);
     }
 
     public void registerIcon(ResourceLocation location) {

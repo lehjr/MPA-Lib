@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.capabilities.render;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.basemod.MPALibLogger;
 import com.github.lehjr.mpalib.util.capabilities.render.modelspec.EnumSpecType;
 import com.github.lehjr.mpalib.util.nbt.NBTUtils;
@@ -57,17 +57,17 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
     public CompoundNBT setRenderTag(CompoundNBT renderDataIn, String tagName) {
         CompoundNBT itemTag = NBTUtils.getMuseItemTag(itemStack);
         if (tagName != null) {
-            if (Objects.equals(tagName, MPALIbConstants.TAG_RENDER)) {
-                itemTag.remove(MPALIbConstants.TAG_RENDER);
+            if (Objects.equals(tagName, MPALibConstants.TAG_RENDER)) {
+                itemTag.remove(MPALibConstants.TAG_RENDER);
                 if (!renderDataIn.isEmpty())
-                    itemTag.put(MPALIbConstants.TAG_RENDER, renderDataIn);
+                    itemTag.put(MPALibConstants.TAG_RENDER, renderDataIn);
             } else {
                 CompoundNBT renderTag;
-                if (!itemTag.contains(MPALIbConstants.TAG_RENDER)) {
+                if (!itemTag.contains(MPALibConstants.TAG_RENDER)) {
                     renderTag = new CompoundNBT();
-                    itemTag.put(MPALIbConstants.TAG_RENDER, renderTag);
+                    itemTag.put(MPALibConstants.TAG_RENDER, renderTag);
                 } else {
-                    renderTag = itemTag.getCompound(MPALIbConstants.TAG_RENDER);
+                    renderTag = itemTag.getCompound(MPALibConstants.TAG_RENDER);
                 }
                 if (renderDataIn.isEmpty()) {
                     MPALibLogger.logger.debug("Removing tag " + tagName);
@@ -115,7 +115,7 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
 
     @Override
     public int[] getColorArray() {
-        return  getRenderTag().getIntArray(MPALIbConstants.TAG_COLOURS);
+        return  getRenderTag().getIntArray(MPALibConstants.TAG_COLOURS);
     }
 
 
@@ -129,7 +129,7 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
 
     @Override
     public CompoundNBT setColorArray(int[] colors) {
-        getRenderTag().putIntArray(MPALIbConstants.TAG_COLOURS, colors);
+        getRenderTag().putIntArray(MPALibConstants.TAG_COLOURS, colors);
         return getRenderTag();
     }
 
@@ -141,6 +141,6 @@ public class ModelSpecNBT implements IModelSpecNBT, INBTSerializable<CompoundNBT
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-        setRenderTag(nbt, MPALIbConstants.TAG_RENDER);
+        setRenderTag(nbt, MPALibConstants.TAG_RENDER);
     }
 }

@@ -1,6 +1,6 @@
 package com.github.lehjr.mpalib.config;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.util.capabilities.module.powermodule.IConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
@@ -48,7 +48,7 @@ public class MPALibSettings {
         return CLIENT_CONFIG != null ? CLIENT_CONFIG.DEBUGGING_INFO.get() : false;
     }
 
-    /** Common/Server Settings -------------------------------------------------------------------- */
+    /** Server Settings --------------------------------------------------------------------------- */
     public static int chargingBaseMaxPower() {
         return getActiveConfig().map(config-> config.ARMOR_STAND_MAX_POWER.get()).orElse(10000);
     }
@@ -57,13 +57,18 @@ public class MPALibSettings {
         return Optional.ofNullable(SERVER_SPEC.isLoaded() ? SERVER_CONFIG : null);
     }
 
+    // Recipes ------------------------------------------------------------------------------------
+    public static boolean useVanillaRecipes() {
+        return SERVER_CONFIG != null ? SERVER_CONFIG.RECIPES_USE_VANILLA.get() : false;
+    }
+
     /** Modules ----------------------------------------------------------------------------------- */
     private static volatile ModuleConfig moduleConfig;
     public static IConfig getModuleConfig() {
         if (moduleConfig == null) {
             synchronized (ModuleConfig.class) {
                 if (moduleConfig == null) {
-                    moduleConfig = new ModuleConfig(MPALIbConstants.MOD_ID);
+                    moduleConfig = new ModuleConfig(MPALibConstants.MOD_ID);
                 }
             }
         }

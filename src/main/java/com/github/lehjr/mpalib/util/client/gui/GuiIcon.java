@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.client.gui;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.util.client.render.BillboardHelper;
 import com.github.lehjr.mpalib.client.render.MPALibRenderState;
 import com.github.lehjr.mpalib.util.math.Colour;
@@ -81,14 +81,14 @@ public class GuiIcon {
     }
 
     private DrawableGuiIcon registerIcon(String name, int width, int height) {
-        ResourceLocation location = new ResourceLocation(MPALIbConstants.MOD_ID, name);
+        ResourceLocation location = new ResourceLocation(MPALibConstants.MOD_ID, name);
         spriteUploader.registerIcon(location);
         return new DrawableGuiIcon(location, width, height, iconPrefix);
     }
 
     // Todo?
 //    private DrawableGuiIcon registerSprite(String name, int width, int height, String prefix) {
-//        ResourceLocation location = new ResourceLocation(MPALIbConstants.MOD_ID, name);
+//        ResourceLocation location = new ResourceLocation(MPALibConstants.MOD_ID, name);
 //        spriteUploader.registerIcon(location);
 //        return new DrawableGuiIcon(location, width, height, prefix);
 //    }
@@ -160,7 +160,7 @@ public class GuiIcon {
         public String toString() {
             Minecraft minecraft = Minecraft.getInstance();
             TextureManager textureManager = minecraft.getTextureManager();
-            textureManager.bindTexture(MPALIbConstants.LOCATION_MPALIB_GUI_TEXTURE_ATLAS);
+            textureManager.bindTexture(MPALibConstants.LOCATION_MPALIB_GUI_TEXTURE_ATLAS);
             TextureAtlasSprite icon = getSprite();
 
             if (icon != null) {
@@ -471,7 +471,7 @@ public class GuiIcon {
 
     void bindTexture() {
         TextureManager textureManager = getMinecraft().getTextureManager();
-        textureManager.bindTexture(MPALIbConstants.LOCATION_MPALIB_GUI_TEXTURE_ATLAS);
+        textureManager.bindTexture(MPALibConstants.LOCATION_MPALIB_GUI_TEXTURE_ATLAS);
     }
 
     int getRandomNumber(int min, int max) {

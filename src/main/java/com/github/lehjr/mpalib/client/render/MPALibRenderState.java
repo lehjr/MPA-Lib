@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.client.render;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -62,7 +62,7 @@ public final class MPALibRenderState {
 
     public static RenderType LIGHTNING_TEST() {
         RenderType.State state = RenderType.State.getBuilder()
-                .texture(new RenderState.TextureState(MPALIbConstants.LOCATION_MPALIB_GUI_TEXTURE_ATLAS, false, false))
+                .texture(new RenderState.TextureState(MPALibConstants.LOCATION_MPALIB_GUI_TEXTURE_ATLAS, false, false))
                 .transparency(TRANSLUCENT_TRANSPARENCY)
                 .diffuseLighting(DIFFUSE_LIGHTING_ENABLED)
                 .alpha(DEFAULT_ALPHA)

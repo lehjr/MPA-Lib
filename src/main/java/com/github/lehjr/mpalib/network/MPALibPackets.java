@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.network;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.network.packets.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -35,7 +35,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 public class MPALibPackets {
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel CHANNEL_INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(MPALIbConstants.MOD_ID, "data"),
+            new ResourceLocation(MPALibConstants.MOD_ID, "data"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals

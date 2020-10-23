@@ -1,6 +1,6 @@
 package forge;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
@@ -44,7 +44,7 @@ public class OBJModelConfiguration implements IModelConfiguration {
     //FIXME!! replace with this to simplify code?
     @Override
     public RenderMaterial resolveTexture(String name) {
-        return new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, MPALIbConstants.TEXTURE_WHITE_SHORT);
+        return new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, MPALibConstants.TEXTURE_WHITE_SHORT);
     }
 
 //    /**
@@ -71,7 +71,7 @@ public class OBJModelConfiguration implements IModelConfiguration {
 //            nameIn = either.right().get();
 //            if (list.contains(nameIn)) {
 //                MPALibLogger.getLogger().warn("Unable to resolve texture due to reference chain {}->{} in {}", Joiner.on("->").join(list), nameIn, this.modelName);
-//                return new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, MPALIbConstants.TEXTURE_WHITE_SHORT);
+//                return new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, MPALibConstants.TEXTURE_WHITE_SHORT);
 //            }
 //
 //            list.add(nameIn);
@@ -83,7 +83,7 @@ public class OBJModelConfiguration implements IModelConfiguration {
 //    }
 //
 //    private Either<RenderMaterial, String> findTexture(String nameIn) {
-//        return Either.left(new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, MPALIbConstants.TEXTURE_WHITE_SHORT));
+//        return Either.left(new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, MPALibConstants.TEXTURE_WHITE_SHORT));
 //    }
 
     OBJModelConfiguration setIsShadedInGui(boolean isShadedInGui) {

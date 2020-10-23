@@ -28,7 +28,7 @@ package com.github.lehjr.mpalib.basemod;
 
 import net.minecraft.util.ResourceLocation;
 
-public class MPALIbConstants {
+public class MPALibConstants {
     // Mod
     public static final String MOD_ID = "mpalib";
 
@@ -53,6 +53,9 @@ public class MPALIbConstants {
     public static final String CONFIG_FOV_FIX_DEAULT_STATE = CONFIG_PREFIX + "FOVFixDefaultState";
     public static final String CONFIG_USE_SOUNDS = CONFIG_PREFIX + "useSounds";
     public static final String CONFIG_DEBUGGING_INFO = CONFIG_PREFIX + "useDebuggingInfo";
+    public static final String CONFIG_PREFIX_RECIPES = CONFIG_PREFIX + "recipes.";
+    public static final String CONFIG_RECIPES_USE_VANILLA = CONFIG_PREFIX_RECIPES + "useVanilla";
+
 
     // String for overheat damage
     public static final String OVERHEAT_DAMAGE = "Overheat";
@@ -108,7 +111,7 @@ public class MPALIbConstants {
 
 
 
-    public static final ResourceLocation TEXTURE_WHITE_SHORT = new ResourceLocation(MPALIbConstants.MOD_ID, "models/white");
-    public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation(MPALIbConstants.MOD_ID, "textures/models/white.png");
-    public static final ResourceLocation TEXTURE_ARMOR_STAND = new ResourceLocation(MPALIbConstants.MOD_ID, "textures/models/armorstand2.png");
+    public static final ResourceLocation TEXTURE_WHITE_SHORT = new ResourceLocation(MPALibConstants.MOD_ID, "models/white");
+    public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation(MPALibConstants.MOD_ID, "textures/models/white.png");
+    public static final ResourceLocation TEXTURE_ARMOR_STAND = new ResourceLocation(MPALibConstants.MOD_ID, "textures/models/armorstand2.png");
 }

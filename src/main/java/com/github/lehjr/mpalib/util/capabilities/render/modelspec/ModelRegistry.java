@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.capabilities.render.modelspec;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.util.map.MPALibRegistry;
 import com.github.lehjr.mpalib.util.string.StringUtils;
 import forge.OBJBakedCompositeModel;
@@ -80,11 +80,11 @@ public class ModelRegistry extends MPALibRegistry<SpecBase> {
      * FIXME: texture spec needs a model tag for this to work. Model tag does not have to be a real model, just a unique string for the spec k-v pair
      */
     public SpecBase getModel(CompoundNBT nbt) {
-        return get(nbt.getString(MPALIbConstants.TAG_MODEL));
+        return get(nbt.getString(MPALibConstants.TAG_MODEL));
     }
 
     public PartSpecBase getPart(CompoundNBT nbt, SpecBase model) {
-        return model.get(nbt.getString(MPALIbConstants.TAG_PART));
+        return model.get(nbt.getString(MPALibConstants.TAG_PART));
     }
 
     public PartSpecBase getPart(CompoundNBT nbt) {

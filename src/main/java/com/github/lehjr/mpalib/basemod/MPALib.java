@@ -3,6 +3,7 @@ package com.github.lehjr.mpalib.basemod;
 import com.github.lehjr.mpalib.client.event.*;
 import com.github.lehjr.mpalib.client.gui.ArmorStandGui;
 import com.github.lehjr.mpalib.client.gui.ChargingBaseGui;
+import com.github.lehjr.mpalib.recipe.MPALibRecipeConditionFactory;
 import com.github.lehjr.mpalib.util.client.render.IconUtils;
 import com.github.lehjr.mpalib.config.ConfigHelper;
 import com.github.lehjr.mpalib.config.MPALibSettings;
@@ -29,6 +30,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -44,13 +46,13 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(MPALIbConstants.MOD_ID)
+@Mod(MPALibConstants.MOD_ID)
 public class MPALib {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
     public MPALib() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MPALibSettings.CLIENT_SPEC, ConfigHelper.setupConfigFile("mpalib-client-only.toml", MPALIbConstants.MOD_ID).getAbsolutePath());
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MPALibSettings.CLIENT_SPEC, ConfigHelper.setupConfigFile("mpalib-client-only.toml", MPALibConstants.MOD_ID).getAbsolutePath());
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MPALibSettings.SERVER_SPEC); // note config file location for dedicated server is stored in the world config
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -88,7 +90,7 @@ public class MPALib {
     // Ripped from JEI
     private static void clientStart(IEventBus modEventBus) {
         if (Minecraft.getInstance() != null) {
-            ModelLoaderRegistry.registerLoader(new ResourceLocation(MPALIbConstants.MOD_ID, "obj"), MPAOBJLoader.INSTANCE); // crashes if called in mod constructor
+            ModelLoaderRegistry.registerLoader(new ResourceLocation(MPALibConstants.MOD_ID, "obj"), MPAOBJLoader.INSTANCE); // crashes if called in mod constructor
         }
 
         EventBusHelper.addListener(modEventBus, ColorHandlerEvent.Block.class, setupEvent -> {
@@ -104,7 +106,7 @@ public class MPALib {
         });
     }
 
-//    @Mod.EventBusSubscriber(modid = MPALIbConstants.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+//    @Mod.EventBusSubscriber(modid = MPALibConstants.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 //    public static class MyStaticClientOnlyEventHandler {
 //        @SubscribeEvent
 //        public static void loadComplete(FMLLoadCompleteEvent evt) {
@@ -126,6 +128,9 @@ public class MPALib {
 
         MinecraftForge.EVENT_BUS.register(new PlayerUpdateHandler());
 
+        // Recipe condition factory
+        CraftingHelper.register(MPALibRecipeConditionFactory.Serializer.INSTANCE);
+
         DeferredWorkQueue.runLater(() -> {
             GlobalEntityTypeAttributes.put(ModObjects.ARMOR_WORKSTATION__ENTITY_TYPE.get(), MPAArmorStandEntity.setCustomAttributes().create());
         });
@@ -146,6 +151,6 @@ public class MPALib {
         if (!(event.getObject() instanceof PlayerEntity)) {
             return;
         }
-        event.addCapability(new ResourceLocation(MPALIbConstants.MOD_ID, "player_keystates"), new CapabilityPlayerKeyStates());
+        event.addCapability(new ResourceLocation(MPALibConstants.MOD_ID, "player_keystates"), new CapabilityPlayerKeyStates());
     }
 }

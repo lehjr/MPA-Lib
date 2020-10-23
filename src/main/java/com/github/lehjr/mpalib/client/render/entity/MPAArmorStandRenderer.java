@@ -1,6 +1,6 @@
 package com.github.lehjr.mpalib.client.render.entity;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import net.minecraft.client.renderer.entity.ArmorStandRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.item.ArmorStandEntity;
@@ -19,6 +19,6 @@ public class MPAArmorStandRenderer extends ArmorStandRenderer {
      */
     @Override
     public ResourceLocation getEntityTexture(ArmorStandEntity entity) {
-        return MPALIbConstants.TEXTURE_ARMOR_STAND;
+        return MPALibConstants.TEXTURE_ARMOR_STAND;
     }
 }

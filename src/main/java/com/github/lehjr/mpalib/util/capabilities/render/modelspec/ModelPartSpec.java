@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.capabilities.render.modelspec;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import forge.OBJBakedPart;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
@@ -67,12 +67,12 @@ public class ModelPartSpec extends PartSpecBase {
     }
 
     public boolean getGlow(CompoundNBT nbt) {
-        return nbt.contains(MPALIbConstants.TAG_GLOW) ? nbt.getBoolean(MPALIbConstants.TAG_GLOW) : this.defaultglow;
+        return nbt.contains(MPALibConstants.TAG_GLOW) ? nbt.getBoolean(MPALibConstants.TAG_GLOW) : this.defaultglow;
     }
 
     public void setGlow(CompoundNBT nbt, boolean g) {
-        if (g == this.defaultglow) nbt.remove(MPALIbConstants.TAG_GLOW);
-        else nbt.putBoolean(MPALIbConstants.TAG_GLOW, g);
+        if (g == this.defaultglow) nbt.remove(MPALibConstants.TAG_GLOW);
+        else nbt.putBoolean(MPALibConstants.TAG_GLOW, g);
     }
 
     public OBJBakedPart getPart() {

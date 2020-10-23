@@ -1,6 +1,6 @@
 package com.github.lehjr.mpalib.client.model.item.armor;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.util.capabilities.render.modelspec.ModelPartSpec;
 import com.github.lehjr.mpalib.util.capabilities.render.modelspec.ModelRegistry;
 import com.github.lehjr.mpalib.util.capabilities.render.modelspec.ModelSpec;
@@ -82,7 +82,7 @@ public class RenderPart extends ModelRenderer {
         if (renderSpec != null) {
             MatrixStack.Entry entry = matrixStackIn.getLast();
 
-            int[] colours = renderSpec.getIntArray(MPALIbConstants.TAG_COLOURS);
+            int[] colours = renderSpec.getIntArray(MPALibConstants.TAG_COLOURS);
 
             if (colours.length == 0) {
                 colours = new int[]{Colour.WHITE.getInt()};

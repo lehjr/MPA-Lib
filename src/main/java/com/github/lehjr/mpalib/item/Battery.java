@@ -1,6 +1,6 @@
 package com.github.lehjr.mpalib.item;
 
-import com.github.lehjr.mpalib.basemod.MPALIbConstants;
+import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.basemod.ModObjects;
 import com.github.lehjr.mpalib.config.MPALibSettings;
 import com.github.lehjr.mpalib.util.capabilities.energy.ForgeEnergyModuleWrapper;
@@ -49,7 +49,7 @@ public class Battery extends Item {
 
             // FIXME: format energy amount strings
             itemStack.getCapability(CapabilityEnergy.ENERGY).ifPresent(iEnergyStorage -> {
-                tooltips.add(new StringTextComponent(I18n.format(MPALIbConstants.TOOLTIP_BATTERY_ENERGY,
+                tooltips.add(new StringTextComponent(I18n.format(MPALibConstants.TOOLTIP_BATTERY_ENERGY,
                         StringUtils.formatNumberShort(iEnergyStorage.getEnergyStored()),
                         StringUtils.formatNumberShort(iEnergyStorage.getMaxEnergyStored()))));
             });
@@ -71,12 +71,12 @@ public class Battery extends Item {
         public CapProvider(@Nonnull ItemStack module) {
             this.module = module;
             this.moduleCap = new PowerModule(module, EnumModuleCategory.ENERGY_STORAGE, EnumModuleTarget.ALLITEMS, MPALibSettings::getModuleConfig);
-            this.moduleCap.addBaseProperty(MPALIbConstants.MAX_ENERGY, maxEnergy, "FE");
-            this.moduleCap.addBaseProperty(MPALIbConstants.MAX_TRAMSFER, maxTransfer, "FE");
+            this.moduleCap.addBaseProperty(MPALibConstants.MAX_ENERGY, maxEnergy, "FE");
+            this.moduleCap.addBaseProperty(MPALibConstants.MAX_TRAMSFER, maxTransfer, "FE");
             this.energyStorage = new ForgeEnergyModuleWrapper(
                     module,
-                    (int)moduleCap.applyPropertyModifiers(MPALIbConstants.MAX_ENERGY),
-                    (int)moduleCap.applyPropertyModifiers(MPALIbConstants.MAX_TRAMSFER)
+                    (int)moduleCap.applyPropertyModifiers(MPALibConstants.MAX_ENERGY),
+                    (int)moduleCap.applyPropertyModifiers(MPALibConstants.MAX_TRAMSFER)
             );
         }
 
@@ -100,7 +100,7 @@ public class Battery extends Item {
         if (isInGroup(group)) {
             ItemStack out = new ItemStack(this);
             CapProvider provider = new CapProvider(out);
-            int maxEnergy = (int) provider.moduleCap.applyPropertyModifiers(MPALIbConstants.MAX_ENERGY);
+            int maxEnergy = (int) provider.moduleCap.applyPropertyModifiers(MPALibConstants.MAX_ENERGY);
             provider.energyStorage.receiveEnergy(maxEnergy, false);
             items.add(out);
         }
