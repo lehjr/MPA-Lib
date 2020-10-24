@@ -1,4 +1,4 @@
-package com.github.lehjr.mpalib.recipe;
+package com.github.lehjr.mpalib.util.recipe;
 
 import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.config.MPALibSettings;

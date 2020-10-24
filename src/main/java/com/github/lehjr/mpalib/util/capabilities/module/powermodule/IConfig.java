@@ -56,8 +56,6 @@ public interface IConfig {
 
     boolean isModuleAllowed(EnumModuleCategory category, @Nonnull ItemStack module);
 
-    void setCommonConfig(@Nullable ModConfig commonConfig);
-
     void setServerConfig(@Nullable ModConfig serverConfig);
 
     Optional<ModConfig> getModConfig();

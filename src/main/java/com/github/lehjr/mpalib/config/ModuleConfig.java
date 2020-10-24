@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ModuleConfig implements IConfig {
-    Optional<ModConfig> commonConfig = Optional.empty();
     Optional<ModConfig> serverConfig = Optional.empty();
     final String MOD_ID;
 
@@ -27,18 +26,13 @@ public class ModuleConfig implements IConfig {
     }
 
     @Override
-    public void setCommonConfig(@Nullable ModConfig commonConfig) {
-        this.commonConfig = Optional.ofNullable(commonConfig);
-    }
-
-    @Override
     public void setServerConfig(@Nullable ModConfig serverConfig) {
         this.serverConfig = Optional.ofNullable(serverConfig);
     }
 
     @Override
     public Optional<ModConfig> getModConfig() {
-        return serverConfig.isPresent() ? serverConfig : commonConfig;
+        return serverConfig;
     }
 
     boolean isInDevMode() {

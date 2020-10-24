@@ -33,7 +33,7 @@ public class MPALibConstants {
     public static final String MOD_ID = "mpalib";
 
     // Tooltips
-    public static final String TOOLTIP_BATTERY_ENERGY = "tooltip.mpalib.battery.energy";
+    public static final String TOOLTIP_ENERGY = "tooltip.mpalib.battery.energy";
 
     // Energy Storage -----------------------------------------------------------------------------
     public static final String MAX_ENERGY = "maxEnergy";
