@@ -111,6 +111,16 @@ public class ChargingBaseGui extends ExtendedContainerScreen<ChargingBaseContain
     }
 
     @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(matrixStack);
+        if (backgroundRect.width() == backgroundRect.finalWidth() && backgroundRect.height() == backgroundRect.finalHeight()) {
+            super.render(matrixStack, mouseX, mouseY, partialTicks);
+        } else {
+            backgroundRect.draw(matrixStack, getBlitOffset());
+        }
+    }
+
+    @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
         this.font.func_243248_b(matrixStack,  new TranslationTextComponent("mpalib.energy").appendString(": "), 32F, 50F, 4210752);
