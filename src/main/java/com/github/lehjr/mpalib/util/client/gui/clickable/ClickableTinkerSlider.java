@@ -28,6 +28,7 @@ package com.github.lehjr.mpalib.util.client.gui.clickable;
 
 import com.github.lehjr.mpalib.util.client.gui.geometry.Point2D;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.ITextComponent;
 
 /**
  * Ported to Java by lehjr on 10/19/16.
@@ -35,7 +36,7 @@ import net.minecraft.nbt.CompoundNBT;
 public class ClickableTinkerSlider extends ClickableSlider {
     public CompoundNBT moduleTag;
 
-    public ClickableTinkerSlider(Point2D topmiddle, float width, CompoundNBT moduleTag, String id, String label) {
+    public ClickableTinkerSlider(Point2D topmiddle, double width, CompoundNBT moduleTag, String id, ITextComponent label) {
         super(topmiddle, width, id, label);
         this.moduleTag = moduleTag;
     }

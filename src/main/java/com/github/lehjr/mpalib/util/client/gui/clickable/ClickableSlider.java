@@ -33,6 +33,7 @@ import com.github.lehjr.mpalib.util.math.Colour;
 import com.github.lehjr.mpalib.util.math.MathUtils;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.ITextComponent;
 
 /**
  * Author: MachineMuse (Claire Semple)
@@ -47,21 +48,21 @@ public class ClickableSlider extends Clickable {
     final int cornersize = 3;
     private double valueInternal = 0;
     Point2D pos;
-    float width;
+    double width;
     private String id;
-    private String label;
+    private ITextComponent label;
     DrawableRect insideRect;
     DrawableRect outsideRect;
     boolean isEnabled = true;
     boolean isVisible = true;
 
-    public ClickableSlider(Point2D pos, float width, String id, String label) {
+    public ClickableSlider(Point2D pos, double width, String id, ITextComponent label) {
         this.pos = pos;
         this.width = width;
         this.id = id;
         this.position = pos;
-        this.insideRect = new DrawableRect(position.getX() - width / 2.0F - cornersize, position.getY() + 8, 0, position.getY() + 16, Colour.ORANGE, Colour.LIGHT_BLUE);
-        this.outsideRect = new DrawableRect(position.getX() - width / 2.0F - cornersize, position.getY() + 8, position.getX() + width / 2.0F + cornersize, position.getY() + 16, Colour.DARKBLUE, Colour.LIGHT_BLUE);
+        this.insideRect = new DrawableRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, 0, position.getY() + 16, Colour.ORANGE, Colour.LIGHT_BLUE);
+        this.outsideRect = new DrawableRect(position.getX() - width / 2.0 - cornersize, position.getY() + 8, position.getX() + width / 2.0F + cornersize, position.getY() + 16, Colour.DARKBLUE, Colour.LIGHT_BLUE);
         this.label = label;
     }
 
@@ -69,13 +70,13 @@ public class ClickableSlider extends Clickable {
         return this.id;
     }
 
-    public void setLabel(String label) {
+    public void setLabel(ITextComponent label) {
         this.label = label;
     }
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
-        MPALibRenderer.drawCenteredString(matrixStack, I18n.format(label), position.getX(), position.getY());
+        MPALibRenderer.drawCenteredText(matrixStack, label, (float)position.getX(), (float)position.getY(), Colour.WHITE);
         this.insideRect.setRight(position.getX() + width * ((float)getValue() - 0.5F) + cornersize);
         this.outsideRect.draw(matrixStack, zLevel);
         this.insideRect.draw(matrixStack, zLevel);

@@ -35,6 +35,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
@@ -164,7 +166,12 @@ public abstract class MPALibRenderer {
         return Minecraft.getInstance().fontRenderer;
     }
 
-
+    public static void drawCenteredText(MatrixStack matrixStack, ITextComponent component, float x, float y, Colour colour) {
+        getFontRenderer().func_243248_b(matrixStack,
+                component,
+                ((x - getFontRenderer().getStringPropertyWidth(component) / 2)),
+                y, colour.getInt());
+    }
 
 
 

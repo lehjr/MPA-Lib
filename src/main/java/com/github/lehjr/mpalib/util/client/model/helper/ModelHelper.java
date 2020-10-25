@@ -111,7 +111,7 @@ public class ModelHelper {
         MPAOBJModel model = getOBJModel(modelLocation, 0);
 
         if (model != null) {
-            OBJBakedCompositeModel bakedModel = model.bake(new OBJModelConfiguration(modelLocation),
+            OBJBakedCompositeModel bakedModel = model.bake(new OBJModelConfiguration(modelLocation).setCombinedTransform(modelTransform),
                     ModelLoader.instance(),
                     ModelLoader.defaultTextureGetter(),
                     modelTransform,
