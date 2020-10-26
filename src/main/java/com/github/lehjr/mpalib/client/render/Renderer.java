@@ -188,62 +188,7 @@
 //        }
 //        return renderItem;
 //    }
-//
-//    public static void drawLineBetween(IClickable firstClickable, IClickable secondClickable, Colour gradientColour, float zLevel) {
-//        long varia = System.currentTimeMillis() % 2000 - 1000;
-//        // ranges from
-//        // -1000 to 1000
-//        // and around,
-//        // period = 2
-//        // seconds
-//        float gradientRatio = 1.0F - ((varia + 1000) % 1000) / 1000.0F;
-//        Point2D midpoint = (firstClickable.getPosition().minus(secondClickable.getPosition()).times((float)Math.abs(varia / 1000.0))
-//                .plus(secondClickable.getPosition()));
-//        Point2D firstpoint, secondpoint;
-//        if (varia < 0) {
-//            firstpoint = secondClickable.getPosition();
-//            secondpoint = firstClickable.getPosition();
-//        } else {
-//            firstpoint = firstClickable.getPosition();
-//            secondpoint = secondClickable.getPosition();
-//        }
-//
-//        RenderSystem.disableTexture();
-//        RenderSystem.enableBlend();
-//        RenderSystem.disableAlphaTest();
-//        RenderSystem.defaultBlendFunc();
-//        RenderSystem.shadeModel(GL11.GL_SMOOTH);
-//
-//        Tessellator tessellator = Tessellator.getInstance();
-//        BufferBuilder buffer = tessellator.getBuffer();
-//        buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-//
-//
-////        RenderSystem.lineWidth(3.0F);
-//
-//        buffer.pos(midpoint.getX(), midpoint.getY(), zLevel + 10)
-//                .color(gradientColour.r, gradientColour.g, gradientColour.b, gradientRatio)
-//                .endVertex();
-//
-//        buffer.pos(firstpoint.getX(), firstpoint.getY(), zLevel + 10)
-//                .color(gradientColour.r, gradientColour.g, gradientColour.b, 0.0F)
-//                .endVertex();
-//
-//        buffer.pos(secondpoint.getX(), secondpoint.getY(), zLevel + 10)
-//                .color(gradientColour.r, gradientColour.g, gradientColour.b, gradientRatio)
-//                .endVertex();
-//
-//        buffer.pos(midpoint.getX(), midpoint.getY(), zLevel + 10)
-//                .color(1.0F, 1.0F, 1.0F, 1.0F)
-//                .endVertex();
-//        tessellator.draw();
-//
-//        RenderSystem.shadeModel(GL11.GL_FLAT);
-////        RenderSystem.disableBlend();
-////        RenderSystem.enableAlphaTest();
-////        RenderSystem.enableTexture();
-//    }
-//
+
 //    public static void drawLightning(double x1, double y1, double z1, double x2, double y2, double z2, Colour colour) {
 //        drawLightningTextured(x1, y1, z1, x2, y2, z2, colour);
 //    }
