@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.client.gui.slot;
 
-import com.github.lehjr.mpalib.util.client.render.IconUtils;
+import com.github.lehjr.mpalib.util.client.gui.IconUtils;
 import com.github.lehjr.mpalib.util.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.util.capabilities.module.powermodule.EnumModuleCategory;
 import com.github.lehjr.mpalib.util.capabilities.module.powermodule.PowerModuleCapability;

@@ -3,8 +3,8 @@ package com.github.lehjr.mpalib.basemod;
 import com.github.lehjr.mpalib.client.event.*;
 import com.github.lehjr.mpalib.client.gui.ArmorStandGui;
 import com.github.lehjr.mpalib.client.gui.ChargingBaseGui;
+import com.github.lehjr.mpalib.util.client.gui.IconUtils;
 import com.github.lehjr.mpalib.util.recipe.MPALibRecipeConditionFactory;
-import com.github.lehjr.mpalib.util.client.render.IconUtils;
 import com.github.lehjr.mpalib.config.ConfigHelper;
 import com.github.lehjr.mpalib.config.MPALibSettings;
 import com.github.lehjr.mpalib.entity.MPAArmorStandEntity;
@@ -102,7 +102,7 @@ public class MPALib {
                 reloadableResourceManager.addReloadListener(iconUploader);
             }
             EventBusHelper.addLifecycleListener(modEventBus, FMLLoadCompleteEvent.class, loadCompleteEvent ->
-                    IconUtils.setIconInstance(icons));
+                    IconUtils.INSTANCE.setIconInstance(icons));
         });
     }
 

@@ -26,7 +26,7 @@
 
 package com.github.lehjr.mpalib.util.client.gui.clickable;
 
-import com.github.lehjr.mpalib.util.client.render.IconUtils;
+import com.github.lehjr.mpalib.util.client.gui.IconUtils;
 import com.github.lehjr.mpalib.client.render.MPALibRenderState;
 import com.github.lehjr.mpalib.util.client.render.MPALibRenderer;
 import com.github.lehjr.mpalib.util.capabilities.module.powermodule.EnumModuleCategory;

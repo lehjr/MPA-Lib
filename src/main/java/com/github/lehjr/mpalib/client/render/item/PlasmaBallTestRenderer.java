@@ -2,7 +2,7 @@ package com.github.lehjr.mpalib.client.render.item;
 
 import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.util.client.model.helper.ModelHelper;
-import com.github.lehjr.mpalib.util.client.render.IconUtils;
+import com.github.lehjr.mpalib.util.client.gui.IconUtils;
 import com.github.lehjr.mpalib.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

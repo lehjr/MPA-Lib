@@ -24,7 +24,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.mpalib.client.render;
+package com.github.lehjr.mpalib.util.client.gui;
 
 import com.github.lehjr.mpalib.util.client.gui.GuiIcon;
 import com.github.lehjr.mpalib.util.math.Colour;
@@ -50,15 +50,16 @@ import org.lwjgl.opengl.GL11;
  * Ported to Java by lehjr on 10/25/16.
  */
 @OnlyIn(Dist.CLIENT)
-public class IconUtils {
+public enum IconUtils {
+    INSTANCE;
     public static GuiIcon getIcon() {
-        Preconditions.checkState(icon != null, "Calling icons too early.");
-        return icon;
+        Preconditions.checkState(INSTANCE.icon != null, "Calling icons too early.");
+        return INSTANCE.icon;
     }
 
     protected static GuiIcon icon;
     public static void setIconInstance(GuiIcon iconIn) {
-        icon = iconIn;
+        INSTANCE.icon = iconIn;
     }
 
     static TextureAtlasSprite getMissingIcon() {

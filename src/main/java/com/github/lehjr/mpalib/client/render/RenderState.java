@@ -154,22 +154,23 @@ public final class RenderState {
         RenderSystem.popAttributes();
     }
 
-    /**
-     * Used primarily for model rendering to make a surface "glow"
-     */
-    private static float lightmapLastX = .0f;
-    private static float lightmapLastY = .0f;
-    public static void glowOn() {
-        glPushAttrib(GL11.GL_LIGHTING_BIT);
-        lightmapLastX = GlStateManager.lastBrightnessX;
-        lightmapLastY = GlStateManager.lastBrightnessY;
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.multiTexCoord2f(GL13C.GL_TEXTURE1, 240.0F, 240.0F);
-    }
-
-    public static void glowOff() {
-        GlStateManager.multiTexCoord2f(GL13C.GL_TEXTURE1, lightmapLastX, lightmapLastY);
-        RenderHelper.enableStandardItemLighting();
-        GL11.glPopAttrib();
-    }
+    // no longer used
+//    /**
+//     * Used primarily for model rendering to make a surface "glow"
+//     */
+//    private static float lightmapLastX = .0f;
+//    private static float lightmapLastY = .0f;
+//    public static void glowOn() {
+//        glPushAttrib(GL11.GL_LIGHTING_BIT);
+//        lightmapLastX = GlStateManager.lastBrightnessX;
+//        lightmapLastY = GlStateManager.lastBrightnessY;
+//        RenderHelper.disableStandardItemLighting();
+//        GlStateManager.multiTexCoord2f(GL13C.GL_TEXTURE1, 240.0F, 240.0F);
+//    }
+//
+//    public static void glowOff() {
+//        GlStateManager.multiTexCoord2f(GL13C.GL_TEXTURE1, lightmapLastX, lightmapLastY);
+//        RenderHelper.enableStandardItemLighting();
+//        GL11.glPopAttrib();
+//    }
 }
