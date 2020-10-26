@@ -102,7 +102,7 @@ public class MPALib {
                 reloadableResourceManager.addReloadListener(iconUploader);
             }
             EventBusHelper.addLifecycleListener(modEventBus, FMLLoadCompleteEvent.class, loadCompleteEvent ->
-                    IconUtils.INSTANCE.setIconInstance(icons));
+                    IconUtils.setIconInstance(icons));
         });
     }
 
