@@ -37,6 +37,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.opengl.GL11;
 
@@ -111,20 +112,42 @@ public class ScrollableFrame implements IGuiFrame {
 
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder buffer = tessellator.getBuffer();
-            buffer.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_COLOR);
+            buffer.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_COLOR_LIGHTMAP);
+
+            Matrix4f matrix4f = matrixStack.getLast().getMatrix();
 
             // Can scroll down
             if (currentscrollpixels + border.height() < totalsize) {
-                buffer.pos(border.left() + border.width() / 2, border.bottom(), zLevel).color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a).endVertex();
-                buffer.pos(border.left() + border.width() / 2 + 2, border.bottom() - 4, zLevel).color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a).endVertex();
-                buffer.pos(border.left() + border.width() / 2 - 2, border.bottom() - 4, zLevel).color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a).endVertex();
+                buffer.pos(matrix4f, (float)(border.left() + border.width() / 2F), (float)border.bottom(), zLevel)
+                        .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
+                        .lightmap(0x00F000F0)
+                        .endVertex();
+
+                buffer.pos(matrix4f, (float) (border.left() + border.width() / 2 + 2), (float)border.bottom() - 4, zLevel)
+                        .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
+                        .lightmap(0x00F000F0)
+                        .endVertex();
+
+                buffer.pos(matrix4f, (float) (border.left() + border.width() / 2 - 2), (float)border.bottom() - 4, zLevel)
+                        .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
+                        .lightmap(0x00F000F0)
+                        .endVertex();
             }
 
             // Can scroll up
             if (currentscrollpixels > 0) {
-                buffer.pos(border.left() + border.width() / 2, border.top(), zLevel).color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a).endVertex();
-                buffer.pos(border.left() + border.width() / 2 - 2, border.top() + 4, zLevel).color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a).endVertex();
-                buffer.pos(border.left() + border.width() / 2 + 2, border.top() + 4, zLevel).color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a).endVertex();
+                buffer.pos(matrix4f, (float) (border.left() + border.width() / 2), (float)border.top(), zLevel)
+                        .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
+                        .lightmap(0x00F000F0)
+                        .endVertex();
+                buffer.pos(matrix4f, (float) (border.left() + border.width() / 2 - 2), (float)border.top() + 4, zLevel)
+                        .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
+                        .lightmap(0x00F000F0)
+                        .endVertex();
+                buffer.pos(matrix4f, (float) (border.left() + border.width() / 2 + 2), (float)border.top() + 4, zLevel)
+                        .color(Colour.LIGHT_BLUE.r, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.b, Colour.LIGHT_BLUE.a)
+                        .lightmap(0x00F000F0)
+                        .endVertex();
             }
             tessellator.draw();
 
@@ -135,10 +158,6 @@ public class ScrollableFrame implements IGuiFrame {
             MPALibRenderState.scissorsOn(border.left(), border.top() + 4, border.width(), border.height() - 8); // get rid of margins
         }
     }
-
-
-
-
 
     public void postRender(int mouseX, int mouseY, float partialTicks) {
         if (isVisible()) {

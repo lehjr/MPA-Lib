@@ -45,7 +45,7 @@ public class ContainerlessGui extends Screen {
     /** Starting Y position for the Gui. Inconsistent use for Gui backgrounds. */
     public int guiTop;
 
-    protected List<IGuiFrame> frames;
+    private List<IGuiFrame> frames;
 
     public ContainerlessGui(ITextComponent titleIn) {
         super(titleIn);
@@ -66,12 +66,6 @@ public class ContainerlessGui extends Screen {
     }
 
     /**
-     * Draws the gradient-rectangle background you see in the TinkerTable gui.
-     */
-    public void drawRectangularBackground() {
-    }
-
-    /**
      * Adds a frame to this gui's draw list.
      *
      * @param frame
@@ -81,23 +75,19 @@ public class ContainerlessGui extends Screen {
     }
 
     @Override
-    public void renderBackground(MatrixStack matrixStack, int p_238651_2_) {
-        super.renderBackground(matrixStack, p_238651_2_);
-        this.drawRectangularBackground(); // The window rectangle
+    public void renderBackground(MatrixStack matrixStack) {
+        super.renderBackground(matrixStack);
     }
-
-
 
     /**
      * Called every frame, draws the screen!
      */
-
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-//        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.renderBackground(matrixStack, 0);
+        this.renderBackground(matrixStack);
         update(mouseX, mouseY);
         renderFrames(matrixStack, mouseX, mouseY, partialTicks);
+       super.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
     public void update(double x, double y) {

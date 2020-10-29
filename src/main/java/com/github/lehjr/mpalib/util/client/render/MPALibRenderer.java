@@ -32,17 +32,33 @@ import com.github.lehjr.mpalib.util.client.gui.geometry.Point2D;
 import com.github.lehjr.mpalib.util.client.gui.geometry.SwirlyCircle;
 import com.github.lehjr.mpalib.util.math.Colour;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.crash.ReportedException;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -51,11 +67,21 @@ import java.util.List;
  * @author MachineMuse
  */
 public abstract class MPALibRenderer {
-
-    protected static ItemRenderer renderItem;
-
     protected static SwirlyCircle selectionCircle;
     static boolean messagedAboutSlick = false;
+
+    public static ItemRenderer getItemRenderer() {
+        return Minecraft.getInstance().getItemRenderer();
+    }
+
+    public TextureManager getTextureManager() {
+        return Minecraft.getInstance().getTextureManager();
+    }
+
+    static IBakedModel getItemModelWithOverrides(@Nonnull ItemStack itemStack) {
+        PlayerEntity player = Minecraft.getInstance().player;
+        return getItemRenderer().getItemModelWithOverrides(itemStack, player.world, player);
+    }
 
     /**
      * Does the rotating green circle around the selection, e.g. in GUI.
@@ -78,8 +104,11 @@ public abstract class MPALibRenderer {
     // FIXME: need lighting/shading for this module model
 
 
-    public static void drawModuleAt(double x, double y, @Nonnull ItemStack itemStack, boolean active) {
-        drawItemAt(x, y, itemStack);
+    public static void drawModuleAt(MatrixStack matrixStackIn, double x, double y, @Nonnull ItemStack itemStack, boolean active) {
+        if (!itemStack.isEmpty()) {
+            IBakedModel model = getItemModelWithOverrides(itemStack);
+            renderItemModelIntoGUI(itemStack, matrixStackIn, (float)x, (float) y, model, active? Colour.WHITE : Colour.DARK_GREY.withAlpha(0.5F));
+        }
     }
 
     /**
@@ -87,27 +116,145 @@ public abstract class MPALibRenderer {
      */
     public static void drawItemAt(double x, double y, @Nonnull ItemStack itemStack) {
         if (!itemStack.isEmpty()) {
-//            MPALibRenderState.on2D();
-            Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(itemStack, (int) x, (int) y);
-            Minecraft.getInstance().getItemRenderer().renderItemOverlayIntoGUI(getFontRenderer(), itemStack, (int) x, (int) y, (String) null);
-//            MPALibRenderState.off2D();
-
-// TODO: look at other uses of this?
-
-//            private void drawItemStack(ItemStack stack, int x, int y, String altText) {
-//                RenderSystem.translatef(0.0F, 0.0F, 32.0F);
-//                this.setBlitOffset(200);
-//                this.itemRenderer.zLevel = 200.0F;
-//                net.minecraft.client.gui.FontRenderer font = stack.getItem().getFontRenderer(stack);
-//                if (font == null) font = this.font;
-//                this.itemRenderer.renderItemAndEffectIntoGUI(stack, x, y);
-//                this.itemRenderer.renderItemOverlayIntoGUI(font, stack, x, y - (this.draggedStack.isEmpty() ? 0 : 8), altText);
-//                this.setBlitOffset(0);
-//                this.itemRenderer.zLevel = 0.0F;
-//            }
-
+            getItemRenderer().renderItemAndEffectIntoGUI(itemStack, (int) x, (int) y);
+            getItemRenderer().renderItemOverlayIntoGUI(getFontRenderer(), itemStack, (int) x, (int) y, (String) null);
         }
     }
+
+    public static void drawItemAt(MatrixStack matrixStack, double x, double y, @Nonnull ItemStack itemStack, Colour colour) {
+        if (!itemStack.isEmpty()) {
+
+            Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(itemStack, (int) x, (int) y);
+            Minecraft.getInstance().getItemRenderer().renderItemOverlayIntoGUI(getFontRenderer(), itemStack, (int) x, (int) y, (String) null);
+        }
+    }
+
+
+    private void renderItemIntoGUI(@Nullable LivingEntity livingEntity, MatrixStack matrixStack, ItemStack stack, float x, float y, Colour colour) {
+        if (!stack.isEmpty()) {
+            getItemRenderer().zLevel += 50.0F;
+
+            try {
+                renderItemModelIntoGUI(stack, matrixStack, x, y, getItemRenderer().getItemModelWithOverrides(stack, (World)null, livingEntity), colour);
+            } catch (Throwable throwable) {
+                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering item");
+                CrashReportCategory crashreportcategory = crashreport.makeCategory("Item being rendered");
+                crashreportcategory.addDetail("Item Type", () -> {
+                    return String.valueOf((Object)stack.getItem());
+                });
+                crashreportcategory.addDetail("Registry Name", () -> String.valueOf(stack.getItem().getRegistryName()));
+                crashreportcategory.addDetail("Item Damage", () -> {
+                    return String.valueOf(stack.getDamage());
+                });
+                crashreportcategory.addDetail("Item NBT", () -> {
+                    return String.valueOf((Object)stack.getTag());
+                });
+                crashreportcategory.addDetail("Item Foil", () -> {
+                    return String.valueOf(stack.hasEffect());
+                });
+                throw new ReportedException(crashreport);
+            }
+
+            getItemRenderer().zLevel -= 50.0F;
+        }
+    }
+
+
+    protected static void renderItemModelIntoGUI(ItemStack stack, MatrixStack matrixStack, float x, float y, IBakedModel bakedmodel, Colour colour) {
+        RenderSystem.pushMatrix();
+        Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+        Minecraft.getInstance().getTextureManager().getTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE).setBlurMipmapDirect(false, false);
+        RenderSystem.enableRescaleNormal();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.defaultAlphaFunc();
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.color4f(colour.r, colour.g, colour.b, colour.a);
+        RenderSystem.translatef((float)x, (float)y, 100.0F + Minecraft.getInstance().getItemRenderer().zLevel);
+        RenderSystem.translatef(8.0F, 8.0F, 0.0F);
+        RenderSystem.scalef(1.0F, -1.0F, 1.0F);
+        RenderSystem.scalef(16.0F, 16.0F, 16.0F);
+        IRenderTypeBuffer.Impl bufferSource = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+        boolean flag = !bakedmodel.isSideLit();
+        if (flag) {
+            RenderHelper.setupGuiFlatDiffuseLighting();
+        }
+        Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.GUI, false, matrixStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, bakedmodel);
+        bufferSource.finish();
+        RenderSystem.enableDepthTest();
+        if (flag) {
+            RenderHelper.setupGui3DDiffuseLighting();
+        }
+
+        RenderSystem.disableAlphaTest();
+        RenderSystem.disableRescaleNormal();
+        RenderSystem.popMatrix();
+    }
+
+
+    /**
+     * Renders the stack size and/or damage bar for the given ItemStack.
+     */
+    public void renderItemOverlayIntoGUI(MatrixStack matrixStack, FontRenderer fr, ItemStack stack, int xPosition, int yPosition, @Nullable String text) {
+        if (!stack.isEmpty()) {
+            if (stack.getCount() != 1 || text != null) {
+                String s = text == null ? String.valueOf(stack.getCount()) : text;
+                matrixStack.push();
+                matrixStack.translate(0.0D, 0.0D, (double)(Minecraft.getInstance().getItemRenderer().zLevel + 200.0F));
+                IRenderTypeBuffer.Impl typeBuffer = IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer());
+                fr.renderString(s, (float)(xPosition + 19 - 2 - fr.getStringWidth(s)), (float)(yPosition + 6 + 3), 16777215, true, matrixStack.getLast().getMatrix(), typeBuffer, false, 0, 15728880);
+                typeBuffer.finish();
+                matrixStack.pop();
+            }
+
+            if (stack.getItem().showDurabilityBar(stack)) {
+                RenderSystem.disableDepthTest();
+                RenderSystem.disableTexture();
+                RenderSystem.disableAlphaTest();
+                RenderSystem.disableBlend();
+                Tessellator tessellator = Tessellator.getInstance();
+                BufferBuilder bufferbuilder = tessellator.getBuffer();
+                double health = stack.getItem().getDurabilityForDisplay(stack);
+                int i = Math.round(13.0F - (float)health * 13.0F);
+                int j = stack.getItem().getRGBDurabilityForDisplay(stack);
+                draw(bufferbuilder,matrixStack.getLast().getMatrix(), xPosition + 2, yPosition + 13, 13, 2, 0, 0, 0, 255);
+                draw(bufferbuilder, matrixStack.getLast().getMatrix(),xPosition + 2, yPosition + 13, i, 1, j >> 16 & 255, j >> 8 & 255, j & 255, 255);
+                RenderSystem.enableBlend();
+                RenderSystem.enableAlphaTest();
+                RenderSystem.enableTexture();
+                RenderSystem.enableDepthTest();
+            }
+
+            ClientPlayerEntity clientplayerentity = Minecraft.getInstance().player;
+            float f3 = clientplayerentity == null ? 0.0F : clientplayerentity.getCooldownTracker().getCooldown(stack.getItem(), Minecraft.getInstance().getRenderPartialTicks());
+            if (f3 > 0.0F) {
+                RenderSystem.disableDepthTest();
+                RenderSystem.disableTexture();
+                RenderSystem.enableBlend();
+                RenderSystem.defaultBlendFunc();
+                Tessellator tessellator1 = Tessellator.getInstance();
+                BufferBuilder bufferbuilder1 = tessellator1.getBuffer();
+                draw(bufferbuilder1, matrixStack.getLast().getMatrix(), xPosition, yPosition + MathHelper.floor(16.0F * (1.0F - f3)), 16, MathHelper.ceil(16.0F * f3), 255, 255, 255, 127);
+                RenderSystem.enableTexture();
+                RenderSystem.enableDepthTest();
+            }
+        }
+    }
+
+
+    /**
+     * Draw with the WorldRenderer
+     */
+    private void draw(BufferBuilder renderer, Matrix4f matrix4f, float x, float y, float width, int height, int red, int green, int blue, int alpha) {
+        renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        renderer.pos(matrix4f, (x + 0), (y + 0), 0.0F).color(red, green, blue, alpha).endVertex();
+        renderer.pos(matrix4f, (x + 0), (y + height), 0.F).color(red, green, blue, alpha).endVertex();
+        renderer.pos(matrix4f, (x + width), (y + height), 0.0F).color(red, green, blue, alpha).endVertex();
+        renderer.pos(matrix4f, (x + width), (y + 0), 0.0F).color(red, green, blue, alpha).endVertex();
+        Tessellator.getInstance().draw();
+    }
+
+
 
     public static void drawString(MatrixStack matrixStack, String s, double x, double y) {
         drawString(matrixStack, s, x, y, Colour.WHITE);
@@ -309,4 +456,16 @@ public abstract class MPALibRenderer {
     public static void unRotate() {
         BillboardHelper.unRotate();
     }
+
+
+
+
+
+
+
+
+
+
+
+
 }

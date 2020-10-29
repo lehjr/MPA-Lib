@@ -122,22 +122,23 @@ public class ClickableModule extends Clickable {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, float zLevel) {
         if (!getModule().isEmpty()) {
-            MPALibRenderer.drawItemAt(getPosition().getX() - offsetx, getPosition().getY() - offsety, getModule());
+            MPALibRenderer.drawModuleAt(matrixStack,getPosition().getX() - offsetx, getPosition().getY() - offsety, getModule(), true);
             if (!allowed) {
-                RenderSystem.pushMatrix();
-                RenderSystem.translatef(0, 0, 250);
+                matrixStack.push();
+                matrixStack.translate(0, 0, 250);
                 MPALibRenderState.glowOn();
                 String string = StringUtils.wrapMultipleFormatTags("X", StringUtils.FormatCodes.Bold, StringUtils.FormatCodes.DarkRed);
                 MPALibRenderer.drawString(matrixStack, string, getPosition().getX() + 3, getPosition().getY() + 1);
                 MPALibRenderState.glowOff();
-                RenderSystem.popMatrix();
+
+                matrixStack.pop();
             } else if (installed) {
-                RenderSystem.pushMatrix();
-                RenderSystem.translatef(0, 0,250);
+                matrixStack.push();
+                matrixStack.translate(0, 0,250);
                 MPALibRenderState.glowOn();
                 IconUtils.getIcon().checkmark.draw(matrixStack, getPosition().getX() - offsetx + 1, getPosition().getY() - offsety + 1, checkmarkcolour.withAlpha(0.6F));
                 MPALibRenderState.glowOff();
-                RenderSystem.popMatrix();
+                matrixStack.pop();
             }
         }
     }

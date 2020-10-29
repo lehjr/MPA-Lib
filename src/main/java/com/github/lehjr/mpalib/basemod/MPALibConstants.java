@@ -105,12 +105,6 @@ public class MPALibConstants {
     public static final String COMPONENT__RUBBER_HOSE__REGNAME = "component_rubber_hose";
 
 
-
-
-
-
-
-
     public static final ResourceLocation TEXTURE_WHITE_SHORT = new ResourceLocation(MPALibConstants.MOD_ID, "models/white");
     public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation(MPALibConstants.MOD_ID, "textures/models/white.png");
     public static final ResourceLocation TEXTURE_ARMOR_STAND = new ResourceLocation(MPALibConstants.MOD_ID, "textures/models/armorstand2.png");
