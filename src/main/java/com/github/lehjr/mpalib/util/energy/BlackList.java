@@ -24,7 +24,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.lehjr.mpalib.util.energy.adapter;
+package com.github.lehjr.mpalib.util.energy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +32,7 @@ import java.util.List;
 /**
  * Blacklist for items that don't behave normally and may cause issues like unlimited power
  */
-public enum BlackList {
-    INSTANCE;
-
+public class BlackList {
     public static List<String> blacklistModIds = new ArrayList<String>() {{
         add("appliedenergistics2");
         add("extracells");

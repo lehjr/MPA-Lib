@@ -26,50 +26,17 @@
 
 package com.github.lehjr.mpalib.util.energy;
 
-import com.github.lehjr.mpalib.util.capabilities.inventory.modularitem.IModularItem;
-import com.github.lehjr.mpalib.util.energy.adapter.IElectricAdapter;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nonnull;
 
 public class ElectricItemUtils {
-    /**
-     * applies a given charge to the emulated tool. Used for simulating a used charge from the tool as it would normally be used
-     */
-    public static int chargeEmulatedToolFromPlayerEnergy(LivingEntity entity, @Nonnull ItemStack emulatedTool) {
-        if (entity.world.isRemote) {
-            return 0;
-        }
-
-        IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(emulatedTool, false);
-        if (adapter == null) {
-            return 0;
-        }
-
-        int maxCharge = adapter.getMaxEnergyStored();
-        int charge = adapter.getEnergyStored();
-
-        if (maxCharge == charge) {
-            return 0;
-        }
-
-        int chargeAmount;
-        int playerEnergy = getPlayerEnergy(entity);
-        if (playerEnergy > (maxCharge - charge)) {
-            adapter.receiveEnergy(maxCharge - charge, false);
-            chargeAmount = drainPlayerEnergy(entity, maxCharge - charge);
-        } else {
-            adapter.receiveEnergy(playerEnergy, false);
-            chargeAmount = drainPlayerEnergy(entity, playerEnergy);
-        }
-        return chargeAmount;
-    }
-
     /**
      * returns the sum of the energy of the entity's equipped items
      *
@@ -79,11 +46,7 @@ public class ElectricItemUtils {
         int avail = 0;
 
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-            IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(entity.getItemStackFromSlot(slot), true);
-            if (adapter == null) {
-                continue;
-            }
-            avail += adapter.getEnergyStored();
+            avail += getItemEnergy(entity.getItemStackFromSlot(slot));
         }
         return avail;
     }
@@ -96,11 +59,7 @@ public class ElectricItemUtils {
     public static int getMaxPlayerEnergy(LivingEntity entity) {
         int avail = 0;
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-            IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(entity.getItemStackFromSlot(slot), true);
-            if (adapter == null) {
-                continue;
-            }
-            avail += adapter.getMaxEnergyStored();
+            avail += getMaxItemEnergy(entity.getItemStackFromSlot(slot));
         }
         return avail;
     }
@@ -116,33 +75,17 @@ public class ElectricItemUtils {
         }
         int drainleft = drainAmount;
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-
-            // FIXME: do we still have to filter out items in use with the ~canContinueUsing method being set to true?
-//            if (slot.getSlotType() == EquipmentSlotType.Group.HAND) {
-//                if (slot == EquipmentSlotType.MAINHAND && entity.getActiveHand() == Hand.MAIN_HAND) {
-//                    continue;
-//                } else if  (slot == EquipmentSlotType.OFFHAND && entity.getActiveHand() == Hand.OFF_HAND) {
-//                    continue;
-//                }
-//            }
-            ItemStack stack = entity.getItemStackFromSlot(slot);
-            // check if the tool is a modular item. If not, skip it.
-            if (!stack.isEmpty() && stack.getItem() instanceof ToolItem) {
-                if (stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(iItemHandler ->
-                        !(iItemHandler instanceof IModularItem)).orElse(true)){
-                    continue;
-                }
-            }
-
-            IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(entity.getItemStackFromSlot(slot), true);
-            if (adapter == null) {
-                continue;
-            }
-
-            if (drainleft > 0) {
-                drainleft = drainleft - adapter.extractEnergy(drainleft, false);
-            } else {
+            if (drainleft == 0) {
                 break;
+            }
+
+            ItemStack stack = entity.getItemStackFromSlot(slot);
+            Item item = stack.getItem();
+
+            // check if the tool is a modular item. If not, skip it.
+            if (!stack.isEmpty() && item instanceof ToolItem &&
+                    !BlackList.blacklistModIds.contains(item.getRegistryName().getNamespace())) {
+                drainleft = drainleft - drainItem(stack, drainleft);
             }
         }
         return drainAmount - drainleft;
@@ -156,55 +99,38 @@ public class ElectricItemUtils {
     public static int givePlayerEnergy(LivingEntity entity, int rfToGive) {
         int rfLeft = rfToGive;
         for (EquipmentSlotType slot : EquipmentSlotType.values()) {
-//            if (slot.getSlotType() == EquipmentSlotType.Group.HAND) {
-//                if (slot == EquipmentSlotType.MAINHAND && entity.getActiveHand() == Hand.MAIN_HAND) {
-//                    continue;
-//                } else if  (slot == EquipmentSlotType.OFFHAND && entity.getActiveHand() == Hand.OFF_HAND) {
-//                    continue;
-//                }
-//            }
-
-            IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(entity.getItemStackFromSlot(slot), false);
-            if (adapter == null)
-                continue;
-
-            if (adapter != null) {
-                if (rfLeft > 0) {
-                    rfLeft = rfLeft - adapter.receiveEnergy(rfLeft, false);
-                } else
-                    break;
+            if (rfLeft > 0) {
+                rfLeft = rfLeft - chargeItem(entity.getItemStackFromSlot(slot), rfLeft);
+            } else {
+                break;
             }
         }
         return rfToGive - rfLeft;
+    }
+
+
+    /**
+     * returns the energy an itemStack has
+     */
+    public static int drainItem(@Nonnull ItemStack itemStack, int drainAmount) {
+        return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.extractEnergy(drainAmount, false)).orElse(0);
     }
 
     /**
      * returns the energy an itemStack has
      */
     public static int getItemEnergy(@Nonnull ItemStack itemStack) {
-        IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(itemStack, false);
-        if (adapter != null) {
-            return adapter.getEnergyStored();
-        }
-        return 0;
+        return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.getEnergyStored()).orElse(0);
     }
 
     /**
      * returns total possible energy an itemStack can hold
      */
     public static int getMaxItemEnergy(@Nonnull ItemStack itemStack) {
-        IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(itemStack, false);
-        if (adapter != null) {
-            return adapter.getEnergyStored();
-        }
-        return 0;
+        return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.getMaxEnergyStored()).orElse(0);
     }
 
     public static int chargeItem(@Nonnull ItemStack itemStack, int chargeAmount) {
-        IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(itemStack, false);
-        if (adapter != null) {
-            return adapter.receiveEnergy(chargeAmount, false);
-        }
-        return 0;
+        return itemStack.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> energyHandler.receiveEnergy(chargeAmount, false)).orElse(0);
     }
 }

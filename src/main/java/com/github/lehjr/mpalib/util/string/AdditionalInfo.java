@@ -4,8 +4,6 @@ import com.github.lehjr.mpalib.basemod.MPALibConstants;
 import com.github.lehjr.mpalib.util.capabilities.inventory.modechanging.IModeChangingItem;
 import com.github.lehjr.mpalib.util.capabilities.inventory.modularitem.IModularItem;
 import com.github.lehjr.mpalib.util.capabilities.module.powermodule.PowerModuleCapability;
-import com.github.lehjr.mpalib.util.energy.ElectricAdapterManager;
-import com.github.lehjr.mpalib.util.energy.adapter.IElectricAdapter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -15,6 +13,7 @@ import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -127,13 +126,11 @@ public class AdditionalInfo {
             }
         });
 
-        IElectricAdapter adapter = ElectricAdapterManager.INSTANCE.wrap(stack, true);
-        if (adapter != null) {
-            currentTipList.add(new StringTextComponent(I18n.format(MPALibConstants.TOOLTIP_ENERGY,
-                    StringUtils.formatNumberShort(adapter.getEnergyStored()),
-                    StringUtils.formatNumberShort(adapter.getMaxEnergyStored())))
-                    .setStyle(Style.EMPTY.setFormatting(TextFormatting.AQUA).setItalic(true)));
-        }
+        stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyCap->
+                currentTipList.add(new StringTextComponent(I18n.format(MPALibConstants.TOOLTIP_ENERGY,
+                StringUtils.formatNumberShort(energyCap.getEnergyStored()),
+                StringUtils.formatNumberShort(energyCap.getMaxEnergyStored())))
+                .setStyle(Style.EMPTY.setFormatting(TextFormatting.AQUA).setItalic(true))));
     }
 
     static class FluidInfo {
