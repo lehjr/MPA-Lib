@@ -316,6 +316,10 @@ public abstract class MPALibRenderer {
         return Minecraft.getInstance().fontRenderer;
     }
 
+    public static void drawText(MatrixStack matrixStack, ITextComponent component, double x, double y, Colour colour) {
+        getFontRenderer().func_243248_b(matrixStack, component,  (float) x, (float) y, colour.getInt());
+    }
+
     public static void drawCenteredText(MatrixStack matrixStack, ITextComponent component, double x, double y, Colour colour) {
         drawCenteredText(matrixStack, component, (float) x, (float) y, colour);
     }
