@@ -53,6 +53,13 @@ public class MPALibPackets {
 
         CHANNEL_INSTANCE.registerMessage(
                 i++,
+                CosmeticInfoPacket.class,
+                CosmeticInfoPacket::encode,
+                CosmeticInfoPacket::decode,
+                CosmeticInfoPacket::handle);
+
+        CHANNEL_INSTANCE.registerMessage(
+                i++,
                 ToggleRequestPacket.class,
                 ToggleRequestPacket::encode,
                 ToggleRequestPacket::decode,

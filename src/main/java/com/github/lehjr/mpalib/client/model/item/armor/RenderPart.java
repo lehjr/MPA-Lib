@@ -119,9 +119,8 @@ public class RenderPart extends ModelRenderer {
                         random.setSeed(i);
                         builder.addAll(((ModelPartSpec) part).getPart().getQuads(null, null, random));
 
-                        // Todo: lighting val for "glow"
-                        renderQuads(entry, bufferIn, builder.build(),/* ((ModelPartSpec) part).getGlow() ?
-                                15728880 : */packedLightIn, OverlayTexture.NO_OVERLAY, partColor);
+                        renderQuads(entry, bufferIn, builder.build(), ((ModelPartSpec) part).getGlow() ?
+                                0x00F000F0 : packedLightIn, OverlayTexture.NO_OVERLAY, partColor);
                     }
                 }
             }
