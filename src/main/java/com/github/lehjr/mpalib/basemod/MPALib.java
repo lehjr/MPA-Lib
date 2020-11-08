@@ -106,13 +106,13 @@ public class MPALib {
         });
     }
 
-//    @Mod.EventBusSubscriber(modid = MPALibConstants.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-//    public static class MyStaticClientOnlyEventHandler {
-//        @SubscribeEvent
-//        public static void loadComplete(FMLLoadCompleteEvent evt) {
-//            ArmorLayerSetup.loadComplete(evt);
-//        }
-//    }
+    @Mod.EventBusSubscriber(modid = MPALibConstants.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class MyStaticClientOnlyEventHandler {
+        @SubscribeEvent
+        public static void loadComplete(FMLLoadCompleteEvent evt) {
+            ArmorLayerSetup.loadComplete(evt);
+        }
+    }
 
     private void setup(final FMLCommonSetupEvent event) {
         MPALibPackets.registerMPALibPackets();

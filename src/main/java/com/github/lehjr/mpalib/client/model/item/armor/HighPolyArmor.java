@@ -23,7 +23,7 @@ public class HighPolyArmor extends BipedModel {
     public EquipmentSlotType visibleSection = EquipmentSlotType.HEAD;
 
     public HighPolyArmor() {
-       super(0);
+        super(0);
         init();
     }
 
@@ -41,6 +41,15 @@ public class HighPolyArmor extends BipedModel {
 
     public void setVisibleSection(EquipmentSlotType equipmentSlot) {
         this.visibleSection = equipmentSlot;
+        this.bipedHeadwear.showModel = false;
+
+        // This may not actually be needed
+        this.bipedHead.showModel = equipmentSlot == EquipmentSlotType.HEAD;
+        this.bipedBody.showModel = equipmentSlot == EquipmentSlotType.CHEST;
+        this.bipedRightArm.showModel = equipmentSlot == EquipmentSlotType.CHEST;
+        this.bipedLeftArm.showModel = equipmentSlot == EquipmentSlotType.CHEST;
+        this.bipedRightLeg.showModel = equipmentSlot == EquipmentSlotType.LEGS;
+        this.bipedLeftLeg.showModel = equipmentSlot == EquipmentSlotType.LEGS;
     }
 
     @Override
@@ -56,8 +65,8 @@ public class HighPolyArmor extends BipedModel {
     // packed overlay is for texture UV's ... see OverlayTexture.getPackedUV
     @Override
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-            this.getHeadParts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
-            this.getBodyParts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
+        this.getHeadParts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
+        this.getBodyParts().forEach((part) -> part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha));
     }
 
     public void init() {
