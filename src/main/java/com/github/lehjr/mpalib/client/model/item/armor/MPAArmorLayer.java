@@ -54,9 +54,6 @@ public class MPAArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A ex
         if (itemstack.getItem() instanceof ArmorItem) {
             ArmorItem armoritem = (ArmorItem)itemstack.getItem();
             if (armoritem.getEquipmentSlot() ==  slotIn) {
-
-
-
                 // ideally, this would replace the getArmorModel
                 if (itemstack.getCapability(ModelSpecNBTCapability.RENDER).isPresent()) {
                     itemstack.getCapability(ModelSpecNBTCapability.RENDER).ifPresent(spec->{
@@ -77,15 +74,11 @@ public class MPAArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A ex
                     this.setModelSlotVisible(model,  slotIn);
 
                     if (armoritem instanceof IDyeableArmorItem) {
-                        int i = ((IDyeableArmorItem)armoritem).getColor(itemstack);
-                        float f = (float)(i >> 16 & 255) / 255.0F;
-                        float f1 = (float)(i >> 8 & 255) / 255.0F;
-                        float f2 = (float)(i & 255) / 255.0F;
-                        //protected void func_241738_a_(MatrixStack p_241738_1_, IRenderTypeBuffer p_241738_2_, int p_241738_3_, ArmorItem p_241738_4_, boolean p_241738_5_, A p_241738_6_, boolean p_241738_7_, float p_241738_8_, float p_241738_9_, float p_241738_10_, @Nullable String p_241738_11_) {
-//                      protected void func_241738_a_(MatrixStack p_241738_1_, IRenderTypeBuffer p_241738_2_, int p_241738_3_, ArmorItem p_241738_4_, boolean p_241738_5_, A p_241738_6_, boolean p_241738_7_, float p_241738_8_, float p_241738_9_, float p_241738_10_, @Nullable String p_241738_11_) {
-//
-
-                        this.func_241738_a_(matrixIn, bufferIn, packedLightIn, hasEffect, model, f, f1, f2, this.getArmorResource(entityIn, itemstack,  slotIn, null));
+                        int colorInt = ((IDyeableArmorItem)armoritem).getColor(itemstack);
+                        float red = (float)(colorInt >> 16 & 255) / 255.0F;
+                        float green = (float)(colorInt >> 8 & 255) / 255.0F;
+                        float blue = (float)(colorInt & 255) / 255.0F;
+                        this.func_241738_a_(matrixIn, bufferIn, packedLightIn, hasEffect, model, red, green, blue, this.getArmorResource(entityIn, itemstack,  slotIn, null));
                         this.func_241738_a_(matrixIn, bufferIn, packedLightIn, hasEffect, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entityIn, itemstack,  slotIn, "overlay"));
                     } else {
                         this.func_241738_a_(matrixIn, bufferIn, packedLightIn, hasEffect, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entityIn, itemstack,  slotIn, null));
@@ -95,10 +88,10 @@ public class MPAArmorLayer<T extends LivingEntity, M extends BipedModel<T>, A ex
         }
     }
 
-//    @Override
-//    protected void func_241738_a_(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, ArmorItem itemStack, boolean hasEffect, A model, boolean p_241738_7_, float red, float green, float blue, @Nullable String p_241738_11_) {
-//        func_241738_a_(matrixStackIn, bufferIn, packedLightIn, hasEffect, model, red, green, blue, this.func_241737_a_(itemStack, p_241738_7_, p_241738_11_));
-//    }
+    private void func_241738_a_(MatrixStack matrixIn, IRenderTypeBuffer bufferIn, int packedLightIn, boolean hasEffect, A model, float red, float green, float blue, ResourceLocation armorResource) {
+        IVertexBuilder ivertexbuilder = ItemRenderer.getArmorVertexBuilder(bufferIn, RenderType.getArmorCutoutNoCull(armorResource), false, hasEffect);
+        model.render(matrixIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+    }
 
     /**
      * Sets the render type
